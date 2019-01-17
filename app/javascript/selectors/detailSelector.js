@@ -69,7 +69,7 @@ export const isEmailValid = state => {
 }
 
 export const disableActionButton = state => {
-  if (!isEmailValid(state)) {
+  if (!isEmailValid(state) || !isPhoneNumberValid(state)) {
     return true
   }
   return safeGet(state, 'fetchDetails.disableActionBtn')
@@ -136,6 +136,11 @@ export const selectModifiedDetails = state => {
     permissions: checkForModifiedDetails(initialDetails.permissions, modifiedDetails.permissions),
     email: checkForModifiedDetails(initialDetails.email, modifiedDetails.email),
     enabled: checkForModifiedDetails(initialDetails.enabled, modifiedDetails.enabled),
+    phone_number: checkForModifiedDetails(initialDetails.phone_number, modifiedDetails.phone_number),
+    phone_extension_number: checkForModifiedDetails(
+      initialDetails.phone_extension_number,
+      modifiedDetails.phone_extension_number
+    ),
     roles: disableRolesDropDown(state)
       ? undefined
       : checkForModifiedDetails(initialDetails.roles, modifiedDetails.roles),
@@ -160,13 +165,31 @@ export const assignedRoles = state => {
   return formatSelectedRoles(assignedRole, rolesList(state))
 }
 
-export const formattedPhoneNumber = state => {
+export const unformattedPhoneNumber = state => {
   const workerPhone = safeGet(state, 'fetchDetails.details.records.user.phone_number', '')
+  if (workerPhone && workerPhone.length === 11) {
+    const phone = workerPhone.substring(1)
+    return phone
+  }
+  return workerPhone
+}
+
+export const isPhoneNumberValid = state => {
+  const phoneNumber = unformattedPhoneNumber(state)
+  return /^[1-9]\d{9}$/i.test(phoneNumber)
+}
+
+export const formattedPhoneNumber = state => {
   const workerExt = safeGet(state, 'fetchDetails.details.records.user.phone_extension_number', '')
   const officePhone = safeGet(state, 'fetchDetails.details.records.user.office_phone_number', '')
   const officeExt = safeGet(state, 'fetchDetails.details.records.user.office_phone_extension_number', '')
+  const workerPhone = unformattedPhoneNumber(state)
   return {
     officePhoneNumber: formatPhoneNumberWithExt(officePhone, officeExt),
     workerPhoneNumber: formatPhoneNumberWithExt(workerPhone, workerExt),
   }
+}
+
+export const phoneExtension = state => {
+  return safeGet(state, 'fetchDetails.details.records.user.phone_extension_number') || ''
 }

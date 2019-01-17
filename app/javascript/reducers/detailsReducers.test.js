@@ -78,11 +78,13 @@ describe('reducer', () => {
     })
   })
 
-  it('handles HANDLE_EMAIL_INPUT_CHANGE', () => {
+  it('handles HANDLE_USER_INPUT_CHANGE', () => {
+    const name = 'email'
     const value = 'hello@gmail.com'
+
     const handleInputAction = {
-      type: actionTypes.HANDLE_EMAIL_INPUT_CHANGE,
-      payload: { value },
+      type: actionTypes.HANDLE_USER_INPUT_CHANGE,
+      payload: { name, value },
     }
     const details = {
       records: {
@@ -95,6 +97,31 @@ describe('reducer', () => {
     expect(fetchDetails(state, handleInputAction)).toEqual({
       details: {
         records: { user: { email: value } },
+      },
+      displayAlert: false,
+      disableActionBtn: false,
+    })
+  })
+
+  it('handles HANDLE_USER_INPUT_CHANGE for phone', () => {
+    const name = 'phone_number'
+    const value = '3334445555'
+
+    const handleInputAction = {
+      type: actionTypes.HANDLE_USER_INPUT_CHANGE,
+      payload: { name, value },
+    }
+    const details = {
+      records: {
+        user: {
+          phone_number: value,
+        },
+      },
+    }
+    const state = { details: details }
+    expect(fetchDetails(state, handleInputAction)).toEqual({
+      details: {
+        records: { user: { phone_number: value } },
       },
       displayAlert: false,
       disableActionBtn: false,

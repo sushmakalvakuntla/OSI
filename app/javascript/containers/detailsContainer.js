@@ -20,6 +20,9 @@ import {
   resentRegistrationDate,
   lastLogin,
   formattedPhoneNumber,
+  isPhoneNumberValid,
+  unformattedPhoneNumber,
+  phoneExtension,
 } from '../selectors/detailSelector'
 import { rolesList } from '../selectors/rolesListSelector'
 import {
@@ -28,7 +31,7 @@ import {
   clearDetails,
   handleDropdownChangeAction,
   handleEditButtonChangeAction,
-  handleEmailChangeAction,
+  handleInputChangeAction,
   clearSaveAlert,
 } from '../actions/detailActions'
 import { resentRegistrationNewDateTime, disableResendEmailButton } from '../selectors/resendEmailSelector'
@@ -71,6 +74,9 @@ function mapStateToProps(state) {
     resentRegistrationExistingDateTime: resentRegistrationDate(state),
     officePhoneNumber: formattedPhoneNumber(state).officePhoneNumber,
     workerPhoneNumber: formattedPhoneNumber(state).workerPhoneNumber,
+    isPhoneNumberValid: isPhoneNumberValid(state),
+    unformattedPhoneNumber: unformattedPhoneNumber(state),
+    phoneExtensionNumber: phoneExtension(state),
   }
 }
 
@@ -86,7 +92,7 @@ function mapDispatchToProps(dispatch) {
     clearSaveAlert,
     handleDropdownChangeAction,
     handleEditButtonChangeAction,
-    handleEmailChangeAction,
+    handleInputChangeAction,
   }
   return {
     actions: bindActionCreators(actions, dispatch),

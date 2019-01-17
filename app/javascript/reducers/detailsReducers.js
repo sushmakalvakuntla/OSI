@@ -106,7 +106,7 @@ function fetchDetails(
         },
       }
 
-    case actionTypes.HANDLE_EMAIL_INPUT_CHANGE:
+    case actionTypes.HANDLE_USER_INPUT_CHANGE:
       return {
         ...state,
         displayAlert: false,
@@ -117,7 +117,7 @@ function fetchDetails(
             ...state.details.records,
             user: {
               ...state.details.records.user,
-              email: action.payload.value,
+              [action.payload.name]: action.payload.value,
             },
           },
         },

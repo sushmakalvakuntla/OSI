@@ -5,7 +5,6 @@ import ShowField from '../../common/ShowField'
 import { InputComponent } from 'react-wood-duck'
 import DropDown from '../../common/DropDown'
 import { STATUS } from '../../_constants/constants'
-
 /* eslint camelcase: 0 */
 
 const UserDetailEdit = ({
@@ -27,7 +26,9 @@ const UserDetailEdit = ({
   lastLoginDateTime,
   resentRegistrationExistingDateTime,
   officePhoneNumber,
-  workerPhoneNumber,
+  isPhoneNumberValid,
+  unformattedPhoneNumber,
+  phoneExtensionNumber,
 }) => (
   <div className="row">
     <div className="col-md-12">
@@ -76,7 +77,7 @@ const UserDetailEdit = ({
                 type="email"
                 placeholder="Add Email Address"
                 value={details.email}
-                onChange={event => onInputChange(event.target.value)}
+                onChange={event => onInputChange('email', event.target.value)}
                 validationError={!isEmailValid}
                 validationErrorMessage={'Please enter a valid email'}
               />
@@ -95,9 +96,28 @@ const UserDetailEdit = ({
           </div>
           <div className="row">
             <div className="col-md-3">
-              <ShowField label="Phone Number">
-                <span>{workerPhoneNumber}</span>
-              </ShowField>
+              <InputComponent
+                id="InputPhoneNumber"
+                label="Phone Number"
+                fieldClassName="form-group"
+                type="tel"
+                placeholder="Enter numbers only"
+                value={unformattedPhoneNumber}
+                onChange={event => onInputChange('phone_number', event.target.value)}
+                validationError={!isPhoneNumberValid}
+                validationErrorMessage={'Please enter valid phone number'}
+                maxLength={10}
+              />
+            </div>
+            <div className="col-md-1">
+              <InputComponent
+                id="InputPhoneNumberExtension"
+                label="Ext"
+                fieldClassName="form-group"
+                type="number"
+                value={phoneExtensionNumber}
+                onChange={event => onInputChange('phone_extension_number', event.target.value)}
+              />
             </div>
           </div>
           <br />
@@ -186,7 +206,9 @@ UserDetailEdit.propTypes = {
   disableResendEmailButton: PropTypes.bool,
   possiblePermissionsList: PropTypes.array,
   isRolesDisabled: PropTypes.bool,
-  workerPhoneNumber: PropTypes.string,
+  isPhoneNumberValid: PropTypes.bool,
+  unformattedPhoneNumber: PropTypes.string,
+  phoneExtensionNumber: PropTypes.string,
 }
 
 UserDetailEdit.defaultProps = {

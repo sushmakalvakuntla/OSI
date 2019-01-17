@@ -20,6 +20,9 @@ import {
   lastLogin,
   resentRegistrationDate,
   formattedPhoneNumber,
+  unformattedPhoneNumber,
+  isPhoneNumberValid,
+  phoneExtension,
 } from './detailSelector'
 describe('selectors', () => {
   const editDetails = {
@@ -72,6 +75,8 @@ describe('selectors', () => {
             roles: 'roleOne',
             email: 'hello@gmail.com',
             enabled: true,
+            phone_number: '3334445555',
+            phone_extension_number: '222',
           },
         },
         details: {
@@ -430,13 +435,27 @@ describe('selectors', () => {
       expect(disableActionButton(state)).toEqual(true)
     })
 
+    it('return true when phone number is valid', () => {
+      const state = getState({
+        phoneNumber: '4445558888',
+        disableActionBtn: true,
+      })
+      expect(disableActionButton(state)).toEqual(true)
+    })
+
     it('return true when email is not valid', () => {
       const state = getState({ email: 'hello@', disableActionBtn: false })
       expect(disableActionButton(state)).toEqual(true)
     })
 
-    it('return false when email is valid', () => {
+    it('return true when phone number is not valid', () => {
+      const state = getState({ phoneNumber: '333-444', disableActionBtn: false })
+      expect(disableActionButton(state)).toEqual(true)
+    })
+
+    it('return false when email & phone number is valid', () => {
       const state = getState({
+        phoneNumber: '1234567891',
         email: 'hello@gmail.com',
         disableActionBtn: false,
       })
@@ -458,12 +477,16 @@ describe('selectors', () => {
           roles: 'roleOne',
           email: 'hello@gmail.com',
           enabled: true,
+          phoneNumber: '3334445555',
+          phoneExtensionNumber: '222',
         })
         const expectedValue = {
           email: undefined,
           enabled: undefined,
           permissions: undefined,
           roles: undefined,
+          phoneNumber: undefined,
+          phoneExtensionNumber: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -475,12 +498,16 @@ describe('selectors', () => {
           email: 'hellocwds@gmail.com',
           isEnabled: false,
           isRolesEditable: true,
+          phoneNumber: '3334448989',
+          phoneExtensionNumber: '225',
         })
         const expectedValue = {
           email: 'hellocwds@gmail.com',
           enabled: false,
           permissions: 'permissionFour, permissionFive',
           roles: 'roleThree',
+          phone_number: '3334448989',
+          phone_extension_number: '225',
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -490,6 +517,8 @@ describe('selectors', () => {
           email: 'abcdefg@gmail.com',
           assignedRoles: 'roleOne',
           isRolesEditable: true,
+          phoneNumber: '3334445555',
+          phoneExtensionNumber: '222',
         })
         const expectedValue = {
           email: 'abcdefg@gmail.com',
@@ -504,6 +533,8 @@ describe('selectors', () => {
         const state = getState({
           assignedRoles: 'roleTwo',
           isRolesEditable: true,
+          phoneNumber: '3334445555',
+          phoneExtensionNumber: '222',
         })
         const expectedValue = {
           email: undefined,
@@ -518,6 +549,8 @@ describe('selectors', () => {
         const state = getState({
           isEnabled: false,
           assignedPermissions: 'permissionOne, permissionTwo',
+          phoneNumber: '3334445555',
+          phoneExtensionNumber: '222',
         })
         const expectedValue = {
           email: undefined,
@@ -532,12 +565,32 @@ describe('selectors', () => {
         const state = getState({
           assignedPermissions: 'permissionThree',
           isEnabled: true,
+          phoneNumber: '3334445555',
+          phoneExtensionNumber: '222',
         })
         const expectedValue = {
           email: undefined,
           enabled: undefined,
           permissions: 'permissionThree',
           roles: undefined,
+        }
+        expect(selectModifiedDetails(state)).toEqual(expectedValue)
+      })
+
+      it('returns updated phone number', () => {
+        const state = getState({
+          assignedPermissions: 'permissionOne, permissionTwo',
+          isEnabled: true,
+          phoneNumber: '3334445656',
+          phoneExtensionNumber: '889',
+        })
+        const expectedValue = {
+          email: undefined,
+          enabled: undefined,
+          permissions: undefined,
+          roles: undefined,
+          phone_number: '3334445656',
+          phone_extension_number: '889',
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -686,7 +739,7 @@ describe('selectors', () => {
     describe('When phone_extension_number exists without phone_number ', () => {
       it('returns just empty ', () => {
         const state = getState({
-          phoneNumber: null,
+          phoneNumber: '',
           phoneExtensionNumber: '23',
           officePhoneNumber: null,
           officePhoneExtensionNumber: '21',
@@ -707,6 +760,101 @@ describe('selectors', () => {
         const state = { fetchDetails: undefined }
         expect(formattedPhoneNumber(state)).toEqual({ officePhoneNumber: '', workerPhoneNumber: '' })
       })
+    })
+  })
+
+  describe('#unformattedPhoneNumber', () => {
+    it('returns phone number if phone_number is 11 digits ', () => {
+      const state = getState({
+        phoneNumber: '19164445555',
+      })
+      expect(unformattedPhoneNumber(state)).toEqual('9164445555')
+    })
+  })
+
+  describe('When phone_number is 10 digits', () => {
+    it('returns phone number without stripping out 1 ', () => {
+      const state = getState({
+        phoneNumber: '9164445555',
+      })
+      expect(unformattedPhoneNumber(state)).toEqual('9164445555')
+    })
+  })
+
+  describe('When phone_extension_number exists without phone_number ', () => {
+    it('returns just empty ', () => {
+      const state = getState({
+        phoneNumber: '',
+      })
+      expect(unformattedPhoneNumber(state)).toEqual('')
+    })
+  })
+
+  describe('when details is null ', () => {
+    it('returns just empty ', () => {
+      const state = { fetchDetails: null }
+      expect(unformattedPhoneNumber(state)).toEqual('')
+    })
+  })
+
+  describe('when details is undefined ', () => {
+    it('returns just empty ', () => {
+      const state = { fetchDetails: undefined }
+      expect(unformattedPhoneNumber(state)).toEqual('')
+    })
+  })
+
+  describe('#isPhoneNumberValid', () => {
+    it('return true when phone number is valid', () => {
+      const state = getState({ phoneNumber: '9163334444' })
+      expect(isPhoneNumberValid(state)).toEqual(true)
+    })
+
+    it('return false when phone number has space inbetween', () => {
+      const state = getState({ phoneNumber: '916333 4444' })
+      expect(isPhoneNumberValid(state)).toEqual(false)
+    })
+
+    it('return false by considering invalid if phone number starts from 0', () => {
+      const state = getState({ phoneNumber: '0163334444' })
+      expect(isPhoneNumberValid(state)).toEqual(false)
+    })
+
+    it('return false if phone number is not valid', () => {
+      const state = getState({ phoneNumber: 'hello' })
+      expect(isPhoneNumberValid(state)).toEqual(false)
+    })
+
+    it('return false if phone number is empty', () => {
+      const state = getState({ phoneNumber: '' })
+      expect(isPhoneNumberValid(state)).toEqual(false)
+    })
+
+    it('return false if phone number is null', () => {
+      const state = getState({ phoneNumber: null })
+      expect(isPhoneNumberValid(state)).toEqual(false)
+    })
+
+    it('return false if phone number is undefined', () => {
+      const state = getState({ phoneNumber: undefined })
+      expect(isPhoneNumberValid(state)).toEqual(false)
+    })
+  })
+
+  describe('#phoneExtension', () => {
+    it('returns phone extension when phone extension exists', () => {
+      const state = getState({ phoneExtensionNumber: '23' })
+      expect(phoneExtension(state)).toEqual('23')
+    })
+
+    it('returns empty string when extension is null ', () => {
+      const state = getState({ phoneExtensionNumber: null })
+      expect(phoneExtension(state)).toEqual('')
+    })
+
+    it('returns empty string when extension is undefined ', () => {
+      const state = getState({ phoneExtensionNumber: undefined })
+      expect(phoneExtension(state)).toEqual('')
     })
   })
 })

@@ -21,7 +21,12 @@ module Api
     private
 
     def allowed_params_for_update
-      params.permit(:enabled, :email, permissions: [], roles: []).to_h
+      params.permit(:phone_number,
+                    :phone_extension_number,
+                    :enabled,
+                    :email,
+                    permissions: [],
+                    roles: []).to_h
     end
   end
 end

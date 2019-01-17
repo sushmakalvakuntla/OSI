@@ -16,6 +16,20 @@ describe('#formatPhoneNumberWithExt', () => {
       const phoneExtensionNumber = undefined
       expect(formatPhoneNumberWithExt(phoneNumber, phoneExtensionNumber)).toEqual('(111) 444-5555 Ext')
     })
+
+    it('returns phone & Extension with Ext text when ext is 0', () => {
+      const phoneNumber = '1112222333'
+      const phoneExtensionNumber = '0'
+
+      expect(formatPhoneNumberWithExt(phoneNumber, phoneExtensionNumber)).toEqual('(111) 222-2333 Ext')
+    })
+
+    it('returns phone & Extension with Ext text when ext is  not 0', () => {
+      const phoneNumber = '1112222333'
+      const phoneExtensionNumber = '22'
+
+      expect(formatPhoneNumberWithExt(phoneNumber, phoneExtensionNumber)).toEqual('(111) 222-2333 Ext 22')
+    })
   })
 
   describe('When phone_extension_number exists without phone_number ', () => {

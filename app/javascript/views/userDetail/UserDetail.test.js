@@ -18,7 +18,7 @@ describe('UserDetail', () => {
   let mockHandleDropDownChangeAction
   let mockHandleEditButtonChangeAction
   let mockClearSaveAlertAction
-  let mockHandleEmailChangeAction
+  let mockHandleInputChangeAction
 
   beforeEach(() => {
     // Register mock dispatchActions
@@ -31,7 +31,7 @@ describe('UserDetail', () => {
     mockFetchRolesActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockHandleDropDownChangeAction = jest.fn()
     mockClearSaveAlertAction = jest.fn()
-    mockHandleEmailChangeAction = jest.fn()
+    mockHandleInputChangeAction = jest.fn()
     const initialDetails = { id: '12345' }
     const match = {
       params: {
@@ -62,7 +62,7 @@ describe('UserDetail', () => {
             resendRegistrationEmailActions: mockResendRegistrationEmailActions,
             clearAddedUserDetailActions: mockClearAddedUserDetailActions,
             clearSaveAlert: mockClearSaveAlertAction,
-            handleEmailChangeAction: mockHandleEmailChangeAction,
+            handleInputChangeAction: mockHandleInputChangeAction,
           }}
           match={match}
         />
