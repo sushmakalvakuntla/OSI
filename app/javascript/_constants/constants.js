@@ -6,7 +6,7 @@ export const STATUS = [{ value: true, label: 'Active' }, { value: false, label: 
 
 export const toFullName = ({ first_name, last_name }) => `${last_name}, ${first_name}`
 
-export const userStatusFormat = ({ enabled }) => {
+export const accountStatusFormat = ({ enabled }) => {
   return enabled ? 'Active' : 'Inactive'
 }
 

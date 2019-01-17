@@ -170,7 +170,7 @@ export default class UserDetail extends Component {
               <CWSPermissions />
             </div>
             <div className="col-md-8">
-              <ChangeLog />
+              <ChangeLog permissionsList={possiblePermissionsList} rolesList={possibleRolesList} />
             </div>
           </div>
         </div>

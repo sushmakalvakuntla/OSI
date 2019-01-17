@@ -1,59 +1,77 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid } from '@cwds/components'
-
-const columnConfig = [
-  {
-    Header: 'Date/Time',
-    accessor: 'time_stamp',
-    minWidth: 75,
-  },
-  {
-    Header: 'Type',
-    accessor: 'type',
-    minWidth: 70,
-  },
-  {
-    Header: 'Made By',
-    accessor: 'admin_name',
-    minWidth: 70,
-  },
-  {
-    Header: 'Notes & Details',
-    accessor: 'notes',
-    minWidth: 50,
-  },
-]
+import ModalComponent from './Modal'
+import { formatChangeLogValues } from '../../_utils/formatters'
 
 const data = [
-  { time_stamp: 'Thu Mar 03 2018 14:22:43', type: 'Permission Changes', admin_name: 'H' },
-  { time_stamp: 'Thu Mar 03 2018 12:22:43', type: 'User Creation', admin_name: 'H' },
   {
-    time_stamp: 'Wed Feb 03 2017 14:22:43',
-    type: 'Account Status Changes',
-    admin_name: 'A',
+    timestamp: 'Thu Mar 03 2018 14:22:43',
+    event_type: 'Permission',
+    admin_name: 'Huckleberry',
+    admin_role: 'county-admin',
+    old_value: ['RFA-rollout'],
+    new_value: ['Hotline-rollout'],
+    comment:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
   },
   {
-    time_stamp: 'Mon Jan 10 2018 14:22:43',
-    type: 'User Role Changes',
-    admin_name: 'B',
+    timestamp: 'Thu Mar 03 2018 12:22:43',
+    event_type: 'User Creation',
+    admin_name: 'Hardword',
+    old_value: '',
+    new_value: '',
+    admin_role: ['office-admin'],
+    comment: '',
   },
   {
-    time_stamp: 'Thu Jan 03 2019 14:22:43',
-    type: 'Registration Completion',
-    admin_name: 'A',
+    timestamp: 'Wed Feb 03 2017 14:22:43',
+    event_type: 'Account Status',
+    admin_name: 'Annie',
+    old_value: false,
+    new_value: true,
+    admin_role: ['office-admin'],
+    comment: '',
   },
   {
-    time_stamp: 'Tue Nov 05 2017 14:22:43',
-    type: 'Registration Resends',
-    admin_name: 'C',
+    timestamp: 'Mon Jan 10 2018 14:22:43',
+    event_type: 'User Role',
+    admin_name: 'Bumblebee',
+    old_value: ['Office-admin'],
+    new_value: ['CWS-worker'],
+    admin_role: ['state-admin'],
+    comment: '',
   },
   {
-    time_stamp: 'Fri Dec 23 2018 09:22:43',
-    type: ' Email Address Updates',
-    admin_name: 'K',
+    timestamp: 'Thu Jan 03 2019 14:22:43',
+    event_type: 'Registration Completion',
+    admin_name: 'Akon',
+    old_value: '',
+    new_value: '',
+    admin_role: ['office-admin'],
+    comment: '',
+  },
+  {
+    timestamp: 'Tue Nov 05 2017 14:22:43',
+    event_type: 'Registration Resends',
+    admin_name: 'Cluster',
+    old_value: true,
+    new_value: true,
+    admin_role: ['Office-admin'],
+    comment: '',
+  },
+  {
+    timestamp: 'Fri Dec 23 2018 09:22:43',
+    event_type: 'Email Address Updates',
+    admin_name: 'King',
+    old_value: 'abcd@hm.cpk',
+    new_value: 'khgw@kjbgs.poi',
+    admin_role: ['Office-admin'],
+    comment: '',
   },
 ]
-const ChangeLog = () => (
+
+const ChangeLog = ({ permissionsList, rolesList }) => (
   <Rolodex>
     <Card>
       <CardHeader>
@@ -62,7 +80,36 @@ const ChangeLog = () => (
       <CardBody className="pt-0">
         <DataGrid
           data={data}
-          columns={columnConfig}
+          columns={[
+            {
+              Header: 'Date/Time',
+              accessor: 'timestamp',
+              minWidth: 75,
+            },
+            {
+              Header: 'Type',
+              accessor: 'event_type',
+              minWidth: 70,
+            },
+            {
+              Header: 'Made By',
+              accessor: 'admin_name',
+              minWidth: 70,
+            },
+            {
+              Header: 'Notes & Details',
+              // eslint-disable-next-line react/display-name
+              Cell: ({ row, original }) => (
+                <ModalComponent
+                  data={row}
+                  oldValue={formatChangeLogValues(row.event_type, original.old_value, permissionsList, rolesList)}
+                  newValue={formatChangeLogValues(row.event_type, original.new_value, permissionsList, rolesList)}
+                  comment={original.comment}
+                />
+              ),
+              minWidth: 50,
+            },
+          ]}
           sortable={true}
           className="client-grid"
           minRows={3}
@@ -74,6 +121,11 @@ const ChangeLog = () => (
   </Rolodex>
 )
 
-ChangeLog.propTypes = {}
+ChangeLog.propTypes = {
+  row: PropTypes.node,
+  original: PropTypes.node,
+  permissionsList: PropTypes.array,
+  rolesList: PropTypes.array,
+}
 
 export default ChangeLog

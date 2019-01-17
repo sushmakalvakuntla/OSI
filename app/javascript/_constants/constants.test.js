@@ -1,4 +1,4 @@
-import { toFullName, userStatusFormat, lastLoginDate, getOfficeTranslator } from './constants'
+import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from './constants'
 
 describe('helpers', () => {
   describe('toFullName', () => {
@@ -7,13 +7,13 @@ describe('helpers', () => {
     })
   })
 
-  describe('userStatusFormat', () => {
+  describe('AccountStatusFormat', () => {
     it('renders Active  for enabled', () => {
-      expect(userStatusFormat({ enabled: true })).toEqual('Active')
+      expect(accountStatusFormat({ enabled: true })).toEqual('Active')
     })
 
     it('renders Activefor disabled', () => {
-      expect(userStatusFormat({ enabled: false })).toEqual('Inactive')
+      expect(accountStatusFormat({ enabled: false })).toEqual('Inactive')
     })
   })
 

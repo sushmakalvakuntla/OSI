@@ -8,9 +8,9 @@ import Cards from '../../common/Card'
 import ReactTable from 'react-table'
 import Pagination from './Pagination'
 import './UsersList.scss'
-import { toFullName, userStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
+import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { isEqual } from 'lodash'
-import { formatSelectedRoles } from '../../_utils/formatters'
+import { formatRoles } from '../../_utils/formatters'
 
 class UserList extends PureComponent {
   constructor(props) {
@@ -101,7 +101,7 @@ class UserList extends PureComponent {
 
   renderUsersTable = ({ data, officesList, rolesList }) => {
     const translateOffice = getOfficeTranslator(officesList)
-    const translateRoles = data => formatSelectedRoles(data.roles, rolesList)
+    const translateRoles = data => formatRoles(data.roles, rolesList)
     return (
       <ReactTable
         data={data}
@@ -118,7 +118,7 @@ class UserList extends PureComponent {
           {
             Header: 'Status',
             id: 'enabled',
-            accessor: userStatusFormat,
+            accessor: accountStatusFormat,
             minWidth: 60,
           },
           {

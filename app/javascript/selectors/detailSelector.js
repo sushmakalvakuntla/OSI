@@ -1,5 +1,5 @@
 import safeGet from 'lodash.get'
-import { formatDate, formatSelectedRoles, checkDate, formatPhoneNumberWithExt } from '../_utils/formatters'
+import { formatDate, formatRoles, checkDate, formatPermissions, formatPhoneNumberWithExt } from '../_utils/formatters'
 import { rolesList } from './rolesListSelector'
 import { permissionsList } from './permissionsListSelector'
 import { translateOfficeName } from './officeListSelector'
@@ -18,17 +18,7 @@ export const selectDetailRecords = state => {
 
 export const selectAssignedPermissions = state => {
   const assignedPermissions = safeGet(state, 'fetchDetails.details.records.user.permissions')
-  const permissionList = permissionsList(state)
-  if (!Array.isArray(assignedPermissions)) return ''
-  return (
-    assignedPermissions &&
-    assignedPermissions.length > 0 &&
-    assignedPermissions
-      .map(permission => permissionList.find(d => d.value === permission))
-      .filter(value => Boolean(value))
-      .map(({ value, label }) => label)
-      .join(', ')
-  )
+  return formatPermissions(assignedPermissions, permissionsList(state))
 }
 
 export const selectPossiblePermissionsList = state => {
@@ -162,7 +152,7 @@ export const resentRegistrationDate = state => {
 
 export const assignedRoles = state => {
   const assignedRole = safeGet(state, 'fetchDetails.details.records.user.roles', [])
-  return formatSelectedRoles(assignedRole, rolesList(state))
+  return formatRoles(assignedRole, rolesList(state))
 }
 
 export const unformattedPhoneNumber = state => {

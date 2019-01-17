@@ -225,8 +225,19 @@ describe('UserDetail', () => {
         expect(wrapper.find('UserDetailEdit').props().disableActionBtn).toBe(true)
       })
 
-      it('should display <ChangeLog/> and <CWSPermissions/>', () => {
+      it('should display <ChangeLog/> ', () => {
+        wrapper.setProps({
+          possiblePermissionsList: [{ value: 'permission1', label: 'permissionOne' }],
+          possibleRolesList: [{ value: 'role1', label: 'roleOne' }],
+        })
         expect(wrapper.find('ChangeLog').length).toBe(1)
+        expect(wrapper.find('ChangeLog').props().permissionsList).toEqual([
+          { value: 'permission1', label: 'permissionOne' },
+        ])
+        expect(wrapper.find('ChangeLog').props().rolesList).toEqual([{ value: 'role1', label: 'roleOne' }])
+      })
+
+      it('should display  <CWSPermissions/>', () => {
         expect(wrapper.find('CWSPermissions').length).toBe(1)
       })
 

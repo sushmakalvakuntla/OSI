@@ -1,4 +1,12 @@
-import { formatPhoneNumberWithExt, formatPhoneNumber, checkDate, formatSelectedRoles, formatDate } from './formatters'
+import {
+  formatPhoneNumberWithExt,
+  formatPhoneNumber,
+  checkDate,
+  formatRoles,
+  formatDate,
+  formatPermissions,
+  formatChangeLogValues,
+} from './formatters'
 
 describe('#formatPhoneNumberWithExt', () => {
   describe('When phone & extension exists ', () => {
@@ -140,7 +148,7 @@ describe('#checkDate', () => {
   })
 })
 
-describe('#formatSelectedRoles', () => {
+describe('#formatRoles', () => {
   const list = [
     { value: 'foo', label: 'FOO_DESC' },
     { value: 'bar', label: 'BAR_DESC' },
@@ -148,23 +156,79 @@ describe('#formatSelectedRoles', () => {
     { value: 'qux', label: 'QUX_DESC' },
   ]
   it('return first index of the array ', () => {
-    expect(formatSelectedRoles(['foo', 'bar'], list)).toEqual('FOO_DESC')
-    expect(formatSelectedRoles(['qux'], list)).toEqual('QUX_DESC')
+    expect(formatRoles(['foo', 'bar'], list)).toEqual('FOO_DESC')
+    expect(formatRoles(['qux'], list)).toEqual('QUX_DESC')
   })
 
   it('return empty when there is no role ', () => {
-    expect(formatSelectedRoles('', list)).toEqual('')
+    expect(formatRoles('', list)).toEqual('')
   })
 
   it('return original-id when it is not in the list ', () => {
-    expect(formatSelectedRoles(['bad'], list)).toEqual('bad')
+    expect(formatRoles(['bad'], list)).toEqual('bad')
   })
 
   it('return empty string when role is empty array', () => {
-    expect(formatSelectedRoles([], list)).toEqual('')
+    expect(formatRoles([], list)).toEqual('')
   })
 
   it('return original ID when empty list is passed', () => {
-    expect(formatSelectedRoles(['good'], [])).toEqual('good')
+    expect(formatRoles(['good'], [])).toEqual('good')
+  })
+})
+
+describe('#formatPermissions', () => {
+  const list = [{ label: 'permissionOne', value: 'permission1' }, { label: 'permissionTwo', value: 'permission2' }]
+
+  it('renders the permissions value as string when given as id in array', () => {
+    const assignedPermissions = ['permission1', 'permission2']
+    expect(formatPermissions(assignedPermissions, list)).toEqual('permissionOne, permissionTwo')
+  })
+
+  it('renders empty string when given empty string ', () => {
+    const assignedPermissions = ''
+    expect(formatPermissions(assignedPermissions, list)).toEqual('')
+  })
+
+  it('renders false when given empty array ', () => {
+    const assignedPermissions = []
+    expect(formatPermissions(assignedPermissions, list)).toEqual(false)
+  })
+})
+
+describe('#formatChangeLogValues', () => {
+  const permissionslist = [
+    { value: 'permission1', label: 'permissionOne' },
+    { value: 'permission2', label: 'permissionTwo' },
+  ]
+  const rolesList = [{ value: 'role1', label: 'roleOne' }, { value: 'role2', label: 'roleTwo' }]
+  it('returns the permissions value when eventType is permissions', () => {
+    const eventType = 'Permission'
+    const value = ['permission1']
+    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual('permissionOne')
+  })
+
+  it('returns the roles value when eventType is User Role', () => {
+    const eventType = 'User Role'
+    const value = ['role1']
+    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual('roleOne')
+  })
+
+  it('returns the status value when eventType is Account Status', () => {
+    const eventType = 'Account Status'
+    const value = true
+    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual('Active')
+  })
+
+  it('returns value when eventType is different', () => {
+    const eventType = 'Email Address Updates'
+    const value = 'abcd@gmail.com'
+    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual(value)
+  })
+
+  it('returns when eventType is null', () => {
+    const eventType = null
+    const value = ''
+    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual(value)
   })
 })

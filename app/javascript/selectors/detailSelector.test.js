@@ -228,35 +228,36 @@ describe('selectors', () => {
 
   describe('#selectAssignedPermissions', () => {
     const permissionsList = [
-      { description: 'permissionOne', name: 'permission1' },
-      { description: 'permissionTwo', name: 'permission2' },
+      { name: 'permission1', description: 'permissionOne' },
+      { name: 'permission2', description: 'permissionTwo' },
+      { name: 'permission3', description: 'permissionThree' },
     ]
-
-    it('renders the permissions value as string when given as id in array', () => {
-      const assignedPermissions = ['permission1', 'permission2']
-      const state = getState({
-        assignedPermissions: assignedPermissions,
-        permissionsList: permissionsList,
+    describe('When assignedPermissions exists ', () => {
+      it('returns description/label with matched value', () => {
+        const state = getState({ assignedPermissions: ['permission1'], permissionsList })
+        expect(selectAssignedPermissions(state)).toEqual('permissionOne')
       })
-      expect(selectAssignedPermissions(state)).toEqual('permissionOne, permissionTwo')
     })
 
-    it('renders empty string when given empty string ', () => {
-      const assignedPermissions = ''
-      const state = getState({
-        assignedPermissions: assignedPermissions,
-        permissionsList: permissionsList,
+    describe('When assignedPermissions is null ', () => {
+      it('returns empty', () => {
+        const state = getState({ assignedPermissions: null, permissionsList })
+        expect(selectAssignedPermissions(state)).toEqual('')
       })
-      expect(selectAssignedPermissions(state)).toEqual('')
     })
 
-    it('renders false when given empty array ', () => {
-      const assignedPermissions = []
-      const state = getState({
-        assignedPermissions: assignedPermissions,
-        permissionsList: permissionsList,
+    describe('When assignedPermissions is undefined', () => {
+      it('returns empty', () => {
+        const state = getState({ assignedPermissions: undefined, permissionsList })
+        expect(selectAssignedPermissions(state)).toEqual('')
       })
-      expect(selectAssignedPermissions(state)).toEqual(false)
+    })
+
+    describe('When assignedPermissions and permissionsList are null', () => {
+      it('returns empty', () => {
+        const state = getState({ assignedPermissions: null, permissionsList: null })
+        expect(selectAssignedPermissions(state)).toEqual('')
+      })
     })
   })
 

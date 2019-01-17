@@ -1,6 +1,7 @@
 /* eslint camelcase: 0 */
 
 import { DateTime } from 'luxon'
+import { accountStatusFormat } from '../_constants/constants'
 
 export const formatPhoneNumber = phone_number => {
   if (phone_number && phone_number.replace) {
@@ -43,7 +44,7 @@ function formatLastLogin(array) {
   return `${DateTime.fromISO(array[0]).toFormat('DDD')} ${formattedTime}`
 }
 
-export function formatSelectedRoles(assignedRoles, rolesList) {
+export function formatRoles(assignedRoles, rolesList) {
   let role = ''
   if (!Array.isArray(assignedRoles)) return ''
   if (assignedRoles && assignedRoles.length !== 0) {
@@ -56,4 +57,30 @@ export function formatSelectedRoles(assignedRoles, rolesList) {
     role = assignedRoles[0]
   }
   return role
+}
+
+export function formatPermissions(assignedPermissions, permissionList) {
+  if (!Array.isArray(assignedPermissions)) return ''
+  return (
+    assignedPermissions &&
+    assignedPermissions.length > 0 &&
+    assignedPermissions
+      .map(permission => permissionList.find(d => d.value === permission))
+      .filter(value => Boolean(value))
+      .map(({ value, label }) => label)
+      .join(', ')
+  )
+}
+
+export function formatChangeLogValues(eventType, value, permissionsList, rolesList) {
+  switch (eventType) {
+    case 'Permission':
+      return formatPermissions(value, permissionsList)
+    case 'User Role':
+      return formatRoles(value, rolesList)
+    case 'Account Status':
+      return accountStatusFormat({ enabled: value })
+    default:
+      return value
+  }
 }
