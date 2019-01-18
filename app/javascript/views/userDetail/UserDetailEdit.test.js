@@ -224,7 +224,7 @@ describe('UserDetailEdit', () => {
         .simulate('change', {
           target: { value: '333' },
         })
-      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', '333')
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', 333)
     })
   })
 })

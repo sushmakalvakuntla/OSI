@@ -272,7 +272,7 @@ UserDetail.propTypes = {
   workerPhoneNumber: PropTypes.string,
   isPhoneNumberValid: PropTypes.bool,
   unformattedPhoneNumber: PropTypes.string,
-  phoneExtensionNumber: PropTypes.string,
+  phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 UserDetail.defaultProps = {

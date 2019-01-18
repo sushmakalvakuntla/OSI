@@ -114,9 +114,10 @@ const UserDetailEdit = ({
                 id="InputPhoneNumberExtension"
                 label="Ext"
                 fieldClassName="form-group"
-                type="number"
+                type="tel"
                 value={phoneExtensionNumber}
-                onChange={event => onInputChange('phone_extension_number', event.target.value)}
+                maxLength={7}
+                onChange={event => onInputChange('phone_extension_number', parseInt(event.target.value))}
               />
             </div>
           </div>
@@ -208,7 +209,8 @@ UserDetailEdit.propTypes = {
   isRolesDisabled: PropTypes.bool,
   isPhoneNumberValid: PropTypes.bool,
   unformattedPhoneNumber: PropTypes.string,
-  phoneExtensionNumber: PropTypes.string,
+  phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isPhoneExtensionValid: PropTypes.bool,
 }
 
 UserDetailEdit.defaultProps = {

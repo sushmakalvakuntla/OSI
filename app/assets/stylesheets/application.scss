@@ -32,6 +32,16 @@ label {
   margin-bottom: 0.5rem;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+ -webkit-appearance: none;
+ margin: 0;
+}
+
+// input[type=number] {
+//   -moz-appearance: textfield;
+// }
+
 .modal-title {
   font-size: 12px;
   color: #09798e;
@@ -43,9 +53,14 @@ label {
   font-weight: 600;
 }
 
+
 .col-md-3 {
   padding-left: 0;
   word-break: break-all;
+}
+
+.col-md-1 {
+  padding-left: 0;
 }
 
 .react-bs-container-body {
