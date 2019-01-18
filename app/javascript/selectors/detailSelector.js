@@ -181,6 +181,5 @@ export const formattedPhoneNumber = state => {
 }
 
 export const phoneExtension = state => {
-  const ext = safeGet(state, 'fetchDetails.details.records.user.phone_extension_number') || ''
-  return ext
+  return safeGet(state, 'fetchDetails.details.records.user.phone_extension_number') || ''
 }
