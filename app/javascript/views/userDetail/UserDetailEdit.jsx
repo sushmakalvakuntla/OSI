@@ -210,7 +210,6 @@ UserDetailEdit.propTypes = {
   isPhoneNumberValid: PropTypes.bool,
   unformattedPhoneNumber: PropTypes.string,
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isPhoneExtensionValid: PropTypes.bool,
 }
 
 UserDetailEdit.defaultProps = {
