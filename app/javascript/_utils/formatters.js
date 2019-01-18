@@ -3,7 +3,8 @@
 import { DateTime } from 'luxon'
 import { accountStatusFormat } from '../_constants/constants'
 
-export const formatPhoneNumber = phone_number => {
+export const formatPhoneNumber = phone => {
+  let phone_number = `${phone}`
   if (phone_number && phone_number.replace) {
     phone_number = phone_number.replace(/[^\d]/g, '')
     const length = 10
