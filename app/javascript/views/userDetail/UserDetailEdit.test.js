@@ -212,7 +212,7 @@ describe('UserDetailEdit', () => {
         .find('InputComponent')
         .at(1)
         .simulate('change', {
-          target: { value: '3334445555', validity: { valid: true } },
+          target: { value: '3334445555' },
         })
 
       expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', '3334445555')
@@ -223,7 +223,7 @@ describe('UserDetailEdit', () => {
         .find('InputComponent')
         .at(2)
         .simulate('change', {
-          target: { value: '333', validity: { valid: true } },
+          target: { value: '333' },
         })
       expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', 333)
     })
