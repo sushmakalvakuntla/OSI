@@ -214,7 +214,7 @@ describe('UserDetailEdit', () => {
         .simulate('change', {
           target: { value: '3334445555' },
         })
-      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', '3334445555')
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', 3334445555)
     })
 
     it('#PhoneExtensionNumber, handleInputChange function is called when onChange event triggered', () => {
@@ -224,7 +224,7 @@ describe('UserDetailEdit', () => {
         .simulate('change', {
           target: { value: '333' },
         })
-      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', '333')
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', 333)
     })
   })
 })

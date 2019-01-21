@@ -103,7 +103,7 @@ const UserDetailEdit = ({
                 type="tel"
                 placeholder="Enter numbers only"
                 value={unformattedPhoneNumber}
-                onChange={event => onInputChange('phone_number', event.target.value)}
+                onChange={event => onInputChange('phone_number', parseInt(event.target.value))}
                 validationError={!isPhoneNumberValid}
                 validationErrorMessage={'Please enter valid phone number'}
                 maxLength={10}
@@ -114,9 +114,10 @@ const UserDetailEdit = ({
                 id="InputPhoneNumberExtension"
                 label="Ext"
                 fieldClassName="form-group"
-                type="number"
+                type="tel"
                 value={phoneExtensionNumber}
-                onChange={event => onInputChange('phone_extension_number', event.target.value)}
+                maxLength={7}
+                onChange={event => onInputChange('phone_extension_number', parseInt(event.target.value))}
               />
             </div>
           </div>
@@ -207,8 +208,8 @@ UserDetailEdit.propTypes = {
   possiblePermissionsList: PropTypes.array,
   isRolesDisabled: PropTypes.bool,
   isPhoneNumberValid: PropTypes.bool,
-  unformattedPhoneNumber: PropTypes.string,
-  phoneExtensionNumber: PropTypes.string,
+  unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 UserDetailEdit.defaultProps = {

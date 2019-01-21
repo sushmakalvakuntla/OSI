@@ -156,7 +156,7 @@ export const assignedRoles = state => {
 }
 
 export const unformattedPhoneNumber = state => {
-  const workerPhone = safeGet(state, 'fetchDetails.details.records.user.phone_number', '')
+  const workerPhone = safeGet(state, 'fetchDetails.details.records.user.phone_number') || ''
   if (workerPhone && workerPhone.length === 11) {
     const phone = workerPhone.substring(1)
     return phone
