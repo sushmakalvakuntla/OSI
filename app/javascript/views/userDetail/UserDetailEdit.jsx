@@ -5,7 +5,6 @@ import ShowField from '../../common/ShowField'
 import InputComponent from '../../common/InputComponent'
 import DropDown from '../../common/DropDown'
 import { STATUS } from '../../_constants/constants'
-import { validateInput } from '../../_utils/validator'
 
 export const numericInput = ''
 /* eslint camelcase: 0 */
