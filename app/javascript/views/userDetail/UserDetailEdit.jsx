@@ -2,9 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Cards from '../../common/Card'
 import ShowField from '../../common/ShowField'
-import { InputComponent } from 'react-wood-duck'
+import InputComponent from '../../common/InputComponent'
 import DropDown from '../../common/DropDown'
 import { STATUS } from '../../_constants/constants'
+import { validateInput } from '../../_utils/validator'
+
+export const numericInput = ''
 /* eslint camelcase: 0 */
 
 const UserDetailEdit = ({
@@ -103,7 +106,8 @@ const UserDetailEdit = ({
                 type="tel"
                 placeholder="Enter numbers only"
                 value={unformattedPhoneNumber}
-                onChange={event => onInputChange('phone_number', parseInt(event.target.value))}
+                allowCharacters={/^[1-9]*$/i}
+                onChange={event => onInputChange('phone_number', event.target.value)}
                 validationError={!isPhoneNumberValid}
                 validationErrorMessage={'Please enter valid phone number'}
                 maxLength={10}
@@ -117,7 +121,8 @@ const UserDetailEdit = ({
                 type="tel"
                 value={phoneExtensionNumber}
                 maxLength={7}
-                onChange={event => onInputChange('phone_extension_number', parseInt(event.target.value))}
+                allowCharacters={/^[0-9]*$/i}
+                onChange={event => onInputChange('phone_extension_number', event.target.value)}
               />
             </div>
           </div>
