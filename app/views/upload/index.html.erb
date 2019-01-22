@@ -1,0 +1,10 @@
+<div>
+  <%=  form_tag({action: :create}, multipart: true) do %>
+    <div class="field">
+      <%= label_tag :file %>
+      <%= file_field_tag :file %>
+    </div>
+    <div class="actions">
+      <%= submit_tag 'Upload' %>
+  <% end %>
+</div>

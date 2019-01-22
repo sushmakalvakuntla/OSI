@@ -35,6 +35,7 @@ gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 # Use SimpleCov for rspec unit test coverage
 gem 'simplecov', '~> 0.15.1'
+gem 'smarter_csv'
 # Implement cwds system information
 gem 'system_information', github: 'ca-cwds/system_information'
 # Use Uglifier as compressor for JavaScript assets

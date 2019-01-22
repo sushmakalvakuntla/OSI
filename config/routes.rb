@@ -23,6 +23,8 @@ Rails.application.routes.draw do
     post 'add_user', to: 'add_user#index'
   end
 
+  get 'upload', to: 'upload#index'
+  post 'upload', to: 'upload#create'
   get 'logout', to: 'cap_base#logout'
 
   # Single Page App home
