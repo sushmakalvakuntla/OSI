@@ -217,6 +217,16 @@ describe('UserDetailEdit', () => {
       expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', 3334445555)
     })
 
+    it('#PhoneNumber, handleInputChange function is called & returns phone number with zeros ', () => {
+      wrapper
+        .find('InputComponent')
+        .at(1)
+        .simulate('change', {
+          target: { value: '3094405055' },
+        })
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', 3094405055)
+    })
+
     it('#PhoneExtensionNumber, handleInputChange function is called when onChange event triggered', () => {
       wrapper
         .find('InputComponent')
@@ -224,7 +234,17 @@ describe('UserDetailEdit', () => {
         .simulate('change', {
           target: { value: '333' },
         })
-      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', 333)
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', '333')
+    })
+
+    it('#PhoneExtensionNumber, handleInputChange function is called & returns ext with zeros', () => {
+      wrapper
+        .find('InputComponent')
+        .at(2)
+        .simulate('change', {
+          target: { value: '300' },
+        })
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', '300')
     })
   })
 })
