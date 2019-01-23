@@ -10,6 +10,7 @@ function fetchDetails(
     resendEmailUserId: [],
     resendEmailStatus: null,
     initialDetails: null,
+    saveSuccessAlert: null,
   },
   action
 ) {
@@ -71,6 +72,7 @@ function fetchDetails(
         isEdit: false,
         displayAlert: true,
         initialDetails: state.details.records,
+        saveSuccessAlert: action.successAlert,
       }
 
     case actionTypes.SAVE_USER_DETAILS_API_CALL_FAILURE:

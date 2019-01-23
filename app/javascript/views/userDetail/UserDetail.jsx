@@ -60,12 +60,12 @@ export default class UserDetail extends Component {
     this.props.actions.handleInputChangeAction(name, value)
   }
 
-  showAlert = (displayAlert, userDetailError) => {
+  showAlert = (displayAlert, userDetailError, saveSuccessMsg) => {
     if (displayAlert) {
       if (userDetailError) {
         return <UserMessage errorMsg={userDetailError} />
       } else {
-        return <UserMessage successMsg={'Your changes have been made successfully'} />
+        return <UserMessage successMsg={saveSuccessMsg} />
       }
     }
     return null
@@ -199,7 +199,7 @@ export default class UserDetail extends Component {
             <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
             &nbsp;&gt;&nbsp;
             <Link to="/">User List</Link>
-            {this.showAlert(this.props.displayAlert, this.props.userDetailError)}
+            {this.showAlert(this.props.displayAlert, this.props.userDetailError, this.props.saveSuccessMsg)}
             {this.emailSent()}
             {this.showAddAlert()}
           </div>
@@ -278,6 +278,7 @@ UserDetail.propTypes = {
   workerPhoneNumber: PropTypes.string,
   auditEvents: PropTypes.array,
   isPhoneNumberValid: PropTypes.bool,
+  saveSuccessMsg: PropTypes.string,
   unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }

@@ -281,10 +281,28 @@ describe('UserDetail', () => {
     })
 
     it('displays success <UserMessage/>', () => {
-      wrapper.setProps({ userDetailError: null, displayAlert: true })
+      wrapper.setProps({
+        userDetailError: null,
+        displayAlert: true,
+        saveSuccessMsg: 'Your changes have been made successfully',
+      })
       const alertBox = wrapper.find('UserMessage')
       expect(alertBox.length).toBe(1)
       expect(alertBox.props().successMsg).toEqual('Your changes have been made successfully')
+    })
+
+    it('when email is edited, displays different success <UserMessage/>', () => {
+      wrapper.setProps({
+        userDetailError: null,
+        displayAlert: true,
+        saveSuccessMsg:
+          'Your changes have been made successfully. A Registration invite will be sent to the new email.',
+      })
+      const alertBox = wrapper.find('UserMessage')
+      expect(alertBox.length).toBe(1)
+      expect(alertBox.props().successMsg).toEqual(
+        'Your changes have been made successfully. A Registration invite will be sent to the new email.'
+      )
     })
 
     it('does not display <UserMessage/>', () => {

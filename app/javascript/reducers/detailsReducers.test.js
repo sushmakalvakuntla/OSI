@@ -3,9 +3,7 @@ import * as actionTypes from '../actions/actionTypes'
 
 describe('reducer', () => {
   it('handles FETCH_DETAILS_API_CALL_REQUEST', () => {
-    const requestAction = {
-      type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST,
-    }
+    const requestAction = { type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST }
     const state = { details: null, initialDetails: null, fetching: false }
     expect(fetchDetails(state, requestAction)).toEqual({
       fetching: true,
@@ -21,10 +19,7 @@ describe('reducer', () => {
       details: { id: 'key1', username: 'user1' },
     }
     const state = { details: null, fetching: true, fetchDetailsError: null }
-    const records = {
-      XHRStatus: 'ready',
-      records: { id: 'key1', username: 'user1' },
-    }
+    const records = { XHRStatus: 'ready', records: { id: 'key1', username: 'user1' } }
 
     expect(fetchDetails(state, responseAction)).toEqual({
       fetching: false,
@@ -57,22 +52,11 @@ describe('reducer', () => {
   it('handles HANDLE_DROPDOWN_CHANGE', () => {
     const name = 'permissions'
     const value = ['Snapshot-rollout']
-    const handleDropDownAction = {
-      type: actionTypes.HANDLE_DROPDOWN_CHANGE,
-      payload: { name, value },
-    }
-    const details = {
-      records: {
-        user: {
-          permissions: undefined,
-        },
-      },
-    }
+    const handleDropDownAction = { type: actionTypes.HANDLE_DROPDOWN_CHANGE, payload: { name, value } }
+    const details = { records: { user: { permissions: undefined } } }
     const state = { details: details }
     expect(fetchDetails(state, handleDropDownAction)).toEqual({
-      details: {
-        records: { user: { permissions: ['Snapshot-rollout'] } },
-      },
+      details: { records: { user: { permissions: ['Snapshot-rollout'] } } },
       displayAlert: false,
       disableActionBtn: false,
     })
@@ -82,22 +66,11 @@ describe('reducer', () => {
     const name = 'email'
     const value = 'hello@gmail.com'
 
-    const handleInputAction = {
-      type: actionTypes.HANDLE_USER_INPUT_CHANGE,
-      payload: { name, value },
-    }
-    const details = {
-      records: {
-        user: {
-          email: value,
-        },
-      },
-    }
+    const handleInputAction = { type: actionTypes.HANDLE_USER_INPUT_CHANGE, payload: { name, value } }
+    const details = { records: { user: { email: value } } }
     const state = { details: details }
     expect(fetchDetails(state, handleInputAction)).toEqual({
-      details: {
-        records: { user: { email: value } },
-      },
+      details: { records: { user: { email: value } } },
       displayAlert: false,
       disableActionBtn: false,
     })
@@ -107,22 +80,11 @@ describe('reducer', () => {
     const name = 'phone_number'
     const value = '3334445555'
 
-    const handleInputAction = {
-      type: actionTypes.HANDLE_USER_INPUT_CHANGE,
-      payload: { name, value },
-    }
-    const details = {
-      records: {
-        user: {
-          phone_number: value,
-        },
-      },
-    }
+    const handleInputAction = { type: actionTypes.HANDLE_USER_INPUT_CHANGE, payload: { name, value } }
+    const details = { records: { user: { phone_number: value } } }
     const state = { details: details }
     expect(fetchDetails(state, handleInputAction)).toEqual({
-      details: {
-        records: { user: { phone_number: value } },
-      },
+      details: { records: { user: { phone_number: value } } },
       displayAlert: false,
       disableActionBtn: false,
     })
@@ -130,10 +92,7 @@ describe('reducer', () => {
 
   it('handles HANDLE_EDIT_BUTTON_CHANGE', () => {
     const value = true
-    const handleEditButtonAction = {
-      type: actionTypes.HANDLE_EDIT_BUTTON_CHANGE,
-      payload: { value },
-    }
+    const handleEditButtonAction = { type: actionTypes.HANDLE_EDIT_BUTTON_CHANGE, payload: { value } }
     const state = { details: null, fetching: false }
     expect(fetchDetails(state, handleEditButtonAction)).toEqual({
       details: null,
@@ -145,19 +104,13 @@ describe('reducer', () => {
   })
 
   it('handles unexpected actiontypes gracefully', () => {
-    const unexpectedAction = {
-      type: 'END_OF_THE_WORLD',
-      details: { hello: 'world' },
-    }
+    const unexpectedAction = { type: 'END_OF_THE_WORLD', details: { hello: 'world' } }
     const state = { details: null, fetching: true, error: null }
     expect(fetchDetails(state, unexpectedAction)).toEqual(state)
   })
 
   it('handles when state is undefined', () => {
-    const randomAction = {
-      type: null,
-      foreignObject: {},
-    }
+    const randomAction = { type: null, foreignObject: {} }
     const state = {
       details: null,
       fetching: false,
@@ -167,6 +120,7 @@ describe('reducer', () => {
       resendEmailUserId: [],
       resendEmailStatus: null,
       initialDetails: null,
+      saveSuccessAlert: null,
     }
     expect(fetchDetails(undefined, randomAction)).toEqual(state)
   })
@@ -179,9 +133,7 @@ describe('reducer', () => {
   })
 
   it('clears save Alert message', () => {
-    const requestAction = {
-      type: actionTypes.CLEAR_SAVE_ALERT,
-    }
+    const requestAction = { type: actionTypes.CLEAR_SAVE_ALERT }
     const state = { fetching: false, displayAlert: false }
     expect(fetchDetails(state, requestAction)).toEqual({
       fetching: false,
@@ -190,9 +142,7 @@ describe('reducer', () => {
   })
 
   it('handles SAVE_USER_DETAILS_API_CALL_REQUEST', () => {
-    const requestAction = {
-      type: actionTypes.SAVE_USER_DETAILS_API_CALL_REQUEST,
-    }
+    const requestAction = { type: actionTypes.SAVE_USER_DETAILS_API_CALL_REQUEST }
     const state = { fetching: false }
     expect(fetchDetails(state, requestAction)).toEqual({
       fetching: true,
@@ -207,6 +157,7 @@ describe('reducer', () => {
         last_name: 'first',
         username: 'user1',
       },
+      successAlert: 'Your changes have been made succesfully',
     }
     const state = {
       fetching: true,
@@ -222,6 +173,36 @@ describe('reducer', () => {
       saveDetailsError: null,
       displayAlert: true,
       initialDetails: { user: { email: 'email@gmail.com' } },
+      saveSuccessAlert: 'Your changes have been made succesfully',
+    })
+  })
+
+  it('handles SAVE_USER_DETAILS_API_CALL_SUCCESS with different success msg when email is edited', () => {
+    const responseAction = {
+      type: actionTypes.SAVE_USER_DETAILS_API_CALL_SUCCESS,
+      saveUserDetails: {
+        last_name: 'first',
+        username: 'user1',
+        email: 'aba@gmail.com',
+      },
+      successAlert: 'Your changes have been made successfully. A Registration invite will be sent to the new email.',
+    }
+    const state = {
+      fetching: true,
+      error: null,
+      details: { records: { user: { email: 'email@gmail.com' } } },
+    }
+
+    expect(fetchDetails(state, responseAction)).toEqual({
+      ...state,
+      fetching: false,
+      error: null,
+      isEdit: false,
+      saveDetailsError: null,
+      displayAlert: true,
+      initialDetails: { user: { email: 'email@gmail.com' } },
+      saveSuccessAlert:
+        'Your changes have been made successfully. A Registration invite will be sent to the new email.',
     })
   })
 

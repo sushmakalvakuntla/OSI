@@ -51,6 +51,7 @@ function mapStateToProps(state) {
     userStatus: userStatus(state),
     isEdit: state.fetchDetails.isEdit,
     displayAlert: state.fetchDetails.displayAlert,
+    saveSuccessMsg: state.fetchDetails.saveSuccessAlert,
     isEmailValid: isEmailValid(state),
     id: addUserRecords(state),
     XHRStatus: fetchingStatus(state),

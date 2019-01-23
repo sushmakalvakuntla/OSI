@@ -4,6 +4,10 @@ import { takeLatest, call, put } from 'redux-saga/effects'
 import { fetchDetailsActions } from '../actions/detailActions'
 // worker saga: makes the api call when watcher saga sees the action
 export function* saveDetails(action) {
+  const successAlert =
+    action.payload.details.email === undefined
+      ? 'Your changes have been made successfully'
+      : 'Your changes have been made successfully. A Registration invite will be sent to the new email.'
   try {
     const saveUserDetailsActions = action.payload
     const saveUserDetails = yield call(
@@ -17,6 +21,7 @@ export function* saveDetails(action) {
     yield put({
       type: actionTypes.SAVE_USER_DETAILS_API_CALL_SUCCESS,
       saveUserDetails,
+      successAlert,
     })
     yield put(fetchDetailsActions(saveUserDetailsActions.id))
   } catch (error) {
