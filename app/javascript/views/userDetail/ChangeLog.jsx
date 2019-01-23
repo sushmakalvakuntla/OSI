@@ -13,6 +13,10 @@ const ChangeLog = ({ permissionsList, rolesList, auditEvents }) => (
       <CardBody className="pt-0">
         <DataGrid
           data={auditEvents}
+          defaultPageSize={100}
+          style={{
+            height: '500px',
+          }}
           columns={[
             {
               Header: 'Date/Time',
@@ -55,6 +59,7 @@ const ChangeLog = ({ permissionsList, rolesList, auditEvents }) => (
           sortable={true}
           className="client-grid audit-events"
           minRows={3}
+          maxRows={100}
           noDataText={'No records found'}
           showPaginationBottom={false}
           defaultSorted={[

@@ -73,7 +73,7 @@ module Users
               "bool": {
                 "must": [
                   { "match": { "event_source": 'CAP' } },
-                  { "match": { "event.user_id": '33' } }
+                  { "term": { "event.user_id.keyword": '33' } }
                 ]
               }
             },

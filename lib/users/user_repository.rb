@@ -98,7 +98,7 @@ module Users
         "query": {
           "bool": { "must": [
             { "match": { "event_source": 'CAP' } },
-            { "match": { "event.user_id": id } }
+            { "term": { "event.user_id.keyword": id } }
           ] }
         },
         "from": 0, "size": 100,
