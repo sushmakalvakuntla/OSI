@@ -29,7 +29,6 @@ function fetchDetails(
         details: userRecords,
         fetchDetailsError: null,
         isEdit: false,
-        displayAlert: false,
         resendEmailUserId: state.resendEmailUserId,
         initialDetails: userRecords.records,
       }
@@ -51,6 +50,7 @@ function fetchDetails(
         displayAlert: false,
         resendEmailUserId: state.resendEmailUserId,
         initialDetails: null,
+        saveSuccessAlert: null,
       }
 
     case actionTypes.HANDLE_EDIT_BUTTON_CHANGE:
@@ -59,6 +59,7 @@ function fetchDetails(
         isEdit: action.payload.value,
         displayAlert: false,
         disableActionBtn: true,
+        saveSuccessAlert: null,
       }
 
     case actionTypes.SAVE_USER_DETAILS_API_CALL_REQUEST:

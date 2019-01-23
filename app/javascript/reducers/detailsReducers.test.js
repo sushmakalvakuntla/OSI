@@ -26,7 +26,6 @@ describe('reducer', () => {
       details: records,
       isEdit: false,
       fetchDetailsError: null,
-      displayAlert: false,
       initialDetails: records.records,
     })
   })
@@ -100,6 +99,7 @@ describe('reducer', () => {
       isEdit: true,
       displayAlert: false,
       disableActionBtn: true,
+      saveSuccessAlert: null,
     })
   })
 
@@ -126,7 +126,14 @@ describe('reducer', () => {
   })
 
   it('clears details', () => {
-    const before = { details: {}, initialDetails: {}, fetching: false, error: null, isEdit: false }
+    const before = {
+      details: {},
+      initialDetails: {},
+      fetching: false,
+      error: null,
+      isEdit: false,
+      saveSuccessAlert: null,
+    }
     let after
     expect(() => (after = fetchDetails(before, { type: actionTypes.CLEAR_USER_DETAILS }))).not.toThrow()
     expect(after).not.toEqual(before)
