@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, ModalBody, ModalHeader } from '@cwds/components'
+import { Modal, ModalBody, ModalHeader, Avatar } from '@cwds/components'
+import { checkDate } from '../../_utils/formatters'
 import { Button } from 'react-wood-duck'
-import ShowField from '../../common/ShowField'
+import { Circle } from '../../_utils/faIcons'
 
 export default class ModalComponent extends Component {
   constructor(props) {
@@ -17,41 +18,68 @@ export default class ModalComponent extends Component {
     }))
   }
 
+  changeLogDetails = data => {
+    return (
+      <div>
+        <div className="col-md-12">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="change-made-header">Changes made to</div>
+              <div className="col-md-1 avatar">
+                <Avatar size="lg" />
+              </div>
+              <div className="col-md-6 change-made-to">{`${data.event.user_name}`}</div>
+              <div className="col-md-6 change-made-to-user-info">{`${data.event.user_roles}`}</div>
+            </div>
+            <div
+              className="col-md-1"
+              style={{
+                borderLeft: '1px solid #B2B2B2',
+                background: '#FFFFFF',
+                height: '100px',
+              }}
+            />
+            <div className="col-md-5">
+              <div className="change-made-header">Changes made by</div>
+              <div className="change-made-by">{`${data.event.admin_name}`}</div>
+              <div className="change-made-by-user-info">{`${data.event.admin_role}`}</div>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div className="col-md-12">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="change-details">{`Change date: ${checkDate(data.timestamp)}`}</div>
+              <div className="change-details">{`Change type: ${data.event_type}`}</div>
+              <div className="change-details">{`Change from: ${data.event.old_value}`}</div>
+              <div className="change-details">{`Change to: ${data.event.new_value}`}</div>
+            </div>
+            <div className="col-md-12 notes">{'Notes'}</div>
+          </div>
+          <hr />
+        </div>
+      </div>
+    )
+  }
+
   render() {
-    const { oldValue, newValue, comment, data } = this.props
-    const modalTitle = `${data.timestamp} ${data.event_type} ${data.admin_name}`
+    const { data } = this.props
+    const closeBtn = (
+      <div className="row">
+        <button id="close_button" className="btn btn-link closeButton-customizable" type="close" onClick={this.toggle}>
+          close {Circle()}
+        </button>
+      </div>
+    )
     return (
       <div>
         <Button btnClassName="default" btnName="View" onClick={this.toggle} />
         <Modal className="warning-modal" isOpen={this.state.ModalOpen} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>
-            <span className="modal-title">{modalTitle}</span>
+          <ModalHeader toggle={this.toggle} close={closeBtn}>
+            <div className="header">{'Change Log Details'}</div>
           </ModalHeader>
-          <ModalBody className="warning-modal-body">
-            <div className="col-md-12">
-              <div className="row" style={{ marginBottom: '15px' }}>
-                <span className="modal-body">Details</span>
-                <hr />
-                <div className="col-md-6">
-                  <ShowField label="Changed From">
-                    <span>{oldValue}</span>
-                  </ShowField>
-                </div>
-                <div className="col-md-6">
-                  <ShowField label="Changed To">
-                    <span>{newValue}</span>
-                  </ShowField>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-12">
-              <div className="row">
-                <span className="modal-body">Notes</span>
-                <hr />
-                <span>{comment}</span>
-              </div>
-            </div>
-          </ModalBody>
+          <ModalBody className="warning-modal-body">{this.changeLogDetails(data)}</ModalBody>
         </Modal>
       </div>
     )

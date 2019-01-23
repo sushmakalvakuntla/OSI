@@ -5,7 +5,6 @@ import {
   formatRoles,
   formatDate,
   formatPermissions,
-  formatChangeLogValues,
 } from './formatters'
 
 describe('#formatPhoneNumberWithExt', () => {
@@ -193,42 +192,5 @@ describe('#formatPermissions', () => {
   it('renders false when given empty array ', () => {
     const assignedPermissions = []
     expect(formatPermissions(assignedPermissions, list)).toEqual(false)
-  })
-})
-
-describe('#formatChangeLogValues', () => {
-  const permissionslist = [
-    { value: 'permission1', label: 'permissionOne' },
-    { value: 'permission2', label: 'permissionTwo' },
-  ]
-  const rolesList = [{ value: 'role1', label: 'roleOne' }, { value: 'role2', label: 'roleTwo' }]
-  it('returns the permissions value when eventType is permissions', () => {
-    const eventType = 'Permission'
-    const value = ['permission1']
-    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual('permissionOne')
-  })
-
-  it('returns the roles value when eventType is User Role', () => {
-    const eventType = 'User Role'
-    const value = ['role1']
-    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual('roleOne')
-  })
-
-  it('returns the status value when eventType is Account Status', () => {
-    const eventType = 'Account Status'
-    const value = true
-    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual('Active')
-  })
-
-  it('returns value when eventType is different', () => {
-    const eventType = 'Email Address Updates'
-    const value = 'abcd@gmail.com'
-    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual(value)
-  })
-
-  it('returns when eventType is null', () => {
-    const eventType = null
-    const value = ''
-    expect(formatChangeLogValues(eventType, value, permissionslist, rolesList)).toEqual(value)
   })
 })

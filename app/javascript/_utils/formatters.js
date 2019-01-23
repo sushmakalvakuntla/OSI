@@ -1,7 +1,6 @@
 /* eslint camelcase: 0 */
 
 import { DateTime } from 'luxon'
-import { accountStatusFormat } from '../_constants/constants'
 
 export const formatPhoneNumber = phone => {
   let phone_number = `${phone}`
@@ -71,17 +70,4 @@ export function formatPermissions(assignedPermissions, permissionList) {
       .map(({ value, label }) => label)
       .join(', ')
   )
-}
-
-export function formatChangeLogValues(eventType, value, permissionsList, rolesList) {
-  switch (eventType) {
-    case 'Permission':
-      return formatPermissions(value, permissionsList)
-    case 'User Role':
-      return formatRoles(value, rolesList)
-    case 'Account Status':
-      return accountStatusFormat({ enabled: value })
-    default:
-      return value
-  }
 }
