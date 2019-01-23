@@ -110,6 +110,7 @@ export default class UserDetail extends Component {
     resentRegistrationExistingDateTime,
     officePhoneNumber,
     workerPhoneNumber,
+    auditEvents,
     isPhoneNumberValid,
     unformattedPhoneNumber,
     phoneExtensionNumber
@@ -170,7 +171,11 @@ export default class UserDetail extends Component {
               <CWSPermissions />
             </div>
             <div className="col-md-8">
-              <ChangeLog permissionsList={possiblePermissionsList} rolesList={possibleRolesList} />
+              <ChangeLog
+                auditEvents={auditEvents}
+                permissionsList={possiblePermissionsList}
+                rolesList={possibleRolesList}
+              />
             </div>
           </div>
         </div>
@@ -226,6 +231,7 @@ export default class UserDetail extends Component {
               this.props.resentRegistrationExistingDateTime,
               this.props.officePhoneNumber,
               this.props.workerPhoneNumber,
+              this.props.auditEvents,
               this.props.isPhoneNumberValid,
               this.props.unformattedPhoneNumber,
               this.props.phoneExtensionNumber
@@ -270,6 +276,7 @@ UserDetail.propTypes = {
   updatedDetails: PropTypes.object,
   officePhoneNumber: PropTypes.string,
   workerPhoneNumber: PropTypes.string,
+  auditEvents: PropTypes.array,
   isPhoneNumberValid: PropTypes.bool,
   unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

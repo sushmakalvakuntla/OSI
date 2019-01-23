@@ -21,7 +21,12 @@ describe('sagas', () => {
     describe('when successful', () => {
       it('executes the happy-path saga', () => {
         const action = {
-          payload: { id: id, details: details, initialDetails: initialDetails, isRolesDisabled },
+          payload: {
+            id: id,
+            details: details,
+            initialDetails: initialDetails,
+            isRolesDisabled,
+          },
         }
         const gen = saveDetails(action)
 
@@ -42,6 +47,19 @@ describe('sagas', () => {
             },
           })
         )
+        // starts a retrieval saga
+        expect(
+          gen.next({
+            id: id,
+            details: details,
+            initialDetails: initialDetails,
+          }).value
+        ).toEqual(
+          put({
+            type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST,
+            payload: { id: id },
+          })
+        )
         expect(gen.next().done).toBe(true)
       })
     })
@@ -49,10 +67,14 @@ describe('sagas', () => {
     describe('when failures come back from save', () => {
       it('handles the error', () => {
         const action = {
-          payload: { id: id, details: details, initialDetails: initialDetails, isRolesDisabled: true },
+          payload: {
+            id: id,
+            details: details,
+            initialDetails: initialDetails,
+            isRolesDisabled: true,
+          },
         }
         const gen = saveDetails(action)
-
         expect(gen.next().value).toEqual(call(UserService.saveUserDetails, id, details, initialDetails, true))
         expect(gen.throw('database not accessible').value).toEqual(
           put({

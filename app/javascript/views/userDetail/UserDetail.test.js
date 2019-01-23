@@ -127,7 +127,9 @@ describe('UserDetail', () => {
   describe('#emailSent()', () => {
     it('displays <UserMessage/>', () => {
       wrapper.setState({ resendEmailAlert: true })
-      wrapper.setProps({ resentRegistrationNewDateTime: '2018-10-24 10:20:30' })
+      wrapper.setProps({
+        resentRegistrationNewDateTime: '2018-10-24 10:20:30',
+      })
       expect(wrapper.find('UserMessage').length).toBe(1)
       expect(wrapper.find('UserMessage').props().successMsg).toBe('Registration email has been sent successfully')
     })

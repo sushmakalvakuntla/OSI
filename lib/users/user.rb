@@ -8,5 +8,6 @@ module Users
     constructor_type :schema
     attribute :edit_details, EditDetails
     attribute :user, UserDetails
+    attribute :auditevents, Types::Array.optional
   end
 end

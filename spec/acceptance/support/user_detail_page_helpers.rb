@@ -32,14 +32,13 @@ module UserDetailPageHelper
   end
 
   def change_status(new_status)
+    # return if there's nothing to do.
+    return if find_by_id('StatusDropDown').text == new_status
+
     # find the status selectbox and drop it down
 
-    find(:xpath, "//label[contains(text(),'Status')]/following-sibling::div").click
-
-    find('div.Select-option', text: new_status).click
-
-    # return the element with the new value
-    find(:xpath, "//label[contains(text(),'Status')]/following-sibling::div")
+    find_by_id('StatusDropDown').click
+    find_by_id('StatusDropDown').find(:xpath, 'div/div/*', text: new_status).click
   end
 
   def expect_success

@@ -10,6 +10,7 @@ import {
   selectPossibleRolesList,
   selectAccountStatus,
   selectAssignedPermissions,
+  selectAuditEvents,
   officeName,
   selectPossiblePermissionsList,
   disableActionButton,
@@ -64,6 +65,7 @@ describe('selectors', () => {
     phoneExtensionNumber,
     officePhoneNumber,
     officePhoneExtensionNumber,
+    auditEvents,
   }) => {
     return {
       fetchDetails: {
@@ -108,6 +110,7 @@ describe('selectors', () => {
               last_registration_resubmit_date_time: resentRegistrationExistingDateTime,
               last_login_date_time: lastLoginDateTime,
             },
+            auditevents: auditEvents,
           },
         },
       },
@@ -150,6 +153,26 @@ describe('selectors', () => {
         },
       }
       expect(selectUserDetailObject(state)).toEqual(undefined)
+    })
+  })
+
+  describe('#auditEvents', () => {
+    const auditEvents = [
+      {
+        event_type: 'User Created',
+        event_source: 'CAP',
+        timestamp: '2019-01-14 15:10:41',
+      },
+    ]
+
+    it('selects the audit events', () => {
+      const state = getState({ auditEvents: auditEvents })
+      expect(selectAuditEvents(state)).toEqual(auditEvents)
+    })
+
+    it('selects an empty array when there are no audit events', () => {
+      const state = getState({})
+      expect(selectAuditEvents(state)).toEqual([])
     })
   })
 
@@ -624,7 +647,9 @@ describe('selectors', () => {
   describe('#resentRegistrationDate', () => {
     describe('When registration resubmitted DateTime exists ', () => {
       it('returns date in user friendly format', () => {
-        const state = getState({ resentRegistrationExistingDateTime: '2018-12-24 10:20:30' })
+        const state = getState({
+          resentRegistrationExistingDateTime: '2018-12-24 10:20:30',
+        })
         expect(resentRegistrationDate(state)).toEqual('December 24, 2018 10:20 AM')
       })
     })
@@ -638,7 +663,9 @@ describe('selectors', () => {
 
     describe('When registration resubmitted DateTime is undefined ', () => {
       it('returns just empty', () => {
-        const state = getState({ resentRegistrationExistingDateTime: undefined })
+        const state = getState({
+          resentRegistrationExistingDateTime: undefined,
+        })
         expect(resentRegistrationDate(state)).toEqual('')
       })
     })
@@ -745,21 +772,30 @@ describe('selectors', () => {
           officePhoneNumber: null,
           officePhoneExtensionNumber: '21',
         })
-        expect(formattedPhoneNumber(state)).toEqual({ officePhoneNumber: '', workerPhoneNumber: '' })
+        expect(formattedPhoneNumber(state)).toEqual({
+          officePhoneNumber: '',
+          workerPhoneNumber: '',
+        })
       })
     })
 
     describe('when details is null ', () => {
       it('returns just empty ', () => {
         const state = { fetchDetails: null }
-        expect(formattedPhoneNumber(state)).toEqual({ officePhoneNumber: '', workerPhoneNumber: '' })
+        expect(formattedPhoneNumber(state)).toEqual({
+          officePhoneNumber: '',
+          workerPhoneNumber: '',
+        })
       })
     })
 
     describe('when details is undefined ', () => {
       it('returns just empty ', () => {
         const state = { fetchDetails: undefined }
-        expect(formattedPhoneNumber(state)).toEqual({ officePhoneNumber: '', workerPhoneNumber: '' })
+        expect(formattedPhoneNumber(state)).toEqual({
+          officePhoneNumber: '',
+          workerPhoneNumber: '',
+        })
       })
     })
   })

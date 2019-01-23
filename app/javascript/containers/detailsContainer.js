@@ -3,6 +3,7 @@ import UserDetail from '../views/userDetail/UserDetail'
 import {
   selectDetailRecords,
   checkEditDisable,
+  selectAuditEvents,
   selectPossibleRolesList,
   disableRolesDropDown,
   fetchingStatus,
@@ -54,6 +55,7 @@ function mapStateToProps(state) {
     id: addUserRecords(state),
     XHRStatus: fetchingStatus(state),
     possibleRolesList: selectPossibleRolesList(state),
+    auditEvents: selectAuditEvents(state),
     disableEditBtn: checkEditDisable(state),
     details: selectDetailRecords(state),
     possiblePermissionsList: selectPossiblePermissionsList(state),

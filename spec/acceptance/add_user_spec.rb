@@ -53,6 +53,13 @@ feature 'Add User Page' do
     expect(detail_page_value('User Status'))
       .to have_text("Registration Incomplete User has never logged in. Registration email resent:
       #{date_time} ")
+
+    # Check for the changelog object.
+    all('div', text: 'Change Log').last.click
+    page.execute_script('window.scrollBy(0,10000)')
+    # find the only event so far, the User Created event
+
+    expect(find('div.audit-events').text).to match(/User Created/)
     # Deactivate this user so we can add him again using this process next time
     page.click_button 'Edit'
 
