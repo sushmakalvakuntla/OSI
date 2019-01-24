@@ -46,6 +46,10 @@ const ChangeLog = ({ auditEvents }) => (
       <CardBody className="pt-0">
         <DataGrid
           data={auditEvents}
+          defaultPageSize={100}
+          style={{
+            height: '500px',
+          }}
           columns={columnConfig}
           sortable={true}
           className="client-grid audit-events"
