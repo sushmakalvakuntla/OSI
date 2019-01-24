@@ -88,34 +88,34 @@ describe('ChangeLog', () => {
             .find('div')
             .at(18)
             .props().children
-        ).toBe('Change date: January 23, 2019 10:09 AM')
+        ).toBe('January 23, 2019 10:09 AM')
       })
 
       it('should display the event type', () => {
         expect(
           wrapper
             .find('div')
-            .at(19)
+            .at(20)
             .props().children
-        ).toBe('Change type: User Email Changed')
+        ).toBe('User Email Changed')
       })
 
       it('should display the old Value before event', () => {
         expect(
           wrapper
             .find('div')
-            .at(20)
+            .at(22)
             .props().children
-        ).toBe('Change from: OldValue')
+        ).toBe('OldValue')
       })
 
       it('should display the new Value after event', () => {
         expect(
           wrapper
             .find('div')
-            .at(21)
+            .at(24)
             .props().children
-        ).toBe('Change to: ChangedValue')
+        ).toBe('ChangedValue')
       })
     })
   })

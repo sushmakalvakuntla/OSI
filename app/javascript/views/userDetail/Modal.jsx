@@ -28,15 +28,17 @@ export default class ModalComponent extends Component {
               <div className="col-md-1 avatar">
                 <Avatar size="lg" />
               </div>
-              <div className="col-md-6 change-made-to">{`${data.event.user_name}`}</div>
-              <div className="col-md-6 change-made-to-user-info">{`${data.event.user_roles}`}</div>
+              <div className="change-made-to">{`${data.event.user_name}`}</div>
+              <div className="change-made-to-user-info">{`${data.event.user_roles}`}</div>
             </div>
             <div
               className="col-md-1"
+              id="vertical-line"
               style={{
                 borderLeft: '1px solid #B2B2B2',
                 background: '#FFFFFF',
                 height: '100px',
+                width: 0,
               }}
             />
             <div className="col-md-5">
@@ -47,17 +49,37 @@ export default class ModalComponent extends Component {
           </div>
           <hr />
         </div>
-        <div className="col-md-12">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="change-details">{`Change date: ${checkDate(data.timestamp)}`}</div>
-              <div className="change-details">{`Change type: ${data.event_type}`}</div>
-              <div className="change-details">{`Change from: ${data.event.old_value}`}</div>
-              <div className="change-details">{`Change to: ${data.event.new_value}`}</div>
+        <div className="change-details">
+          <div className="col-md-12">
+            <div>
+              Change date :{'    '}
+              <div className="change-details-content" id="changeDate">
+                {checkDate(data.timestamp)}
+              </div>
             </div>
-            <div className="col-md-12 notes">{'Notes'}</div>
+            <div>
+              Change type :{'    '}
+              <div className="change-details-content" id="changeType">
+                {data.event_type}
+              </div>
+            </div>
+            <div>
+              Change from :{'    '}
+              <div className="change-details-content" id="changeFrom">
+                {data.event.old_value}
+              </div>
+            </div>
+            <div>
+              Change to :{'    '}
+              <div className="change-details-content" id="changeFrom">
+                {data.event.new_value}
+              </div>
+            </div>
           </div>
-          <hr />
+          <div className="col-md-12">
+            <div className="notes">Notes</div>
+            <hr />
+          </div>
         </div>
       </div>
     )
@@ -75,7 +97,7 @@ export default class ModalComponent extends Component {
     return (
       <div>
         <Button btnClassName="default" btnName="View" onClick={this.toggle} />
-        <Modal className="warning-modal" isOpen={this.state.ModalOpen} toggle={this.toggle}>
+        <Modal className="warning-modal modal-lg" isOpen={this.state.ModalOpen} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle} close={closeBtn}>
             <div className="header">{'Change Log Details'}</div>
           </ModalHeader>

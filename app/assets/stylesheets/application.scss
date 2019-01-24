@@ -133,17 +133,17 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .change-made-to {
-  width: 182px;
-  height: 31px;
+  width: 100%;
+  height: 21px;
   color: #3a3a3a;
   font-family: initial;
   font-weight: 600;
-  padding-left: 40px;
+  padding-left: 58px;
   margin-top: 10px;
 }
 
 .change-made-by {
-  width: 139px;
+  width: 100%;
   height: 31px;
   color: #3a3a3a;
   font-family: initial;
@@ -152,17 +152,17 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .change-made-to-user-info {
-  width: 184px;
+  width: 100%;
   height: 42px;
   color: #3a3a3a;
   font-size: 15px;
   font-family: initial;
   font-weight: normal;
-  padding-left: 40px;
+  padding-left: 58px;
 }
 
 .change-made-by-user-info {
-  width: 139px;
+  width: 100%;
   height: 42px;
   color: #3a3a3a;
   font-size: 15px;
@@ -179,6 +179,11 @@ input[type=number]::-webkit-outer-spin-button {
   font-weight: normal;
   letter-spacing: -0.21px;
   line-height: 42px;
+}
+
+.change-details-content {
+  font-weight: 600;
+  display: contents;
 }
 
 .notes {

@@ -48,7 +48,7 @@ const ChangeLog = ({ auditEvents }) => (
           data={auditEvents}
           defaultPageSize={100}
           style={{
-            height: '500px',
+            maxHeight: '500px',
           }}
           columns={columnConfig}
           sortable={true}
