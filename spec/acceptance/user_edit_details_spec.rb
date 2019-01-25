@@ -87,7 +87,10 @@ feature 'User Edit' do
            .join(', '))
 
     # put it back
+    sleep 5 # wait for things to load
+
     click_on('Edit')
+
     sleep 5 # wait for things to load
     change_status original_account_status
 
@@ -107,8 +110,6 @@ feature 'User Edit' do
     expect(find(:xpath,
                 "//label[contains(text(),'Assigned Permissions')]/following-sibling::span").text)
       .to eq(original_selected_permissions.join(', '))
-    # find('#react-select-5--value').click
-    # find('#react-select-5--option-1').click
 
     click_link 'User List'
     page_has_user_list_headers

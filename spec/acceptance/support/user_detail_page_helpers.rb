@@ -8,23 +8,30 @@ module UserDetailPageHelper
   end
 
   def selected_permissions
-    # split text of the permissions (space multiplication sign) to get the permission descriptions
-    mult_symbol = CGI.unescapeHTML('&#215;')
-    permissions_select.text.gsub(/^#{mult_symbol}/, '').split(CGI.unescapeHTML(" #{mult_symbol}"))
+    permissions = []
+    all(:xpath,
+        "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div/div")
+      .to_a.each do |p|
+      permissions << p.text unless p.text == ''
+    end
+    permissions
   end
 
   def remove_permission(permission)
     return if permission.blank?
 
     permissions_select.find(:xpath,
-                            "//*[contains(text(), '#{permission}')]/preceding-sibling::span")
+                            "//*[contains(text(), '#{permission}')]/following-sibling::*")
                       .click
   end
 
   def add_permission(permission)
     # open the drop-down
-    permissions_select.find(:xpath, ".//span[@class='Select-arrow-zone']").click
-    permissions_select.find(:xpath, ".//*[contains(text(), '#{permission}')]").click
+
+    permissions_downarrow.click
+    find(:xpath,
+         "//*[@id='AssignPermissions']/./div[2]/div/div[contains(text(), '#{permission}')]")
+      .click
   end
 
   def detail_page_value(label_name)
@@ -76,10 +83,14 @@ module UserDetailPageHelper
 
   private
 
+  def permissions_downarrow
+    find(:xpath, '//*[@id="AssignPermissions"]/div/div[2]/div[2]')
+  end
+
   def permissions_select
-    find(
+    first(
       :xpath,
-      "//label[contains(text(),'Assigned Permissions')]/following-sibling::div"
+      "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div"
     )
   end
 end
