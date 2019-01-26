@@ -27,8 +27,9 @@ module UserDetailPageHelper
 
   def add_permission(permission)
     # open the drop-down
+    # require 'pry'; binding.pry
+    permissions_click
 
-    permissions_downarrow.click
     find(:xpath,
          "//*[@id='AssignPermissions']/./div[2]/div/div[contains(text(), '#{permission}')]")
       .click
@@ -83,8 +84,8 @@ module UserDetailPageHelper
 
   private
 
-  def permissions_downarrow
-    find(:xpath, '//*[@id="AssignPermissions"]/div/div[2]/div[2]')
+  def permissions_click
+    find(:xpath, '//*[@id="AssignPermissions"]').click
   end
 
   def permissions_select

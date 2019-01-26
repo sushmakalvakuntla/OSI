@@ -87,8 +87,7 @@ feature 'User Edit' do
            .join(', '))
 
     # put it back
-    sleep 5 # wait for things to load
-
+    sleep 5
     click_on('Edit')
 
     sleep 5 # wait for things to load

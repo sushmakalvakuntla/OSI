@@ -39,7 +39,6 @@ feature 'User Forgot Password Page' do
   end
 
   scenario 'reset your password page has accessibility issues' do
-    pending 'reset your password has accessibility issues'
     click_forgot_password_link
     expect(page).to have_text('Password Reset')
     reset_password
