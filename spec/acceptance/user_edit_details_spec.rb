@@ -124,6 +124,8 @@ feature 'User Edit' do
     original_email_address = detail_page_value('Email')
 
     click_on('Edit')
+    sleep 2 # wait for edit page to load up.
+
     expect(page).to have_button('save', disabled: true)
     expect(page).to have_button('Cancel', disabled: false)
     fill_in('Email', with: 'cwds3raval', match: :prefer_exact)
