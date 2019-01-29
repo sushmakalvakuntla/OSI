@@ -25,7 +25,8 @@ module LoginHelper
 
   def cognito_login
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
-    return unless current_url.include?('login')
+
+    return unless page.text.match('Log In.*Sign In')
 
     puts "Fill in user name with #{ENV.fetch('COGNITO_USERNAME', 'no-reply@osi.ca.gov')}"
     puts "Fill in pass with #{ENV.fetch('COGNITO_PASSWORD', 'password')}"
@@ -78,7 +79,12 @@ module LoginHelper
     # verify via MFA using static value assigned to this user.
     return unless page.has_content?('Account Verification')
 
-    fill_in 'Enter Code Here', with: 'LETMEIN'
+    # FUTURE we need to expect one or the other label version until after IDM 1.4 is out.
+    if first('label').text == 'Enter Code Here'
+      fill_in 'Enter Code Here', with: 'LETMEIN'
+    else
+      fill_in 'Enter Code', with: 'LETMEIN'
+    end
     click_on 'Verify'
   end
 
