@@ -10,9 +10,7 @@ describe('UserDetailShow', () => {
     middle_name: 'Middlename0',
     county_name: 'MyCounty',
     status: 'FORCE_CHANGE_PASSWORD',
-    last_registration_resubmit_date_time: '2012-09-22 11:22:33',
   }
-  const resentRegistrationExistingDateTime = 'September 22, 2012 11:22 AM'
   const userDetailObject = {
     editable: true,
     user: {},
@@ -20,20 +18,12 @@ describe('UserDetailShow', () => {
 
   let wrapper
   beforeEach(() => {
-    wrapper = shallow(
-      <UserDetailShow details={details} resentRegistrationExistingDateTime={resentRegistrationExistingDateTime} />
-    )
+    wrapper = shallow(<UserDetailShow details={details} />)
   })
 
   describe('when label and className props are passed', () => {
     it('renders the label inside the grid wrapper', () => {
-      wrapper = shallow(
-        <UserDetailShow
-          details={details}
-          userDetailObject={userDetailObject}
-          resentRegistrationExistingDateTime={resentRegistrationExistingDateTime}
-        />
-      )
+      wrapper = shallow(<UserDetailShow details={details} userDetailObject={userDetailObject} />)
       expect(wrapper.find('Cards').props().cardHeaderText).toBe(`County: ${details.county_name}`)
       expect(wrapper.find('ShowField').length).toBe(12)
       expect(
@@ -108,21 +98,6 @@ describe('UserDetailShow', () => {
           .at(11)
           .props().label
       ).toEqual('Assigned Permissions')
-      expect(wrapper.find('.resend-email-text').text()).toEqual('Registration email resent:September 22, 2012 11:22 AM')
-    })
-
-    it('returns empty text without className when value for last_registration_resubmit_date_time is null', () => {
-      const details = {
-        id: 'id',
-        first_name: 'Firstname0',
-        last_name: 'Lastname0',
-        middle_name: 'Middlename0',
-        county_name: 'MyCounty',
-        status: 'FORCE_CHANGE_PASSWORD',
-        last_registration_resubmit_date_time: null,
-      }
-      wrapper = shallow(<UserDetailShow details={details} />)
-      expect(wrapper.find('.resend-email-text').length).toEqual(0)
     })
 
     it('renders the <ShowField/> props.children at label:fullName', () => {
@@ -171,23 +146,13 @@ describe('UserDetailShow', () => {
           middle_name: 'Middlename0',
           county_name: 'MyCounty',
           status: 'FORCE_CHANGE_PASSWORD',
-          last_registration_resubmit_date_time: null,
         }
-        const resentRegistrationNewDateTime = 'September 8, 2018 08:06 AM'
         const wrapper = shallow(
-          <UserDetailShow
-            details={details}
-            resentRegistrationNewDateTime={resentRegistrationNewDateTime}
-            disableEditBtn={true}
-            disableResendEmailButton={true}
-          />
+          <UserDetailShow details={details} disableEditBtn={true} disableResendEmailButton={true} />
         )
         expect(wrapper.find('Button').length).toEqual(1)
         expect(wrapper.find('Button').props().btnName).toBe('Resend Invite')
         expect(wrapper.find('Button').props().disabled).toBe(true)
-        expect(wrapper.find('.resend-email-text').text()).toEqual(
-          'Registration email resent:September 8, 2018 08:06 AM'
-        )
       })
 
       describe('', () => {

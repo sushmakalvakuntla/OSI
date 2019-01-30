@@ -83,7 +83,7 @@ export default class UserDetail extends Component {
   }
 
   emailSent = () => {
-    if (this.state.resendEmailAlert && this.props.resentRegistrationNewDateTime) {
+    if (this.state.resendEmailAlert) {
       return <UserMessage successMsg={'Registration email has been sent successfully'} />
     }
     return null
@@ -103,11 +103,9 @@ export default class UserDetail extends Component {
     userStatusDescription,
     userStatus,
     officeName,
-    resentRegistrationNewDateTime,
     isEmailValid,
     assignedRole,
     lastLoginDateTime,
-    resentRegistrationExistingDateTime,
     officePhoneNumber,
     workerPhoneNumber,
     auditEvents,
@@ -132,8 +130,6 @@ export default class UserDetail extends Component {
             userStatusDescription={userStatusDescription}
             userStatus={userStatus}
             officeName={officeName}
-            resentRegistrationNewDateTime={resentRegistrationNewDateTime}
-            resentRegistrationExistingDateTime={resentRegistrationExistingDateTime}
             isEmailValid={isEmailValid}
             possiblePermissionsList={possiblePermissionsList}
             assignedRole={assignedRole}
@@ -156,8 +152,6 @@ export default class UserDetail extends Component {
             officeName={officeName}
             onResendInvite={this.onResendInvite}
             disableResendEmailButton={disableResendEmailButton}
-            resentRegistrationNewDateTime={resentRegistrationNewDateTime}
-            resentRegistrationExistingDateTime={resentRegistrationExistingDateTime}
             assignedRole={assignedRole}
             lastLoginDateTime={lastLoginDateTime}
             officePhoneNumber={officePhoneNumber}
@@ -224,11 +218,9 @@ export default class UserDetail extends Component {
               this.props.userStatusDescription,
               this.props.userStatus,
               this.props.officeName,
-              this.props.resentRegistrationNewDateTime,
               this.props.isEmailValid,
               this.props.assignedRole,
               this.props.lastLoginDateTime,
-              this.props.resentRegistrationExistingDateTime,
               this.props.officePhoneNumber,
               this.props.workerPhoneNumber,
               this.props.auditEvents,
@@ -254,8 +246,6 @@ UserDetail.propTypes = {
   actions: PropTypes.object.isRequired,
   fetchDetailsError: PropTypes.string,
   userDetailError: PropTypes.object,
-  resentRegistrationNewDateTime: PropTypes.string,
-  resentRegistrationExistingDateTime: PropTypes.string,
   disableResendEmailButton: PropTypes.bool,
   disableEditBtn: PropTypes.bool,
   XHRStatus: PropTypes.string,

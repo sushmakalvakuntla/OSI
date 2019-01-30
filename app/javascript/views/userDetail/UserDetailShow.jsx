@@ -18,10 +18,8 @@ const UserDetailShow = ({
   officeName,
   onResendInvite,
   disableResendEmailButton,
-  resentRegistrationNewDateTime,
   assignedRole,
   lastLoginDateTime,
-  resentRegistrationExistingDateTime,
   officePhoneNumber,
   workerPhoneNumber,
 }) => (
@@ -83,23 +81,6 @@ const UserDetailShow = ({
                     {userStatusDescription}
                     {details.status === 'FORCE_CHANGE_PASSWORD' && (
                       <div>
-                        <div>
-                          {resentRegistrationNewDateTime ? (
-                            <div className="resend-email-text">
-                              {'Registration email resent:'}
-                              <br />
-                              {resentRegistrationNewDateTime}
-                            </div>
-                          ) : resentRegistrationExistingDateTime ? (
-                            <div className="resend-email-text">
-                              {'Registration email resent:'}
-                              <br />
-                              {resentRegistrationExistingDateTime}
-                            </div>
-                          ) : (
-                            ''
-                          )}
-                        </div>
                         <div className="resend-email-btn">
                           <Button
                             btnClassName="primary"
@@ -140,8 +121,6 @@ UserDetailShow.propTypes = {
   onEdit: PropTypes.func,
   startDate: PropTypes.string,
   lastLoginDateTime: PropTypes.string,
-  resentRegistrationNewDateTime: PropTypes.string,
-  resentRegistrationExistingDateTime: PropTypes.string,
   disableEditBtn: PropTypes.bool,
   officePhoneNumber: PropTypes.string,
   workerPhoneNumber: PropTypes.string,

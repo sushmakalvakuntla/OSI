@@ -24,17 +24,16 @@ describe('reducer', () => {
       fetching: true,
       error: null,
       resendEmailUserId: [],
-      registrationResentDateTime: null,
     }
     it('returns resendEmailUserId', () => {
       const responseAction = {
         type: actionTypes.RESEND_REGISTRATION_EMAIL_API_CALL_SUCCESS,
-        resendEmailStatus: { user_id: 'SOME_ID', last_registration_resubmit_date_time: '2018-10-22 10:20:30' },
+        resendEmailStatus: { user_id: 'SOME_ID' },
         id: 'SOME_ID',
       }
       expect(resendRegistrationEmail(state, responseAction)).toEqual({
         fetching: false,
-        registrationResentDateTime: { last_registration_resubmit_date_time: '2018-10-22 10:20:30', user_id: 'SOME_ID' },
+        registrationResentDateTime: { user_id: 'SOME_ID' },
         resendEmailUserId: ['SOME_ID'],
         error: null,
       })
@@ -43,12 +42,12 @@ describe('reducer', () => {
     it('returns resendEmailUserId as array[id]', () => {
       const responseAction1 = {
         type: actionTypes.RESEND_REGISTRATION_EMAIL_API_CALL_SUCCESS,
-        resendEmailStatus: { last_registration_resubmit_date_time: '2018-10-22 10:20:30', user_id: 'SOME_ID' },
+        resendEmailStatus: { user_id: 'SOME_ID' },
         id: ['SOME_ID1', 'SOME_ID2'],
       }
       expect(resendRegistrationEmail(state, responseAction1)).toEqual({
         fetching: false,
-        registrationResentDateTime: { last_registration_resubmit_date_time: '2018-10-22 10:20:30', user_id: 'SOME_ID' },
+        registrationResentDateTime: { user_id: 'SOME_ID' },
         resendEmailUserId: ['SOME_ID1', 'SOME_ID2'],
         error: null,
       })

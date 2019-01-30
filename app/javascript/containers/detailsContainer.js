@@ -18,7 +18,6 @@ import {
   disableActionButton,
   selectModifiedDetails,
   assignedRoles,
-  resentRegistrationDate,
   lastLogin,
   formattedPhoneNumber,
   isPhoneNumberValid,
@@ -35,7 +34,7 @@ import {
   handleInputChangeAction,
   clearSaveAlert,
 } from '../actions/detailActions'
-import { resentRegistrationNewDateTime, disableResendEmailButton } from '../selectors/resendEmailSelector'
+import { disableResendEmailButton } from '../selectors/resendEmailSelector'
 import { fetchPermissionsActions } from '../actions/permissionsActions'
 import { fetchRolesActions } from '../actions/rolesActions'
 import { resendRegistrationEmailActions } from '../actions/resendRegistrationEmailActions'
@@ -64,7 +63,6 @@ function mapStateToProps(state) {
     userListUrl: process.env.RAILS_RELATIVE_URL_ROOT ? process.env.RAILS_RELATIVE_URL_ROOT : '/',
     userDetailError: state.fetchDetails.saveDetailsError,
     fetchDetailsError: state.fetchDetails.fetchDetailsError,
-    resentRegistrationNewDateTime: resentRegistrationNewDateTime(state),
     disableResendEmailButton: disableResendEmailButton(state),
     isRolesDisabled: disableRolesDropDown(state),
     disableActionBtn: disableActionButton(state),
@@ -74,7 +72,6 @@ function mapStateToProps(state) {
     initialDetails: state.fetchDetails.initialDetails,
     assignedRole: assignedRoles(state),
     lastLoginDateTime: lastLogin(state),
-    resentRegistrationExistingDateTime: resentRegistrationDate(state),
     officePhoneNumber: formattedPhoneNumber(state).officePhoneNumber,
     workerPhoneNumber: formattedPhoneNumber(state).workerPhoneNumber,
     isPhoneNumberValid: isPhoneNumberValid(state),

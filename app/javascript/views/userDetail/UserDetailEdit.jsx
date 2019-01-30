@@ -20,11 +20,9 @@ const UserDetailEdit = ({
   userStatus,
   userStatusDescription,
   officeName,
-  resentRegistrationNewDateTime,
   onInputChange,
   isEmailValid,
   lastLoginDateTime,
-  resentRegistrationExistingDateTime,
   officePhoneNumber,
   isPhoneNumberValid,
   unformattedPhoneNumber,
@@ -129,30 +127,7 @@ const UserDetailEdit = ({
               <div className="col-md-3">
                 <ShowField label="User Status">
                   {userStatus}
-                  <div className="value-text-color">
-                    {userStatusDescription}
-                    {details.status === 'FORCE_CHANGE_PASSWORD' && (
-                      <div>
-                        <div>
-                          {resentRegistrationNewDateTime ? (
-                            <div className="resend-email-text">
-                              {'Registration email resent:'}
-                              <br />
-                              {resentRegistrationNewDateTime}
-                            </div>
-                          ) : resentRegistrationExistingDateTime ? (
-                            <div className="resend-email-text">
-                              {'Registration email resent:'}
-                              <br />
-                              {resentRegistrationExistingDateTime}
-                            </div>
-                          ) : (
-                            ''
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <div className="value-text-color">{userStatusDescription}</div>
                 </ShowField>
               </div>
               <div className="col-md-3">
@@ -201,8 +176,6 @@ UserDetailEdit.propTypes = {
   onPermissionChange: PropTypes.func,
   userStatusDescription: PropTypes.string,
   userStatus: PropTypes.string,
-  resentRegistrationNewDateTime: PropTypes.string,
-  resentRegistrationExistingDateTime: PropTypes.string,
   possibleRolesList: PropTypes.array,
   isEmailValid: PropTypes.bool,
   officePhoneNumber: PropTypes.string,

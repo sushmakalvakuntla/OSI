@@ -19,7 +19,6 @@ import {
   formattedDateTime,
   assignedRoles,
   lastLogin,
-  resentRegistrationDate,
   formattedPhoneNumber,
   unformattedPhoneNumber,
   isPhoneNumberValid,
@@ -60,7 +59,6 @@ describe('selectors', () => {
     assignedRoles,
     fetchDetailsError,
     lastLoginDateTime,
-    resentRegistrationExistingDateTime,
     phoneNumber,
     phoneExtensionNumber,
     officePhoneNumber,
@@ -107,7 +105,6 @@ describe('selectors', () => {
               phone_extension_number: phoneExtensionNumber,
               office_phone_number: officePhoneNumber,
               office_phone_extension_number: officePhoneExtensionNumber,
-              last_registration_resubmit_date_time: resentRegistrationExistingDateTime,
               last_login_date_time: lastLoginDateTime,
             },
             auditevents: auditEvents,
@@ -640,33 +637,6 @@ describe('selectors', () => {
       it('returns just empty', () => {
         const state = getState({ lastLoginDateTime: undefined })
         expect(lastLogin(state)).toEqual('')
-      })
-    })
-  })
-
-  describe('#resentRegistrationDate', () => {
-    describe('When registration resubmitted DateTime exists ', () => {
-      it('returns date in user friendly format', () => {
-        const state = getState({
-          resentRegistrationExistingDateTime: '2018-12-24 10:20:30',
-        })
-        expect(resentRegistrationDate(state)).toEqual('December 24, 2018 10:20 AM')
-      })
-    })
-
-    describe('When registration resubmitted DateTime is null ', () => {
-      it('returns null', () => {
-        const state = getState({ resentRegistrationExistingDateTime: null })
-        expect(resentRegistrationDate(state)).toEqual('')
-      })
-    })
-
-    describe('When registration resubmitted DateTime is undefined ', () => {
-      it('returns just empty', () => {
-        const state = getState({
-          resentRegistrationExistingDateTime: undefined,
-        })
-        expect(resentRegistrationDate(state)).toEqual('')
       })
     })
   })

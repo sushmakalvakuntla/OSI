@@ -14,7 +14,6 @@ describe('UserDetailEdit', () => {
     racfid: 'my RACFID',
     roles: ['ROLE1', 'ROLE2'],
     status: 'FORCE_CHANGE_PASSWORD',
-    last_registration_resubmit_date_time: '2012-09-22 11:22:33',
     email: 'hello@gmail.com',
   }
 
@@ -23,7 +22,6 @@ describe('UserDetailEdit', () => {
 
   const rolesList = [{ id: 'role1', name: 'roleOne' }, { id: 'role2', name: 'roleTwo' }]
   const possibleRoles = [{ value: 'role1', label: 'roleOne' }, { value: 'role2', label: 'roleTwo' }]
-  const resentRegistrationExistingDateTime = 'September 22, 2012 11:22 AM'
   const possiblePermissionsList = [
     { value: 'permission1', label: 'permissionOne' },
     { value: 'permission2', label: 'permissionTwo' },
@@ -38,7 +36,6 @@ describe('UserDetailEdit', () => {
         possiblePermissionsList={possiblePermissionsList}
         rolesList={rolesList}
         onInputChange={onInputChangeSpy}
-        resentRegistrationExistingDateTime={resentRegistrationExistingDateTime}
       />
     )
   })
@@ -111,51 +108,6 @@ describe('UserDetailEdit', () => {
       expect(wrapper.find('[label="Account Status"]').exists()).toBe(true)
       expect(wrapper.find('[label="Assigned Permissions"]').exists()).toBe(true)
       expect(wrapper.find('[label="Email"]').exists()).toBe(true)
-      expect(wrapper.find('.resend-email-text').text()).toEqual('Registration email resent:September 22, 2012 11:22 AM')
-    })
-
-    it('returns empty text without className when value for last_registration_resubmit_date_time is null', () => {
-      const details = {
-        id: 'id',
-        first_name: 'Firstname0',
-        last_name: 'Lastname0',
-        middle_name: 'Middlename0',
-        office: 'officeNames',
-        county_name: 'MyCounty',
-        permissions: ['x', 'y'],
-        racfid: 'my RACFID',
-        roles: ['ROLE1', 'ROLE2'],
-        status: 'FORCE_CHANGE_PASSWORD',
-        last_registration_resubmit_date_time: null,
-      }
-      wrapper = shallow(
-        <UserDetailEdit
-          details={details}
-          possibleRolesList={possibleRoles}
-          possiblePermissionsList={possiblePermissionsList}
-        />
-      )
-      expect(wrapper.find('.resend-email-text').length).toEqual(0)
-    })
-
-    it('when user Status is FORCE_CHANGE_PASSWORD and registrationResentDateTime exists returns date in readable format', () => {
-      const details = {
-        id: 'id',
-        roles: ['ROLE1', 'ROLE2'],
-        status: 'FORCE_CHANGE_PASSWORD',
-        last_registration_resubmit_date_time: null,
-        permissions: ['permission1', 'permission2'],
-      }
-      const resentRegistrationNewDateTime = 'September 8, 2018 08:06 AM'
-      const wrapper = shallow(
-        <UserDetailEdit
-          details={details}
-          resentRegistrationNewDateTime={resentRegistrationNewDateTime}
-          possibleRolesList={possibleRoles}
-          possiblePermissionsList={possiblePermissionsList}
-        />
-      )
-      expect(wrapper.find('.resend-email-text').text()).toEqual('Registration email resent:September 8, 2018 08:06 AM')
     })
 
     it('renders the <ShowField/> children at label:fullName', () => {

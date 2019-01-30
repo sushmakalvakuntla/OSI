@@ -229,8 +229,7 @@ module Users
         it 'returns status as 200' do
           allow(response).to receive(:status).and_return(200)
           allow(response).to receive(:body).and_return(
-            user_id: 'SOME_ID',
-            last_registration_resubmit_date_time: '2018-09-15 10:20:30'
+            user_id: 'SOME_ID'
           )
           allow(http_service)
             .to receive(:post)
@@ -238,8 +237,7 @@ module Users
             .and_return(response)
           expect(user_repository.resend_registration_email(params, token))
             .to eq ResendRegistration.new(
-              user_id: 'SOME_ID',
-              last_registration_resubmit_date_time: '2018-09-15 10:20:30'
+              user_id: 'SOME_ID'
             )
         end
       end

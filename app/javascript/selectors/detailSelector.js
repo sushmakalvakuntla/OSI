@@ -148,10 +148,6 @@ export const lastLogin = state => {
   return formattedDateTime(safeGet(state, 'fetchDetails.details.records.user.last_login_date_time', ''))
 }
 
-export const resentRegistrationDate = state => {
-  return formattedDateTime(safeGet(state, 'fetchDetails.details.records.user.last_registration_resubmit_date_time', ''))
-}
-
 export const assignedRoles = state => {
   const assignedRole = safeGet(state, 'fetchDetails.details.records.user.roles', [])
   return formatRoles(assignedRole, rolesList(state))

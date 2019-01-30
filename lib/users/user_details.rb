@@ -31,6 +31,5 @@ module Users
     attribute :racfid, Types::String.optional
     attribute :roles, Types::Array.optional
     attribute :auth_header, Types::String.optional
-    attribute :last_registration_resubmit_date_time, Types::String.optional
   end
 end
