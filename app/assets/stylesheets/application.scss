@@ -38,13 +38,23 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+.col-xs-5 {
+  width: 40%;
+}
+
+.page-buttons {
+  background-color: white;
+  box-shadow: black;
+  color: black;
+  height: 40px;
+  margin: 4px;
+  width: 12rem;
+  text-transform: none;
+}
+
 .col-md-3 {
   padding-left: 0;
   word-break: break-all;
-}
-
-.col-md-1 {
-  padding-left: 0;
 }
 
 .react-bs-container-body {

@@ -68,9 +68,7 @@ describe('UsersList', () => {
     })
 
     it('checks card component props', () => {
-      expect(wrapper.find('Cards').props().cardHeaderButton).toBe(true)
       expect(wrapper.find('Cards').props().cardHeaderText).toBe('County: CountyName')
-      expect(wrapper.find('Cards').props().headerBtnName).toBe('+ Add a user')
     })
 
     it('cardHeaderText is passed to Card props as value', () => {
@@ -98,9 +96,7 @@ describe('UsersList', () => {
           cardHeaderValue="State Administrator view"
         />
       )
-      expect(wrapperLocal.find('Cards').props().cardHeaderButton).toBe(true)
       expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('State Administrator view')
-      expect(wrapperLocal.find('Cards').props().headerBtnName).toBe('+ Add a user')
     })
 
     it('renders PageHeader component', () => {

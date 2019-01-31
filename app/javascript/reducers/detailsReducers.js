@@ -4,7 +4,6 @@ function fetchDetails(
   state = {
     details: null,
     fetching: false,
-    isEdit: false,
     displayAlert: false,
     disableActionBtn: false,
     resendEmailUserId: [],
@@ -27,8 +26,8 @@ function fetchDetails(
         ...state,
         fetching: false,
         details: userRecords,
+        disableActionBtn: true,
         fetchDetailsError: null,
-        isEdit: false,
         resendEmailUserId: state.resendEmailUserId,
         initialDetails: userRecords.records,
       }
@@ -53,15 +52,6 @@ function fetchDetails(
         saveSuccessAlert: null,
       }
 
-    case actionTypes.HANDLE_EDIT_BUTTON_CHANGE:
-      return {
-        ...state,
-        isEdit: action.payload.value,
-        displayAlert: false,
-        disableActionBtn: true,
-        saveSuccessAlert: null,
-      }
-
     case actionTypes.SAVE_USER_DETAILS_API_CALL_REQUEST:
       return { ...state, fetching: true, saveDetailsError: null }
 
@@ -70,7 +60,6 @@ function fetchDetails(
         ...state,
         fetching: false,
         saveDetailsError: null,
-        isEdit: false,
         displayAlert: true,
         initialDetails: state.details.records,
         saveSuccessAlert: action.successAlert,
@@ -80,7 +69,6 @@ function fetchDetails(
       return {
         ...state,
         fetching: false,
-        isEdit: true,
         saveDetailsError: action.error,
         displayAlert: true,
       }

@@ -2,22 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Cards from '../../common/Card'
 import ShowField from '../../common/ShowField'
-import { Button } from 'react-wood-duck'
 
 /* eslint camelcase: 0 */
 
 const UserDetailShow = ({
   details,
-  onEdit,
   startDate,
-  disableEditBtn,
   accountStatus,
   userStatus,
   userStatusDescription,
   assignedPermissions,
   officeName,
-  onResendInvite,
-  disableResendEmailButton,
   assignedRole,
   lastLoginDateTime,
   officePhoneNumber,
@@ -25,12 +20,7 @@ const UserDetailShow = ({
 }) => (
   <div className="row">
     <div className="col-md-12">
-      <Cards
-        cardHeaderText={`County: ${details.county_name}`}
-        cardHeaderButton={true}
-        onEdit={onEdit}
-        disabled={disableEditBtn}
-      >
+      <Cards cardHeaderText={`County: ${details.county_name}`}>
         <div className="col-md-12">
           <div className="row">
             <div className="col-md-3">
@@ -76,23 +66,7 @@ const UserDetailShow = ({
             <div className="col-md-3">
               <ShowField label="User Status">
                 {userStatus}
-                <div>
-                  <div className="value-text-color">
-                    {userStatusDescription}
-                    {details.status === 'FORCE_CHANGE_PASSWORD' && (
-                      <div>
-                        <div className="resend-email-btn">
-                          <Button
-                            btnClassName="primary"
-                            btnName="Resend Invite"
-                            onClick={onResendInvite}
-                            disabled={disableEditBtn || disableResendEmailButton}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <div className="value-text-color">{userStatusDescription}</div>
               </ShowField>
             </div>
             <div className="col-md-3">
@@ -114,14 +88,10 @@ UserDetailShow.propTypes = {
   userStatus: PropTypes.string,
   userStatusDescription: PropTypes.string,
   accountStatus: PropTypes.string,
-  onResendInvite: PropTypes.func,
   assignedRole: PropTypes.string,
-  disableResendEmailButton: PropTypes.bool,
   assignedPermissions: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  onEdit: PropTypes.func,
   startDate: PropTypes.string,
   lastLoginDateTime: PropTypes.string,
-  disableEditBtn: PropTypes.bool,
   officePhoneNumber: PropTypes.string,
   workerPhoneNumber: PropTypes.string,
 }

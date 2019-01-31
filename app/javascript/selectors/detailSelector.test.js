@@ -1,6 +1,6 @@
 import {
   selectDetailRecords,
-  checkEditDisable,
+  isUserEditable,
   fetchingStatus,
   selectUserDetailObject,
   disableRolesDropDown,
@@ -318,25 +318,30 @@ describe('selectors', () => {
     })
   })
 
-  describe('#checkEditDisable', () => {
-    it('return true when editable is false', () => {
-      const state = getState({ isDetailsEditable: false })
-      expect(checkEditDisable(state)).toEqual(true)
-    })
-
-    it('return the false if editable is true', () => {
+  describe('#isUserEditable', () => {
+    it('returns true when user is editable', () => {
       const state = getState({ isDetailsEditable: true })
-      expect(checkEditDisable(state)).toEqual(false)
+      expect(isUserEditable(state)).toEqual(true)
     })
 
-    it('return the true if editable is null', () => {
+    it('returns false when user is not editable', () => {
+      const state = getState({ isDetailsEditable: false })
+      expect(isUserEditable(state)).toEqual(false)
+    })
+
+    it('returns false if editable is null', () => {
       const state = getState({ isDetailsEditable: null })
-      expect(checkEditDisable(state)).toEqual(true)
+      expect(isUserEditable(state)).toEqual(false)
     })
 
-    it('return true if editable is undefined ', () => {
+    it('return false if editable is undefined ', () => {
       const state = getState({ isDetailsEditable: undefined })
-      expect(checkEditDisable(state)).toEqual(true)
+      expect(isUserEditable(state)).toEqual(false)
+    })
+
+    it('return false if editable is not available ', () => {
+      const state = getState({ fetchDetails: {} })
+      expect(isUserEditable(state)).toEqual(false)
     })
   })
 

@@ -8,6 +8,8 @@ import UserMessage from '../../common/UserMessage'
 import Cards from '../../common/Card'
 import ChangeLog from './ChangeLog'
 import CWSPermissions from './CWSPermissions'
+import Notes from './Notes'
+import PageHeaderButtons from '../../common/PageHeaderButtons'
 
 /* eslint camelcase: 0 */
 export default class UserDetail extends Component {
@@ -41,12 +43,7 @@ export default class UserDetail extends Component {
     this.setState({ resendEmailAlert: true })
   }
 
-  onEditClick = () => {
-    this.props.actions.handleEditButtonChangeAction(true)
-  }
-
-  onCancel = () => {
-    this.props.actions.handleEditButtonChangeAction(false)
+  onReset = () => {
     this.props.actions.fetchDetailsActions(this.props.match.params.id)
     this.props.actions.clearAddedUserDetailActions()
     this.setState({ resendEmailAlert: false })
@@ -90,68 +87,59 @@ export default class UserDetail extends Component {
   }
 
   renderCards = (
-    possiblePermissionsList,
     details,
-    disableResendEmailButton,
+    possiblePermissionsList,
     possibleRolesList,
     isRolesDisabled,
-    disableActionBtn,
-    disableEditBtn,
-    accountStatus,
-    assignedPermissions,
     startDate,
-    userStatusDescription,
     userStatus,
+    userStatusDescription,
     officeName,
     isEmailValid,
     assignedRole,
+    accountStatus,
+    assignedPermissions,
     lastLoginDateTime,
     officePhoneNumber,
-    workerPhoneNumber,
-    auditEvents,
     isPhoneNumberValid,
+    workerPhoneNumber,
     unformattedPhoneNumber,
-    phoneExtensionNumber
+    phoneExtensionNumber,
+    disableResendEmailButton,
+    auditEvents
   ) => {
     return details && details.id ? (
       <div>
-        {this.props.isEdit ? (
+        {this.props.isUserEditable ? (
           <UserDetailEdit
             details={details}
-            selectedPermissions={details.permissions}
-            onCancel={this.onCancel}
-            onSave={this.onSaveDetails}
-            onDropDownChange={this.handleDropDownChange}
-            onInputChange={this.handleInputChange}
-            disableActionBtn={disableActionBtn}
+            possiblePermissionsList={possiblePermissionsList}
             possibleRolesList={possibleRolesList}
             isRolesDisabled={isRolesDisabled}
+            onDropDownChange={this.handleDropDownChange}
             startDate={startDate}
-            userStatusDescription={userStatusDescription}
             userStatus={userStatus}
+            userStatusDescription={userStatusDescription}
             officeName={officeName}
+            onInputChange={this.handleInputChange}
             isEmailValid={isEmailValid}
-            possiblePermissionsList={possiblePermissionsList}
-            assignedRole={assignedRole}
             lastLoginDateTime={lastLoginDateTime}
             officePhoneNumber={officePhoneNumber}
             isPhoneNumberValid={isPhoneNumberValid}
             unformattedPhoneNumber={unformattedPhoneNumber}
             phoneExtensionNumber={phoneExtensionNumber}
+            onResendInvite={this.onResendInvite}
+            disableResendEmailButton={disableResendEmailButton}
           />
         ) : (
           <UserDetailShow
             details={details}
-            onEdit={this.onEditClick}
-            disableEditBtn={disableEditBtn}
             startDate={startDate}
             accountStatus={accountStatus}
-            assignedPermissions={assignedPermissions}
             userStatus={userStatus}
             userStatusDescription={userStatusDescription}
+            assignedPermissions={assignedPermissions}
             officeName={officeName}
-            onResendInvite={this.onResendInvite}
-            disableResendEmailButton={disableResendEmailButton}
             assignedRole={assignedRole}
             lastLoginDateTime={lastLoginDateTime}
             officePhoneNumber={officePhoneNumber}
@@ -165,28 +153,42 @@ export default class UserDetail extends Component {
               <CWSPermissions />
             </div>
             <div className="col-md-8">
-              <ChangeLog
-                auditEvents={auditEvents}
-                permissionsList={possiblePermissionsList}
-                rolesList={possibleRolesList}
-              />
+              <Notes userNotes={''} />
             </div>
           </div>
+        </div>
+        <div className="col-md-12">
+          <ChangeLog
+            auditEvents={auditEvents}
+            permissionsList={possiblePermissionsList}
+            rolesList={possibleRolesList}
+          />
         </div>
       </div>
     ) : (
       <div className="row">
         <div className="col-md-12">
-          <Cards cardHeaderText="User not found" cardHeaderButton={false} disabled={this.props.disableEditBtn} />
+          <Cards cardHeaderText="User not found" />
         </div>
       </div>
+    )
+  }
+
+  pageButton = () => {
+    return (
+      <PageHeaderButtons
+        isUserEditable={this.props.isUserEditable}
+        onSaveDetails={this.onSaveDetails}
+        onReset={this.onReset}
+        disableButtons={this.props.disableActionBtn}
+      />
     )
   }
 
   render() {
     return (
       <div>
-        <PageHeader pageTitle="User Profile" button="" />
+        <PageHeader pageTitle="User Profile" button={this.pageButton()} />
         <div className="container">
           <div className="col-md-12">
             Back to:{' '}
@@ -205,28 +207,27 @@ export default class UserDetail extends Component {
             </Cards>
           ) : (
             this.renderCards(
-              this.props.possiblePermissionsList,
               this.props.details,
-              this.props.disableResendEmailButton,
+              this.props.possiblePermissionsList,
               this.props.possibleRolesList,
               this.props.isRolesDisabled,
-              this.props.disableActionBtn,
-              this.props.disableEditBtn,
-              this.props.accountStatus,
-              this.props.assignedPermissions,
               this.props.startDate,
-              this.props.userStatusDescription,
               this.props.userStatus,
+              this.props.userStatusDescription,
               this.props.officeName,
               this.props.isEmailValid,
               this.props.assignedRole,
+              this.props.accountStatus,
+              this.props.assignedPermissions,
               this.props.lastLoginDateTime,
               this.props.officePhoneNumber,
-              this.props.workerPhoneNumber,
-              this.props.auditEvents,
               this.props.isPhoneNumberValid,
+              this.props.workerPhoneNumber,
               this.props.unformattedPhoneNumber,
-              this.props.phoneExtensionNumber
+              this.props.phoneExtensionNumber,
+              this.props.disableResendEmailButton,
+              this.props.auditEvents,
+              this.props.isUserEditable
             )
           )}
         </div>
@@ -236,19 +237,17 @@ export default class UserDetail extends Component {
 }
 
 UserDetail.propTypes = {
-  isEdit: PropTypes.bool,
   details: PropTypes.object,
+  updatedDetails: PropTypes.object,
   initialDetails: PropTypes.object,
-  assignedPermissions: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   id: PropTypes.string,
-  dashboardUrl: PropTypes.string,
-  dashboardClickHandler: PropTypes.func,
   actions: PropTypes.object.isRequired,
   fetchDetailsError: PropTypes.string,
   userDetailError: PropTypes.object,
+  isUserEditable: PropTypes.bool,
   disableResendEmailButton: PropTypes.bool,
-  disableEditBtn: PropTypes.bool,
   XHRStatus: PropTypes.string,
+  assignedPermissions: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   possibleRolesList: PropTypes.array,
   possiblePermissionsList: PropTypes.array,
   accountStatus: PropTypes.string,
@@ -263,7 +262,6 @@ UserDetail.propTypes = {
   disableActionBtn: PropTypes.bool,
   match: PropTypes.object,
   isEmailValid: PropTypes.bool,
-  updatedDetails: PropTypes.object,
   officePhoneNumber: PropTypes.string,
   workerPhoneNumber: PropTypes.string,
   auditEvents: PropTypes.array,
@@ -271,6 +269,8 @@ UserDetail.propTypes = {
   saveSuccessMsg: PropTypes.string,
   unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  dashboardUrl: PropTypes.string,
+  dashboardClickHandler: PropTypes.func,
 }
 
 UserDetail.defaultProps = {

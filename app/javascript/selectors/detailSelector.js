@@ -67,7 +67,7 @@ export const disableActionButton = state => {
   return safeGet(state, 'fetchDetails.disableActionBtn')
 }
 
-export const checkEditDisable = state => !safeGet(state, 'fetchDetails.details.records.edit_details.editable')
+export const isUserEditable = state => safeGet(state, 'fetchDetails.details.records.edit_details.editable') || false
 
 export const disableRolesDropDown = state => !safeGet(state, 'fetchDetails.details.records.edit_details.roles.editable')
 

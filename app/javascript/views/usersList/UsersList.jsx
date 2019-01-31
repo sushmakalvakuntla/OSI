@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect } from 'react-router-dom'
 import { Link as LinkRWD, InputComponent, PageHeader, Alert } from 'react-wood-duck'
-import { CheckboxBank } from '@cwds/components'
+import { CheckboxBank, Button } from '@cwds/components'
 import DropDown from '../../common/DropDown'
 import Cards from '../../common/Card'
 import ReactTable from 'react-table'
@@ -179,15 +179,27 @@ class UserList extends PureComponent {
           <Redirect push to="/verify" />
         ) : (
           <div>
-            <PageHeader pageTitle="Manage Users" button="" />
+            <PageHeader
+              pageTitle="Manage Users"
+              button={
+                <div className="pull-right">
+                  <Button
+                    color="default"
+                    size="lg"
+                    type="cancel"
+                    id="resetButton"
+                    className="page-buttons btn btn-default"
+                    tabIndex="-2"
+                    onClick={this.handleOnAdd}
+                  >
+                    + ADD A USER
+                  </Button>
+                </div>
+              }
+            />
             <div className="container">
               {this.renderBreadcrumb()}
-              <Cards
-                cardHeaderText={cardHeaderValue}
-                cardHeaderButton={true}
-                headerBtnName="+ Add a user"
-                onEdit={this.handleOnAdd}
-              >
+              <Cards cardHeaderText={cardHeaderValue}>
                 <form onSubmit={this.submitSearch} autoComplete="off">
                   <div className="row">
                     <div className="col-md-4 col-sm-6">

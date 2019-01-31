@@ -127,6 +127,71 @@ describe('UserDetailEdit', () => {
     })
   })
 
+  describe('Resend invite', () => {
+    const details = {
+      id: 'id',
+      first_name: 'Firstname0',
+      last_name: 'Lastname0',
+      middle_name: 'Middlename0',
+      county_name: 'MyCounty',
+      status: 'FORCE_CHANGE_PASSWORD',
+      roles: ['ROLE1', 'ROLE2'],
+      permissions: ['x', 'y'],
+      racfid: 'my RACFID',
+      email: 'hello@gmail.com',
+    }
+    const wrapper = shallow(
+      <UserDetailEdit
+        details={details}
+        onDropDownChange={onDropDownChangeSpy}
+        possibleRolesList={possibleRoles}
+        possiblePermissionsList={possiblePermissionsList}
+        rolesList={rolesList}
+        onInputChange={onInputChangeSpy}
+      />
+    )
+
+    it('Resend invite button is available when status is FORCE_CHANGE_PASSWORD', () => {
+      expect(wrapper.find('Button').length).toBe(1)
+    })
+
+    it('Resend invite button is not available when status is CONFIRMED', () => {
+      const details = {
+        id: 'id',
+        first_name: 'Firstname0',
+        last_name: 'Lastname0',
+        middle_name: 'Middlename0',
+        county_name: 'MyCounty',
+        status: 'CONFIRMED',
+        roles: ['ROLE1', 'ROLE2'],
+        permissions: ['x', 'y'],
+        racfid: 'my RACFID',
+        email: 'hello@gmail.com',
+      }
+      const wrapper = shallow(
+        <UserDetailEdit
+          details={details}
+          onDropDownChange={onDropDownChangeSpy}
+          possibleRolesList={possibleRoles}
+          possiblePermissionsList={possiblePermissionsList}
+          rolesList={rolesList}
+          onInputChange={onInputChangeSpy}
+        />
+      )
+      expect(wrapper.find('Button').length).toBe(0)
+    })
+
+    it('Resend button is disabled if user is editable & after registration email has been sent', () => {
+      wrapper.setProps({ disableResendEmailButton: true })
+      expect(wrapper.find('Button').props().disabled).toBe(true)
+    })
+
+    it('Resend button is disabled if user is editable & after registration email has not been sent', () => {
+      wrapper.setProps({ disableResendEmailButton: false })
+      expect(wrapper.find('Button').props().disabled).toBe(false)
+    })
+  })
+
   describe('#onChange', () => {
     it('#Assign Status, onStatusChange function is called when onChange event triggered ', () => {
       const value = 'Active'

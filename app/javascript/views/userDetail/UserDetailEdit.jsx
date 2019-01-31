@@ -2,16 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Cards from '../../common/Card'
 import ShowField from '../../common/ShowField'
-import { InputComponent } from 'react-wood-duck'
+import { InputComponent, Button } from 'react-wood-duck'
 import DropDown from '../../common/DropDown'
 import { STATUS } from '../../_constants/constants'
 /* eslint camelcase: 0 */
 
 const UserDetailEdit = ({
   details,
-  onCancel,
-  onSave,
-  disableActionBtn,
   possiblePermissionsList,
   possibleRolesList,
   isRolesDisabled,
@@ -27,19 +24,12 @@ const UserDetailEdit = ({
   isPhoneNumberValid,
   unformattedPhoneNumber,
   phoneExtensionNumber,
+  onResendInvite,
+  disableResendEmailButton,
 }) => (
   <div className="row">
     <div className="col-md-12">
-      <Cards
-        cardHeaderText={`County: ${details.county_name}`}
-        cardActionButtons
-        cardActionButton1
-        cardActionButton2
-        handleOnClickButton1={onCancel}
-        handleOnClickButton2={onSave}
-        disableActionBtn={disableActionBtn}
-        leftActionBtnName="Cancel"
-      >
+      <Cards cardHeaderText={`County: ${details.county_name}`}>
         <div className="col-md-12">
           <div className="row">
             <div className="col-md-3">
@@ -127,7 +117,21 @@ const UserDetailEdit = ({
               <div className="col-md-3">
                 <ShowField label="User Status">
                   {userStatus}
-                  <div className="value-text-color">{userStatusDescription}</div>
+                  <div className="value-text-color">
+                    {userStatusDescription}
+                    {details.status === 'FORCE_CHANGE_PASSWORD' && (
+                      <div>
+                        <div className="resend-email-btn">
+                          <Button
+                            btnClassName="primary"
+                            btnName="Resend Invite"
+                            onClick={onResendInvite}
+                            disabled={disableResendEmailButton}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </ShowField>
               </div>
               <div className="col-md-3">
@@ -164,16 +168,10 @@ const UserDetailEdit = ({
 UserDetailEdit.propTypes = {
   officeName: PropTypes.string,
   details: PropTypes.object,
-  onCancel: PropTypes.func,
   startDate: PropTypes.string,
   lastLoginDateTime: PropTypes.string,
-  onSave: PropTypes.func,
-  disableActionBtn: PropTypes.bool,
   onDropDownChange: PropTypes.func,
-  onStatusChange: PropTypes.func,
-  onRoleChange: PropTypes.func,
   onInputChange: PropTypes.func,
-  onPermissionChange: PropTypes.func,
   userStatusDescription: PropTypes.string,
   userStatus: PropTypes.string,
   possibleRolesList: PropTypes.array,
@@ -183,6 +181,7 @@ UserDetailEdit.propTypes = {
   possiblePermissionsList: PropTypes.array,
   isRolesDisabled: PropTypes.bool,
   isPhoneNumberValid: PropTypes.bool,
+  onResendInvite: PropTypes.func,
   unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }

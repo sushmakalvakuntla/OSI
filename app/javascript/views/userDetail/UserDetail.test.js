@@ -3,6 +3,7 @@ import { shallow } from 'enzyme'
 import { Link, MemoryRouter } from 'react-router-dom'
 import { Link as LinkRWD } from 'react-wood-duck'
 import UserDetail from './UserDetail'
+import PageHeaderButtons from '../../common/PageHeaderButtons'
 
 describe('UserDetail', () => {
   let container
@@ -16,7 +17,6 @@ describe('UserDetail', () => {
   let mockResendRegistrationEmailActions
   let mockClearAddedUserDetailActions
   let mockHandleDropDownChangeAction
-  let mockHandleEditButtonChangeAction
   let mockClearSaveAlertAction
   let mockHandleInputChangeAction
 
@@ -33,14 +33,9 @@ describe('UserDetail', () => {
     mockClearSaveAlertAction = jest.fn()
     mockHandleInputChangeAction = jest.fn()
     const initialDetails = { id: '12345' }
-    const match = {
-      params: {
-        id: '12345',
-      },
-    }
+    const match = { params: { id: '12345' } }
     const details = { id: '12345', email: '' }
     const XHRStatus = 'ready'
-    mockHandleEditButtonChangeAction = jest.fn()
     container = shallow(
       <MemoryRouter>
         <UserDetail
@@ -58,7 +53,6 @@ describe('UserDetail', () => {
             clearDetails: mockClearDetailsActions,
             saveUserDetailsActions: mockSaveUserDetailsActions,
             handleDropdownChangeAction: mockHandleDropDownChangeAction,
-            handleEditButtonChangeAction: mockHandleEditButtonChangeAction,
             resendRegistrationEmailActions: mockResendRegistrationEmailActions,
             clearAddedUserDetailActions: mockClearAddedUserDetailActions,
             clearSaveAlert: mockClearSaveAlertAction,
@@ -99,13 +93,6 @@ describe('UserDetail', () => {
       })
     })
 
-    describe('#onEditClick', () => {
-      it('toggles the isEdit flag', () => {
-        instance.onEditClick()
-        expect(mockHandleEditButtonChangeAction).toHaveBeenCalledWith(true)
-      })
-    })
-
     describe('#onInputChange', () => {
       it('should set the email state when event is triggered', () => {
         const instance = wrapper.instance()
@@ -141,10 +128,25 @@ describe('UserDetail', () => {
     })
   })
 
-  describe('#onCancel', () => {
+  describe('#pageButton', () => {
+    it('renders the buttons ', () => {
+      const onReset = wrapper.instance().onReset
+      const onSaveDetails = wrapper.instance().onSaveDetails
+      wrapper.setProps({ isUserEditable: true, disableActionBtn: true })
+      expect(wrapper.instance().pageButton()).toEqual(
+        <PageHeaderButtons
+          onReset={onReset}
+          onSaveDetails={onSaveDetails}
+          isUserEditable={true}
+          disableButtons={true}
+        />
+      )
+    })
+  })
+
+  describe('#onReset', () => {
     it('calls the appropriate function', () => {
-      instance.onCancel()
-      expect(mockHandleEditButtonChangeAction).toHaveBeenCalledWith(false)
+      instance.onReset()
       expect(mockFetchDetailsActions).toHaveBeenCalledWith('12345')
     })
   })
@@ -173,15 +175,9 @@ describe('UserDetail', () => {
 
   describe('#onSaveDetails', () => {
     it('calls the service to patch the user record', () => {
-      wrapper.setProps({
-        updatedDetails: {
-          email: 'test@gmail.com',
-        },
-      })
+      wrapper.setProps({ updatedDetails: { email: 'test@gmail.com' } })
       instance.onSaveDetails()
-      expect(mockSaveUserDetailsActions).toHaveBeenCalledWith('12345', {
-        email: 'test@gmail.com',
-      })
+      expect(mockSaveUserDetailsActions).toHaveBeenCalledWith('12345', { email: 'test@gmail.com' })
       expect(mockClearAddedUserDetailActions).toHaveBeenCalledWith()
     })
   })
@@ -202,26 +198,22 @@ describe('UserDetail', () => {
 
     describe('renders cards', () => {
       it('should display <UserDetailShow/>', () => {
-        wrapper.setState({
-          isEdit: false,
-        })
+        wrapper.setProps({ isUserEditable: false })
         expect(wrapper.find('UserDetailShow').length).toBe(1)
+        wrapper.setProps({ isUserEditable: true })
+        expect(wrapper.find('UserDetailShow').length).toBe(0)
       })
 
       it('should contain <UserMessage/> to display the alert', () => {
-        wrapper.setProps({
-          fetchDetailsError: 'Unauthorized',
-        })
+        wrapper.setProps({ fetchDetailsError: 'Unauthorized' })
         expect(wrapper.find('UserMessage').length).toBe(1)
       })
 
       it('should display <UserDetailEdit/>', () => {
-        wrapper.setProps({
-          isEdit: true,
-          disableActionBtn: true,
-        })
+        wrapper.setProps({ isUserEditable: true })
         expect(wrapper.find('UserDetailEdit').length).toBe(1)
-        expect(wrapper.find('UserDetailEdit').props().disableActionBtn).toBe(true)
+        wrapper.setProps({ isUserEditable: false })
+        expect(wrapper.find('UserDetailEdit').length).toBe(0)
       })
 
       it('should display <ChangeLog/> ', () => {
@@ -241,7 +233,7 @@ describe('UserDetail', () => {
       })
 
       it('renders card with text indicating no user found', () => {
-        wrapper.setProps({ isEdit: true, XHRStatus: 'ready', details: {} })
+        wrapper.setProps({ XHRStatus: 'ready', details: {} })
         expect(wrapper.find('Cards').length).toBe(1)
         expect(wrapper.find('Cards').props().cardHeaderText).toBe('User not found')
       })

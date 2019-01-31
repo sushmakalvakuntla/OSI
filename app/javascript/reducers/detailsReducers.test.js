@@ -24,8 +24,8 @@ describe('reducer', () => {
     expect(fetchDetails(state, responseAction)).toEqual({
       fetching: false,
       details: records,
-      isEdit: false,
       fetchDetailsError: null,
+      disableActionBtn: true,
       initialDetails: records.records,
     })
   })
@@ -89,20 +89,6 @@ describe('reducer', () => {
     })
   })
 
-  it('handles HANDLE_EDIT_BUTTON_CHANGE', () => {
-    const value = true
-    const handleEditButtonAction = { type: actionTypes.HANDLE_EDIT_BUTTON_CHANGE, payload: { value } }
-    const state = { details: null, fetching: false }
-    expect(fetchDetails(state, handleEditButtonAction)).toEqual({
-      details: null,
-      fetching: false,
-      isEdit: true,
-      displayAlert: false,
-      disableActionBtn: true,
-      saveSuccessAlert: null,
-    })
-  })
-
   it('handles unexpected actiontypes gracefully', () => {
     const unexpectedAction = { type: 'END_OF_THE_WORLD', details: { hello: 'world' } }
     const state = { details: null, fetching: true, error: null }
@@ -114,7 +100,6 @@ describe('reducer', () => {
     const state = {
       details: null,
       fetching: false,
-      isEdit: false,
       displayAlert: false,
       disableActionBtn: false,
       resendEmailUserId: [],
@@ -131,7 +116,6 @@ describe('reducer', () => {
       initialDetails: {},
       fetching: false,
       error: null,
-      isEdit: false,
       saveSuccessAlert: null,
     }
     let after
@@ -176,7 +160,6 @@ describe('reducer', () => {
       ...state,
       fetching: false,
       error: null,
-      isEdit: false,
       saveDetailsError: null,
       displayAlert: true,
       initialDetails: { user: { email: 'email@gmail.com' } },
@@ -204,7 +187,6 @@ describe('reducer', () => {
       ...state,
       fetching: false,
       error: null,
-      isEdit: false,
       saveDetailsError: null,
       displayAlert: true,
       initialDetails: { user: { email: 'email@gmail.com' } },
@@ -226,7 +208,6 @@ describe('reducer', () => {
       fetching: false,
       saveDetailsError: 'error happened',
       error: null,
-      isEdit: true,
       displayAlert: true,
     })
   })
