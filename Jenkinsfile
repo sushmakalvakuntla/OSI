@@ -28,6 +28,11 @@ def node_to_run_on() {
 
 node(node_to_run_on()) {
   def app
+  properties([
+    parameters([
+      string(name: 'INCREMENT_VERSION', defaultValue: '', description: 'major, minor, or patch')
+    ])
+  ])
     try {
       deleteDir()
         stage('Checkout') {
@@ -41,7 +46,7 @@ node(node_to_run_on()) {
       }
 
       stage('Increment Tag') {
-        newTag = newSemVer()
+        newTag = newSemVer(env.APP_VERSION)
       }
 
       stage('Build Docker Image') {
