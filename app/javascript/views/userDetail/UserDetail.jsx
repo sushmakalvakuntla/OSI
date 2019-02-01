@@ -86,28 +86,35 @@ export default class UserDetail extends Component {
     return null
   }
 
-  renderCards = (
-    details,
-    possiblePermissionsList,
-    possibleRolesList,
-    isRolesDisabled,
-    startDate,
-    userStatus,
-    userStatusDescription,
-    officeName,
-    isEmailValid,
-    assignedRole,
-    accountStatus,
-    assignedPermissions,
-    lastLoginDateTime,
-    officePhoneNumber,
-    isPhoneNumberValid,
-    workerPhoneNumber,
-    unformattedPhoneNumber,
-    phoneExtensionNumber,
-    disableResendEmailButton,
-    auditEvents
-  ) => {
+  getChangeLogAdminDetails = value => {
+    this.props.actions.fetchChangeLogAdminDetailsActions(value)
+  }
+
+  renderCards = () => {
+    const {
+      details,
+      possiblePermissionsList,
+      possibleRolesList,
+      isRolesDisabled,
+      startDate,
+      userStatus,
+      userStatusDescription,
+      officeName,
+      isEmailValid,
+      assignedRole,
+      accountStatus,
+      assignedPermissions,
+      lastLoginDateTime,
+      officePhoneNumber,
+      isPhoneNumberValid,
+      workerPhoneNumber,
+      unformattedPhoneNumber,
+      phoneExtensionNumber,
+      disableResendEmailButton,
+      auditEvents,
+      changeLogAdminDetails,
+      changeLogAdminOfficeName,
+    } = this.props
     return details && details.id ? (
       <div>
         {this.props.isUserEditable ? (
@@ -155,14 +162,17 @@ export default class UserDetail extends Component {
             <div className="col-md-8">
               <Notes userNotes={''} />
             </div>
+            <div className="col-md-12">
+              <ChangeLog
+                auditEvents={auditEvents}
+                getAdminDetails={this.getChangeLogAdminDetails}
+                adminDetails={changeLogAdminDetails}
+                userDetails={details}
+                userOfficeName={officeName}
+                adminOfficeName={changeLogAdminOfficeName}
+              />
+            </div>
           </div>
-        </div>
-        <div className="col-md-12">
-          <ChangeLog
-            auditEvents={auditEvents}
-            permissionsList={possiblePermissionsList}
-            rolesList={possibleRolesList}
-          />
         </div>
       </div>
     ) : (
@@ -206,29 +216,7 @@ export default class UserDetail extends Component {
               <span>{'Loading...'}</span>
             </Cards>
           ) : (
-            this.renderCards(
-              this.props.details,
-              this.props.possiblePermissionsList,
-              this.props.possibleRolesList,
-              this.props.isRolesDisabled,
-              this.props.startDate,
-              this.props.userStatus,
-              this.props.userStatusDescription,
-              this.props.officeName,
-              this.props.isEmailValid,
-              this.props.assignedRole,
-              this.props.accountStatus,
-              this.props.assignedPermissions,
-              this.props.lastLoginDateTime,
-              this.props.officePhoneNumber,
-              this.props.isPhoneNumberValid,
-              this.props.workerPhoneNumber,
-              this.props.unformattedPhoneNumber,
-              this.props.phoneExtensionNumber,
-              this.props.disableResendEmailButton,
-              this.props.auditEvents,
-              this.props.isUserEditable
-            )
+            this.renderCards()
           )}
         </div>
       </div>
@@ -269,6 +257,8 @@ UserDetail.propTypes = {
   saveSuccessMsg: PropTypes.string,
   unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  changeLogAdminOfficeName: PropTypes.string,
+  changeLogAdminDetails: PropTypes.object,
   dashboardUrl: PropTypes.string,
   dashboardClickHandler: PropTypes.func,
 }

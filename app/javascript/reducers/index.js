@@ -7,6 +7,7 @@ import validateNewUser from './validateNewUserReducer'
 import addUser from './addUserReducers'
 import fetchRoles from './rolesReducers'
 import resendRegistrationEmail from './resendRegistrationEmailReducers'
+import fetchChangeLogDetails from './changeLogDetailsReducers'
 const reducer = combineReducers({
   userList,
   fetchDetails,
@@ -16,6 +17,7 @@ const reducer = combineReducers({
   addUser,
   fetchRoles,
   resendRegistrationEmail,
+  fetchChangeLogDetails,
 })
 
 export default reducer

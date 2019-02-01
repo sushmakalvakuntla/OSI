@@ -19,6 +19,7 @@ describe('UserDetail', () => {
   let mockHandleDropDownChangeAction
   let mockClearSaveAlertAction
   let mockHandleInputChangeAction
+  let mockFetchChangeLogAdminDetailsAction
 
   beforeEach(() => {
     // Register mock dispatchActions
@@ -29,6 +30,7 @@ describe('UserDetail', () => {
     mockResendRegistrationEmailActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockFetchPermissionsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockFetchRolesActions = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockFetchChangeLogAdminDetailsAction = jest.fn()
     mockHandleDropDownChangeAction = jest.fn()
     mockClearSaveAlertAction = jest.fn()
     mockHandleInputChangeAction = jest.fn()
@@ -57,6 +59,7 @@ describe('UserDetail', () => {
             clearAddedUserDetailActions: mockClearAddedUserDetailActions,
             clearSaveAlert: mockClearSaveAlertAction,
             handleInputChangeAction: mockHandleInputChangeAction,
+            fetchChangeLogAdminDetailsActions: mockFetchChangeLogAdminDetailsAction,
           }}
           match={match}
         />
@@ -98,6 +101,13 @@ describe('UserDetail', () => {
         const instance = wrapper.instance()
         const myFunction = instance.handleInputChange
         expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      })
+    })
+
+    describe('#getChangeLogAdminDetails', () => {
+      it('should fetch changeLog admin details when event is triggered', () => {
+        const myFunction = wrapper.instance().getChangeLogAdminDetails
+        expect(() => myFunction('someid')).not.toThrow()
       })
     })
 
@@ -217,15 +227,7 @@ describe('UserDetail', () => {
       })
 
       it('should display <ChangeLog/> ', () => {
-        wrapper.setProps({
-          possiblePermissionsList: [{ value: 'permission1', label: 'permissionOne' }],
-          possibleRolesList: [{ value: 'role1', label: 'roleOne' }],
-        })
         expect(wrapper.find('ChangeLog').length).toBe(1)
-        expect(wrapper.find('ChangeLog').props().permissionsList).toEqual([
-          { value: 'permission1', label: 'permissionOne' },
-        ])
-        expect(wrapper.find('ChangeLog').props().rolesList).toEqual([{ value: 'role1', label: 'roleOne' }])
       })
 
       it('should display  <CWSPermissions/>', () => {

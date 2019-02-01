@@ -5,6 +5,7 @@ import {
   HANDLE_DROPDOWN_CHANGE,
   CLEAR_SAVE_ALERT,
   HANDLE_USER_INPUT_CHANGE,
+  FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST,
 } from './actionTypes'
 
 export const handleDropdownChangeAction = (name, value) => ({
@@ -19,6 +20,10 @@ export const handleInputChangeAction = (name, value) => ({
 
 export function fetchDetailsActions(id) {
   return { type: FETCH_DETAILS_API_CALL_REQUEST, payload: { id: id } }
+}
+
+export function fetchChangeLogAdminDetailsActions(id) {
+  return { type: FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST, payload: { id: id } }
 }
 
 export const clearDetails = () => ({

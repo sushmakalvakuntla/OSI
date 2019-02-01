@@ -5,9 +5,11 @@ import {
   saveUserDetailsActions,
   clearSaveAlert,
   handleInputChangeAction,
+  fetchChangeLogAdminDetailsActions,
 } from './detailActions'
 import {
   FETCH_DETAILS_API_CALL_REQUEST,
+  FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST,
   SAVE_USER_DETAILS_API_CALL_REQUEST,
   CLEAR_USER_DETAILS,
   HANDLE_DROPDOWN_CHANGE,
@@ -42,6 +44,16 @@ describe('#fetchDetailsActions', () => {
     const id = 'SOMEID'
     expect(fetchDetailsActions(id)).toEqual({
       type: FETCH_DETAILS_API_CALL_REQUEST,
+      payload: { id: id },
+    })
+  })
+})
+
+describe('#fetchChangeLogAdminDetailsActions', () => {
+  it('returns type and payload', () => {
+    const id = 'SOMEID'
+    expect(fetchChangeLogAdminDetailsActions(id)).toEqual({
+      type: FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST,
       payload: { id: id },
     })
   })

@@ -110,6 +110,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .avatar {
   margin-top: 10px;
+  padding-left: 0;
 }
 
 .modal-title {
@@ -162,8 +163,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .change-made-to-user-info {
-  width: 100%;
-  height: 42px;
   color: #3a3a3a;
   font-size: 15px;
   font-family: initial;
@@ -172,13 +171,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .change-made-by-user-info {
-  width: 100%;
-  height: 42px;
   color: #3a3a3a;
   font-size: 15px;
   font-family: initial;
   font-weight: normal;
-  line-height: 21px;
+  display: 'flex';
 }
 
 .change-details {
@@ -196,11 +193,9 @@ input[type=number]::-webkit-outer-spin-button {
   display: inline;
 }
 
-.notes {
-  height: 30px;
-  color: #3a3a3a;
-  font-family: initial;
-  font-weight: 600;
-  line-height: 45px;
-  font-size: 17px;
+.vertical-line {
+  border-left: 1px solid #b2b2b2;
+  background-color: #fff;
+  padding-left: 0;
+  width: 0;
 }

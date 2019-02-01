@@ -24,6 +24,7 @@ import {
   unformattedPhoneNumber,
   phoneExtension,
 } from '../selectors/detailSelector'
+import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { rolesList } from '../selectors/rolesListSelector'
 import {
   fetchDetailsActions,
@@ -32,6 +33,7 @@ import {
   handleDropdownChangeAction,
   handleInputChangeAction,
   clearSaveAlert,
+  fetchChangeLogAdminDetailsActions,
 } from '../actions/detailActions'
 import { disableResendEmailButton } from '../selectors/resendEmailSelector'
 import { fetchPermissionsActions } from '../actions/permissionsActions'
@@ -45,6 +47,8 @@ function mapStateToProps(state) {
   return {
     details: selectDetailRecords(state),
     updatedDetails: selectModifiedDetails(state),
+    changeLogAdminDetails: selectChangeLogAdminDetails(state),
+    changeLogAdminOfficeName: selectChangeLogAdminOfficeName(state),
     initialDetails: state.fetchDetails.initialDetails,
     id: addUserRecords(state),
     fetchDetailsError: state.fetchDetails.fetchDetailsError,
@@ -90,6 +94,7 @@ function mapDispatchToProps(dispatch) {
     clearSaveAlert,
     handleDropdownChangeAction,
     handleInputChangeAction,
+    fetchChangeLogAdminDetailsActions,
   }
   return {
     actions: bindActionCreators(actions, dispatch),

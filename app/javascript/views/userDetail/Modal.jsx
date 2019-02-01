@@ -13,72 +13,98 @@ export default class ModalComponent extends Component {
     }
   }
   toggle = () => {
+    this.props.getAdminDetails(this.props.changeLogData.user_login)
     this.setState(prevState => ({
       ModalOpen: !prevState.ModalOpen,
     }))
   }
 
-  changeLogDetails = data => {
+  changesMadeTo = () => {
+    const { changeLogData, userDetails, userOfficeName } = this.props
+    return (
+      <div className="col-md-6">
+        <div className="change-made-header">Changes made to</div>
+        <div className="col-md-1 avatar">
+          <Avatar size="lg" />
+        </div>
+        <div className="change-made-to">{changeLogData.event.user_name}</div>
+        <div className="change-made-to-user-info">{changeLogData.event.user_roles}</div>
+        <div
+          className="change-made-to-user-info"
+          style={{
+            display: 'flex',
+            paddingLeft: '29px',
+          }}
+        >
+          <div style={{ paddingRight: '10px' }}>{userDetails.county_name}</div>
+          <div className="col-md-1 vertical-line" id="vertical-line1" />
+          <div>{userOfficeName}</div>
+        </div>
+        <div className="change-made-to-user-info">{userDetails.email}</div>
+      </div>
+    )
+  }
+
+  changesMadeBy = () => {
+    const { changeLogData, adminDetails, adminOfficeName } = this.props
     return (
       <div>
-        <div className="col-md-12">
-          <div className="row">
-            <div className="col-md-6">
-              <div className="change-made-header">Changes made to</div>
-              <div className="col-md-1 avatar">
-                <Avatar size="lg" />
-              </div>
-              <div className="change-made-to">{`${data.event.user_name}`}</div>
-              <div className="change-made-to-user-info">{`${data.event.user_roles}`}</div>
-            </div>
-            <div
-              className="col-md-1"
-              id="vertical-line"
-              style={{
-                borderLeft: '1px solid #B2B2B2',
-                background: '#FFFFFF',
-                height: '100px',
-                width: 0,
-              }}
-            />
-            <div className="col-md-5">
-              <div className="change-made-header">Changes made by</div>
-              <div className="change-made-by">{`${data.event.admin_name}`}</div>
-              <div className="change-made-by-user-info">{`${data.event.admin_role}`}</div>
-            </div>
+        <div className="col-md-1 vertical-line" id="vertical-line2" style={{ height: '100px' }} />
+        <div className="col-md-5">
+          <div className="change-made-header">Changes made by</div>
+          <div className="change-made-by">{changeLogData.event.admin_name}</div>
+          <div className="change-made-by-user-info">{changeLogData.event.admin_role}</div>
+          <div
+            className="change-made-by-user-info"
+            style={{
+              display: 'flex',
+            }}
+          >
+            <div style={{ paddingRight: '10px' }}>{adminDetails.county_name}</div>
+            <div className="col-md-1 vertical-line" id="vertical-line3" />
+            <div>{`${adminOfficeName}`}</div>
           </div>
-          <hr />
+          <div className="change-made-by-user-info">{adminDetails.email}</div>
         </div>
+      </div>
+    )
+  }
+
+  changeDetails = () => {
+    const { changeLogData } = this.props
+    return (
+      <div className="col-md-12">
+        <div className="row">
+          {this.changesMadeTo()}
+          {this.changesMadeBy()}
+        </div>
+        <hr />
         <div className="change-details">
           <div className="col-md-12">
             <div>
               Change date :{'    '}
               <div className="change-details-content" id="changeDate">
-                {checkDate(data.timestamp)}
+                {checkDate(changeLogData.timestamp)}
               </div>
             </div>
             <div>
               Change type :{'    '}
               <div className="change-details-content" id="changeType">
-                {data.event_type}
+                {changeLogData.event_type}
               </div>
             </div>
             <div>
               Change from :{'    '}
               <div className="change-details-content" id="changeFrom">
-                {data.event.old_value}
+                {changeLogData.event.old_value}
               </div>
             </div>
             <div>
               Change to :{'    '}
               <div className="change-details-content" id="changeFrom">
-                {data.event.new_value}
+                {changeLogData.event.new_value}
               </div>
             </div>
-          </div>
-          <div className="col-md-12">
-            <div className="notes">Notes</div>
-            <hr />
           </div>
         </div>
       </div>
@@ -86,7 +112,6 @@ export default class ModalComponent extends Component {
   }
 
   render() {
-    const { data } = this.props
     const closeBtn = (
       <div className="row">
         <button id="close_button" className="btn btn-link closeButton-customizable" type="close" onClick={this.toggle}>
@@ -101,7 +126,7 @@ export default class ModalComponent extends Component {
           <ModalHeader toggle={this.toggle} close={closeBtn}>
             <div className="header">{'Change Log Details'}</div>
           </ModalHeader>
-          <ModalBody className="warning-modal-body">{this.changeLogDetails(data)}</ModalBody>
+          <ModalBody className="warning-modal-body">{this.changeDetails()}</ModalBody>
         </Modal>
       </div>
     )
@@ -112,5 +137,10 @@ ModalComponent.propTypes = {
   oldValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   newValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   comment: PropTypes.oneOfType([PropTypes.string]),
-  data: PropTypes.object,
+  getAdminDetails: PropTypes.func,
+  changeLogData: PropTypes.object,
+  userOfficeName: PropTypes.string,
+  userDetails: PropTypes.object,
+  adminDetails: PropTypes.object,
+  adminOfficeName: PropTypes.string,
 }

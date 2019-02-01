@@ -4,7 +4,7 @@ import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid } from '@cwds/
 import ModalComponent from './Modal'
 import { checkDate } from '../../_utils/formatters'
 
-const columnConfig = [
+const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName) => [
   {
     Header: 'Date/Time',
     accessor: 'timestamp',
@@ -32,12 +32,21 @@ const columnConfig = [
   {
     Header: 'Notes & Details',
     // eslint-disable-next-line react/display-name
-    Cell: row => <ModalComponent data={row.original} />,
+    Cell: row => (
+      <ModalComponent
+        changeLogData={row.original}
+        userDetails={userDetails}
+        getAdminDetails={getAdminDetails}
+        adminDetails={adminDetails}
+        userOfficeName={userOfficeName}
+        adminOfficeName={adminOfficeName}
+      />
+    ),
     minWidth: 50,
   },
 ]
 
-const ChangeLog = ({ auditEvents }) => (
+const ChangeLog = ({ auditEvents, userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName }) => (
   <Rolodex>
     <Card>
       <CardHeader>
@@ -50,7 +59,7 @@ const ChangeLog = ({ auditEvents }) => (
           style={{
             maxHeight: '500px',
           }}
-          columns={columnConfig}
+          columns={columnConfig(userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName)}
           sortable={true}
           className="client-grid audit-events"
           minRows={3}
@@ -72,6 +81,12 @@ const ChangeLog = ({ auditEvents }) => (
 ChangeLog.propTypes = {
   row: PropTypes.node,
   auditEvents: PropTypes.array,
+  changeLogDetails: PropTypes.any,
+  userDetails: PropTypes.object,
+  userOfficeName: PropTypes.string,
+  getAdminDetails: PropTypes.func,
+  adminDetails: PropTypes.object,
+  adminOfficeName: PropTypes.string,
 }
 
 export default ChangeLog

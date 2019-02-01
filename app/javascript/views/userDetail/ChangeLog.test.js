@@ -25,7 +25,9 @@ describe('ChangeLog', () => {
     },
   ]
   beforeEach(() => {
-    wrapper = shallow(<ChangeLog auditEvents={events} />)
+    wrapper = shallow(
+      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
+    )
   })
 
   it('renders the Components ', () => {
@@ -52,7 +54,9 @@ describe('ChangeLog', () => {
   })
 
   it('renders the date field correctly sorted by latest first', () => {
-    const mounted = mount(<ChangeLog auditEvents={events} />)
+    const mounted = mount(
+      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
+    )
     const trs = mounted.find('TrComponent')
     expect(
       trs
@@ -66,7 +70,9 @@ describe('ChangeLog', () => {
   })
 
   it('renders the admin name field with formatted display of admin role', () => {
-    const mounted = mount(<ChangeLog auditEvents={events} />)
+    const mounted = mount(
+      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
+    )
     const trs = mounted.find('TrComponent')
     expect(
       trs

@@ -6,7 +6,8 @@ describe('ChangeLog', () => {
   let wrapper
 
   const props = {
-    data: {
+    getAdminDetails: () => {},
+    changeLogData: {
       event_type: 'User Email Changed',
       timestamp: '2019-01-23 10:09:21',
       event: {
@@ -17,6 +18,16 @@ describe('ChangeLog', () => {
         new_value: 'ChangedValue',
         old_value: 'OldValue',
       },
+    },
+    userDetails: {
+      county_name: 'countyName',
+      email: 'some@email.com',
+    },
+    userOfficeName: 'userOffice',
+    adminOfficeName: 'adminOffice',
+    adminDetails: {
+      county_name: 'countyName',
+      email: 'some@email.com',
     },
   }
   beforeEach(() => {
@@ -39,7 +50,7 @@ describe('ChangeLog', () => {
     expect(instance.state.ModalOpen).toEqual(true)
   })
 
-  describe('changeLogDetails', () => {
+  describe('changesMadeTo', () => {
     it('should render avatar with size large', () => {
       expect(wrapper.find('Avatar').length).toEqual(1)
       expect(wrapper.find('Avatar').props().size).toEqual('lg')
@@ -49,7 +60,7 @@ describe('ChangeLog', () => {
       expect(
         wrapper
           .find('div')
-          .at(8)
+          .at(7)
           .props().children
       ).toBe('UserName')
     })
@@ -58,16 +69,45 @@ describe('ChangeLog', () => {
       expect(
         wrapper
           .find('div')
-          .at(9)
+          .at(8)
           .props().children
       ).toBe('roleThree')
     })
 
-    it('should display the admin name', () => {
+    it('should display the user county name', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(10)
+          .props().children
+      ).toBe('countyName')
+    })
+
+    it('should display the user office name', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(12)
+          .props().children
+      ).toBe('userOffice')
+    })
+
+    it('should display the user email', () => {
       expect(
         wrapper
           .find('div')
           .at(13)
+          .props().children
+      ).toBe('some@email.com')
+    })
+  })
+
+  describe('changesMadeBy', () => {
+    it('should display the admin name', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(18)
           .props().children
       ).toBe('adminName')
     })
@@ -76,47 +116,74 @@ describe('ChangeLog', () => {
       expect(
         wrapper
           .find('div')
-          .at(14)
+          .at(19)
           .props().children
       ).toBe('roleOne')
     })
 
-    describe('change details', () => {
-      it('should display the formated date and time of the event', () => {
-        expect(
-          wrapper
-            .find('div')
-            .at(18)
-            .props().children
-        ).toBe('January 23, 2019 10:09 AM')
-      })
+    it('should display the admin county name', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(21)
+          .props().children
+      ).toBe('countyName')
+    })
 
-      it('should display the event type', () => {
-        expect(
-          wrapper
-            .find('div')
-            .at(20)
-            .props().children
-        ).toBe('User Email Changed')
-      })
+    it('should display the admin office name', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(23)
+          .props().children
+      ).toBe('adminOffice')
+    })
 
-      it('should display the old Value before event', () => {
-        expect(
-          wrapper
-            .find('div')
-            .at(22)
-            .props().children
-        ).toBe('OldValue')
-      })
+    it('should display the admin email', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(24)
+          .props().children
+      ).toBe('some@email.com')
+    })
+  })
 
-      it('should display the new Value after event', () => {
-        expect(
-          wrapper
-            .find('div')
-            .at(24)
-            .props().children
-        ).toBe('ChangedValue')
-      })
+  describe('change details', () => {
+    it('should display the formated date and time of the event', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(28)
+          .props().children
+      ).toBe('January 23, 2019 10:09 AM')
+    })
+
+    it('should display the event type', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(30)
+          .props().children
+      ).toBe('User Email Changed')
+    })
+
+    it('should display the old Value before event', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(32)
+          .props().children
+      ).toBe('OldValue')
+    })
+
+    it('should display the new Value after event', () => {
+      expect(
+        wrapper
+          .find('div')
+          .at(34)
+          .props().children
+      ).toBe('ChangedValue')
     })
   })
 })
