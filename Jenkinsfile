@@ -29,14 +29,12 @@ def node_to_run_on() {
 node(node_to_run_on()) {
   triggerProperties = pullRequestMergedTriggerProperties('county-admin-master')
   properties([
-      pipelineTriggers([triggerProperties])
-  ])
-  def app
-  properties([
     parameters([
       string(name: 'INCREMENT_VERSION', defaultValue: '', description: 'major, minor, or patch')
     ])
+    pipelineTriggers([triggerProperties])
   ])
+  def app
     try {
       deleteDir()
         stage('Checkout') {
