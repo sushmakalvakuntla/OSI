@@ -5,6 +5,11 @@ DOCKER_IMAGE = 'county-admin'
 // CC_TEST_REPORTER_ID = 'e90a72f974bf96ece9ade12a041c8559fef59fd7413cfb08f1db5adc04337197'
 
 node('cap-slave') {
+  def triggerProperties = githubPullRequestBuilderTriggerProperties()
+  properties([
+    githubConfig(),
+    pipelineTriggers([triggerProperties])
+  ])
   def app
     try {
       deleteDir()
@@ -59,4 +64,8 @@ node('cap-slave') {
       sh "docker-compose down"
       cleanWs()
     }
+}
+
+def githubConfig() {
+  githubConfigProperties('https://github.com/ca-cwds/county-admin')
 }
