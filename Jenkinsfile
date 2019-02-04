@@ -31,7 +31,7 @@ node(node_to_run_on()) {
   properties([
     parameters([
       string(name: 'INCREMENT_VERSION', defaultValue: '', description: 'major, minor, or patch')
-    ])
+    ]),
     pipelineTriggers([triggerProperties])
   ])
   def app
