@@ -38,8 +38,25 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.col-xs-5 {
-  width: 40%;
+.card-buttons,
+.resend-email-btn {
+  height: 40px;
+  margin: 0.5rem auto;
+  width: 14rem;
+  text-transform: uppercase;
+  font-weight: 600 !important;
+
+  &.card-buttons:disabled,
+  &.resend-email-btn:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.modal-buttons {
+  width: 14rem;
+  text-transform: uppercase;
+  font-weight: 600 !important;
+  font-size: 15px !important;
 }
 
 .page-buttons {
@@ -48,8 +65,17 @@ input[type=number]::-webkit-outer-spin-button {
   color: black;
   height: 40px;
   margin: 4px;
-  width: 12rem;
-  text-transform: none;
+  width: 14rem;
+  text-transform: uppercase;
+  font-weight: 600 !important;
+
+  &.page-buttons:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.col-xs-5 {
+  width: 40%;
 }
 
 .text-area {
@@ -83,34 +109,12 @@ input[type=number]::-webkit-outer-spin-button {
   color: #c00000;
 }
 
-.btn {
-  display: inline;
-  font-size: 1.5rem;
-  text-align: right;
-}
-
 .alert {
   padding: 15px;
 }
 
 .errorMessage-customizable {
   margin-top: 30px;
-}
-
-.resend-email-btn {
-  .btn.btn-primary {
-    background-color: #098e88;
-    margin: 0.5rem auto;
-
-    &.btn.btn-primary:hover {
-      background-color: #077873;
-    }
-
-    &.btn.btn-primary:disabled {
-      box-shadow: none;
-      background-color: #c2d6d5;
-    }
-  }
 }
 
 /* Modal.jsx styles */
@@ -139,10 +143,6 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: 42px;
   padding-left: 15px;
   font-size: 17px;
-}
-
-.closeButton-customizable {
-  color: rgba(13, 79, 120, 1);
 }
 
 .change-made-header {

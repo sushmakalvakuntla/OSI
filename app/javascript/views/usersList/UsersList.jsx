@@ -188,8 +188,7 @@ class UserList extends PureComponent {
                     size="lg"
                     type="cancel"
                     id="resetButton"
-                    className="page-buttons btn btn-default"
-                    tabIndex="-2"
+                    className="page-buttons"
                     onClick={this.handleOnAdd}
                   >
                     + ADD A USER

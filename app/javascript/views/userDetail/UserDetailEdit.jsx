@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Cards from '../../common/Card'
 import ShowField from '../../common/ShowField'
-import { InputComponent, Button } from 'react-wood-duck'
+import { InputComponent } from 'react-wood-duck'
+import { Button } from '@cwds/components'
 import DropDown from '../../common/DropDown'
 import { STATUS } from '../../_constants/constants'
 /* eslint camelcase: 0 */
@@ -120,16 +121,17 @@ const UserDetailEdit = ({
                   <div className="value-text-color">
                     {userStatusDescription}
                     {details.status === 'FORCE_CHANGE_PASSWORD' && (
-                      <div>
-                        <div className="resend-email-btn">
-                          <Button
-                            btnClassName="primary"
-                            btnName="Resend Invite"
-                            onClick={onResendInvite}
-                            disabled={disableResendEmailButton}
-                          />
-                        </div>
-                      </div>
+                      <Button
+                        color="primary"
+                        className="resend-email-btn"
+                        size="lg"
+                        id="resendInvite"
+                        type="submit"
+                        onClick={onResendInvite}
+                        disabled={disableResendEmailButton}
+                      >
+                        RESEND INVITE
+                      </Button>
                     )}
                   </div>
                 </ShowField>

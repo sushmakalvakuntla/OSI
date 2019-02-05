@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { Button } from 'react-wood-duck'
+import { Button } from '@cwds/components'
 
 const Cards = props => {
   const {
@@ -37,7 +37,9 @@ const Cards = props => {
           <span>{props.cardHeaderText}</span>
           {props.cardHeaderButton &&
             !props.cardActionButtons && (
-              <Button btnClassName="default pull-right" btnName={headerBtnName} onClick={onEdit} disabled={disabled} />
+              <Button className="card-buttons" color="default pull-right" onClick={onEdit} disabled={disabled}>
+                {headerBtnName}
+              </Button>
             )}
         </div>
         <div className="card-body">
@@ -45,15 +47,20 @@ const Cards = props => {
           {!props.cardHeaderButton && (
             <div className="pull-right">
               {props.cardActionButton1 && (
-                <Button btnName={leftActionBtnName} btnClassName="default cancel" onClick={handleOnClickButton1} />
+                <Button className="card-buttons" color="default cancel" onClick={handleOnClickButton1} size="lg">
+                  {leftActionBtnName}
+                </Button>
               )}
               {props.cardActionButton2 && (
                 <Button
-                  btnClassName="primary"
+                  className="card-buttons"
+                  color="primary"
                   disabled={disableActionBtn}
-                  btnName={rightActionBtnName}
                   onClick={handleOnClickButton2}
-                />
+                  size="lg"
+                >
+                  {rightActionBtnName}
+                </Button>
               )}
             </div>
           )}

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, ModalBody, ModalHeader, Avatar } from '@cwds/components'
+import { Modal, ModalBody, ModalHeader, Avatar, Button } from '@cwds/components'
 import { checkDate } from '../../_utils/formatters'
-import { Button } from 'react-wood-duck'
 import { Circle } from '../../_utils/faIcons'
 
 export default class ModalComponent extends Component {
@@ -114,14 +113,16 @@ export default class ModalComponent extends Component {
   render() {
     const closeBtn = (
       <div className="row">
-        <button id="close_button" className="btn btn-link closeButton-customizable" type="close" onClick={this.toggle}>
+        <Button id="close_button" color="link " className="modal-buttons" type="close" onClick={this.toggle}>
           close {Circle()}
-        </button>
+        </Button>
       </div>
     )
     return (
       <div>
-        <Button btnClassName="default" btnName="View" onClick={this.toggle} />
+        <Button id="modal-view-btn" color="link" className="modal-buttons" onClick={this.toggle}>
+          view
+        </Button>
         <Modal className="warning-modal modal-lg" isOpen={this.state.ModalOpen} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle} close={closeBtn}>
             <div className="header">{'Change Log Details'}</div>
