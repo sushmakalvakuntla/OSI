@@ -25,6 +25,7 @@ module Api
                     :phone_extension_number,
                     :enabled,
                     :email,
+                    :notes,
                     permissions: [],
                     roles: []).to_h
     end

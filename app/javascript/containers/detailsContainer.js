@@ -23,6 +23,7 @@ import {
   isPhoneNumberValid,
   unformattedPhoneNumber,
   phoneExtension,
+  userNotes,
 } from '../selectors/detailSelector'
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { rolesList } from '../selectors/rolesListSelector'
@@ -79,6 +80,8 @@ function mapStateToProps(state) {
     isPhoneNumberValid: isPhoneNumberValid(state),
     unformattedPhoneNumber: unformattedPhoneNumber(state),
     phoneExtensionNumber: phoneExtension(state),
+    notes: userNotes(state).notes,
+    notesWordCount: userNotes(state).notesLength,
   }
 }
 

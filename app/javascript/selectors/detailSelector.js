@@ -127,6 +127,7 @@ export const selectModifiedDetails = state => {
   const userData = {
     permissions: checkForModifiedDetails(initialDetails.permissions, modifiedDetails.permissions),
     email: checkForModifiedDetails(initialDetails.email, modifiedDetails.email),
+    notes: checkForModifiedDetails(initialDetails.notes, modifiedDetails.notes),
     enabled: checkForModifiedDetails(initialDetails.enabled, modifiedDetails.enabled),
     phone_number: checkForModifiedDetails(initialDetails.phone_number, modifiedDetails.phone_number),
     phone_extension_number: checkForModifiedDetails(
@@ -180,4 +181,9 @@ export const formattedPhoneNumber = state => {
 
 export const phoneExtension = state => {
   return safeGet(state, 'fetchDetails.details.records.user.phone_extension_number') || ''
+}
+
+export const userNotes = state => {
+  const notes = safeGet(state, 'fetchDetails.details.records.user.notes') || ''
+  return { notes: notes, notesLength: notes.length }
 }

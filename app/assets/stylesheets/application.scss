@@ -52,6 +52,18 @@ input[type=number]::-webkit-outer-spin-button {
   text-transform: none;
 }
 
+.text-area {
+  font-size: 1.5rem !important;
+  color: black !important;
+  box-shadow: none !important;
+  height: 100px !important;
+  margin: 0.75rem 0 0.75rem;
+}
+
+.text-area:focus {
+  border-color: #2974a2 !important;
+}
+
 .col-md-3 {
   padding-left: 0;
   word-break: break-all;

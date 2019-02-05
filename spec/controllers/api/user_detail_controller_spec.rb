@@ -54,6 +54,7 @@ module Api
                         phone_extension_number: '11',
                         permissions: %w[snapshot hotline],
                         email: 'abcd@gmail.com',
+                        notes: 'Hello user',
                         roles: %w[role1 role2] }, token)
           .and_return(user)
         request.session[:token] = 'my_token'
@@ -64,6 +65,7 @@ module Api
                                     phone_extension_number: '11',
                                     permissions: %w[snapshot hotline],
                                     email: 'abcd@gmail.com',
+                                    notes: 'Hello user',
                                     roles: %w[role1 role2] }
         expect(response.body).to eq user.to_json
       end

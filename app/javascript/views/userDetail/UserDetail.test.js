@@ -207,11 +207,16 @@ describe('UserDetail', () => {
     })
 
     describe('renders cards', () => {
-      it('should display <UserDetailShow/>', () => {
+      it('renders the <UserDetailShow/> when user is not editable', () => {
         wrapper.setProps({ isUserEditable: false })
+        expect(wrapper.find('UserDetailEdit').length).toBe(0)
         expect(wrapper.find('UserDetailShow').length).toBe(1)
+      })
+
+      it('renders the <UserDetailEdit/> when user is editable', () => {
         wrapper.setProps({ isUserEditable: true })
         expect(wrapper.find('UserDetailShow').length).toBe(0)
+        expect(wrapper.find('UserDetailEdit').length).toBe(1)
       })
 
       it('should contain <UserMessage/> to display the alert', () => {
@@ -219,15 +224,12 @@ describe('UserDetail', () => {
         expect(wrapper.find('UserMessage').length).toBe(1)
       })
 
-      it('should display <UserDetailEdit/>', () => {
-        wrapper.setProps({ isUserEditable: true })
-        expect(wrapper.find('UserDetailEdit').length).toBe(1)
-        wrapper.setProps({ isUserEditable: false })
-        expect(wrapper.find('UserDetailEdit').length).toBe(0)
-      })
-
       it('should display <ChangeLog/> ', () => {
         expect(wrapper.find('ChangeLog').length).toBe(1)
+      })
+
+      it('should display  <Notes/>', () => {
+        expect(wrapper.find('Notes').length).toBe(1)
       })
 
       it('should display  <CWSPermissions/>', () => {

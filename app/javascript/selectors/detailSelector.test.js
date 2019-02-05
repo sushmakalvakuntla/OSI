@@ -23,6 +23,7 @@ import {
   unformattedPhoneNumber,
   isPhoneNumberValid,
   phoneExtension,
+  userNotes,
 } from './detailSelector'
 describe('selectors', () => {
   const editDetails = {
@@ -64,6 +65,7 @@ describe('selectors', () => {
     officePhoneNumber,
     officePhoneExtensionNumber,
     auditEvents,
+    notes,
   }) => {
     return {
       fetchDetails: {
@@ -77,6 +79,7 @@ describe('selectors', () => {
             enabled: true,
             phone_number: '3334445555',
             phone_extension_number: '222',
+            notes: 'This is the content of my notes',
           },
         },
         details: {
@@ -106,6 +109,7 @@ describe('selectors', () => {
               office_phone_number: officePhoneNumber,
               office_phone_extension_number: officePhoneExtensionNumber,
               last_login_date_time: lastLoginDateTime,
+              notes: notes,
             },
             auditevents: auditEvents,
           },
@@ -505,6 +509,7 @@ describe('selectors', () => {
           enabled: true,
           phoneNumber: '3334445555',
           phoneExtensionNumber: '222',
+          notes: 'This is the content of my notes',
         })
         const expectedValue = {
           email: undefined,
@@ -513,6 +518,7 @@ describe('selectors', () => {
           roles: undefined,
           phoneNumber: undefined,
           phoneExtensionNumber: undefined,
+          notes: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -526,6 +532,7 @@ describe('selectors', () => {
           isRolesEditable: true,
           phoneNumber: '3334448989',
           phoneExtensionNumber: '225',
+          notes: 'This is the content of my updated notes',
         })
         const expectedValue = {
           email: 'hellocwds@gmail.com',
@@ -534,6 +541,7 @@ describe('selectors', () => {
           roles: 'roleThree',
           phone_number: '3334448989',
           phone_extension_number: '225',
+          notes: 'This is the content of my updated notes',
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -545,12 +553,14 @@ describe('selectors', () => {
           isRolesEditable: true,
           phoneNumber: '3334445555',
           phoneExtensionNumber: '222',
+          notes: 'This is the content of my notes',
         })
         const expectedValue = {
           email: 'abcdefg@gmail.com',
           enabled: undefined,
           permissions: undefined,
           roles: undefined,
+          notes: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -561,12 +571,14 @@ describe('selectors', () => {
           isRolesEditable: true,
           phoneNumber: '3334445555',
           phoneExtensionNumber: '222',
+          notes: 'This is the content of my notes',
         })
         const expectedValue = {
           email: undefined,
           enabled: undefined,
           permissions: undefined,
           roles: 'roleTwo',
+          notes: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -577,12 +589,14 @@ describe('selectors', () => {
           assignedPermissions: 'permissionOne, permissionTwo',
           phoneNumber: '3334445555',
           phoneExtensionNumber: '222',
+          notes: 'This is the content of my notes',
         })
         const expectedValue = {
           email: undefined,
           enabled: false,
           permissions: undefined,
           roles: undefined,
+          notes: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -593,12 +607,14 @@ describe('selectors', () => {
           isEnabled: true,
           phoneNumber: '3334445555',
           phoneExtensionNumber: '222',
+          notes: 'This is the content of my notes',
         })
         const expectedValue = {
           email: undefined,
           enabled: undefined,
           permissions: 'permissionThree',
           roles: undefined,
+          notes: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -609,6 +625,7 @@ describe('selectors', () => {
           isEnabled: true,
           phoneNumber: '3334445656',
           phoneExtensionNumber: '889',
+          notes: 'This is the content of my notes',
         })
         const expectedValue = {
           email: undefined,
@@ -617,6 +634,7 @@ describe('selectors', () => {
           roles: undefined,
           phone_number: '3334445656',
           phone_extension_number: '889',
+          notes: undefined,
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -867,6 +885,23 @@ describe('selectors', () => {
     it('returns empty string when extension is undefined ', () => {
       const state = getState({ phoneExtensionNumber: undefined })
       expect(phoneExtension(state)).toEqual('')
+    })
+  })
+
+  describe('#userNotes', () => {
+    it('returns notes when notes  exists', () => {
+      const state = getState({ notes: '23' })
+      expect(userNotes(state)).toEqual({ notes: '23', notesLength: 2 })
+    })
+
+    it('returns empty string when notes is null ', () => {
+      const state = getState({ notes: null })
+      expect(userNotes(state)).toEqual({ notes: '', notesLength: 0 })
+    })
+
+    it('returns empty string when notes is undefined ', () => {
+      const state = getState({ notes: undefined })
+      expect(userNotes(state)).toEqual({ notes: '', notesLength: 0 })
     })
   })
 })

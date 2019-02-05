@@ -112,6 +112,9 @@ export default class UserDetail extends Component {
       phoneExtensionNumber,
       disableResendEmailButton,
       auditEvents,
+      isUserEditable,
+      notes,
+      notesWordCount,
       changeLogAdminDetails,
       changeLogAdminOfficeName,
     } = this.props
@@ -160,7 +163,12 @@ export default class UserDetail extends Component {
               <CWSPermissions />
             </div>
             <div className="col-md-8">
-              <Notes userNotes={''} />
+              <Notes
+                isUserEditable={isUserEditable}
+                userNotes={notes}
+                notesWordCount={notesWordCount}
+                onChange={this.handleInputChange}
+              />
             </div>
             <div className="col-md-12">
               <ChangeLog
@@ -261,6 +269,8 @@ UserDetail.propTypes = {
   changeLogAdminDetails: PropTypes.object,
   dashboardUrl: PropTypes.string,
   dashboardClickHandler: PropTypes.func,
+  notes: PropTypes.string,
+  notesWordCount: PropTypes.number,
 }
 
 UserDetail.defaultProps = {

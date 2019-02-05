@@ -31,5 +31,6 @@ module Users
     attribute :racfid, Types::String.optional
     attribute :roles, Types::Array.optional
     attribute :auth_header, Types::String.optional
+    attribute :notes, Types::String.optional
   end
 end

@@ -30,6 +30,7 @@ module Users
       it { is_expected.to have_attribute(:roles, Types::Array.optional) }
       it { is_expected.to have_attribute(:office_phone_number, Types::String.optional) }
       it { is_expected.to have_attribute(:office_phone_extension_number, Types::String.optional) }
+      it { is_expected.to have_attribute(:notes, Types::String.optional) }
     end
   end
 end
