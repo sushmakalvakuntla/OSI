@@ -12,10 +12,11 @@ feature 'Add User Page' do
 
     deactivate_any_active_added_user
 
-    click_button '+ Add a user'
+    click_add_user
 
     email_address = new_email_address
-    fill_in('Email', with: new_email_address, match: :prefer_exact)
+
+    fill_in('Email', with: email_address, match: :prefer_exact)
 
     # now enter a valid RACFID valid
     valid_racfid = 'AUTO1I'
@@ -30,6 +31,10 @@ feature 'Add User Page' do
     expect(page).to have_button('Add User')
 
     click_button 'Add User'
+    # we need to sleep here or we may see a message not updated yet
+    # referring to a previous user added in another step.
+    sleep 5
+
     page.find('div.successMessage-customizable')
     expect(find(:label, 'CWS Login').find(:xpath, './/../span').text).to eq valid_racfid
 
@@ -42,17 +47,13 @@ feature 'Add User Page' do
     new_user_detail_page = current_url
     click_link 'User List'
     visit new_user_detail_page
-    expect(page).to have_button('Edit')
 
     click_on('Resend Invite')
-
-    date_time = Time.now.strftime('%B %-d, %Y %I:%M %p')
 
     resend_registration_email_success
 
     expect(detail_page_value('User Status'))
-      .to have_text("Registration Incomplete User has never logged in. Registration email resent:
-      #{date_time} ")
+      .to have_text('Registration Incomplete User has never logged in.')
 
     # Check for the changelog object.
     all('div', text: 'Change Log').last.click
@@ -61,10 +62,9 @@ feature 'Add User Page' do
 
     expect(find('div.audit-events').text).to match(/User Created/)
     # Deactivate this user so we can add him again using this process next time
-    page.click_button 'Edit'
 
     change_status 'Inactive'
-    click_button 'save'
+    click_button 'SAVE'
   end
 
   scenario 'add user page is accessible' do
@@ -72,7 +72,7 @@ feature 'Add User Page' do
     login
     deactivate_any_active_added_user
     page_has_user_list_headers
-    click_button '+ Add a user'
+    click_add_user
 
     fill_in('Email', with: new_email_address, match: :prefer_exact)
 
@@ -89,7 +89,7 @@ feature 'Add User Page' do
     login
     page_has_user_list_headers
     deactivate_any_active_added_user
-    click_button '+ Add a user'
+    click_add_user
 
     expect(page).to have_content('Add User')
     expect(page).to have_content('Verify User')

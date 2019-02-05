@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import ChangeLog from './ChangeLog'
+import ChangeLog, { sortByName } from './ChangeLog'
 
 describe('ChangeLog', () => {
   let wrapper
@@ -15,7 +15,13 @@ describe('ChangeLog', () => {
       event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin' },
       event_type: 'C',
       admin_name: 'wrong1',
-      timestamp: '2019-01-04 14:22:22',
+      timestamp: '2019-01-04 14:22:00',
+    },
+    {
+      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin' },
+      event_type: 'C',
+      admin_name: 'wrong1',
+      timestamp: '2019-01-04 14:21:00',
     },
     {
       event: { admin_name: 'Walsh, Jack', admin_role: 'County Admin' },
@@ -50,7 +56,7 @@ describe('ChangeLog', () => {
         .find('TableComponent')
         .dive()
         .find('TrComponent').length
-    ).toEqual(4)
+    ).toEqual(5)
   })
 
   it('renders the date field correctly sorted by latest first', () => {
@@ -74,12 +80,70 @@ describe('ChangeLog', () => {
       <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
     )
     const trs = mounted.find('TrComponent')
+    const madeByHeader = trs
+      .at(0)
+      .childAt(0)
+      .childAt(2)
+    expect(madeByHeader.text()).toEqual('Made By')
+
+    expect(trs.at(1).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
+    expect(trs.at(2).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
+    expect(trs.at(3).text()).toEqual(
+      ['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join('')
+    )
+    expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))
     expect(
       trs
-        .at(1)
+        .at(2)
         .childAt(0)
         .childAt(2)
         .text()
     ).toEqual('Mosely, Alonso (State Admin)')
+    expect(
+      trs
+        .at(3)
+        .childAt(0)
+        .childAt(2)
+        .text()
+    ).toEqual('Dorfler, Marvin (Office Admin)')
+    expect(
+      trs
+        .at(4)
+        .childAt(0)
+        .childAt(2)
+        .text()
+    ).toEqual('Walsh, Jack (County Admin)')
+    madeByHeader.simulate('click') // sort by Made By
+
+    expect(trs.at(1).text()).toEqual(
+      ['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join('')
+    )
+    expect(trs.at(2).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
+    expect(trs.at(3).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
+    expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))
+  })
+
+  describe('sortByName', () => {
+    it('sorts by event admin_name', () => {
+      const rowA = { event: { admin_name: 'apple' } }
+      const rowB = { event: { admin_name: 'banana' } }
+      expect(sortByName(rowA, rowB)).toEqual(-1)
+      expect(sortByName(rowB, rowA)).toEqual(1)
+    })
+
+    it('breaks a tie with timestamp', () => {
+      const rowA = {
+        event: { admin_name: 'apple' },
+        timestamp: '2050-01-01 12:00:00',
+      }
+      const rowB = {
+        event: { admin_name: 'apple' },
+        timestamp: '2000-01-01 12:00:00',
+      }
+      expect(rowA.event.admin_name).toEqual('apple')
+      expect(rowB.event.admin_name).toEqual('apple')
+      expect(sortByName(rowA, rowB)).toEqual(1)
+      expect(sortByName(rowB, rowA)).toEqual(-1)
+    })
   })
 })

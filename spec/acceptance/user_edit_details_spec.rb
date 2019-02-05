@@ -30,8 +30,6 @@ feature 'User Edit' do
     pending 'add user validation has accessibility issues'
     check_accessibility
     page_is_user_details
-    click_on('Edit')
-    check_accessibility
   end
 
   scenario 'user_details edit/save successfully' do
@@ -43,17 +41,22 @@ feature 'User Edit' do
     first_user_link.click
     page_is_user_details
 
-    original_account_status = detail_page_value('Account Status')
-
-    click_on('Edit')
+    original_account_status = status_from_dropdown
 
     new_status = (original_account_status == 'Active' ? 'Inactive' : 'Active')
     expect(detail_page_value('Full Name')).to eq user_name
     sleep 5 # wait for things to load?
 
-    expect(page).to have_button('save', disabled: true)
-    expect(page).to have_button('Cancel', disabled: false)
+    expect(page).to have_button('SAVE', disabled: true)
+    expect(page).to have_button('RESET', disabled: true)
 
+    if selected_permissions.empty?
+      add_permission 'RFA'
+      add_permission 'Snapshot'
+      add_permission 'Hotline'
+      add_permission 'Facility Search & Profile'
+      click_button 'SAVE'
+    end
     original_selected_permissions = selected_permissions
     one_permission = original_selected_permissions.last
     one_permission = '' if one_permission == 'Select...'
@@ -65,30 +68,29 @@ feature 'User Edit' do
 
     # the last one should be gone now.
     expected_remainder = selected_permissions.first(original_selected_permissions.size - 1)
-    # Expect a message about selecting permissions to show up id we don't have any
-    expected_remainder = ['Select...'] if expected_remainder.empty?
 
     expect(new_selected_permissions).to eq(expected_remainder)
 
-    click_button 'save'
+    click_button 'SAVE'
+
+    sleep 1
     expect_success
 
     # status has changed to new status
-    expect(details_account_status)
+    expect(status_from_dropdown)
       .to eq(new_status)
     # permissions has changed to new permissions
 
     # xpath fails to find the span following the label if it's empty.
     # Find the parent div instead and parse...
-    string_permissions = find(:xpath, "//label[contains(text(),'Assigned Permissions')]/..")
-                         .text.split('Assigned Permissions').last.to_s.strip
+
+    string_permissions = selected_permissions.join(', ')
+
     expect(string_permissions)
       .to eq(original_selected_permissions.first(original_selected_permissions.size - 1)
            .join(', '))
 
     # put it back
-    sleep 5
-    click_on('Edit')
 
     sleep 5 # wait for things to load
     change_status original_account_status
@@ -100,15 +102,15 @@ feature 'User Edit' do
     end
     add_permission(one_permission)
 
-    click_button 'save'
+    click_button 'SAVE'
 
     expect_success
-    expect(details_account_status)
+    expect(status_from_dropdown)
       .to eq(original_account_status)
 
-    expect(find(:xpath,
-                "//label[contains(text(),'Assigned Permissions')]/following-sibling::span").text)
-      .to eq(original_selected_permissions.join(', '))
+    now_selected_permissions = selected_permissions
+
+    expect(now_selected_permissions).to eq(original_selected_permissions)
 
     click_link 'User List'
     page_has_user_list_headers
@@ -121,27 +123,24 @@ feature 'User Edit' do
     first_user_link.click
     page_is_user_details
 
-    original_email_address = detail_page_value('Email')
+    original_email_address = detail_page_input_value('Email')
 
-    click_on('Edit')
-    sleep 2 # wait for edit page to load up.
+    expect(page).to have_button('SAVE', disabled: true)
 
-    expect(page).to have_button('save', disabled: true)
-    expect(page).to have_button('Cancel', disabled: false)
     fill_in('Email', with: 'cwds3raval', match: :prefer_exact)
     # bad email address won't let us proceed
-    expect(page).to have_button('save', disabled: true)
+    expect(page).to have_button('SAVE', disabled: true)
     expect(page).to have_content('Please enter a valid email')
 
     # correct the email to a proper address
     email_address = new_email_address
     fill_in('Email', with: email_address, match: :prefer_exact)
-    expect(page).to have_button('save', disabled: false)
+    expect(page).to have_button('SAVE', disabled: false)
     # put back the original email address
     fill_in('Email', with: original_email_address, match: :prefer_exact)
-    expect(page).to have_button('save', disabled: false)
+    expect(page).to have_button('SAVE', disabled: false)
 
-    click_button 'save'
+    click_button 'SAVE'
     expect_success
 
     click_link 'User List'
@@ -166,8 +165,6 @@ feature 'User Edit' do
 
     expect(detail_page_value('User Status'))
       .to eq('Confirmed User has been confirmed.')
-
-    click_on('Edit')
 
     expect(page).to have_no_button('Resend Invite')
   end

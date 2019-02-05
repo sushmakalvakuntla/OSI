@@ -3,15 +3,23 @@ import PropTypes from 'prop-types'
 import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid } from '@cwds/components'
 import ModalComponent from './Modal'
 import { checkDate } from '../../_utils/formatters'
+import safeGet from 'lodash.get'
+
+export const sortByName = (a, b) => {
+  const aName = safeGet(a, 'event.admin_name', '')
+  const bName = safeGet(b, 'event.admin_name', '')
+  if (aName === bName) {
+    return a.timestamp > b.timestamp ? 1 : -1
+  }
+  return aName > bName ? 1 : -1
+}
 
 const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName) => [
   {
     Header: 'Date/Time',
     accessor: 'timestamp',
     minWidth: 75,
-    sortMethod: (a, b) => {
-      return a > b ? 1 : -1
-    },
+
     Cell: row => {
       return `${checkDate(row.original.timestamp)}`
     },
@@ -23,11 +31,13 @@ const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName
   },
   {
     Header: 'Made By',
-    accessor: 'admin_name',
+    id: 'made_by',
+    accessor: d => d,
     minWidth: 70,
     Cell: row => {
       return `${row.original.event.admin_name} (${row.original.event.admin_role})`
     },
+    sortMethod: sortByName,
   },
   {
     Header: 'Notes & Details',

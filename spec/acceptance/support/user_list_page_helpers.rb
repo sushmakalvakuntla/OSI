@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module UserListPageHelper
+  def click_add_user
+    click_button '+ ADD A USER'
+  end
+
   def page_has_basic_text
     expect(page).to have_content('County:')
   end
@@ -126,11 +130,15 @@ module UserListPageHelper
 
   def deactivate_user(active_row)
     active_row.find('a').click
-    click_on 'Edit'
+
     puts "Deactivating user #{current_url}"
-    expect(page).to have_button('Cancel')
+
     change_status 'Inactive'
-    click_button 'save'
+    click_button 'SAVE'
+    # wait for success message so we know the index has been updated, before
+    # looking back at the user list again.
+    expect_success
+    sleep 3
     click_on 'User List'
   end
 

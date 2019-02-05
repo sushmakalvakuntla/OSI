@@ -12,7 +12,7 @@ module UserDetailPageHelper
     all(:xpath,
         "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div/div")
       .to_a.each do |p|
-      permissions << p.text unless p.text == ''
+      permissions << p.text unless p.text == '' || p.text == 'Select...'
     end
     permissions
   end
@@ -27,9 +27,8 @@ module UserDetailPageHelper
 
   def add_permission(permission)
     # open the drop-down
-    # require 'pry'; binding.pry
     permissions_click
-
+    sleep 1
     find(:xpath,
          "//*[@id='AssignPermissions']/./div[2]/div/div[contains(text(), '#{permission}')]")
       .click
@@ -37,6 +36,14 @@ module UserDetailPageHelper
 
   def detail_page_value(label_name)
     find(:xpath, "//label[contains(text(),'" + label_name + "')]/following-sibling::span").text
+  end
+
+  def detail_page_input_value(label_name)
+    find(:xpath, "//label[contains(text(),'" + label_name + "')]/input").value
+  end
+
+  def status_from_dropdown
+    find_by_id('StatusDropDown').text
   end
 
   def change_status(new_status)
@@ -54,7 +61,7 @@ module UserDetailPageHelper
   end
 
   def new_email_address
-    "capqacwds+test+#{Time.now.strftime('%y%m%d.%H%M%S')}@gmail.com"
+    "capqacwds+test+#{Time.now.strftime('%y%m%d.%H%M%S')}+#{rand(100_000)}@gmail.com"
   end
 
   def verify_and_wait_to_complete
@@ -77,7 +84,6 @@ module UserDetailPageHelper
   end
 
   def resend_registration_email_success
-    expect(page).to have_content('Registration email resent')
     expect(page.find('div.successMessage-customizable').text)
       .to eq('Registration email has been sent successfully')
   end
