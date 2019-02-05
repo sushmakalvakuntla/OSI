@@ -21,7 +21,10 @@ const Notes = ({ isUserEditable, userNotes, notesWordCount, onChange }) => (
             <div className="pull-right">Characters used: {`${notesWordCount}/250`}</div>
           </div>
         ) : (
-          { userNotes }
+          <div>
+            <br />
+            {userNotes}
+          </div>
         )}
       </CardBody>
     </Card>

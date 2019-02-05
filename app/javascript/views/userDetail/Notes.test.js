@@ -25,7 +25,12 @@ describe('Notes', () => {
   it('when the user is not editable renders just existing notes', () => {
     wrapper.setProps({ isUserEditable: false })
     expect(wrapper.find('Input').length).toBe(0)
-    expect(wrapper.find('CardBody').props().children).toEqual({ userNotes: 'Hello' })
+    expect(wrapper.find('div').length).toBe(1)
+    expect(wrapper.find('CardBody').props().children).toEqual(
+      <div>
+        <br />Hello
+      </div>
+    )
   })
 
   it('#onChange  handleInputChange function is called when onChange event triggered', () => {
