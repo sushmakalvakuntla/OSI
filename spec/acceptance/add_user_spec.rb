@@ -48,7 +48,7 @@ feature 'Add User Page' do
     click_link 'User List'
     visit new_user_detail_page
 
-    click_on('Resend Invite')
+    click_on('RESEND INVITE')
 
     resend_registration_email_success
 

@@ -166,6 +166,6 @@ feature 'User Edit' do
     expect(detail_page_value('User Status'))
       .to eq('Confirmed User has been confirmed.')
 
-    expect(page).to have_no_button('Resend Invite')
+    expect(page).to have_no_button('RESEND INVITE')
   end
 end
