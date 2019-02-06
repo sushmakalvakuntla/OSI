@@ -12,7 +12,6 @@ const PageHeaderButtons = ({ isUserEditable, onSaveDetails, onReset, disableButt
           type="cancel"
           id="resetButton"
           className="page-buttons btn btn-default"
-          tabIndex="-2"
           onClick={onReset}
           disabled={disableButtons}
         >
@@ -24,7 +23,6 @@ const PageHeaderButtons = ({ isUserEditable, onSaveDetails, onReset, disableButt
           type="save"
           id="saveButton"
           className="page-buttons btn btn-default"
-          tabIndex="-2"
           onClick={onSaveDetails}
           disabled={disableButtons}
         >
