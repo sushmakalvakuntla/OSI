@@ -5,15 +5,32 @@ import ModalComponent from './Modal'
 import { checkDate } from '../../_utils/formatters'
 import safeGet from 'lodash.get'
 
-export const sortByName = (a, b) => {
+export const sortByName = (a, b, desc) => {
   const aName = safeGet(a, 'event.admin_name', '')
   const bName = safeGet(b, 'event.admin_name', '')
   if (aName === bName) {
-    return a.timestamp > b.timestamp ? 1 : -1
+    return timestampCompareDescending(a, b, desc)
   }
   return aName > bName ? 1 : -1
 }
 
+export const sortByType = (a, b, desc) => {
+  const aType = safeGet(a, 'event_type', '')
+  const bType = safeGet(b, 'event_type', '')
+
+  if (aType === bType) {
+    return timestampCompareDescending(a, b, desc)
+  }
+  return aType > bType ? 1 : -1
+}
+
+const timestampCompareDescending = (a, b, desc) => {
+  if (desc) {
+    return a.timestamp > b.timestamp ? 1 : -1
+  } else {
+    return a.timestamp < b.timestamp ? 1 : -1
+  }
+}
 const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName) => [
   {
     Header: 'Date/Time',
@@ -26,8 +43,13 @@ const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName
   },
   {
     Header: 'Type',
-    accessor: 'event_type',
+    id: 'event_type',
+    accessor: d => d,
     minWidth: 70,
+    Cell: row => {
+      return `${row.original.event_type}`
+    },
+    sortMethod: sortByType,
   },
   {
     Header: 'Made By',

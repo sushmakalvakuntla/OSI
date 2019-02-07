@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import ChangeLog, { sortByName } from './ChangeLog'
+import ChangeLog, { sortByName, sortByType } from './ChangeLog'
 
 describe('ChangeLog', () => {
   let wrapper
@@ -118,8 +118,8 @@ describe('ChangeLog', () => {
     expect(trs.at(1).text()).toEqual(
       ['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join('')
     )
-    expect(trs.at(2).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
-    expect(trs.at(3).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
+    expect(trs.at(2).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
+    expect(trs.at(3).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
     expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))
   })
 
@@ -142,8 +142,39 @@ describe('ChangeLog', () => {
       }
       expect(rowA.event.admin_name).toEqual('apple')
       expect(rowB.event.admin_name).toEqual('apple')
-      expect(sortByName(rowA, rowB)).toEqual(1)
-      expect(sortByName(rowB, rowA)).toEqual(-1)
+      expect(sortByName(rowA, rowB, false)).toEqual(-1)
+      expect(sortByName(rowB, rowA, false)).toEqual(1)
+      expect(sortByName(rowA, rowB, true)).toEqual(1)
+      expect(sortByName(rowB, rowA, true)).toEqual(-1)
+    })
+  })
+
+  describe('sortByType', () => {
+    it('sorts by event event_type', () => {
+      const rowA = { event: { admin_name: 'apple' }, event_type: 'X' }
+      const rowB = { event: { admin_name: 'apple' }, event_type: 'Y' }
+      expect(sortByType(rowA, rowB)).toEqual(-1)
+      expect(sortByType(rowB, rowA)).toEqual(1)
+    })
+
+    it('breaks a tie with timestamp and timestamp is always sorted descending', () => {
+      const rowA = {
+        event: { admin_name: 'banana' },
+        event_type: 'X',
+        timestamp: '2050-01-01 12:00:00',
+      }
+      const rowB = {
+        event: { admin_name: 'apple' },
+        event_type: 'X',
+        timestamp: '2000-01-01 12:00:00',
+      }
+      expect(rowA.event.admin_name).toEqual('banana')
+      expect(rowB.event.admin_name).toEqual('apple')
+      expect(sortByType(rowA, rowB, false)).toEqual(-1)
+      expect(sortByType(rowB, rowA, false)).toEqual(1)
+
+      expect(sortByType(rowA, rowB, true)).toEqual(1)
+      expect(sortByType(rowB, rowA, true)).toEqual(-1)
     })
   })
 })
