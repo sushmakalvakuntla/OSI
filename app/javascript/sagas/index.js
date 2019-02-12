@@ -1,3 +1,4 @@
+export { getAuditEventsSaga } from './getAuditEventsSaga'
 export { countyUsersListSaga } from './getUserListSaga'
 export { detailsSaga } from './getDetailsSaga'
 export { officesSaga } from './getOfficesSaga'

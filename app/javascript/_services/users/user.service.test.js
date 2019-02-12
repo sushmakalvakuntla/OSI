@@ -33,6 +33,27 @@ describe('UserService', () => {
     })
   })
 
+  describe('#auitEvents', () => {
+    let getAuditEventsSpy
+    beforeEach(() => {
+      getAuditEventsSpy = jest.spyOn(ApiService, 'get')
+    })
+
+    it('calls #search ApiService', () => {
+      const q = encodeURIComponent(
+        JSON.stringify({
+          query: [],
+          sort: [],
+          size: 10,
+          from: 0,
+        })
+      )
+      getAuditEventsSpy.mockReturnValue(Promise.resolve({}))
+      UserService.auditEvents(q)
+      expect(getAuditEventsSpy).toHaveBeenCalledWith(`/audit_events?q=${q}`)
+    })
+  })
+
   describe('#fetch', () => {
     it('calls fetch ApiService', () => {
       const lastName = 'don'

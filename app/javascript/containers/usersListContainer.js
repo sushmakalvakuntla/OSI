@@ -12,6 +12,7 @@ import {
   handleCheckBoxChangeActions,
 } from '../actions/userListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
+import { fetchAuditEventsActions } from '../actions/auditEventActions'
 import { fetchRolesActions } from '../actions/rolesActions'
 import { checkOfficeNames, cardHeaderText } from '../selectors/userListSelector'
 import { officesList } from '../selectors/officeListSelector'
@@ -39,6 +40,7 @@ function mapStateToProps(state) {
     officeNames: checkOfficeNames(userList.inputData.officeNames),
     rolesList: rolesList(state),
     includeInactive: userList.includeInactive,
+    auditEvents: state.auditEventsReducer.auditEvents,
   }
 }
 
@@ -57,6 +59,7 @@ function mapDispatchToProps(dispatch) {
         fetchRolesActions,
         clearAddedUserDetailActions,
         handleCheckBoxChangeActions,
+        fetchAuditEventsActions,
       },
       dispatch
     ),

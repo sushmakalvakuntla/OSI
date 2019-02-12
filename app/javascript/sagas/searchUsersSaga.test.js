@@ -7,6 +7,7 @@ import {
   USER_LIST_SET_SORT,
   USER_LIST_SET_SEARCH,
   FETCH_USERS_API_CALL_REQUEST,
+  FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
 } from '../actions/actionTypes'
 
 describe('sagas', () => {
@@ -24,6 +25,12 @@ describe('sagas', () => {
       expect(gen.next(['Hello', 'Bye']).value).toEqual(
         put({
           type: FETCH_USERS_API_CALL_REQUEST,
+          payload: ['Hello', 'Bye'],
+        })
+      )
+      expect(gen.next(['event', 'event_type']).value).toEqual(
+        put({
+          type: FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
           payload: ['Hello', 'Bye'],
         })
       )

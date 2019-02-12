@@ -6,15 +6,13 @@ class UserService {
   }
 
   static search({ query = [], sort = [], size = 10, from = 0 }) {
-    const q = encodeURIComponent(
-      JSON.stringify({
-        query,
-        sort,
-        size,
-        from,
-      })
-    )
+    const q = encodeURIComponent(JSON.stringify({ query, sort, size, from }))
     return ApiService.get(`/user_list?q=${q}`).then(({ data }) => data)
+  }
+
+  static auditEvents({ query = [], sort = [], size = 10, from = 0 }) {
+    const q = encodeURIComponent(JSON.stringify({ query, sort, size, from }))
+    return ApiService.get(`/audit_events?q=${q}`).then(({ data }) => data)
   }
 
   static fetchUserDetails(id) {
