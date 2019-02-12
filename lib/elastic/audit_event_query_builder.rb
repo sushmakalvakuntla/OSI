@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Elastic
-  class UserQueryBuilder
+  class AuditEventQueryBuilder
     include QueryBuilder
     def self.get_search(request)
       query(request[:query])
@@ -9,12 +9,7 @@ module Elastic
     end
 
     def self.query(query)
-      leaves = query_leaves(query)
-      if leaves.blank?
-        match_all
-      else
-        bool_and_query(leaves)
-      end
+      bool_and_query(query_leaves(query))
     end
 
     def self.paginate_query(query)
@@ -27,18 +22,16 @@ module Elastic
     def self.query_leaves(query)
       query.map do |subquery|
         Elastic::QueryBuilder.subquery_as_es(subquery, SUBQUERIES)
-      end.compact
+      end.compact << ({ "match_phrase_prefix": { "event_source": 'CAP' } })
     end
 
     SUBQUERIES = {
-      office_ids: ->(value) { { terms: { 'office_id.keyword': value } } unless value.empty? },
-      last_name: ->(value) { { match_phrase_prefix: { last_name: value } } unless value.empty? },
-      enabled: ->(value) { { term: { enabled: value.to_s } } unless value.to_s.empty? }
+      office_ids: ->(value) { { terms: { 'event.office_id.keyword': value } } unless value.empty? }
     }.freeze
 
     def self.sort_query
-      { sort: [{ "last_name.for_sort": { order: 'asc' } },
-               { "first_name.for_sort": { order: 'asc' } }] }
+      { sort: [{ "timestamp": { order: 'desc' } },
+               { "event.user_name.keyword": { order: 'desc' } }] }
     end
 
     def self.bool_and_query(query_leaves)
@@ -47,14 +40,6 @@ module Elastic
           bool: {
             must: query_leaves
           }
-        }
-      }
-    end
-
-    def self.match_all
-      {
-        query: {
-          match_all: {}
         }
       }
     end

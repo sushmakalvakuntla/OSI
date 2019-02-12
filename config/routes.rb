@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     resources :resend_registration_email, only: [:index] do
     end
 
+    resources :audit_events, only: [:index] do
+    end
+
     get 'account', to: 'account#index'
     get 'permissions_list', to: 'permissions_list#index'
     get 'offices_list', to: 'offices_list#index'
