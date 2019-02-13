@@ -10,10 +10,7 @@ describe('#permissionsList', () => {
   }
   it('selects the permissions when available', () => {
     const expectedValue = [{ value: 'foo-name', label: 'foo-desc' }, { value: 'bar-name', label: 'bar-desc' }]
-    const state = getState([
-      { name: 'foo-name', description: 'foo-desc' },
-      { name: 'bar-name', description: 'bar-desc' },
-    ])
+    const state = getState([{ name: 'foo-name', description: 'foo-desc' }, { name: 'bar-name', description: 'bar-desc' }])
     expect(permissionsList(state)).toEqual(expectedValue)
   })
 

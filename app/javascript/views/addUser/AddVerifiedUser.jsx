@@ -21,9 +21,7 @@ const AddNewUser = ({ onAddUser, verifyNewUserDetails, officeName, officePhoneNu
             >
               <div className="col-md-12">
                 <div className="row">
-                  <label htmlFor="text">
-                    Please Verify the details of the CWS/CMS user you want to add to CWS-CARES
-                  </label>
+                  <label htmlFor="text">Please Verify the details of the CWS/CMS user you want to add to CWS-CARES</label>
                   <div className="col-md-3">
                     <ShowField label="Full Name">
                       {verifyNewUserDetails.user.last_name}

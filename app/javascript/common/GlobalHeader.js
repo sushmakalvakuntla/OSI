@@ -12,11 +12,7 @@ export default class GlobalHeaderComponent extends React.Component {
   render() {
     return (
       <div>
-        <GlobalHeader
-          profileName={this.props.fullName}
-          logoutUrl={this.props.logoutUrl}
-          logoutCallback={this.logoutCallback}
-        />
+        <GlobalHeader profileName={this.props.fullName} logoutUrl={this.props.logoutUrl} logoutCallback={this.logoutCallback} />
       </div>
     )
   }

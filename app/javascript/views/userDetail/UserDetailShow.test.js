@@ -101,13 +101,7 @@ describe('UserDetailShow', () => {
     })
 
     it('renders the <ShowField/> props.children at label:fullName', () => {
-      const expectedValue = [
-        `${details.last_name}`,
-        `${', '}`,
-        `${details.first_name}`,
-        `${' '}`,
-        `${details.middle_name}`,
-      ]
+      const expectedValue = [`${details.last_name}`, `${', '}`, `${details.first_name}`, `${' '}`, `${details.middle_name}`]
       expect(
         wrapper
           .find('ShowField')

@@ -209,8 +209,7 @@ export default class UserDetail extends Component {
         <PageHeader pageTitle="User Profile" button={this.pageButton()} />
         <div className="container">
           <div className="col-md-12">
-            Back to:{' '}
-            <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
+            Back to: <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
             &nbsp;&gt;&nbsp;
             <Link to="/">User List</Link>
             {this.showAlert(this.props.displayAlert, this.props.userDetailError, this.props.saveSuccessMsg)}

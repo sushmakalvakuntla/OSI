@@ -115,10 +115,7 @@ describe('selectors', () => {
           },
         },
         fetchOffices: {
-          offices: [
-            { office_id: 'north', office_name: 'North Office' },
-            { office_id: 'south', office_name: 'South Office' },
-          ],
+          offices: [{ office_id: 'north', office_name: 'North Office' }, { office_id: 'south', office_name: 'South Office' }],
         },
       }
     }
@@ -151,10 +148,7 @@ describe('selectors', () => {
           },
         },
         fetchOffices: {
-          offices: [
-            { office_id: 'north', office_name: 'North Office' },
-            { office_id: 'south', office_name: 'South Office' },
-          ],
+          offices: [{ office_id: 'north', office_name: 'North Office' }, { office_id: 'south', office_name: 'South Office' }],
         },
       }
     }

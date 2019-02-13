@@ -31,9 +31,7 @@ describe('ChangeLog', () => {
     },
   ]
   beforeEach(() => {
-    wrapper = shallow(
-      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
-    )
+    wrapper = shallow(<ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />)
   })
 
   it('renders the Components ', () => {
@@ -88,9 +86,7 @@ describe('ChangeLog', () => {
 
     expect(trs.at(1).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
     expect(trs.at(2).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
-    expect(trs.at(3).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join('')
-    )
+    expect(trs.at(3).text()).toEqual(['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join(''))
     expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))
     expect(
       trs
@@ -115,9 +111,7 @@ describe('ChangeLog', () => {
     ).toEqual('Walsh, Jack (County Admin)')
     madeByHeader.simulate('click') // sort by Made By
 
-    expect(trs.at(1).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join('')
-    )
+    expect(trs.at(1).text()).toEqual(['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join(''))
     expect(trs.at(2).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
     expect(trs.at(3).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
     expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))

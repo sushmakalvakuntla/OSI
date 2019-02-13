@@ -18,10 +18,7 @@ const expectedState = ({ countyName, officeId, email }) => {
       },
     },
     fetchOffices: {
-      offices: [
-        { office_id: 'north', office_name: 'North Office' },
-        { office_id: 'south', office_name: 'South Office' },
-      ],
+      offices: [{ office_id: 'north', office_name: 'North Office' }, { office_id: 'south', office_name: 'South Office' }],
     },
   }
 }

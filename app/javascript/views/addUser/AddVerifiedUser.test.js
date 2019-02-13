@@ -22,9 +22,7 @@ describe('AddVerifiedUser', () => {
   describe('when verification passed', () => {
     it('renders the Showfields with verifyNewUserDetails', () => {
       wrapper = shallow(<AddVerifiedUser verifyNewUserDetails={verifyNewUserDetails} />)
-      expect(wrapper.find('label').text()).toBe(
-        'Please Verify the details of the CWS/CMS user you want to add to CWS-CARES'
-      )
+      expect(wrapper.find('label').text()).toBe('Please Verify the details of the CWS/CMS user you want to add to CWS-CARES')
       expect(wrapper.find('ShowField').length).toBe(6)
       expect(
         wrapper

@@ -111,13 +111,7 @@ describe('UserDetailEdit', () => {
     })
 
     it('renders the <ShowField/> children at label:fullName', () => {
-      const expectedValue = [
-        `${details.last_name}`,
-        `${', '}`,
-        `${details.first_name}`,
-        `${' '}`,
-        `${details.middle_name}`,
-      ]
+      const expectedValue = [`${details.last_name}`, `${', '}`, `${details.first_name}`, `${' '}`, `${details.middle_name}`]
       expect(
         wrapper
           .find('ShowField')
@@ -206,10 +200,7 @@ describe('UserDetailEdit', () => {
     })
 
     it('#AssignPermissions, onPermissionChange function is called when onChange event triggered ', () => {
-      const permissions = [
-        { value: 'permission1', label: 'permissionOne' },
-        { value: 'permission2', label: 'permissionTwo' },
-      ]
+      const permissions = [{ value: 'permission1', label: 'permissionOne' }, { value: 'permission2', label: 'permissionTwo' }]
       wrapper.find('#AssignPermissions').simulate('change', permissions)
       expect(onDropDownChangeSpy).toHaveBeenCalledWith('permissions', ['permission1', 'permission2'])
     })

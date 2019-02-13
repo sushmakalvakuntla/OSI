@@ -27,10 +27,7 @@ describe('#officesList', () => {
 describe('#translateOfficeName', () => {
   const state = {
     fetchOffices: {
-      offices: [
-        { office_id: 'north', office_name: 'North Office' },
-        { office_id: 'south', office_name: 'South Office' },
-      ],
+      offices: [{ office_id: 'north', office_name: 'North Office' }, { office_id: 'south', office_name: 'South Office' }],
     },
   }
   it('renders the name of an office given a record containing office_id', () => {

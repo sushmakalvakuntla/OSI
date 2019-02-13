@@ -24,11 +24,7 @@ export const selectAssignedPermissions = state => {
 }
 
 export const selectPossiblePermissionsList = state => {
-  const possiblePermissions = safeGet(
-    state,
-    'fetchDetails.details.records.edit_details.permissions.possible_values',
-    []
-  )
+  const possiblePermissions = safeGet(state, 'fetchDetails.details.records.edit_details.permissions.possible_values', [])
   const permissions = permissionsList(state)
   const options = []
   permissions.forEach(permission => {
@@ -134,9 +130,7 @@ export const selectModifiedDetails = state => {
       initialDetails.phone_extension_number,
       modifiedDetails.phone_extension_number
     ),
-    roles: disableRolesDropDown(state)
-      ? undefined
-      : checkForModifiedDetails(initialDetails.roles, modifiedDetails.roles),
+    roles: disableRolesDropDown(state) ? undefined : checkForModifiedDetails(initialDetails.roles, modifiedDetails.roles),
   }
   return userData
 }

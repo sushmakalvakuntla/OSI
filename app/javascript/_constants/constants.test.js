@@ -28,10 +28,7 @@ describe('helpers', () => {
   })
 
   describe('#getOfficeTranslator', () => {
-    const translate = getOfficeTranslator([
-      { value: 'north', label: 'North Office' },
-      { value: 'south', label: 'South Office' },
-    ])
+    const translate = getOfficeTranslator([{ value: 'north', label: 'North Office' }, { value: 'south', label: 'South Office' }])
 
     it('returns a translator function which can translate office_ids', () => {
       expect(translate({ office_id: 'north' })).toEqual('North Office')

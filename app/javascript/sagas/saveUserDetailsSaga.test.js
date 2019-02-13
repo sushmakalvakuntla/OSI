@@ -69,8 +69,7 @@ describe('sagas', () => {
         const details = { first_name: 'firstname', last_name: 'lastname', email: 'abc@gmail.com' }
         const isRolesDisabled = true
         const initialDetails = { first_name: 'firstname', last_name: 'lastname' }
-        const successAlert =
-          'Your changes have been made successfully. A Registration invite will be sent to the new email.'
+        const successAlert = 'Your changes have been made successfully. A Registration invite will be sent to the new email.'
         const action = {
           payload: { id: id, details: details, initialDetails: initialDetails, isRolesDisabled },
         }

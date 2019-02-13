@@ -122,10 +122,7 @@ describe('selectors', () => {
         roles: rolesList,
       },
       fetchOffices: {
-        offices: [
-          { office_id: 'north', office_name: 'North Office' },
-          { office_id: 'south', office_name: 'South Office' },
-        ],
+        offices: [{ office_id: 'north', office_name: 'North Office' }, { office_id: 'south', office_name: 'South Office' }],
       },
     }
   }
@@ -293,10 +290,7 @@ describe('selectors', () => {
     ]
     it('renders the description of a permission given possiblePermission with permission name', () => {
       const possiblePermissions = ['permission1', 'permission2']
-      const expectedValue = [
-        { value: 'permission1', label: 'permissionOne' },
-        { value: 'permission2', label: 'permissionTwo' },
-      ]
+      const expectedValue = [{ value: 'permission1', label: 'permissionOne' }, { value: 'permission2', label: 'permissionTwo' }]
       const state = getState({
         possiblePermissions: possiblePermissions,
         permissionsList: permissionsList,
@@ -306,11 +300,7 @@ describe('selectors', () => {
   })
 
   describe('#selectPossibleRolesList', () => {
-    const rolesList = [
-      { id: 'role1', name: 'roleOne' },
-      { id: 'role2', name: 'roleTwo' },
-      { id: 'role3', name: 'roleThree' },
-    ]
+    const rolesList = [{ id: 'role1', name: 'roleOne' }, { id: 'role2', name: 'roleTwo' }, { id: 'role3', name: 'roleThree' }]
     it('renders the name of a role given possibleRoles with role_id', () => {
       const possibleRoles = ['role1', 'role2']
       const expectedValue = [{ value: 'role1', label: 'roleOne' }, { value: 'role2', label: 'roleTwo' }]
@@ -685,11 +675,7 @@ describe('selectors', () => {
   })
 
   describe('#assignedRoles', () => {
-    const rolesList = [
-      { id: 'role1', name: 'roleOne' },
-      { id: 'role2', name: 'roleTwo' },
-      { id: 'role3', name: 'roleThree' },
-    ]
+    const rolesList = [{ id: 'role1', name: 'roleOne' }, { id: 'role2', name: 'roleTwo' }, { id: 'role3', name: 'roleThree' }]
     describe('When assigned Roles exists ', () => {
       it('returns description/label with matched value', () => {
         const state = getState({ assignedRoles: ['role1'], rolesList })

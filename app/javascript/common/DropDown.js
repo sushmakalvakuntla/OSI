@@ -41,13 +41,7 @@ class DropDown extends React.Component {
 DropDown.propTypes = {
   options: PropTypes.array,
   id: PropTypes.string,
-  selectedOption: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-    PropTypes.bool,
-    PropTypes.func,
-    PropTypes.object,
-  ]),
+  selectedOption: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.bool, PropTypes.func, PropTypes.object]),
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   gridClassName: PropTypes.string,

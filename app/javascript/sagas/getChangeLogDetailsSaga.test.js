@@ -6,9 +6,7 @@ import { takeLatest, call, put } from 'redux-saga/effects'
 describe('sagas', () => {
   it('starts the worker fetch saga', () => {
     const gen = changeLogDetailsSaga()
-    expect(gen.next().value).toEqual(
-      takeLatest(actionTypes.FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST, getChangeLogAdminDetails)
-    )
+    expect(gen.next().value).toEqual(takeLatest(actionTypes.FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST, getChangeLogAdminDetails))
   })
 
   describe('#getChangeLogAdminDetails', () => {

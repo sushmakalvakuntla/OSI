@@ -190,8 +190,7 @@ describe('reducer', () => {
       saveDetailsError: null,
       displayAlert: true,
       initialDetails: { user: { email: 'email@gmail.com' } },
-      saveSuccessAlert:
-        'Your changes have been made successfully. A Registration invite will be sent to the new email.',
+      saveSuccessAlert: 'Your changes have been made successfully. A Registration invite will be sent to the new email.',
     })
   })
 

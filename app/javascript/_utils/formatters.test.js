@@ -1,11 +1,4 @@
-import {
-  formatPhoneNumberWithExt,
-  formatPhoneNumber,
-  checkDate,
-  formatRoles,
-  formatDate,
-  formatPermissions,
-} from './formatters'
+import { formatPhoneNumberWithExt, formatPhoneNumber, checkDate, formatRoles, formatDate, formatPermissions } from './formatters'
 
 describe('#formatPhoneNumberWithExt', () => {
   describe('When phone & extension exists ', () => {

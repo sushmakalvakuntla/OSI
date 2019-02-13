@@ -54,7 +54,7 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        printWidth: 120,
+        printWidth: 130,
         trailingComma: 'es5',
         singleQuote: true,
         semi: false,
@@ -76,4 +76,9 @@ module.exports = {
     },
     sourceType: 'module',
   },
+  settings: {
+    react: {
+      version: require('./package.json').dependencies.react.slice(1),
+    }
+  }
 };

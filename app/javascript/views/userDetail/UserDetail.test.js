@@ -144,12 +144,7 @@ describe('UserDetail', () => {
       const onSaveDetails = wrapper.instance().onSaveDetails
       wrapper.setProps({ isUserEditable: true, disableActionBtn: true })
       expect(wrapper.instance().pageButton()).toEqual(
-        <PageHeaderButtons
-          onReset={onReset}
-          onSaveDetails={onSaveDetails}
-          isUserEditable={true}
-          disableButtons={true}
-        />
+        <PageHeaderButtons onReset={onReset} onSaveDetails={onSaveDetails} isUserEditable={true} disableButtons={true} />
       )
     })
   })
@@ -288,8 +283,7 @@ describe('UserDetail', () => {
       wrapper.setProps({
         userDetailError: null,
         displayAlert: true,
-        saveSuccessMsg:
-          'Your changes have been made successfully. A Registration invite will be sent to the new email.',
+        saveSuccessMsg: 'Your changes have been made successfully. A Registration invite will be sent to the new email.',
       })
       const alertBox = wrapper.find('UserMessage')
       expect(alertBox.length).toBe(1)

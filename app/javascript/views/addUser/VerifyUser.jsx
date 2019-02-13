@@ -20,8 +20,8 @@ const VerifyUser = ({ onVerify, handleEmailChange, handleRacfChange, disableActi
           <div className="col-md-12">
             <div className="row">
               <label htmlFor="text">
-                Enter the CWS Login and email address of the user you are adding in order to verify that this is a new
-                CWS-CARES user
+                Enter the CWS Login and email address of the user you are adding in order to verify that this is a new CWS-CARES
+                user
               </label>
               <div className="col-md-3">
                 <InputComponent

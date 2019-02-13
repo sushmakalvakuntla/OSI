@@ -114,8 +114,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         fetching: false,
         inputData: {
           ...state.inputData,
-          officeNames:
-            state.inputData.officeNames === undefined ? getAdminOfficeIDs(payload) : state.inputData.officeNames,
+          officeNames: state.inputData.officeNames === undefined ? getAdminOfficeIDs(payload) : state.inputData.officeNames,
         },
         adminAccountDetails: payload,
         error: null,

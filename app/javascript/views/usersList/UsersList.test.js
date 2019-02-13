@@ -89,10 +89,7 @@ describe('UsersList', () => {
           lastName="last_name_value"
           officeNames={['north', 'south', 'east', 'west']}
           includeInactive={false}
-          officeList={[
-            { value: 'someOffice1', label: 'someOfficeOne' },
-            { value: 'someOffice2', label: 'someOfficeTwo' },
-          ]}
+          officeList={[{ value: 'someOffice1', label: 'someOfficeOne' }, { value: 'someOffice2', label: 'someOfficeTwo' }]}
           cardHeaderValue="State Administrator view"
         />
       )
