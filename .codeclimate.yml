@@ -28,6 +28,10 @@ plugins:
     enabled: true
   bundler-audit:
     enabled: true
+    # ... Temporary Disable ...
+    checks:
+      Insecure Dependency:
+        enabled: false
   stylelint:
     enabled: true
     exclude_patterns:
@@ -52,6 +56,9 @@ plugins:
         - .jsx
   fixme:
     enabled: true
+    checks:
+      TODO:
+        enabled: false
   flog:
     enabled: true
   rubocop:
@@ -70,3 +77,4 @@ exclude_patterns:
   - "**/vendor/"
   - "**/*.d.ts"
   - "app/assets"
+  - "*.test.js"

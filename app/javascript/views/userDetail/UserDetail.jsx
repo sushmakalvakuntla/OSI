@@ -15,9 +15,7 @@ import PageHeaderButtons from '../../common/PageHeaderButtons'
 export default class UserDetail extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      resendEmailAlert: false,
-    }
+    this.state = { resendEmailAlert: false }
   }
 
   componentDidMount() {
@@ -49,42 +47,31 @@ export default class UserDetail extends Component {
     this.setState({ resendEmailAlert: false })
   }
 
-  handleDropDownChange = (name, value) => {
-    this.props.actions.handleDropdownChangeAction(name, value)
-  }
+  handleDropDownChange = (name, value) => this.props.actions.handleDropdownChangeAction(name, value)
 
-  handleInputChange = (name, value) => {
-    this.props.actions.handleInputChangeAction(name, value)
-  }
+  handleInputChange = (name, value) => this.props.actions.handleInputChangeAction(name, value)
 
   showAlert = (displayAlert, userDetailError, saveSuccessMsg) => {
-    if (displayAlert) {
-      if (userDetailError) {
-        return <UserMessage errorMsg={userDetailError} />
-      } else {
-        return <UserMessage successMsg={saveSuccessMsg} />
-      }
-    }
+    if (displayAlert)
+      return (
+        <div>{userDetailError ? <UserMessage errorMsg={userDetailError} /> : <UserMessage successMsg={saveSuccessMsg} />}</div>
+      )
     return null
   }
 
-  showAddAlert = () => {
-    if (this.props.id) {
-      return (
+  showAddAlert = () => (
+    <div>
+      {this.props.id ? (
         <UserMessage
           successMsg={`Successfully added new user. Registration email has been sent to ${this.props.details.email} `}
         />
-      )
-    }
-    return null
-  }
+      ) : null}
+    </div>
+  )
 
-  emailSent = () => {
-    if (this.state.resendEmailAlert) {
-      return <UserMessage successMsg={'Registration email has been sent successfully'} />
-    }
-    return null
-  }
+  emailSent = () => (
+    <div>{this.state.resendEmailAlert ? <UserMessage successMsg={'Registration email has been sent successfully'} /> : null}</div>
+  )
 
   getChangeLogAdminDetails = value => {
     this.props.actions.fetchChangeLogAdminDetailsActions(value)
