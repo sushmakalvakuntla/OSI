@@ -13,7 +13,7 @@ module AuditEvents
       response.body
     rescue StandardError => e
       Rails.logger.debug("error searching #{e.response}")
-      {}
+      e.response
     end
 
     private

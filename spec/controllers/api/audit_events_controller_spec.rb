@@ -45,6 +45,31 @@ module Api
           )
         end
 
+        describe 'when an error is returned from ES' do
+          let(:match_search_with_paging) do
+            { query: [],
+              from: 51, size: 25,
+              sort: [{ field: 'timestamp', desc: true }] }
+          end
+          let(:api_response) { { "issue_details": 'something failed' } }
+
+          it 'returns an empty list of audit events plus an error' do
+            allow(AuditEvents::AuditEventRepository).to receive(:new)
+              .with(no_args).and_return(audit_event_repository)
+
+            allow(audit_event_repository)
+              .to receive(:search).with(match_all_query, 'token')
+                                  .and_return(api_response)
+            request.session[:token] = 'token'
+
+            error_response = { records: [], error: 'error processing query' }
+
+            get :index, params: { q: match_search_with_paging.to_json }
+            expect(JSON.parse(response.body, symbolize_names: true))
+              .to eq error_response
+          end
+        end
+
         describe 'when no params are passed' do
           let(:match_search_with_paging) do
             { query: [],

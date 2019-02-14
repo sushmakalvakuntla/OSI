@@ -19,6 +19,8 @@ module Api
     private
 
     def audit_events_response(es_response, request_query)
+      return { records: [], error: 'error processing query' } unless es_response.key?(:hits)
+
       audit_events = es_response[:hits][:hits].collect { |audit_event| audit_event[:_source] }
       total = es_response[:hits][:total]
 
