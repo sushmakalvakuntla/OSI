@@ -7,7 +7,7 @@ import UserDetailShow from './UserDetailShow'
 import UserMessage from '../../common/UserMessage'
 import Cards from '../../common/Card'
 import ChangeLog from './ChangeLog'
-import CWSPermissions from './CWSPermissions'
+import CWSPrivileges from './CWSPrivileges'
 import Notes from './Notes'
 import PageHeaderButtons from '../../common/PageHeaderButtons'
 
@@ -104,6 +104,7 @@ export default class UserDetail extends Component {
       notesWordCount,
       changeLogAdminDetails,
       changeLogAdminOfficeName,
+      privilegesFromCWS,
     } = this.props
     return details && details.id ? (
       <div>
@@ -146,10 +147,10 @@ export default class UserDetail extends Component {
         <br />
         <div className="row">
           <div className="col-md-12">
-            <div className="col-md-4">
-              <CWSPermissions />
+            <div className="col-md-6">
+              <CWSPrivileges CWSPrivileges={privilegesFromCWS} />
             </div>
-            <div className="col-md-8">
+            <div className="col-md-6">
               <Notes
                 isUserEditable={isUserEditable}
                 userNotes={notes}
@@ -257,6 +258,7 @@ UserDetail.propTypes = {
   dashboardClickHandler: PropTypes.func,
   notes: PropTypes.string,
   notesWordCount: PropTypes.number,
+  privilegesFromCWS: PropTypes.array,
 }
 
 UserDetail.defaultProps = {

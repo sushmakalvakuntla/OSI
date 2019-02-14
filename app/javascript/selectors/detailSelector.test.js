@@ -11,6 +11,7 @@ import {
   selectAccountStatus,
   selectAssignedPermissions,
   selectAuditEvents,
+  selectCWSPrivileges,
   officeName,
   selectPossiblePermissionsList,
   disableActionButton,
@@ -66,6 +67,7 @@ describe('selectors', () => {
     officePhoneExtensionNumber,
     auditEvents,
     notes,
+    CWSPrivileges,
   }) => {
     return {
       fetchDetails: {
@@ -110,6 +112,7 @@ describe('selectors', () => {
               office_phone_extension_number: officePhoneExtensionNumber,
               last_login_date_time: lastLoginDateTime,
               notes: notes,
+              cws_privileges: CWSPrivileges,
             },
             auditevents: auditEvents,
           },
@@ -171,6 +174,30 @@ describe('selectors', () => {
     it('selects an empty array when there are no audit events', () => {
       const state = getState({})
       expect(selectAuditEvents(state)).toEqual([])
+    })
+  })
+
+  describe('#cwsPrivileges', () => {
+    const CWSPrivileges = [{ category: 'Access Authority', privilege: 'Adoptions' }]
+
+    it('selects the CWS privileges', () => {
+      const state = getState({ CWSPrivileges: CWSPrivileges })
+      expect(selectCWSPrivileges(state)).toEqual(CWSPrivileges)
+    })
+
+    it('selects an empty array when there are no CWS privileges', () => {
+      const state = getState({})
+      expect(selectCWSPrivileges(state)).toEqual([])
+    })
+
+    it('selects an empty array when CWSPrivileges is undefined ', () => {
+      const state = getState({ CWSPrivileges: undefined })
+      expect(selectCWSPrivileges(state)).toEqual([])
+    })
+
+    it('selects an empty array when CWSPrivileges is null ', () => {
+      const state = getState({ CWSPrivileges: null })
+      expect(selectCWSPrivileges(state)).toEqual([])
     })
   })
 

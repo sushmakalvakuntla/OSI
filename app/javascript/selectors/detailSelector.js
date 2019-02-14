@@ -18,6 +18,11 @@ export const selectDetailRecords = state => {
 
 export const selectAuditEvents = state => safeGet(state, 'fetchDetails.details.records.auditevents', [])
 
+export const selectCWSPrivileges = state => {
+  const CWSPrivileges = safeGet(state, 'fetchDetails.details.records.user.cws_privileges', [])
+  return CWSPrivileges || []
+}
+
 export const selectAssignedPermissions = state => {
   const assignedPermissions = safeGet(state, 'fetchDetails.details.records.user.permissions')
   return formatPermissions(assignedPermissions, permissionsList(state))

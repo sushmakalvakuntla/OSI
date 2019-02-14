@@ -227,8 +227,8 @@ describe('UserDetail', () => {
         expect(wrapper.find('Notes').length).toBe(1)
       })
 
-      it('should display  <CWSPermissions/>', () => {
-        expect(wrapper.find('CWSPermissions').length).toBe(1)
+      it('should display  <CWSPrivileges/>', () => {
+        expect(wrapper.find('CWSPrivileges').length).toBe(1)
       })
 
       it('renders card with text indicating no user found', () => {

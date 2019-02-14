@@ -24,6 +24,7 @@ import {
   unformattedPhoneNumber,
   phoneExtension,
   userNotes,
+  selectCWSPrivileges,
 } from '../selectors/detailSelector'
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { rolesList } from '../selectors/rolesListSelector'
@@ -82,6 +83,7 @@ function mapStateToProps(state) {
     phoneExtensionNumber: phoneExtension(state),
     notes: userNotes(state).notes,
     notesWordCount: userNotes(state).notesLength,
+    privilegesFromCWS: selectCWSPrivileges(state),
   }
 }
 
