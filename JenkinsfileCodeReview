@@ -8,7 +8,8 @@ node('cap-slave') {
   def triggerProperties = githubPullRequestBuilderTriggerProperties()
   properties([
     githubConfig(),
-    pipelineTriggers([triggerProperties])
+    pipelineTriggers([triggerProperties]),
+    buildDiscarderDefaults()
   ])
   def app
     try {

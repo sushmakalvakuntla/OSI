@@ -32,7 +32,8 @@ node(node_to_run_on()) {
     parameters([
       string(name: 'INCREMENT_VERSION', defaultValue: '', description: 'major, minor, or patch')
     ]),
-    pipelineTriggers([triggerProperties])
+    pipelineTriggers([triggerProperties]),
+    buildDiscarderDefaults('master')
   ])
   def app
     try {
