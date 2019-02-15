@@ -11,8 +11,12 @@ export default class ChangeLogDetails extends Component {
       ModalOpen: false,
     }
   }
+
   toggle = () => {
     this.props.getAdminDetails(this.props.changeLogData.user_login)
+    if (this.props.isListView) {
+      this.props.getUserDetails(this.props.changeLogData.event.user_id)
+    }
     this.setState(prevState => ({
       ModalOpen: !prevState.ModalOpen,
     }))
@@ -139,9 +143,11 @@ ChangeLogDetails.propTypes = {
   newValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   comment: PropTypes.oneOfType([PropTypes.string]),
   getAdminDetails: PropTypes.func,
+  getUserDetails: PropTypes.func,
   changeLogData: PropTypes.object,
   userOfficeName: PropTypes.string,
   userDetails: PropTypes.object,
   adminDetails: PropTypes.object,
   adminOfficeName: PropTypes.string,
+  isListView: PropTypes.bool,
 }

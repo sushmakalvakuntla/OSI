@@ -27,7 +27,15 @@ export const sortByType = (a, b, desc) => {
 const timestampCompareDescending = (a, b, desc) => {
   return desc ? (a.timestamp > b.timestamp ? 1 : -1) : a.timestamp < b.timestamp ? 1 : -1
 }
-const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName) => [
+const columnConfig = (
+  userDetails,
+  getAdminDetails,
+  adminDetails,
+  userOfficeName,
+  adminOfficeName,
+  getUserDetails,
+  isListView
+) => [
   {
     Header: 'Date/Time',
     accessor: 'timestamp',
@@ -68,13 +76,24 @@ const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName
         adminDetails={adminDetails}
         userOfficeName={userOfficeName}
         adminOfficeName={adminOfficeName}
+        getUserDetails={getUserDetails}
+        isListView={isListView}
       />
     ),
     minWidth: 50,
   },
 ]
 
-const ChangeLog = ({ auditEvents, userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName }) => (
+const ChangeLog = ({
+  auditEvents,
+  userDetails,
+  getAdminDetails,
+  adminDetails,
+  userOfficeName,
+  adminOfficeName,
+  getUserDetails,
+  isListView,
+}) => (
   <Rolodex>
     <Card>
       <CardHeader>
@@ -87,7 +106,15 @@ const ChangeLog = ({ auditEvents, userDetails, getAdminDetails, adminDetails, us
           style={{
             maxHeight: '500px',
           }}
-          columns={columnConfig(userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName)}
+          columns={columnConfig(
+            userDetails,
+            getAdminDetails,
+            adminDetails,
+            userOfficeName,
+            adminOfficeName,
+            getUserDetails,
+            isListView
+          )}
           sortable={true}
           className="client-grid audit-events"
           minRows={3}
@@ -113,8 +140,10 @@ ChangeLog.propTypes = {
   userDetails: PropTypes.object,
   userOfficeName: PropTypes.string,
   getAdminDetails: PropTypes.func,
+  getUserDetails: PropTypes.func,
   adminDetails: PropTypes.object,
   adminOfficeName: PropTypes.string,
+  isListView: PropTypes.bool,
 }
 
 export default ChangeLog

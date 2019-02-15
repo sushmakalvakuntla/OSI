@@ -11,6 +11,7 @@ import './UsersList.scss'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { isEqual } from 'lodash'
 import { formatRoles } from '../../_utils/formatters'
+import ChangeLog from '../userDetail/ChangeLog'
 
 class UserList extends PureComponent {
   constructor(props) {
@@ -142,6 +143,13 @@ class UserList extends PureComponent {
     )
   }
 
+  getChangeLogAdminDetails = value => {
+    this.props.actions.fetchChangeLogAdminDetailsActions(value)
+  }
+
+  getChangeLogUserDetails = value => {
+    this.props.actions.fetchDetailsActions(value)
+  }
   renderPageHeader = () => {
     return (
       <PageHeader
@@ -230,6 +238,22 @@ class UserList extends PureComponent {
                   rolesList: this.props.rolesList,
                 })}
               </Cards>
+              {this.props.displayChangeLog ? (
+                <div className="col-md-12 card-margin">
+                  <ChangeLog
+                    auditEvents={this.props.auditEvents}
+                    getAdminDetails={this.getChangeLogAdminDetails}
+                    getUserDetails={this.getChangeLogUserDetails}
+                    adminDetails={this.props.changeLogAdminDetails}
+                    userDetails={this.props.userDetails}
+                    userOfficeName={this.props.userOfficeName}
+                    adminOfficeName={this.props.changeLogAdminOfficeName}
+                    isListView={true}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
             </div>
           </div>
         )}
@@ -270,6 +294,12 @@ UserList.propTypes = {
   inputData: PropTypes.object,
   rolesList: PropTypes.array,
   includeInactive: PropTypes.bool,
+  changeLogAdminDetails: PropTypes.object,
+  changeLogAdminOfficeName: PropTypes.string,
+  userOfficeName: PropTypes.string,
+  auditEvents: PropTypes.array,
+  userDetails: PropTypes.object,
+  displayChangeLog: PropTypes.bool,
 }
 
 UserList.defaultProps = {

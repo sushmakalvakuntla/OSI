@@ -19,7 +19,7 @@ const initialValue = {
   error: null,
 }
 
-function auditEventsReducer(state = initialValue, { type, payload, error }) {
+function fetchAuditEvents(state = initialValue, { type, payload, error }) {
   switch (type) {
     case actionTypes.FETCH_AUDIT_EVENTS_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
@@ -48,4 +48,4 @@ function auditEventsReducer(state = initialValue, { type, payload, error }) {
   }
 }
 
-export default auditEventsReducer
+export default fetchAuditEvents

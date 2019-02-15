@@ -44,3 +44,18 @@ export const cardHeaderText = state => {
     return `County: ${countyName}`
   }
 }
+
+export const selectAuditEvents = state => {
+  const auditEvents = safeGet(state, 'fetchAuditEvents.auditEvents', [])
+  return auditEvents
+}
+
+export const displayChangeLog = state => {
+  const roles = safeGet(state, 'userList.adminAccountDetails.roles', [])
+  if (roles.includes('Super-admin')) {
+    return false
+  } else if (roles.includes('State-admin')) {
+    return false
+  }
+  return true
+}

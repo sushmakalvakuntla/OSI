@@ -1,7 +1,7 @@
-import auditEventsReducer from './auditEventsReducers'
+import fetchAuditEvents from './auditEventsReducers'
 import * as actionTypes from '../actions/actionTypes'
 
-describe('auditEventsReducer', () => {
+describe('fetchAuditEvents', () => {
   it('handles FETCH_AUDIT_EVENTS_API_CALL_REQUEST', () => {
     const requestAction = {
       type: actionTypes.FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
@@ -10,7 +10,7 @@ describe('auditEventsReducer', () => {
       },
     }
     const state = { auditEvents: null, fetching: false }
-    expect(auditEventsReducer(state, requestAction)).toEqual({
+    expect(fetchAuditEvents(state, requestAction)).toEqual({
       fetching: true,
       auditEvents: null,
       error: null,
@@ -44,7 +44,7 @@ describe('auditEventsReducer', () => {
     }
     const before = {}
     let after
-    expect(() => (after = auditEventsReducer(before, action))).not.toThrow()
+    expect(() => (after = fetchAuditEvents(before, action))).not.toThrow()
     expect(after.fetching).toEqual(false)
     expect(after.auditEvents.length).toBe(2)
     expect(after.error).toBe(null)
@@ -57,7 +57,7 @@ describe('auditEventsReducer', () => {
     }
     const before = {}
     let after
-    expect(() => (after = auditEventsReducer(before, failureAction))).not.toThrow()
+    expect(() => (after = fetchAuditEvents(before, failureAction))).not.toThrow()
     expect(after.fetching).toBe(false)
     expect(after.auditEvents).toBeFalsy()
     expect(after.error).toEqual('error happened')

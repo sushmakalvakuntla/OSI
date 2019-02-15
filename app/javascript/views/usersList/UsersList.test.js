@@ -14,6 +14,8 @@ describe('UsersList', () => {
   let mockClearAddedUserDetailActions
   let mockHandleCheckBoxChangeActions
   let mockSetSearchActions
+  let mockFetchChangeLogAdminDetailsActions
+  let mockFetchDetailsActions
 
   const query = [
     {
@@ -27,6 +29,30 @@ describe('UsersList', () => {
     { field: 'enabled', value: true },
   ]
 
+  const auditEvents = [
+    {
+      event_type: 'User Email Changed',
+      timestamp: '2019-01-23 10:09:21',
+      event: {
+        admin_name: 'adminName',
+        admin_role: 'roleOne',
+        user_name: 'UserName',
+        user_roles: 'roleThree',
+        new_value: 'ChangedValue',
+        old_value: 'OldValue',
+        user_id: 'SOME_USER_ID',
+      },
+      user_login: 'SOME_ID',
+    },
+  ]
+
+  const details = {
+    first_name: 'first name',
+    last_name: 'last name',
+    county_name: 'county',
+    email: 'email@email.com',
+  }
+
   beforeEach(() => {
     mockSetPageActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockSetPageSizeActions = jest.fn().mockReturnValue(Promise.resolve([]))
@@ -37,6 +63,8 @@ describe('UsersList', () => {
     mockClearAddedUserDetailActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockSetSearchActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockHandleCheckBoxChangeActions = jest.fn()
+    mockFetchChangeLogAdminDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockFetchDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
 
     wrapper = shallow(
       <UsersList
@@ -51,6 +79,8 @@ describe('UsersList', () => {
           clearAddedUserDetailActions: mockClearAddedUserDetailActions,
           handleCheckBoxChangeActions: mockHandleCheckBoxChangeActions,
           setSearch: mockSetSearchActions,
+          fetchChangeLogAdminDetailsActions: mockFetchChangeLogAdminDetailsActions,
+          fetchDetailsActions: mockFetchDetailsActions,
         }}
         cardHeaderValue="County: CountyName"
         query={query}
@@ -69,6 +99,13 @@ describe('UsersList', () => {
 
     it('checks card component props', () => {
       expect(wrapper.find('Cards').props().cardHeaderText).toBe('County: CountyName')
+    })
+
+    it('display <ChangeLog/> ', () => {
+      wrapper.setProps({ displayChangeLog: false })
+      expect(wrapper.find('ChangeLog').length).toBe(0)
+      wrapper.setProps({ displayChangeLog: true })
+      expect(wrapper.find('ChangeLog').length).toBe(1)
     })
 
     it('cardHeaderText is passed to Card props as value', () => {
@@ -91,6 +128,8 @@ describe('UsersList', () => {
           includeInactive={false}
           officeList={[{ value: 'someOffice1', label: 'someOfficeOne' }, { value: 'someOffice2', label: 'someOfficeTwo' }]}
           cardHeaderValue="State Administrator view"
+          auditEvents={auditEvents}
+          userDetails={details}
         />
       )
       expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('State Administrator view')
@@ -145,6 +184,20 @@ describe('UsersList', () => {
     })
   })
 
+  describe('#getChangeLogAdminDetails', () => {
+    it('should fetch changeLog admin details when event is triggered', () => {
+      wrapper.instance().getChangeLogAdminDetails('SOME_ID')
+      expect(mockFetchChangeLogAdminDetailsActions).toHaveBeenCalledWith('SOME_ID')
+    })
+  })
+
+  describe('#getChangeLogUserDetails', () => {
+    it('should fetch changeLog admin details when event is triggered', () => {
+      wrapper.instance().getChangeLogUserDetails('SOME_ID')
+      expect(mockFetchDetailsActions).toHaveBeenCalledWith('SOME_ID')
+    })
+  })
+
   describe('#submitSearch', () => {
     it('calls the setSearch Actions', () => {
       const wrapperLocal = shallow(
@@ -163,6 +216,8 @@ describe('UsersList', () => {
           lastName="last_name_value"
           officeNames={['north', 'south', 'east', 'west']}
           includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
         />
       )
       const newQuery = [
@@ -198,6 +253,8 @@ describe('UsersList', () => {
           lastName="last_name_value"
           officeNames={['north', 'south', 'east', 'west']}
           includeInactive={true}
+          auditEvents={auditEvents}
+          userDetails={details}
         />
       )
       const newQuery = [
@@ -297,6 +354,8 @@ describe('UsersList', () => {
           lastName="last_name_value"
           officeNames={['somevalue']}
           includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(true)
@@ -319,6 +378,8 @@ describe('UsersList', () => {
           lastName="new_last_name"
           officeNames={['new_value']}
           includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(false)
@@ -385,6 +446,10 @@ describe('UsersList', () => {
           inputData={{ officeNames: ['north'] }}
           selectedOfficesList={['somevalue']}
           includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
+          changeLogAdminOfficeName={'Admin Office'}
         />
       )
     })
@@ -462,6 +527,10 @@ describe('UsersList', () => {
           officeNames={['north']}
           inputData={{ officeNames: ['north'] }}
           includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
+          changeLogAdminOfficeName={'Admin Office'}
         />
       )
     })
@@ -525,6 +594,7 @@ describe('UsersList', () => {
           ]}
           selectedOfficesList={['somevalue']}
           includeInactive={false}
+          auditEvents={auditEvents}
         />
       )
 

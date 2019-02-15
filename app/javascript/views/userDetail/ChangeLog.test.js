@@ -31,7 +31,7 @@ describe('ChangeLog', () => {
     },
   ]
   beforeEach(() => {
-    wrapper = shallow(<ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />)
+    wrapper = shallow(<ChangeLog auditEvents={events} userDetails={{}} adminDetails={{}} userOfficeName="" adminOfficeName="" />)
   })
 
   it('renders the Components ', () => {

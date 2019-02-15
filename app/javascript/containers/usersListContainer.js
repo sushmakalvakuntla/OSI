@@ -14,11 +14,13 @@ import {
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions } from '../actions/auditEventActions'
 import { fetchRolesActions } from '../actions/rolesActions'
-import { checkOfficeNames, cardHeaderText } from '../selectors/userListSelector'
+import { checkOfficeNames, cardHeaderText, selectAuditEvents, displayChangeLog } from '../selectors/userListSelector'
 import { officesList } from '../selectors/officeListSelector'
 import { rolesList } from '../selectors/rolesListSelector'
 import { clearAddedUserDetailActions } from '../actions/addUserActions'
-
+import { fetchChangeLogAdminDetailsActions, fetchDetailsActions } from '../actions/detailActions'
+import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
+import { selectDetailRecords, officeName } from '../selectors/detailSelector'
 function mapStateToProps(state) {
   const { userList } = state
   return {
@@ -40,7 +42,12 @@ function mapStateToProps(state) {
     officeNames: checkOfficeNames(userList.inputData.officeNames),
     rolesList: rolesList(state),
     includeInactive: userList.includeInactive,
-    auditEvents: state.auditEventsReducer.auditEvents,
+    auditEvents: selectAuditEvents(state),
+    changeLogAdminDetails: selectChangeLogAdminDetails(state),
+    changeLogAdminOfficeName: selectChangeLogAdminOfficeName(state),
+    userOfficeName: officeName(state),
+    userDetails: selectDetailRecords(state),
+    displayChangeLog: displayChangeLog(state),
   }
 }
 
@@ -59,7 +66,9 @@ function mapDispatchToProps(dispatch) {
         fetchRolesActions,
         clearAddedUserDetailActions,
         handleCheckBoxChangeActions,
+        fetchChangeLogAdminDetailsActions,
         fetchAuditEventsActions,
+        fetchDetailsActions,
       },
       dispatch
     ),

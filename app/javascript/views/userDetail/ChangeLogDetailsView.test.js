@@ -4,9 +4,10 @@ import ChangeLogDetails from './ChangeLogDetailsView'
 
 describe('ChangeLogDetails', () => {
   let wrapper
+  let mockGetAdminDetails
+  let mockGetUserDetails
 
   const props = {
-    getAdminDetails: () => {},
     changeLogData: {
       event_type: 'User Email Changed',
       timestamp: '2019-01-23 10:09:21',
@@ -17,7 +18,9 @@ describe('ChangeLogDetails', () => {
         user_roles: 'roleThree',
         new_value: 'ChangedValue',
         old_value: 'OldValue',
+        user_id: 'SOME_USER_ID',
       },
+      user_login: 'SOME_ID',
     },
     userDetails: {
       county_name: 'countyName',
@@ -31,7 +34,9 @@ describe('ChangeLogDetails', () => {
     },
   }
   beforeEach(() => {
-    wrapper = shallow(<ChangeLogDetails {...props} />)
+    mockGetAdminDetails = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockGetUserDetails = jest.fn().mockReturnValue(Promise.resolve([]))
+    wrapper = shallow(<ChangeLogDetails {...props} getAdminDetails={mockGetAdminDetails} getUserDetails={mockGetUserDetails} />)
   })
 
   it('renders the Components ', () => {
@@ -48,6 +53,20 @@ describe('ChangeLogDetails', () => {
       ModalOpen: true,
     })
     expect(instance.state.ModalOpen).toEqual(true)
+  })
+
+  describe('#toggle', () => {
+    it('calls getAdminDetails, getUserDetails with ID, when isListView is true', () => {
+      wrapper.setProps({ isListView: true })
+      wrapper.instance().toggle()
+      expect(mockGetAdminDetails).toHaveBeenCalledWith('SOME_ID')
+      expect(mockGetUserDetails).toHaveBeenCalledWith('SOME_USER_ID')
+    })
+
+    it('calls getAdminDetails with ID, when isListView is not true', () => {
+      wrapper.instance().toggle()
+      expect(mockGetAdminDetails).toHaveBeenCalledWith('SOME_ID')
+    })
   })
 
   describe('changesMadeTo', () => {

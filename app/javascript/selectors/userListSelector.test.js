@@ -5,6 +5,8 @@ import {
   getSerializedSearchParams,
   checkOfficeNames,
   cardHeaderText,
+  selectAuditEvents,
+  displayChangeLog,
 } from './userListSelector'
 
 describe('selectors', () => {
@@ -134,6 +136,67 @@ describe('selectors', () => {
     it('returns county name if user role is undefined ', () => {
       const state = getState(undefined)
       expect(cardHeaderText(state)).toEqual('County: County1')
+    })
+  })
+
+  describe('#selectAuditEvents', () => {
+    const auditEvents = [
+      {
+        event_type: 'User Created',
+        event_source: 'CAP',
+        timestamp: '2019-01-14 15:10:41',
+      },
+    ]
+    const state = {
+      fetchAuditEvents: {
+        auditEvents: {
+          county_name: 'County1',
+          auditEvents: auditEvents,
+        },
+      },
+    }
+    it('returns the audit events', () => {
+      expect(selectAuditEvents(state)).toEqual({
+        auditEvents: [{ event_source: 'CAP', event_type: 'User Created', timestamp: '2019-01-14 15:10:41' }],
+        county_name: 'County1',
+      })
+    })
+
+    it('returns an empty array when there are no audit events', () => {
+      const state = { fetchAuditEvents: {} }
+      expect(selectAuditEvents(state)).toEqual([])
+    })
+
+    it('returns an empty array when audit events are null', () => {
+      const state = { fetchAuditEvents: null }
+      expect(selectAuditEvents(state)).toEqual([])
+    })
+
+    it('returns an empty array when audit events are undefined', () => {
+      const state = { fetchAuditEvents: undefined }
+      expect(selectAuditEvents(state)).toEqual([])
+    })
+  })
+
+  describe('#displayChangeLog', () => {
+    it('returns true if logged in user role is Office Admin', () => {
+      const state = { userList: { adminAccountDetails: { roles: ['Office-admin'] } } }
+      expect(displayChangeLog(state)).toBe(true)
+    })
+
+    it('returns true if logged in user role is County Admin', () => {
+      const state = { userList: { adminAccountDetails: { roles: ['County-admin'] } } }
+      expect(displayChangeLog(state)).toBe(true)
+    })
+
+    it('returns false if logged in user role is State admin', () => {
+      const state = { userList: { adminAccountDetails: { roles: ['State-admin'] } } }
+      expect(displayChangeLog(state)).toBe(false)
+    })
+
+    it('returns false if logged in user role is Super admin', () => {
+      const state = { userList: { adminAccountDetails: { roles: ['Super-admin'] } } }
+      expect(displayChangeLog(state)).toBe(false)
     })
   })
 })
