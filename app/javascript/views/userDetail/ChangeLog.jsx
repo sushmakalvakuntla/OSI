@@ -25,11 +25,7 @@ export const sortByType = (a, b, desc) => {
 }
 
 const timestampCompareDescending = (a, b, desc) => {
-  if (desc) {
-    return a.timestamp > b.timestamp ? 1 : -1
-  } else {
-    return a.timestamp < b.timestamp ? 1 : -1
-  }
+  return desc ? (a.timestamp > b.timestamp ? 1 : -1) : a.timestamp < b.timestamp ? 1 : -1
 }
 const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName, adminOfficeName) => [
   {

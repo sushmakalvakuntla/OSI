@@ -43,9 +43,7 @@ class UserList extends PureComponent {
     }
   }
 
-  handleOnAdd = () => {
-    this.setState({ addUser: true })
-  }
+  handleOnAdd = () => this.setState({ addUser: true })
 
   handleCheckBoxChange = () => {
     this.props.actions.handleCheckBoxChangeActions()
@@ -61,14 +59,12 @@ class UserList extends PureComponent {
     this.props.actions.setPage(pageIndex)
   }
 
-  handlePageSizeChange = (pageSize, pageIndex) => {
+  handlePageSizeChange = pageSize => {
     window.scrollTo(0, 0)
     this.props.actions.setPageSize(pageSize)
   }
 
-  handleSortChange = (newSorted, column, shiftKey) => {
-    this.props.actions.setSort(newSorted.map(s => ({ field: s.id, desc: s.desc })))
-  }
+  handleSortChange = newSorted => this.props.actions.setSort(newSorted.map(s => ({ field: s.id, desc: s.desc })))
 
   submitSearch = e => {
     e.preventDefault()
@@ -81,11 +77,8 @@ class UserList extends PureComponent {
 
   isDisabledSearchBtn = () => {
     const { officeNames, lastName, query } = this.props
-
     const lastNameSearch = query.find(({ field }) => field === 'last_name')
-
     const officeSearch = query.find(({ field }) => field === 'office_ids')
-
     return lastNameSearch && lastNameSearch.value === lastName && isEqual(officeSearch.value.sort(), officeNames.sort())
   }
 
@@ -115,33 +108,11 @@ class UserList extends PureComponent {
             Cell: ({ value, original }) => <Link to={`/user_details/${original.id}`}>{value}</Link>,
             minWidth: 200,
           },
-          {
-            Header: 'Status',
-            id: 'enabled',
-            accessor: accountStatusFormat,
-            minWidth: 60,
-          },
-          {
-            Header: 'Last Login',
-            id: 'last_login_date_time',
-            minWidth: 150,
-            accessor: lastLoginDate,
-          },
-          {
-            Header: 'CWS Login',
-            minWidth: 80,
-            accessor: 'racfid',
-          },
-          {
-            Header: 'Office Name',
-            id: 'office_name',
-            accessor: translateOffice,
-          },
-          {
-            Header: 'Role',
-            id: 'user_role',
-            accessor: translateRoles,
-          },
+          { Header: 'Status', id: 'enabled', accessor: accountStatusFormat, minWidth: 60 },
+          { Header: 'Last Login', id: 'last_login_date_time', minWidth: 150, accessor: lastLoginDate },
+          { Header: 'CWS Login', minWidth: 80, accessor: 'racfid' },
+          { Header: 'Office Name', id: 'office_name', accessor: translateOffice },
+          { Header: 'Role', id: 'user_role', accessor: translateRoles },
         ]}
         manual
         sorted={this.props.sort.map(d => ({ id: d.field, desc: d.desc }))}
@@ -171,97 +142,93 @@ class UserList extends PureComponent {
     )
   }
 
+  renderPageHeader = () => {
+    return (
+      <PageHeader
+        pageTitle="Manage Users"
+        button={
+          <div className="pull-right">
+            <Button color="default" size="lg" type="cancel" id="resetButton" className="page-buttons" onClick={this.handleOnAdd}>
+              + ADD A USER
+            </Button>
+          </div>
+        }
+      />
+    )
+  }
+
+  renderSearchComponents = () => {
+    const { officesList, officeNames, lastName } = this.props
+    return (
+      <form onSubmit={this.submitSearch} autoComplete="off">
+        <div className="row">
+          <div className="col-md-4 col-sm-6">
+            <DropDown
+              id="searchOfficeName"
+              selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
+              options={officesList}
+              label="Filter by Office Name"
+              placeholder={`(${officesList.length})`}
+              onChange={officesList =>
+                this.props.actions.handleSearchChange('officeNames', officesList.map(selectedOptions => selectedOptions.value))
+              }
+              multiSelect={true}
+            />
+          </div>
+          <div className="col-md-6 col-sm-6">
+            <div style={{ float: 'right' }}>
+              <CheckboxBank
+                label="Include Inactive"
+                options={[{ label: 'Include Inactive', value: 'true' }]}
+                value={[this.props.includeInactive.toString()]}
+                name="status"
+                onChange={this.handleCheckBoxChange}
+              />
+            </div>
+            <InputComponent
+              label="Search user list"
+              id="searchLastName"
+              fieldClassName="form-group"
+              type="text"
+              value={lastName}
+              onChange={event => this.props.actions.handleSearchChange('lastName', event.target.value)}
+              placeholder="Search users by Last name"
+              autocomplete="off"
+            />
+          </div>
+          <div className="col-md-2 col-sm-6">
+            <button type="submit" className="btn btn-primary btn-block btn-sm searchButton" disabled={this.isDisabledSearchBtn()}>
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+    )
+  }
+
   render() {
-    const { cardHeaderValue, officesList, officeNames, lastName } = this.props
     return (
       <div role="main">
         {this.state.addUser ? (
           <Redirect push to="/verify" />
         ) : (
           <div>
-            <PageHeader
-              pageTitle="Manage Users"
-              button={
-                <div className="pull-right">
-                  <Button
-                    color="default"
-                    size="lg"
-                    type="cancel"
-                    id="resetButton"
-                    className="page-buttons"
-                    onClick={this.handleOnAdd}
-                  >
-                    + ADD A USER
-                  </Button>
-                </div>
-              }
-            />
+            {this.renderPageHeader()}
             <div className="container">
               {this.renderBreadcrumb()}
-              <Cards cardHeaderText={cardHeaderValue}>
-                <form onSubmit={this.submitSearch} autoComplete="off">
-                  <div className="row">
-                    <div className="col-md-4 col-sm-6">
-                      <DropDown
-                        id="searchOfficeName"
-                        selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
-                        options={officesList}
-                        label="Filter by Office Name"
-                        placeholder={`(${officesList.length})`}
-                        onChange={officesList =>
-                          this.props.actions.handleSearchChange(
-                            'officeNames',
-                            officesList.map(selectedOptions => selectedOptions.value)
-                          )
-                        }
-                        multiSelect={true}
-                      />
-                    </div>
-                    <div className="col-md-6 col-sm-6">
-                      <div style={{ float: 'right' }}>
-                        <CheckboxBank
-                          label="Include Inactive"
-                          options={[{ label: 'Include Inactive', value: 'true' }]}
-                          value={[this.props.includeInactive.toString()]}
-                          name="status"
-                          onChange={this.handleCheckBoxChange}
-                        />
-                      </div>
-                      <InputComponent
-                        label="Search user list"
-                        id="searchLastName"
-                        fieldClassName="form-group"
-                        type="text"
-                        value={lastName}
-                        onChange={event => this.props.actions.handleSearchChange('lastName', event.target.value)}
-                        placeholder="Search users by Last name"
-                        autocomplete="off"
-                      />
-                    </div>
-                    <div className="col-md-2 col-sm-6">
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-block btn-sm searchButton"
-                        disabled={this.isDisabledSearchBtn()}
-                      >
-                        Search
-                      </button>
-                    </div>
-                  </div>
-                </form>
+              <Cards cardHeaderText={this.props.cardHeaderValue}>
+                {this.renderSearchComponents()}
                 {this.props.error && (
                   <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
                     <strong>Oh no!</strong> An unexpected error occurred!
                   </Alert>
                 )}
                 <br />
-                <div>
-                  {this.renderUsersTable({
-                    data: this.props.userList,
-                    officesList,
-                    rolesList: this.props.rolesList,
-                  })}
-                </div>
+                {this.renderUsersTable({
+                  data: this.props.userList,
+                  officesList: this.props.officesList,
+                  rolesList: this.props.rolesList,
+                })}
               </Cards>
             </div>
           </div>
@@ -282,9 +249,6 @@ UserList.propTypes = {
   dashboardClickHandler: PropTypes.func,
   actions: PropTypes.object.isRequired,
   total: PropTypes.number,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
   sort: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string.isRequired,

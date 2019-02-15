@@ -11,7 +11,6 @@ import CWSPrivileges from './CWSPrivileges'
 import Notes from './Notes'
 import PageHeaderButtons from './DetailsPageHeaderButtons'
 
-/* eslint camelcase: 0 */
 export default class UserDetail extends Component {
   constructor(props) {
     super(props)

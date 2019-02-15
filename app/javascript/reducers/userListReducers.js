@@ -33,7 +33,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
     case actionTypes.FETCH_USERS_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
 
-    case actionTypes.FETCH_USERS_API_CALL_SUCCESS: {
+    case actionTypes.FETCH_USERS_API_CALL_SUCCESS:
       const {
         records: users,
         meta: { total, request },
@@ -46,25 +46,25 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         fetching: false,
         error: null,
       }
-    }
 
-    case actionTypes.FETCH_USERS_API_CALL_FAILURE: {
+    case actionTypes.FETCH_USERS_API_CALL_FAILURE:
       return {
         ...state,
         error,
         fetching: false,
         users: null,
       }
-    }
+
+    case actionTypes.USER_LIST_SET_PAGE:
+      return { ...state, from: payload * state.size }
 
     // TODO: fix FSA
-    case actionTypes.USER_LIST_SET_SORT: {
+    case actionTypes.USER_LIST_SET_SORT:
       const sort = payload
       return {
         ...state,
         sort,
       }
-    }
 
     case actionTypes.HANDLE_INPUT_CHANGE:
       return {
@@ -75,35 +75,24 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         },
       }
 
-    case actionTypes.HANDLE_CHECKBOX_CHANGE: {
+    case actionTypes.HANDLE_CHECKBOX_CHANGE:
       return {
         ...state,
         includeInactive: !state.includeInactive,
       }
-    }
 
-    case actionTypes.USER_LIST_SET_SEARCH: {
+    case actionTypes.USER_LIST_SET_SEARCH:
       const query = payload
       return {
         ...state,
         from: 0,
         query,
       }
-    }
 
     // TODO: fix FSA
-    case actionTypes.USER_LIST_SET_PAGE_SIZE: {
+    case actionTypes.USER_LIST_SET_PAGE_SIZE:
       const size = payload
       return { ...state, size, from: 0 }
-    }
-
-    case actionTypes.USER_LIST_SET_PAGE: {
-      const pageIndex = payload
-      return {
-        ...state,
-        from: pageIndex * state.size,
-      }
-    }
 
     case actionTypes.FETCH_ACCOUNT_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null }

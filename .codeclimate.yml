@@ -6,7 +6,8 @@ checks:
     enabled: true
   file-lines:
     enabled: true
-    threshold: 350
+    config:
+      threshold: 350
   method-complexity:
     enabled: true
   method-count:
@@ -77,4 +78,4 @@ exclude_patterns:
   - "**/vendor/"
   - "**/*.d.ts"
   - "app/assets"
-  - "*.test.js"
+  - "**/*.test.js"

@@ -1,4 +1,4 @@
-import { getAdminOfficeIDs } from './checkAdminRoles'
+import { getAdminOfficeIDs, isRolesAvailable } from './checkAdminRoles'
 
 describe('#getAdminOfficeIDs', () => {
   it('returns admin office ID, when Office-admin is in roles ', () => {
@@ -43,5 +43,34 @@ describe('#getAdminOfficeIDs', () => {
       roles: ['State-admin'],
     }
     expect(getAdminOfficeIDs(account)).toEqual([])
+  })
+})
+
+describe('#isRolesAvailable', () => {
+  it('returns false when user role is Office-admin', () => {
+    const useraccount = {
+      admin_office_ids: ['1234'],
+      roles: ['Office-admin'],
+    }
+    const roles = ['Super-admin', 'State-admin', 'County-admin']
+    expect(isRolesAvailable(useraccount, roles)).toBe(false)
+  })
+
+  it('returns true when user role is not Office-admin', () => {
+    const useraccount = {
+      admin_office_ids: ['1234'],
+      roles: ['Super-admin'],
+    }
+    const roles = ['Super-admin', 'State-admin', 'County-admin']
+    expect(isRolesAvailable(useraccount, roles)).toBe(true)
+  })
+
+  it('returns false when user role is not provided', () => {
+    const useraccount = {
+      admin_office_ids: ['1234'],
+      roles: [],
+    }
+    const roles = ['Super-admin', 'State-admin', 'County-admin']
+    expect(isRolesAvailable(useraccount, roles)).toBe(false)
   })
 })
