@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid } from '@cwds/components'
-import ModalComponent from './Modal'
+import ChangeLogDetails from './ChangeLogDetailsView'
 import { checkDate } from '../../_utils/formatters'
 import safeGet from 'lodash.get'
 
@@ -65,7 +65,7 @@ const columnConfig = (userDetails, getAdminDetails, adminDetails, userOfficeName
     Header: 'Notes & Details',
     // eslint-disable-next-line react/display-name
     Cell: row => (
-      <ModalComponent
+      <ChangeLogDetails
         changeLogData={row.original}
         userDetails={userDetails}
         getAdminDetails={getAdminDetails}

@@ -9,7 +9,7 @@ import Cards from '../../common/Card'
 import ChangeLog from './ChangeLog'
 import CWSPrivileges from './CWSPrivileges'
 import Notes from './Notes'
-import PageHeaderButtons from '../../common/PageHeaderButtons'
+import PageHeaderButtons from './DetailsPageHeaderButtons'
 
 /* eslint camelcase: 0 */
 export default class UserDetail extends Component {
@@ -78,94 +78,66 @@ export default class UserDetail extends Component {
   }
 
   renderCards = () => {
-    const {
-      details,
-      possiblePermissionsList,
-      possibleRolesList,
-      isRolesDisabled,
-      startDate,
-      userStatus,
-      userStatusDescription,
-      officeName,
-      isEmailValid,
-      assignedRole,
-      accountStatus,
-      assignedPermissions,
-      lastLoginDateTime,
-      officePhoneNumber,
-      isPhoneNumberValid,
-      workerPhoneNumber,
-      unformattedPhoneNumber,
-      phoneExtensionNumber,
-      disableResendEmailButton,
-      auditEvents,
-      isUserEditable,
-      notes,
-      notesWordCount,
-      changeLogAdminDetails,
-      changeLogAdminOfficeName,
-      privilegesFromCWS,
-    } = this.props
-    return details && details.id ? (
+    return this.props.details && this.props.details.id ? (
       <div>
         {this.props.isUserEditable ? (
           <UserDetailEdit
-            details={details}
-            possiblePermissionsList={possiblePermissionsList}
-            possibleRolesList={possibleRolesList}
-            isRolesDisabled={isRolesDisabled}
+            details={this.props.details}
+            possiblePermissionsList={this.props.possiblePermissionsList}
+            possibleRolesList={this.props.possibleRolesList}
+            isRolesDisabled={this.props.isRolesDisabled}
             onDropDownChange={this.handleDropDownChange}
-            startDate={startDate}
-            userStatus={userStatus}
-            userStatusDescription={userStatusDescription}
-            officeName={officeName}
+            startDate={this.props.startDate}
+            userStatus={this.props.userStatus}
+            userStatusDescription={this.props.userStatusDescription}
+            officeName={this.props.officeName}
             onInputChange={this.handleInputChange}
-            isEmailValid={isEmailValid}
-            lastLoginDateTime={lastLoginDateTime}
-            officePhoneNumber={officePhoneNumber}
-            isPhoneNumberValid={isPhoneNumberValid}
-            unformattedPhoneNumber={unformattedPhoneNumber}
-            phoneExtensionNumber={phoneExtensionNumber}
+            isEmailValid={this.props.isEmailValid}
+            lastLoginDateTime={this.props.lastLoginDateTime}
+            officePhoneNumber={this.props.officePhoneNumber}
+            isPhoneNumberValid={this.props.isPhoneNumberValid}
+            unformattedPhoneNumber={this.props.unformattedPhoneNumber}
+            phoneExtensionNumber={this.props.phoneExtensionNumber}
             onResendInvite={this.onResendInvite}
-            disableResendEmailButton={disableResendEmailButton}
+            disableResendEmailButton={this.props.disableResendEmailButton}
           />
         ) : (
           <UserDetailShow
-            details={details}
-            startDate={startDate}
-            accountStatus={accountStatus}
-            userStatus={userStatus}
-            userStatusDescription={userStatusDescription}
-            assignedPermissions={assignedPermissions}
-            officeName={officeName}
-            assignedRole={assignedRole}
-            lastLoginDateTime={lastLoginDateTime}
-            officePhoneNumber={officePhoneNumber}
-            workerPhoneNumber={workerPhoneNumber}
+            details={this.props.details}
+            startDate={this.props.startDate}
+            accountStatus={this.props.accountStatus}
+            userStatus={this.props.userStatus}
+            userStatusDescription={this.props.userStatusDescription}
+            assignedPermissions={this.props.assignedPermissions}
+            officeName={this.props.officeName}
+            assignedRole={this.props.assignedRole}
+            lastLoginDateTime={this.props.lastLoginDateTime}
+            officePhoneNumber={this.props.officePhoneNumber}
+            workerPhoneNumber={this.props.workerPhoneNumber}
           />
         )}
         <br />
         <div className="row">
           <div className="col-md-12">
             <div className="col-md-6">
-              <CWSPrivileges CWSPrivileges={privilegesFromCWS} />
+              <CWSPrivileges CWSPrivileges={this.props.privilegesFromCWS} />
             </div>
             <div className="col-md-6">
               <Notes
-                isUserEditable={isUserEditable}
-                userNotes={notes}
-                notesWordCount={notesWordCount}
+                isUserEditable={this.props.isUserEditable}
+                userNotes={this.props.notes}
+                notesWordCount={this.props.notesWordCount}
                 onChange={this.handleInputChange}
               />
             </div>
             <div className="col-md-12">
               <ChangeLog
-                auditEvents={auditEvents}
+                auditEvents={this.props.auditEvents}
                 getAdminDetails={this.getChangeLogAdminDetails}
-                adminDetails={changeLogAdminDetails}
-                userDetails={details}
-                userOfficeName={officeName}
-                adminOfficeName={changeLogAdminOfficeName}
+                adminDetails={this.props.changeLogAdminDetails}
+                userDetails={this.props.details}
+                userOfficeName={this.props.officeName}
+                adminOfficeName={this.props.changeLogAdminOfficeName}
               />
             </div>
           </div>
@@ -187,6 +159,7 @@ export default class UserDetail extends Component {
         onSaveDetails={this.onSaveDetails}
         onReset={this.onReset}
         disableButtons={this.props.disableActionBtn}
+        isPermissionsEmpty={this.props.isPermissionsEmpty}
       />
     )
   }
@@ -258,6 +231,7 @@ UserDetail.propTypes = {
   dashboardClickHandler: PropTypes.func,
   notes: PropTypes.string,
   notesWordCount: PropTypes.number,
+  isPermissionsEmpty: PropTypes.bool,
   privilegesFromCWS: PropTypes.array,
 }
 

@@ -122,6 +122,11 @@ const checkForModifiedDetails = (initialDetails, updatedDetails) => {
   return initialDetails === updatedDetails ? undefined : updatedDetails
 }
 
+export const isPermissionsEmpty = state => {
+  const details = selectDetailRecords(state)
+  return details.permissions ? details.permissions.length === 0 : false
+}
+
 export const selectModifiedDetails = state => {
   const initialDetails = safeGet(state, 'fetchDetails.initialDetails.user', {})
   const modifiedDetails = selectDetailRecords(state)

@@ -1,8 +1,8 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import ModalComponent from './Modal'
+import ChangeLogDetails from './ChangeLogDetailsView'
 
-describe('ChangeLog', () => {
+describe('ChangeLogDetails', () => {
   let wrapper
 
   const props = {
@@ -31,7 +31,7 @@ describe('ChangeLog', () => {
     },
   }
   beforeEach(() => {
-    wrapper = shallow(<ModalComponent {...props} />)
+    wrapper = shallow(<ChangeLogDetails {...props} />)
   })
 
   it('renders the Components ', () => {

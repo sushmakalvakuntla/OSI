@@ -4,7 +4,7 @@ import { Modal, ModalBody, ModalHeader, Avatar, Button } from '@cwds/components'
 import { checkDate } from '../../_utils/formatters'
 import { Circle } from '../../_utils/faIcons'
 
-export default class ModalComponent extends Component {
+export default class ChangeLogDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -134,7 +134,7 @@ export default class ModalComponent extends Component {
   }
 }
 
-ModalComponent.propTypes = {
+ChangeLogDetails.propTypes = {
   oldValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   newValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   comment: PropTypes.oneOfType([PropTypes.string]),

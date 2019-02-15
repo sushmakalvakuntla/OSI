@@ -25,6 +25,7 @@ import {
   isPhoneNumberValid,
   phoneExtension,
   userNotes,
+  isPermissionsEmpty,
 } from './detailSelector'
 describe('selectors', () => {
   const editDetails = {
@@ -655,6 +656,56 @@ describe('selectors', () => {
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
+    })
+  })
+
+  describe('isPermissionsEmpty', () => {
+    it('returns false when assignedPermissions are not empty', () => {
+      const state = getState({
+        assignedPermissions: 'permissionThree',
+        isEnabled: true,
+        phoneNumber: '3334445555',
+        phoneExtensionNumber: '222',
+        notes: 'This is the content of my notes',
+      })
+      expect(isPermissionsEmpty(state)).toEqual(false)
+    })
+
+    it('returns true when assignedPermissions are empty', () => {
+      const state = getState({
+        assignedPermissions: [],
+        isEnabled: true,
+        phoneNumber: '3334445555',
+        phoneExtensionNumber: '222',
+        notes: 'This is the content of my notes',
+      })
+      expect(isPermissionsEmpty(state)).toEqual(true)
+    })
+
+    it('returns false when assignedPermissions are not available', () => {
+      const state = getState({
+        isEnabled: true,
+        phoneNumber: '3334445555',
+        phoneExtensionNumber: '222',
+        notes: 'This is the content of my notes',
+      })
+      expect(isPermissionsEmpty(state)).toEqual(false)
+    })
+
+    it('returns false when assignedPermissions is undefined', () => {
+      const state = getState({
+        assignedPermissions: undefined,
+        isEnabled: true,
+        phoneNumber: '3334445555',
+      })
+      expect(isPermissionsEmpty(state)).toEqual(false)
+    })
+
+    it('returns false when assignedPermissions is null', () => {
+      const state = getState({
+        assignedPermissions: null,
+      })
+      expect(isPermissionsEmpty(state)).toEqual(false)
     })
   })
 

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme'
 import { Link, MemoryRouter } from 'react-router-dom'
 import { Link as LinkRWD } from 'react-wood-duck'
 import UserDetail from './UserDetail'
-import PageHeaderButtons from '../../common/PageHeaderButtons'
+import PageHeaderButtons from './DetailsPageHeaderButtons'
 
 describe('UserDetail', () => {
   let container
@@ -142,9 +142,15 @@ describe('UserDetail', () => {
     it('renders the buttons ', () => {
       const onReset = wrapper.instance().onReset
       const onSaveDetails = wrapper.instance().onSaveDetails
-      wrapper.setProps({ isUserEditable: true, disableActionBtn: true })
+      wrapper.setProps({ isUserEditable: true, disableActionBtn: true, isPermissionsEmpty: true })
       expect(wrapper.instance().pageButton()).toEqual(
-        <PageHeaderButtons onReset={onReset} onSaveDetails={onSaveDetails} isUserEditable={true} disableButtons={true} />
+        <PageHeaderButtons
+          onReset={onReset}
+          onSaveDetails={onSaveDetails}
+          isUserEditable={true}
+          disableButtons={true}
+          isPermissionsEmpty={true}
+        />
       )
     })
   })
