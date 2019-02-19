@@ -189,5 +189,5 @@ export const phoneExtension = state => {
 
 export const userNotes = state => {
   const notes = safeGet(state, 'fetchDetails.details.records.user.notes') || ''
-  return { notes: notes, notesLength: notes.length }
+  return { notes: notes, notesLength: notes.normalize().length }
 }

@@ -2,6 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Rolodex, Card, CardBody, CardHeader, CardTitle, Input } from '@cwds/components'
 
+export const allowUserInput = event => {
+  const notes = event.target.value
+  const value = notes.normalize()
+  if (value.length > 250) {
+    return value.substring(0, 250)
+  }
+  return value
+}
+
 const Notes = ({ isUserEditable, userNotes, notesWordCount, onChange }) => (
   <Rolodex>
     <Card>
@@ -15,7 +24,7 @@ const Notes = ({ isUserEditable, userNotes, notesWordCount, onChange }) => (
               type="textarea"
               className="form-control text-area"
               value={userNotes}
-              onChange={event => onChange('notes', event.target.value)}
+              onChange={event => onChange('notes', allowUserInput(event))}
               maxLength={250}
             />
             <div className="pull-right">Characters used: {`${notesWordCount}/250`}</div>
