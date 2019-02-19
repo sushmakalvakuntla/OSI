@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import Notes, { allowUserInput } from './Notes'
+import Notes, { truncateInputLength } from './Notes'
 
 describe('Notes', () => {
   let wrapper
@@ -40,14 +40,14 @@ describe('Notes', () => {
     expect(onChangeSpy).toHaveBeenCalledWith('notes', 'Use this text as content')
   })
 
-  describe('allowUserInput', () => {
+  describe('#truncateInputLength', () => {
     it('allows user input if length is less than 250', () => {
-      expect(allowUserInput({ target: { value: 'ABCDEFGH' } })).toEqual('ABCDEFGH')
+      expect(truncateInputLength({ target: { value: 'ABCDEFGH' } })).toEqual('ABCDEFGH')
     })
 
     it('doesnt allows input characters if length is more than 250, strips off extra characters', () => {
       expect(
-        allowUserInput({
+        truncateInputLength({
           target: {
             value:
               'ABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHAB-moreThan250',
