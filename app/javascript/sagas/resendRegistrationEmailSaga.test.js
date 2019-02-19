@@ -29,6 +29,17 @@ describe('sagas', () => {
             id,
           })
         )
+        expect(gen.next({ resendEmailStatus, id }).value).toEqual(
+          put({
+            type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST,
+            payload: { id: id },
+          })
+        )
+        expect(gen.next({ resendEmailStatus, id }).value).toEqual(
+          put({
+            type: actionTypes.CLEAR_ADDED_USER_DETAILS,
+          })
+        )
         expect(gen.next().done).toBe(true)
       })
     })
