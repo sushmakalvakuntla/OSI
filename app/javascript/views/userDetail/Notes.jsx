@@ -25,7 +25,6 @@ const Notes = ({ isUserEditable, userNotes, notesWordCount, onChange }) => (
               className="form-control text-area"
               value={userNotes}
               onChange={event => onChange('notes', allowUserInput(event))}
-              maxLength={250}
             />
             <div className="pull-right">Characters used: {`${notesWordCount}/250`}</div>
           </div>
