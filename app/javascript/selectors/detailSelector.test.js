@@ -958,6 +958,16 @@ describe('selectors', () => {
       expect(userNotes(state)).toEqual({ notes: '23', notesLength: 2 })
     })
 
+    it('returns notes and length if notes is emojis', () => {
+      const state = getState({ notes: '😁' })
+      expect(userNotes(state)).toEqual({ notes: '😁', notesLength: 2 })
+    })
+
+    it('returns notes are text and emojis, and length of the text', () => {
+      const state = getState({ notes: '😁ABC' })
+      expect(userNotes(state)).toEqual({ notes: '😁ABC', notesLength: 5 })
+    })
+
     it('returns empty string when notes is null ', () => {
       const state = getState({ notes: null })
       expect(userNotes(state)).toEqual({ notes: '', notesLength: 0 })

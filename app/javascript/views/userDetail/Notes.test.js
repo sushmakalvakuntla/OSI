@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import Notes from './Notes'
+import Notes, { truncateInputLength } from './Notes'
 
 describe('Notes', () => {
   let wrapper
@@ -38,5 +38,24 @@ describe('Notes', () => {
       target: { value: 'Use this text as content' },
     })
     expect(onChangeSpy).toHaveBeenCalledWith('notes', 'Use this text as content')
+  })
+
+  describe('#truncateInputLength', () => {
+    it('allows user input if length is less than 250', () => {
+      expect(truncateInputLength({ target: { value: 'ABCDEFGH' } })).toEqual('ABCDEFGH')
+    })
+
+    it('doesnt allows input characters if length is more than 250, strips off extra characters', () => {
+      expect(
+        truncateInputLength({
+          target: {
+            value:
+              'ABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHAB-moreThan250',
+          },
+        })
+      ).toEqual(
+        'ABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHAB'
+      )
+    })
   })
 })
