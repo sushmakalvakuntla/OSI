@@ -23,10 +23,14 @@ export const sortByType = (a, b, desc) => {
   }
   return aType > bType ? 1 : -1
 }
+export const viewHeightSize = isListView => {
+  return isListView ? '1200px' : '500px'
+}
 
 const timestampCompareDescending = (a, b, desc) => {
   return desc ? (a.timestamp > b.timestamp ? 1 : -1) : a.timestamp < b.timestamp ? 1 : -1
 }
+
 const columnConfig = (
   userDetails,
   getAdminDetails,
@@ -45,16 +49,19 @@ const columnConfig = (
       return `${checkDate(row.original.timestamp)}`
     },
   },
+
   {
-    Header: 'Type',
-    id: 'event_type',
+    Header: 'Made To',
+    id: 'made_to',
     accessor: d => d,
     minWidth: 70,
     Cell: row => {
-      return `${row.original.event_type}`
+      return `${row.original.event.user_name} (${row.original.event.user_roles})`
     },
-    sortMethod: sortByType,
+    sortMethod: sortByName,
+    show: Boolean(isListView),
   },
+
   {
     Header: 'Made By',
     id: 'made_by',
@@ -64,6 +71,16 @@ const columnConfig = (
       return `${row.original.event.admin_name} (${row.original.event.admin_role})`
     },
     sortMethod: sortByName,
+  },
+  {
+    Header: 'Type',
+    id: 'event_type',
+    accessor: d => d,
+    minWidth: 70,
+    Cell: row => {
+      return `${row.original.event_type}`
+    },
+    sortMethod: sortByType,
   },
   {
     Header: 'Notes & Details',
@@ -104,7 +121,7 @@ const ChangeLog = ({
           data={auditEvents}
           defaultPageSize={100}
           style={{
-            maxHeight: '500px',
+            maxHeight: viewHeightSize(isListView),
           }}
           columns={columnConfig(
             userDetails,
