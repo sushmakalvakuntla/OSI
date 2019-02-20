@@ -92,6 +92,9 @@ module LoginHelper
 
   def go_manage_users
     find(:xpath, "//a[contains(@href, '/cap')]").click
+    # reload the page.  Seems to overcome a problem with occasional container startup
+    # not loading records at first.  To be explored.
+    page.evaluate_script 'window.location.reload()'
   end
 
   def submit_json_form(login_json)
