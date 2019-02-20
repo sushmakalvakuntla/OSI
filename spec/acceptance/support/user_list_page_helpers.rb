@@ -15,8 +15,51 @@ module UserListPageHelper
     )
   end
 
+  def wait_for_load_complete
+    load_msg = "//span[text()='Loading...']"
+    expect(page).to have_no_selector(:xpath, load_msg) if page.all(:xpath, load_msg).count > 0
+  end
+
   def page_count_users
-    page.all('.rt-tr-group a').count
+    page.first('.card-body').all('.rt-tr-group a').count
+  end
+
+  def current_page_number
+    find(:xpath, "//div[@class='pagination-top']//input").value.to_i
+  end
+
+  def total_pages
+    find(:xpath, "//div[@class='pagination-top']//span[@class='-totalPages']").text.to_i
+  end
+
+  def jump_to_page(page_num)
+    page_jumper = page.first('.-pageJump').find('input')
+    page_jumper.set(page_num)
+    page_jumper.send_keys(:enter)
+    wait_for_load_complete
+  end
+
+  def total_count_users
+    jump_to_page total_pages
+    last_page_count = page_count_users
+    (total_pages - 1) * 50 + last_page_count
+  end
+
+  # todo
+  def count_changelog_events
+    page.execute_script('window.scrollBy(0,1000000)')
+    begin
+      page.find('.audit-events').all('.rt-tr-group button').count
+    rescue StandardError => e
+      puts e
+    end
+  end
+
+  def expand_changelog_component
+    page.execute_script('window.scrollBy(0,1000000)')
+    return if find(:xpath, './/*[@aria-expanded[string-length() != 0]]')['aria-expanded'] == 'true'
+
+    all('div', text: 'Change Log').last.click
   end
 
   def expect_sorted_list(list)
@@ -38,11 +81,11 @@ module UserListPageHelper
   end
 
   def first_user
-    page.find('.rt-table').first('.rt-tr-group').all('.rt-td')
+    page.find('.card-body .rt-table').first('.rt-tr-group').all('.rt-td')
   end
 
   def second_user
-    page.find('.rt-table').all('.rt-tr-group')[1].all('.rt-td')
+    page.find('.card-body .rt-table').all('.rt-tr-group')[1].all('.rt-td')
   end
 
   def second_user_link
@@ -56,7 +99,7 @@ module UserListPageHelper
   end
 
   def get_user_link(row_number)
-    page.find('.rt-table').all('.rt-tr-group')[row_number].first('.rt-td > a')
+    page.find('.card-body .rt-table').all('.rt-tr-group')[row_number].first('.rt-td > a')
   end
 
   def safe_fill_in_last_name(last_name)
@@ -70,6 +113,75 @@ module UserListPageHelper
     puts "search for '#{last_name}'"
 
     safe_fill_in_last_name(last_name)
+
+    include_inactive_label = page.find('label', text: 'Include Inactive')
+    include_inactive_checkbox = include_inactive_label.sibling('input')
+
+    if include_inactive_checkbox.checked? != include_inactive
+      # clicking the inactive label performs a search
+      include_inactive_label.click
+    else
+      click_on 'Search'
+    end
+  end
+
+  def office_name_filter
+    first(
+      :xpath,
+      "//label[contains(text(),'Filter by Office Name')]/following-sibling::div/div/div"
+    )
+  end
+
+  def selected_offices
+    offices = []
+    all(:xpath,
+        "//label[contains(text(),'Filter by Office Name')]/following-sibling::div/div/div/div")
+      .to_a.each do |p|
+      # don't return a value like "(13)" which means we've not picked yet
+      offices << p.text unless p.text == '' || p.text == 'Select...' || p.text.match(/\([0-9]*\)/)
+    end
+    offices
+  end
+
+  def pick_single_office_name
+    page.find_by_id('searchOfficeName').click
+    # choose the first office in the list.
+    office_name = page.find_by_id('searchOfficeName').find_by_id('react-select-2-option-0').text
+    page.find_by_id('searchOfficeName').find_by_id('react-select-2-option-0').click
+    page.find_by_id('searchOfficeName').click
+    office_name
+  end
+
+  def select_office_by_name(office_name)
+    office_selectbox = page.find_by_id('searchOfficeName')
+
+    office_selectbox.click
+    office_selectbox.first('div', text: office_name).click
+  end
+
+  def clear_offices_from_select
+    selected_offices.each do |office|
+      unselect_office(office)
+    end
+  end
+
+  def unselect_office(office_name)
+    return if office_name.blank?
+
+    office_name_filter.find(:xpath,
+                            "//*[contains(text(), '#{office_name}')]/following-sibling::*")
+                      .click
+  end
+
+  def search_by_office(office_name, last_name = '', include_inactive = false)
+    # TODO: expand this to cover all three elements
+    # return if find_field('Search user list').value == last_name
+
+    puts "search for '#{office_name}'"
+
+    safe_fill_in_last_name(last_name)
+
+    select_office_by_name(office_name)
 
     include_inactive_label = page.find('label', text: 'Include Inactive')
     include_inactive_checkbox = include_inactive_label.sibling('input')
@@ -98,8 +210,9 @@ module UserListPageHelper
 
   def deactivate_any_active_added_user
     search_users(last_name: 'Auto')
+
     # wait for initial results
-    page.find('.rt-table').first('.rt-tr-group')
+    page.find('.card-body .rt-table').first('.rt-tr-group')
 
     loop do
       puts 'get first active...'
@@ -134,7 +247,10 @@ module UserListPageHelper
     puts "Deactivating user #{current_url}"
 
     change_status 'Inactive'
+
     click_button 'SAVE'
+
+    click_button 'Confirm' if has_button? 'Confirm'
     # wait for success message so we know the index has been updated, before
     # looking back at the user list again.
     expect_success
@@ -146,7 +262,7 @@ module UserListPageHelper
     if has_more_pages?
       top_nav = find(:xpath, "//div[@class='pagination-top']")
       top_nav.find('.-next').find('button').find('span').click
-      page.find('.rt-table').first('.rt-tr-group')
+      page.find('.card-body .rt-table').first('.rt-tr-group')
       puts 'next user list page'
       true
     else
@@ -154,12 +270,14 @@ module UserListPageHelper
     end
   end
 
-  def current_page_number
-    find(:xpath, "//div[@class='pagination-top']//input").value.to_i
-  end
+  def change_log
+    all('div', text: 'Change Log').last.click
+    # Check for the changelog object.
+    all('div', text: 'Change Log').last.click
+    page.execute_script('window.scrollBy(0,10000)')
+    # find the only event so far, the User Created event
 
-  def total_pages
-    find(:xpath, "//div[@class='pagination-top']//span[@class='-totalPages']").text.to_i
+    expect(find('div.audit-events').text).to match(/User Created/)
   end
 
   def has_more_pages?
