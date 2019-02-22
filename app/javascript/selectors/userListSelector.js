@@ -45,10 +45,7 @@ export const cardHeaderText = state => {
   }
 }
 
-export const selectAuditEvents = state => {
-  const auditEvents = safeGet(state, 'fetchAuditEvents.auditEvents', [])
-  return auditEvents
-}
+export const selectAuditEvents = state => safeGet(state, 'fetchAuditEvents.auditEvents', []) || []
 
 export const displayChangeLog = state => {
   const roles = safeGet(state, 'userList.adminAccountDetails.roles', [])

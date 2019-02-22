@@ -11,9 +11,6 @@ module AuditEvents
     def search(query, auth_header)
       response = @http_search_service.post(dora_path, query, auth_header)
       response.body
-    rescue StandardError => e
-      Rails.logger.debug("error searching #{e.response}")
-      e.response
     end
 
     private

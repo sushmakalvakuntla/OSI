@@ -62,7 +62,7 @@ module Api
                                   .and_return(api_response)
             request.session[:token] = 'token'
 
-            error_response = { records: [], error: 'error processing query' }
+            error_response = { records: [], error: api_response }
 
             get :index, params: { q: match_search_with_paging.to_json }
             expect(JSON.parse(response.body, symbolize_names: true))
