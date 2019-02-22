@@ -81,8 +81,8 @@ class Pagination extends PaginationRT {
             </select>
           </span>
         )}
-        {this.renderPreviousComponent()}
         <div className="-center">
+          {this.renderPreviousComponent()}
           <span className="-pageInfo">
             {showPageJump ? (
               <div className="-pageJump">{this.renderInput()}</div>
@@ -91,8 +91,8 @@ class Pagination extends PaginationRT {
             )}{' '}
             {this.props.ofText} <span className="-totalPages">{pages || 1}</span>
           </span>
+          {this.renderNextComponent()}
         </div>
-        {this.renderNextComponent()}
       </div>
     )
   }
