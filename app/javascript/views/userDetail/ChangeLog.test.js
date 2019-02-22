@@ -1,32 +1,32 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import ChangeLog, { sortByName, sortByType } from './ChangeLog'
+import ChangeLog, { sortByName, sortByType, viewHeightSize } from './ChangeLog'
 
 describe('ChangeLog', () => {
   let wrapper
   const events = [
     {
-      event: { admin_name: 'Dorfler, Marvin', admin_role: 'Office Admin' },
+      event: { admin_name: 'Dorfler, Marvin', admin_role: 'Office Admin', user_name: 'User Name', user_roles: 'USER-ROLE' },
       event_type: 'B',
-      admin_name: 'wrong2',
+      user_login: 'wrong2',
       timestamp: '2019-01-03 14:22:22',
     },
     {
-      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin' },
+      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin', user_name: 'User Name2', user_roles: 'USER-ROLE2' },
       event_type: 'C',
-      admin_name: 'wrong1',
+      user_login: 'wrong1',
       timestamp: '2019-01-04 14:22:00',
     },
     {
-      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin' },
+      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin', user_name: 'User Name3', user_roles: 'USER-ROLE3' },
       event_type: 'C',
-      admin_name: 'wrong1',
+      user_login: 'wrong1',
       timestamp: '2019-01-04 14:21:00',
     },
     {
-      event: { admin_name: 'Walsh, Jack', admin_role: 'County Admin' },
+      event: { admin_name: 'Walsh, Jack', admin_role: 'County Admin', user_name: 'User Name4', user_roles: 'USER-ROLE4' },
       event_type: 'A',
-      admin_name: 'wrong3',
+      user_login: 'wrong3',
       timestamp: '2019-01-02 14:22:22',
     },
   ]
@@ -75,19 +75,69 @@ describe('ChangeLog', () => {
 
   it('renders the admin name field with formatted display of admin role', () => {
     const mounted = mount(
-      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
+      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" isListView={true} />
     )
     const trs = mounted.find('TrComponent')
+    const madeToHeader = trs
+      .at(0)
+      .childAt(0)
+      .childAt(1)
+    expect(madeToHeader.text()).toEqual('Made To')
+
     const madeByHeader = trs
       .at(0)
       .childAt(0)
       .childAt(2)
     expect(madeByHeader.text()).toEqual('Made By')
 
-    expect(trs.at(1).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
-    expect(trs.at(2).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
-    expect(trs.at(3).text()).toEqual(['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join(''))
-    expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))
+    expect(trs.at(1).text()).toEqual(
+      ['January 4, 2019 02:22 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+    )
+    expect(trs.at(2).text()).toEqual(
+      ['January 4, 2019 02:21 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+    )
+    expect(trs.at(3).text()).toEqual(
+      ['January 3, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+    )
+    expect(trs.at(4).text()).toEqual(
+      ['January 2, 2019 02:22 PM', 'User Name4 (USER-ROLE4)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+    )
+    expect(
+      trs
+        .at(1)
+        .childAt(0)
+        .childAt(1)
+        .text()
+    ).toEqual('User Name2 (USER-ROLE2)')
+    expect(
+      trs
+        .at(2)
+        .childAt(0)
+        .childAt(1)
+        .text()
+    ).toEqual('User Name3 (USER-ROLE3)')
+    expect(
+      trs
+        .at(3)
+        .childAt(0)
+        .childAt(1)
+        .text()
+    ).toEqual('User Name (USER-ROLE)')
+    expect(
+      trs
+        .at(4)
+        .childAt(0)
+        .childAt(1)
+        .text()
+    ).toEqual('User Name4 (USER-ROLE4)')
+
+    expect(
+      trs
+        .at(1)
+        .childAt(0)
+        .childAt(2)
+        .text()
+    ).toEqual('Mosely, Alonso (State Admin)')
     expect(
       trs
         .at(2)
@@ -109,12 +159,21 @@ describe('ChangeLog', () => {
         .childAt(2)
         .text()
     ).toEqual('Walsh, Jack (County Admin)')
+
     madeByHeader.simulate('click') // sort by Made By
 
-    expect(trs.at(1).text()).toEqual(['January 3, 2019 02:22 PM', 'B', 'Dorfler, Marvin (Office Admin)', 'view'].join(''))
-    expect(trs.at(2).text()).toEqual(['January 4, 2019 02:22 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
-    expect(trs.at(3).text()).toEqual(['January 4, 2019 02:21 PM', 'C', 'Mosely, Alonso (State Admin)', 'view'].join(''))
-    expect(trs.at(4).text()).toEqual(['January 2, 2019 02:22 PM', 'A', 'Walsh, Jack (County Admin)', 'view'].join(''))
+    expect(trs.at(1).text()).toEqual(
+      ['January 3, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+    )
+    expect(trs.at(2).text()).toEqual(
+      ['January 4, 2019 02:22 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+    )
+    expect(trs.at(3).text()).toEqual(
+      ['January 4, 2019 02:21 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+    )
+    expect(trs.at(4).text()).toEqual(
+      ['January 2, 2019 02:22 PM', 'User Name4 (USER-ROLE4)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+    )
   })
 
   describe('sortByName', () => {
@@ -169,6 +228,16 @@ describe('ChangeLog', () => {
 
       expect(sortByType(rowA, rowB, true)).toEqual(1)
       expect(sortByType(rowB, rowA, true)).toEqual(-1)
+    })
+  })
+
+  describe('#viewHeightSize', () => {
+    it('returns size based on prop value', () => {
+      expect(viewHeightSize(true)).toEqual('1200px')
+      expect(viewHeightSize(false)).toEqual('500px')
+      expect(viewHeightSize('')).toEqual('500px')
+      expect(viewHeightSize(null)).toEqual('500px')
+      expect(viewHeightSize(undefined)).toEqual('500px')
     })
   })
 })

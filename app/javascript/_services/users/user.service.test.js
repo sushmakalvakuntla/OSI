@@ -44,7 +44,7 @@ describe('UserService', () => {
         JSON.stringify({
           query: [],
           sort: [],
-          size: 10,
+          size: 100,
           from: 0,
         })
       )
