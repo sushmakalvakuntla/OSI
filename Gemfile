@@ -65,6 +65,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'selenium-webdriver'
+  gem 'geckodriver-helper', '~> 0.23.0'
 end
 
 group :development do

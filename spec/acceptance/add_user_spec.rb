@@ -11,7 +11,7 @@ feature 'Add User Page' do
     # Make sure there's no active existing user
 
     deactivate_any_active_added_user
-
+    puts "Here list page"
     click_add_user
 
     email_address = new_email_address

@@ -2,6 +2,8 @@
 
 module LoginHelper
   def login
+    puts "Login method called"
+    Selenum::WebDriver.logger.level = :debug
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
     if page.has_content?('Authorization JSON')
       json_login
@@ -77,8 +79,8 @@ module LoginHelper
   def verify_account
     # verify via MFA using static value assigned to this user.
     return unless page.has_content?('Account Verification')
-
-    fill_in 'Enter Code Here', with: 'LETMEIN'
+    puts "verify account method called"
+    fill_in 'Enteclearr Code Here', with: 'LETMEIN'
     click_on 'Verify'
   end
 
