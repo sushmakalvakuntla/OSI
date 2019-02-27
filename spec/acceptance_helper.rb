@@ -11,7 +11,7 @@ require 'selenium/webdriver'
 # Capybara.register_driver :selenium do |app|
 #   # browser_name = ENV['FIREFOX'] ? :firefox : :chrome
 #   caps = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: true)
-#   Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: caps)
+#   Capybara::Selenium::Driver.new(app, browser: :firefox, desired_capabilities: caps)
 
 
 #   # browser_options = Selenium::WebDriver::Firefox::Options.new()

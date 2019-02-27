@@ -3,7 +3,7 @@
 module LoginHelper
   def login
     puts "Login method called"
-    Selenum::WebDriver.logger.level = :debug
+    # Selenum::WebDriver.logger.level = :debug
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
     if page.has_content?('Authorization JSON')
       json_login
