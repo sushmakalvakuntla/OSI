@@ -65,7 +65,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'selenium-webdriver'
-  gem 'geckodriver-helper', '~> 0.23.0'
+
 end
 
 group :development do
@@ -89,6 +89,7 @@ group :test do
   gem 'rspec-dry-struct'
   gem 'rspec-rails'
   # Easy installation and use of chromedriver to run system tests with Chrome
+  gem 'geckodriver-helper', '~> 0.23.0'
   gem 'chromedriver-helper'
 end
 

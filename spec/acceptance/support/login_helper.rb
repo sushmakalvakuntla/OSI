@@ -79,8 +79,11 @@ module LoginHelper
   def verify_account
     # verify via MFA using static value assigned to this user.
     return unless page.has_content?('Account Verification')
+    # click_on 'Verify'
     puts "verify account method called"
-    fill_in 'Enteclearr Code Here', with: 'LETMEIN'
+    # find('form-control inputField-customizable').set('LETMEIN')
+    fill_in 'code', :with => 'LETMEIN'
+    puts "Successfully entered code"
     click_on 'Verify'
   end
 

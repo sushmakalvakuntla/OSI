@@ -117,7 +117,7 @@ services:
   county-admin-test:
     build:
       context: .
-      dockerfile: docker/test_firefox/Dockerfile
+      dockerfile: docker/test/Dockerfile
     volumes:
       - type: bind
         source: ./spec
