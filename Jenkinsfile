@@ -22,6 +22,32 @@ def notify(String status) {
         )
 }
 
+def regressionTestStage(stageName = 'Regression Test', smokeTest = false) {
+  stage(stageName) {
+    sh "docker-compose up -d --build county-admin-test"
+    sleep 60
+    sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance/user_list_page_spec.rb --format documentation"
+  }
+}
+
+def acceptanceTestPreintStage(stageName, smokeTest = false) {
+  stage(stageName) {
+    sh "docker-compose up -d --build"
+    sh "sleep ${ACCEPTANCE_SLEEP_TIME}"
+    sh "docker-compose exec --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=county-admin-web:3000 -T county-admin-test bundle exec rspec spec/acceptance/user_list_page_spec.rb"
+    }
+  }
+
+def smokeTestStage(environment) {
+  stage("Smoke Test on ${environment}"){
+  if (environment == 'preint') {
+    acceptanceTestPreintStage('Smoke Test Preint', true);
+  } else {
+    regressionTestStage('Smoke Test Integration', true);
+  }
+  }
+}
+
 def node_to_run_on() {
   env.NODE_NAME ?: 'cap-slave'
 }
@@ -49,7 +75,7 @@ node(node_to_run_on()) {
       }
 
       stage('Increment Tag') {
-        newTag = newSemVer(env.APP_VERSION)
+        newTag = newSemVer(env.INCREMENT_VERSION)
       }
 
       stage('Build Docker Image') {
@@ -85,7 +111,7 @@ node(node_to_run_on()) {
       stage('Acceptance Test smoke test') {
         sh "docker-compose up -d --build"
         sh "sleep ${ACCEPTANCE_SLEEP_TIME}"
-        sh "docker-compose exec --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=county-admin-web:3000 -T county-admin-test bundle exec rspec spec/acceptance/user_list_page_spec.rb"
+        sh "docker-compose exec --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=county-admin-web:3000 -T county-admin-test bundle exec rspec spec/acceptance/user_login_spec"
       }
 
       stage('Tag Repo') {
@@ -111,6 +137,11 @@ node(node_to_run_on()) {
           sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/preint/job/deploy-cap/buildWithParameters?token=${JENKINS_TRIGGER_TOKEN}&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
         }
       }
+
+      stage('smoke test on preint'){
+        smokeTestStage('preint')
+      }
+
       stage('Update Pre-int manifest') {
         updateManifest("cap", "preint", GITHUB_CREDENTIALS_ID, newTag)
       }
@@ -119,6 +150,11 @@ node(node_to_run_on()) {
           sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/Integration%20Environment/job/deploy-cap/buildWithParameters?token=${JENKINS_TRIGGER_TOKEN}&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
         }
       }
+
+      stage('smoke test on integration'){
+         smokeTestStage('integration')
+      }
+     
       stage('Update Integration manifest') {
         updateManifest("cap", "integration", GITHUB_CREDENTIALS_ID, newTag)
       }
