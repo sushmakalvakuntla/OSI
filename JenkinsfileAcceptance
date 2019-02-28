@@ -21,7 +21,7 @@ node('int') {
           checkout scm
         }
       stage('Integration Acceptance Test') {
-      if(ENV == 'FIREFOX') {
+      if(BROWSER == 'FIREFOX') {
         sh "docker-compose up -d --build docker/test_firefox/Dockerfile "
         sleep 60
         sh "docker-compose exec -T --env TZ=${TZ} --env FIREFOX=true --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance --format documentation"

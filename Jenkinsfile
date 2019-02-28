@@ -49,7 +49,7 @@ node(node_to_run_on()) {
       }
 
       stage('Increment Tag') {
-        newTag = newSemVer(env.APP_VERSION)
+        newTag = newSemVer(env.INCREMENT_VERSION)
       }
 
       stage('Build Docker Image') {
@@ -116,7 +116,7 @@ node(node_to_run_on()) {
       }
       stage('Deploy Integration') {
         withCredentials([usernameColonPassword(credentialsId: 'fa186416-faac-44c0-a2fa-089aed50ca17', variable: 'jenkinsauth')]) {
-          sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/Integration%20Environment/job/deploy-cap/buildWithParameters?token=${JENKINS_TRIGGER_TOKEN}&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
+          sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/Integration%20Environment/job/deploy-cap/buildWithParameters?token=${JENKINS_TRIGGER_TOKEN}&cause=Caused%20by%20Build%20${newTag}&version=${newTag}&BROWSER=FIREFOX'"
         }
       }
       stage('Update Integration manifest') {
