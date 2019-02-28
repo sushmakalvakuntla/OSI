@@ -6,7 +6,7 @@ module UserListPageHelper
   end
 
   def page_has_basic_text
-    puts "I landed in list page"
+    puts 'I landed in list page'
     expect(page).to have_content('County:')
   end
 

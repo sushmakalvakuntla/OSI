@@ -46,3 +46,6 @@ yarn-debug.log*
 docker-compose.override.yml
 vendor/bundle
 public/cap
+
+
+/.DS_Store

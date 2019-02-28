@@ -7,24 +7,26 @@ require 'acceptance/support/login_helper'
 require 'acceptance/support/user_list_page_helpers'
 require 'acceptance/support/user_detail_page_helpers'
 require 'selenium/webdriver'
-require "chromedriver-helper"
+require 'chromedriver-helper'
 
 if ENV['FIREFOX']
-Capybara.register_driver :selenium do |app|
-  puts "Running in FIREFOX"
-  caps = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: true)
-  browser_options = Selenium::WebDriver::Firefox::Options.new()
-  browser_options.args << '--headless'
-  Capybara::Selenium::Driver.new(app, browser: :firefox, options: browser_options, desired_capabilities: caps)
-end
-Capybara.javascript_driver = :selenium
-else 
   Capybara.register_driver :selenium do |app|
-    puts "Running in CHROME"
+    puts 'Running in FIREFOX'
+    caps = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: true)
+    browser_options = Selenium::WebDriver::Firefox::Options.new
+    browser_options.args << '--headless'
+    Capybara::Selenium::Driver.new(app,
+                                   browser: :firefox,
+                                   options: browser_options,
+                                   desired_capabilities: caps)
+  end
+else
+  Capybara.register_driver :selenium do |app|
+    puts 'Running in CHROME'
     Capybara::Selenium::Driver.new(app, browser: :chrome)
   end
   Capybara.javascript_driver = :selenium
-end 
+end
 
 def check_accessibility
   expect(page).to be_accessible

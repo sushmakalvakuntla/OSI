@@ -2,7 +2,7 @@
 
 module LoginHelper
   def login
-    puts "Login method called"
+    puts 'Login method called'
     # Selenum::WebDriver.logger.level = :debug
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
     if page.has_content?('Authorization JSON')
@@ -79,11 +79,12 @@ module LoginHelper
   def verify_account
     # verify via MFA using static value assigned to this user.
     return unless page.has_content?('Account Verification')
+
     # click_on 'Verify'
-    puts "verify account method called"
+    puts 'verify account method called'
     # find('form-control inputField-customizable').set('LETMEIN')
-    fill_in 'code', :with => 'LETMEIN'
-    puts "Successfully entered code"
+    fill_in 'code', with: 'LETMEIN'
+    puts 'Successfully entered code'
     click_on 'Verify'
   end
 
