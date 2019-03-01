@@ -119,7 +119,7 @@ module Api
                   { "must": [{ terms: { "event.office_id.keyword": ['some_office_id'] } },
                              { match_phrase_prefix: { "event_source": 'CAP' } }] } },
                 from: 0, size: 50, sort: descending_timestamp }, 'token'
-              ).and_return(api_response)
+            ).and_return(api_response)
 
             partial_audit_event_response[:meta] =
               { req: match_office_id_with_paging, total: 1 }

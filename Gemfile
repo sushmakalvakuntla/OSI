@@ -28,7 +28,7 @@ gem 'rails', '~> 5.1', '= 5.1.6'
 gem 'cwds_store', github: 'ca-cwds/cwds_store'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.3.6'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -82,13 +82,14 @@ end
 
 group :test do
   gem 'axe-matchers'
+  gem 'chromedriver-helper'
+  gem 'geckodriver-helper', '~> 0.23.0'
   # Adds support for Capybara system testing and selenium driver
   gem 'rails-controller-testing'
   gem 'rspec'
   gem 'rspec-dry-struct'
   gem 'rspec-rails'
   # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

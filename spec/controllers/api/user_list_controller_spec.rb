@@ -82,7 +82,7 @@ module Api
               { "bool":
                 { "must": [{ match_phrase_prefix: { last_name: 'Smith' } }] } },
               from: 51, size: 25, sort: ascending_last_first_name_sort }, 'token'
-            ).and_return(api_response)
+          ).and_return(api_response)
 
           partial_user_response[:meta] = { req: match_last_name_with_paging, total: 1 }
           get :index, params: { q: match_last_name_with_paging.to_json }
@@ -110,7 +110,7 @@ module Api
                          { "must": [{ match_phrase_prefix: { last_name: 'Smith' } },
                                     { terms: { "office_id.keyword": [1, 2, 3] } }] } },
                 from: 51, size: 25, sort: ascending_last_first_name_sort }, 'token'
-              ).and_return(api_response)
+            ).and_return(api_response)
             partial_user_response[:meta] = { req: match_last_name_and_offices_with_paging,
                                              total: 1 }
             get :index, params: { q: match_last_name_and_offices_with_paging.to_json }

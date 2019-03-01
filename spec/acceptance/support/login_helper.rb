@@ -2,6 +2,7 @@
 
 module LoginHelper
   def login
+    puts 'Login method called'
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
     if page.has_content?('Authorization JSON')
       json_login
@@ -78,7 +79,8 @@ module LoginHelper
     # verify via MFA using static value assigned to this user.
     return unless page.has_content?('Account Verification')
 
-    fill_in 'Enter Code Here', with: 'LETMEIN'
+    fill_in 'code', with: 'LETMEIN'
+    puts 'Successfully entered code'
     click_on 'Verify'
   end
 

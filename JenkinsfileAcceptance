@@ -21,9 +21,15 @@ node('int') {
           checkout scm
         }
       stage('Integration Acceptance Test') {
+      if(BROWSER == 'FIREFOX') {
+        sh "docker-compose up -d --build county-admin-test-firefox"
+        sleep 60
+        sh "docker-compose exec -T --env TZ=${TZ} --env FIREFOX=true --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance --format documentation"
+      } else {
        sh "docker-compose up -d --build county-admin-test"
        sleep 60
        sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance --format documentation"
+      }
       }
     } catch(Exception e) {
       currentBuild.result = "FAILURE"
