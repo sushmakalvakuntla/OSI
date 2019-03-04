@@ -12,11 +12,9 @@ feature 'user list filters by office' do
 
     search_users(last_name: '', include_inactive: false)
     wait_for_load_complete
-
-    all_users_count = total_count_users
     expand_changelog_component
     all_count_changelog = count_changelog_events
-
+    all_users_count = total_count_users
     office_name = 'CWDS CARES IM Lake Testing Office BinthuK2' # pick_single_office_name
 
     search_by_office(office_name, '', false)
