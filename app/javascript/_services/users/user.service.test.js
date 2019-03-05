@@ -247,4 +247,26 @@ describe('UserService', () => {
       expect(getSpy2).toHaveBeenCalledWith(`/add_user`, newUser)
     })
   })
+
+  describe('#userStatusChange', () => {
+    const id = 'userId123'
+    beforeEach(() => {
+      getSpy = jest.spyOn(ApiService, 'delete')
+    })
+
+    it('calls #userStatusChange ApiService', () => {
+      getSpy.mockReturnValue(Promise.resolve({}))
+      UserService.userStatusChange(id)
+      expect(getSpy).toHaveBeenCalledWith(`/user_detail/${id}/remove_user_lock`)
+    })
+
+    it('calls #userStatusChange ApiService error block', () => {
+      const errorResponse = {
+        response: 'error',
+      }
+      getSpy.mockReturnValue(Promise.reject(errorResponse))
+      UserService.userStatusChange(id)
+      expect(getSpy).toHaveBeenCalledWith(`/user_detail/${id}/remove_user_lock`)
+    })
+  })
 })

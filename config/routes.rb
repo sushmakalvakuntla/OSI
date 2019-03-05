@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :user_detail, only: [:show] do
       member do
         patch :save_user
+        delete :remove_user_lock
       end
     end
 

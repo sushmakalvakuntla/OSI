@@ -6,6 +6,7 @@ import {
   clearSaveAlert,
   handleInputChangeAction,
   fetchChangeLogAdminDetailsActions,
+  handleStatusChangeAction,
 } from './detailActions'
 import {
   FETCH_DETAILS_API_CALL_REQUEST,
@@ -15,6 +16,7 @@ import {
   HANDLE_DROPDOWN_CHANGE,
   CLEAR_SAVE_ALERT,
   HANDLE_USER_INPUT_CHANGE,
+  USER_STATUS_CHANGE_REQUEST,
 } from './actionTypes'
 
 describe('#handleDropDownChangeAction', () => {
@@ -96,6 +98,16 @@ describe('#clearSaveAlert', () => {
   it('returns type ', () => {
     expect(clearSaveAlert()).toEqual({
       type: CLEAR_SAVE_ALERT,
+    })
+  })
+})
+
+describe('#handleStatusChangeAction', () => {
+  it('returns type and payload', () => {
+    const id = 'userID1213'
+    expect(handleStatusChangeAction(id)).toEqual({
+      type: USER_STATUS_CHANGE_REQUEST,
+      payload: { id },
     })
   })
 })

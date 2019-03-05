@@ -20,6 +20,7 @@ describe('UserDetail', () => {
   let mockClearSaveAlertAction
   let mockHandleInputChangeAction
   let mockFetchChangeLogAdminDetailsAction
+  let mockUserStatusChange
 
   beforeEach(() => {
     // Register mock dispatchActions
@@ -34,6 +35,7 @@ describe('UserDetail', () => {
     mockHandleDropDownChangeAction = jest.fn()
     mockClearSaveAlertAction = jest.fn()
     mockHandleInputChangeAction = jest.fn()
+    mockUserStatusChange = jest.fn().mockReturnValue(Promise.resolve([]))
     const initialDetails = { id: '12345' }
     const match = { params: { id: '12345' } }
     const details = { id: '12345', email: '' }
@@ -60,6 +62,7 @@ describe('UserDetail', () => {
             clearSaveAlert: mockClearSaveAlertAction,
             handleInputChangeAction: mockHandleInputChangeAction,
             fetchChangeLogAdminDetailsActions: mockFetchChangeLogAdminDetailsAction,
+            handleStatusChangeAction: mockUserStatusChange,
           }}
           match={match}
         />
@@ -302,6 +305,13 @@ describe('UserDetail', () => {
       wrapper.setProps({ userDetailError: null, displayAlert: false })
       const alertBox = wrapper.find('UserMessage')
       expect(alertBox.length).toBe(0)
+    })
+  })
+
+  describe('#onUserStatusChange', () => {
+    it('calls the service to onUserStatusChange', () => {
+      wrapper.instance().onUserStatusChange()
+      expect(mockUserStatusChange).toHaveBeenCalledWith('12345')
     })
   })
 })

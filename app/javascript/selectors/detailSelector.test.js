@@ -26,6 +26,9 @@ import {
   phoneExtension,
   userNotes,
   isPermissionsEmpty,
+  isAdminWithEditPrivileges,
+  isUserLocked,
+  statusButtonProperties,
 } from './detailSelector'
 describe('selectors', () => {
   const editDetails = {
@@ -69,6 +72,7 @@ describe('selectors', () => {
     auditEvents,
     notes,
     CWSPrivileges,
+    isUserLocked,
   }) => {
     return {
       fetchDetails: {
@@ -114,6 +118,7 @@ describe('selectors', () => {
               last_login_date_time: lastLoginDateTime,
               notes: notes,
               cws_privileges: CWSPrivileges,
+              locked: isUserLocked,
             },
             auditevents: auditEvents,
           },
@@ -341,29 +346,128 @@ describe('selectors', () => {
   })
 
   describe('#isUserEditable', () => {
-    it('returns true when user is editable', () => {
-      const state = getState({ isDetailsEditable: true })
+    it('returns true when editable is true and locked is false', () => {
+      const state = getState({ isDetailsEditable: true, isUserLocked: false })
       expect(isUserEditable(state)).toEqual(true)
     })
 
-    it('returns false when user is not editable', () => {
-      const state = getState({ isDetailsEditable: false })
+    it('returns false when editable is false and locked is true', () => {
+      const state = getState({ isDetailsEditable: false, isUserLocked: true })
       expect(isUserEditable(state)).toEqual(false)
     })
 
-    it('returns false if editable is null', () => {
-      const state = getState({ isDetailsEditable: null })
+    it('returns false when editable is true and locked is true', () => {
+      const state = getState({ isDetailsEditable: true, isUserLocked: true })
       expect(isUserEditable(state)).toEqual(false)
     })
 
-    it('return false if editable is undefined ', () => {
-      const state = getState({ isDetailsEditable: undefined })
+    it('returns false when editable is false and locked is false', () => {
+      const state = getState({ isDetailsEditable: false, isUserLocked: false })
       expect(isUserEditable(state)).toEqual(false)
     })
 
-    it('return false if editable is not available ', () => {
+    it('returns false when editable & locked are null', () => {
+      const state = getState({ isDetailsEditable: null, isUserLocked: null })
+      expect(isUserEditable(state)).toEqual(false)
+    })
+
+    it('returns false when editable & locked are undefined ', () => {
+      const state = getState({ isDetailsEditable: undefined, isUserLocked: undefined })
+      expect(isUserEditable(state)).toEqual(false)
+    })
+
+    it('returns false when editable & locked are not available ', () => {
       const state = getState({ fetchDetails: {} })
       expect(isUserEditable(state)).toEqual(false)
+    })
+  })
+
+  describe('#isAdminWithEditPrivileges', () => {
+    it('returns true when editable is true', () => {
+      const state = getState({ isDetailsEditable: true })
+      expect(isAdminWithEditPrivileges(state)).toEqual(true)
+    })
+
+    it('returns undefined if editable is not available', () => {
+      const state = getState({ fetchDetails: {} })
+      expect(isAdminWithEditPrivileges(state)).toEqual(undefined)
+    })
+  })
+
+  describe('#isUserLocked', () => {
+    it('returns true when locked is true', () => {
+      const state = getState({ isUserLocked: true })
+      expect(isUserLocked(state)).toEqual(true)
+    })
+
+    it('returns undefined if locked is not available', () => {
+      const state = getState({ fetchDetails: {} })
+      expect(isUserLocked(state)).toEqual(undefined)
+    })
+  })
+
+  describe('#statusButtonProperties', () => {
+    const buttonProperties = {
+      buttonType: 'secondary',
+      className: 'unlockedStatus',
+      headerButtonLabel: 'Unlocked',
+      isDisabled: true,
+      systemStatus: 'System Status',
+    }
+    it('returns undefined when editable is true', () => {
+      const state = getState({ isDetailsEditable: true })
+      expect(statusButtonProperties(state)).toEqual(undefined)
+    })
+
+    it('returns button properties when editable is false', () => {
+      const state = getState({ isDetailsEditable: false })
+      expect(statusButtonProperties(state)).toEqual(buttonProperties)
+    })
+
+    it('returns buttonProperties when editable is null', () => {
+      const state = getState({ isDetailsEditable: null })
+      expect(statusButtonProperties(state)).toEqual(buttonProperties)
+    })
+
+    it('returns buttonProperties when editable is undefined', () => {
+      const state = getState({ isDetailsEditable: undefined })
+      expect(statusButtonProperties(state)).toEqual(buttonProperties)
+    })
+  })
+
+  describe('#checkStatus', () => {
+    const lockedProperties = {
+      headerButtonLabel: 'Locked',
+      systemStatus: `User Account is Locked for 'Failed Logins'`,
+      className: 'lockedStatus',
+      isDisabled: true,
+      buttonType: 'danger',
+    }
+    const unlockedProperties = {
+      systemStatus: 'System Status',
+      headerButtonLabel: 'Unlocked',
+      isDisabled: true,
+      className: 'unlockedStatus',
+      buttonType: 'secondary',
+    }
+    it('returns locked properties when locked is true', () => {
+      const state = getState({ isUserLocked: true })
+      expect(statusButtonProperties(state)).toEqual(lockedProperties)
+    })
+
+    it('returns unlocked properties when locked is false', () => {
+      const state = getState({ isUserLocked: false })
+      expect(statusButtonProperties(state)).toEqual(unlockedProperties)
+    })
+
+    it('returns unlocked properties when locked is null', () => {
+      const state = getState({ isUserLocked: null })
+      expect(statusButtonProperties(state)).toEqual(unlockedProperties)
+    })
+
+    it('returns unlocked properties when locked is undefined', () => {
+      const state = getState({ locked: undefined })
+      expect(statusButtonProperties(state)).toEqual(unlockedProperties)
     })
   })
 

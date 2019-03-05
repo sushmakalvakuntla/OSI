@@ -210,4 +210,57 @@ describe('reducer', () => {
       displayAlert: true,
     })
   })
+
+  it('handles USER_STATUS_CHANGE_REQUEST', () => {
+    const requestAction = { type: actionTypes.USER_STATUS_CHANGE_REQUEST }
+    const state = { details: null, initialDetails: null, fetching: false }
+    expect(fetchDetails(state, requestAction)).toEqual({
+      details: null,
+      fetchDetailsError: null,
+      fetching: true,
+      initialDetails: null,
+    })
+  })
+
+  it('handles USER_STATUS_CHANGE_SUCCESS', () => {
+    const responseAction = {
+      type: actionTypes.USER_STATUS_CHANGE_SUCCESS,
+      successAlert: 'Success message! User has been unlocked successfully',
+    }
+    const state = {
+      fetching: true,
+      displayAlert: false,
+      saveSuccessAlert: null,
+      disableActionBtn: true,
+      details: { id: 'key1', username: 'user1', records: { user: { locked: true } } },
+    }
+    expect(fetchDetails(state, responseAction)).toEqual({
+      fetching: false,
+      displayAlert: true,
+      saveSuccessAlert: 'Success message! User has been unlocked successfully',
+      details: { id: 'key1', username: 'user1', records: { user: { locked: false } } },
+      disableActionBtn: false,
+    })
+  })
+
+  it('handles USER_STATUS_CHANGE_FAILURE', () => {
+    const failureAction = {
+      type: actionTypes.USER_STATUS_CHANGE_FAILURE,
+      error: { user_message: 'Error Message! User cannot be unlocked right now' },
+    }
+    const state = {
+      details: { id: 'key1', username: 'user1', records: { user: { locked: true } } },
+      fetching: true,
+      error: null,
+      displayAlert: false,
+      saveDetailsError: null,
+    }
+    expect(fetchDetails(state, failureAction)).toEqual({
+      fetching: false,
+      details: { id: 'key1', username: 'user1', records: { user: { locked: true } } },
+      saveDetailsError: { user_message: 'Error Message! User cannot be unlocked right now' },
+      error: null,
+      displayAlert: true,
+    })
+  })
 })

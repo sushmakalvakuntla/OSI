@@ -26,6 +26,7 @@ import {
   userNotes,
   isPermissionsEmpty,
   selectCWSPrivileges,
+  statusButtonProperties,
 } from '../selectors/detailSelector'
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { rolesList } from '../selectors/rolesListSelector'
@@ -37,6 +38,7 @@ import {
   handleInputChangeAction,
   clearSaveAlert,
   fetchChangeLogAdminDetailsActions,
+  handleStatusChangeAction,
 } from '../actions/detailActions'
 import { disableResendEmailButton } from '../selectors/resendEmailSelector'
 import { fetchPermissionsActions } from '../actions/permissionsActions'
@@ -86,6 +88,7 @@ function mapStateToProps(state) {
     notesWordCount: userNotes(state).notesLength,
     isPermissionsEmpty: isPermissionsEmpty(state),
     privilegesFromCWS: selectCWSPrivileges(state),
+    statusButtonProperties: statusButtonProperties(state),
   }
 }
 
@@ -102,6 +105,7 @@ function mapDispatchToProps(dispatch) {
     handleDropdownChangeAction,
     handleInputChangeAction,
     fetchChangeLogAdminDetailsActions,
+    handleStatusChangeAction,
   }
   return {
     actions: bindActionCreators(actions, dispatch),

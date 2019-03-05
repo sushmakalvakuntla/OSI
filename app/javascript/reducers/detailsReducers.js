@@ -114,6 +114,36 @@ function fetchDetails(
         },
       }
 
+    case actionTypes.USER_STATUS_CHANGE_REQUEST:
+      return { ...state, fetching: true, fetchDetailsError: null }
+
+    case actionTypes.USER_STATUS_CHANGE_SUCCESS:
+      return {
+        ...state,
+        fetching: false,
+        displayAlert: true,
+        saveSuccessAlert: action.successAlert,
+        disableActionBtn: false,
+        details: {
+          ...state.details,
+          records: {
+            ...state.details.records,
+            user: {
+              ...state.details.records.user,
+              locked: false,
+            },
+          },
+        },
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_FAILURE:
+      return {
+        ...state,
+        fetching: false,
+        saveDetailsError: action.error,
+        displayAlert: true,
+      }
+
     default:
       return state
   }

@@ -18,6 +18,13 @@ module Api
       render json: e.response, status: e.status
     end
 
+    def remove_user_lock
+      remove_user = Users::UserRepository.new.delete_user_lock(params[:id], session[:token])
+      render json: remove_user, status: remove_user
+    rescue ApiError => e
+      render json: e.response, status: e.status
+    end
+
     private
 
     def allowed_params_for_update

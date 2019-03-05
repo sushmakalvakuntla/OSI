@@ -17,10 +17,26 @@ const UserDetailShow = ({
   lastLoginDateTime,
   officePhoneNumber,
   workerPhoneNumber,
+  handleUserStatusChange,
+  headerButtonLabel,
+  systemStatus,
+  isLockButtonDisabled,
+  statusClassName,
+  headerButtonType,
 }) => (
   <div className="row">
     <div className="col-md-12">
-      <Cards cardHeaderText={`County: ${details.county_name}`}>
+      <Cards
+        cardHeaderText={`County: ${details.county_name}`}
+        cardHeaderButton={true}
+        cardActionButtons={false}
+        handleUserStatusChange={handleUserStatusChange}
+        headerButtonLabel={headerButtonLabel}
+        systemStatus={systemStatus}
+        isHeaderButtonDisabled={isLockButtonDisabled}
+        statusClassName={statusClassName}
+        headerButtonType={headerButtonType}
+      >
         <div className="col-md-12">
           <div className="row">
             <div className="col-md-3">
@@ -94,6 +110,12 @@ UserDetailShow.propTypes = {
   lastLoginDateTime: PropTypes.string,
   officePhoneNumber: PropTypes.string,
   workerPhoneNumber: PropTypes.string,
+  handleUserStatusChange: PropTypes.func,
+  headerButtonLabel: PropTypes.string,
+  systemStatus: PropTypes.string,
+  isLockButtonDisabled: PropTypes.bool,
+  statusClassName: PropTypes.string,
+  headerButtonType: PropTypes.string,
 }
 
 export default UserDetailShow

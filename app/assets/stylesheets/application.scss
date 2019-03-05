@@ -52,6 +52,22 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 
+.card-header-button {
+  height: 40px;
+  margin: 0.5rem;
+  width: 14rem;
+  font-weight: 600 !important;
+}
+
+.card-header {
+  display: flex !important;
+  justify-content: space-between;
+}
+
+.lockedStatus {
+  color: #ad2213;
+}
+
 .modal-buttons {
   width: 14rem;
   text-transform: uppercase;

@@ -6,6 +6,7 @@ import {
   CLEAR_SAVE_ALERT,
   HANDLE_USER_INPUT_CHANGE,
   FETCH_CHANGE_LOG_DETAILS_API_CALL_REQUEST,
+  USER_STATUS_CHANGE_REQUEST,
 } from './actionTypes'
 
 export const handleDropdownChangeAction = (name, value) => ({
@@ -38,5 +39,12 @@ export function saveUserDetailsActions(id, details, initialDetails, isRolesDisab
   return {
     type: SAVE_USER_DETAILS_API_CALL_REQUEST,
     payload: { id: id, details: details, initialDetails: initialDetails, isRolesDisabled },
+  }
+}
+
+export function handleStatusChangeAction(id) {
+  return {
+    type: USER_STATUS_CHANGE_REQUEST,
+    payload: { id },
   }
 }

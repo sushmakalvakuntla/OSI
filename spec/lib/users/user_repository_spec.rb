@@ -307,6 +307,21 @@ module Users
         end
       end
     end
+
+    describe '#delete_user_lock' do
+      let(:response) { instance_double('Faraday::Response') }
+      context 'with user' do
+        it 'returns status as 204' do
+          allow(response).to receive(:status).and_return(204)
+          allow(http_service)
+            .to receive(:delete)
+            .with('/perry/idm/users/55/lock', token)
+            .and_return(response)
+          expect(user_repository.delete_user_lock(55, token))
+            .to eq 204
+        end
+      end
+    end
   end
 
   describe '.search' do

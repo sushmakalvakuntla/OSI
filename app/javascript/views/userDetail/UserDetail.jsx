@@ -76,6 +76,10 @@ export default class UserDetail extends Component {
     this.props.actions.fetchChangeLogAdminDetailsActions(value)
   }
 
+  onUserStatusChange = () => {
+    this.props.actions.handleStatusChangeAction(this.props.match.params.id)
+  }
+
   renderCards = () => {
     return this.props.details && this.props.details.id ? (
       <div>
@@ -99,6 +103,12 @@ export default class UserDetail extends Component {
             phoneExtensionNumber={this.props.phoneExtensionNumber}
             onResendInvite={this.onResendInvite}
             disableResendEmailButton={this.props.disableResendEmailButton}
+            handleUserStatusChange={this.onUserStatusChange}
+            headerButtonLabel="Unlocked"
+            systemStatus="System Status"
+            statusClassName="systemStatus"
+            headerButtonType="secondary"
+            isLockButtonDisabled={true}
           />
         ) : (
           <UserDetailShow
@@ -113,6 +123,12 @@ export default class UserDetail extends Component {
             lastLoginDateTime={this.props.lastLoginDateTime}
             officePhoneNumber={this.props.officePhoneNumber}
             workerPhoneNumber={this.props.workerPhoneNumber}
+            handleUserStatusChange={this.onUserStatusChange}
+            headerButtonLabel={this.props.statusButtonProperties.headerButtonLabel}
+            systemStatus={this.props.statusButtonProperties.systemStatus}
+            isLockButtonDisabled={this.props.statusButtonProperties.isDisabled}
+            statusClassName={this.props.statusButtonProperties.className}
+            headerButtonType={this.props.statusButtonProperties.buttonType}
           />
         )}
         <br />
@@ -232,9 +248,17 @@ UserDetail.propTypes = {
   notesWordCount: PropTypes.number,
   isPermissionsEmpty: PropTypes.bool,
   privilegesFromCWS: PropTypes.array,
+  statusButtonProperties: PropTypes.object,
 }
 
 UserDetail.defaultProps = {
   dashboardUrl: '/',
   dashboardClickHandler: () => {},
+  statusButtonProperties: {
+    headerButtonLabel: 'Unlock User',
+    systemStatus: `User Account is Locked for 'Failed Logins'`,
+    isDisabled: false,
+    className: 'lockedStatus',
+    buttonType: 'danger',
+  },
 }

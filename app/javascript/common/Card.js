@@ -13,13 +13,16 @@ const Cards = props => {
     columnMediumWidth,
     columnLargeWidth,
     handleOnClickButton1,
-    onEdit,
     handleOnClickButton2,
     disableActionBtn,
-    headerBtnName,
     rightActionBtnName,
     leftActionBtnName,
-    disabled,
+    handleUserStatusChange,
+    systemStatus,
+    headerButtonLabel,
+    isHeaderButtonDisabled,
+    statusClassName,
+    headerButtonType,
   } = props
   const classField = classNames(
     cardbgcolor,
@@ -37,9 +40,19 @@ const Cards = props => {
           <span>{props.cardHeaderText}</span>
           {props.cardHeaderButton &&
             !props.cardActionButtons && (
-              <Button className="card-buttons" color="default pull-right" onClick={onEdit} disabled={disabled}>
-                {headerBtnName}
-              </Button>
+              <span className={statusClassName}>
+                {systemStatus}
+                <Button
+                  color={headerButtonType}
+                  className="card-header-button"
+                  size="lg"
+                  id="headerButton"
+                  onClick={handleUserStatusChange}
+                  disabled={isHeaderButtonDisabled}
+                >
+                  {headerButtonLabel}
+                </Button>
+              </span>
             )}
         </div>
         <div className="card-body">
@@ -86,14 +99,17 @@ Cards.propTypes = {
   id: PropTypes.any,
   handleOnClickButton1: PropTypes.func,
   handleOnClickButton2: PropTypes.func,
-  onEdit: PropTypes.func,
   disableActionBtn: PropTypes.bool,
   cardActionButton1: PropTypes.bool,
   cardActionButton2: PropTypes.bool,
-  headerBtnName: PropTypes.string,
   rightActionBtnName: PropTypes.string,
   leftActionBtnName: PropTypes.string,
-  disabled: PropTypes.bool,
+  systemStatus: PropTypes.string,
+  headerButtonLabel: PropTypes.string,
+  isHeaderButtonDisabled: PropTypes.bool,
+  statusClassName: PropTypes.string,
+  headerButtonType: PropTypes.string,
+  handleUserStatusChange: PropTypes.func,
 }
 
 Cards.defaultProps = {
@@ -106,8 +122,6 @@ Cards.defaultProps = {
   cardActionButtons: false,
   cardHeaderButton: false,
   rightActionBtnName: 'save',
-  headerBtnName: 'Edit',
-  disabled: false,
 }
 
 export default Cards

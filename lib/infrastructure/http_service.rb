@@ -38,6 +38,13 @@ module Infrastructure
       end
     end
 
+    def delete(url, token)
+      http_connection.delete do |request|
+        request.url "#{url}?token=#{token}"
+        request.headers['Content-Type'] = 'application/json'
+      end
+    end
+
     private
 
     def http_connection

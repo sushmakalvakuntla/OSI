@@ -70,6 +70,16 @@ class UserService {
         }
       })
   }
+
+  static userStatusChange(id) {
+    return ApiService.delete(`/user_detail/${id}/remove_user_lock`)
+      .then(response => response.data)
+      .catch(error => {
+        if (error.response) {
+          throw error.response.data
+        }
+      })
+  }
 }
 
 export default UserService

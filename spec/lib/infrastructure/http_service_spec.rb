@@ -216,5 +216,62 @@ module Infrastructure
         expect(headers['Content-Type']).to eq 'application/json'
       end
     end
+
+    describe '#delete' do
+      let(:request) { instance_double('Faraday::Request') }
+      let(:headers) { { 'Content-Type': 'URL-encoded' } }
+
+      it 'sets json and uses the default adapter' do
+        expect(Faraday)
+          .to receive(:new)
+          .with(url: 'https://perry.test')
+          .and_yield(connection)
+          .and_return(connection)
+        expect(connection).to receive(:use).with(api_error_exception)
+        expect(connection)
+          .to receive(:response)
+          .with(:json, parser_options: { symbolize_names: true })
+        expect(connection)
+          .to receive(:adapter)
+          .with(Faraday.default_adapter)
+        allow(connection)
+          .to receive(:delete)
+          .with(no_args)
+          .and_yield(request)
+        allow(request)
+          .to receive(:url)
+          .with('/resource?token=showbiz_pizza_token')
+        allow(request)
+          .to receive(:headers)
+          .and_return(headers)
+        Infrastructure::HttpService.new.delete('/resource', 'showbiz_pizza_token')
+      end
+
+      it 'makes a delete request requiring JSON' do
+        allow(Faraday)
+          .to receive(:new)
+          .with(url: 'https://perry.test')
+          .and_yield(connection).and_return(connection)
+        allow(connection)
+          .to receive(:use)
+          .with(api_error_exception)
+        allow(connection)
+          .to receive(:response)
+          .with(:json, parser_options: { symbolize_names: true })
+        allow(connection).to receive(:adapter).with(Faraday.default_adapter)
+        expect(connection)
+          .to receive(:delete)
+          .with(no_args)
+          .and_yield(request)
+        expect(request)
+          .to receive(:url)
+          .with('/resource?token=showbiz_pizza_token')
+        expect(request)
+          .to receive(:headers)
+          .and_return(headers)
+        Infrastructure::HttpService.new.delete('/resource', 'showbiz_pizza_token')
+        expect(headers['Content-Type']).to eq 'application/json'
+      end
+    end
   end
 end

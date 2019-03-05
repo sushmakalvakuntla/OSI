@@ -61,6 +61,11 @@ module Users
       response.headers
     end
 
+    def delete_user_lock(id, token)
+      response = @http_service.delete("/perry/idm/users/#{id}/lock", token)
+      return response.status if response.status == 204
+    end
+
     def resend_registration_email(parameters, token)
       response = @http_service.post(
         "/perry/idm/users/#{parameters['id']}/registration-request", parameters,

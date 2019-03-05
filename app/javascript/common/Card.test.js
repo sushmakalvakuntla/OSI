@@ -22,7 +22,6 @@ describe('Cards', () => {
     expect(component.prop('offsetMediumValue')).toEqual(0)
     expect(component.prop('cardHeaderButton')).toEqual(false)
     expect(component.prop('cardActionButtons')).toEqual(false)
-    expect(component.prop('disabled')).toEqual(false)
     expect(
       component
         .find('div')

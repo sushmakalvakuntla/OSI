@@ -33,5 +33,6 @@ module Users
     attribute :auth_header, Types::String.optional
     attribute :notes, Types::String.optional
     attribute :cws_privileges, Types::Array.optional
+    attribute :locked, Types::Bool.optional
   end
 end
