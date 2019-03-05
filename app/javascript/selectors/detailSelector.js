@@ -69,35 +69,28 @@ export const disableActionButton = state => {
 }
 
 export const checkStatus = state => {
-  const isLocked = isUserLocked(state)
-  return isLocked
+  return isUserEditable(state)
     ? {
-        headerButtonLabel: 'Locked',
+        headerButtonLabel: 'Unlock User',
         systemStatus: `User Account is Locked for 'Failed Logins'`,
         className: 'lockedStatus',
-        isDisabled: true,
+        isDisabled: false,
         buttonType: 'danger',
       }
     : {
-        systemStatus: 'System Status',
-        headerButtonLabel: 'Unlocked',
+        systemStatus: `User Account is Locked for 'Failed Logins`,
+        headerButtonLabel: 'Locked',
         isDisabled: true,
-        className: 'unlockedStatus',
-        buttonType: 'secondary',
+        className: 'lockedStatus',
+        buttonType: 'danger',
       }
 }
 
 export const statusButtonProperties = state => {
-  return isAdminWithEditPrivileges(state) ? undefined : checkStatus(state)
+  return !isUserLocked(state) ? undefined : checkStatus(state)
 }
 
-export const isUserEditable = state => {
-  const isEditable = isAdminWithEditPrivileges(state)
-  const isLocked = isUserLocked(state)
-  return Boolean(isEditable && !isLocked)
-}
-
-export const isAdminWithEditPrivileges = state => safeGet(state, 'fetchDetails.details.records.edit_details.editable')
+export const isUserEditable = state => safeGet(state, 'fetchDetails.details.records.edit_details.editable') || false
 
 export const isUserLocked = state => safeGet(state, 'fetchDetails.details.records.user.locked')
 

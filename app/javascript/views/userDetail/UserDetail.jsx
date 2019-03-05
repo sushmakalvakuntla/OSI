@@ -104,11 +104,11 @@ export default class UserDetail extends Component {
             onResendInvite={this.onResendInvite}
             disableResendEmailButton={this.props.disableResendEmailButton}
             handleUserStatusChange={this.onUserStatusChange}
-            headerButtonLabel="Unlocked"
-            systemStatus="System Status"
-            statusClassName="systemStatus"
-            headerButtonType="secondary"
-            isLockButtonDisabled={true}
+            headerButtonLabel={this.props.statusButtonProperties.headerButtonLabel}
+            systemStatus={this.props.statusButtonProperties.systemStatus}
+            isLockButtonDisabled={this.props.statusButtonProperties.isDisabled}
+            statusClassName={this.props.statusButtonProperties.className}
+            headerButtonType={this.props.statusButtonProperties.buttonType}
           />
         ) : (
           <UserDetailShow
@@ -255,10 +255,10 @@ UserDetail.defaultProps = {
   dashboardUrl: '/',
   dashboardClickHandler: () => {},
   statusButtonProperties: {
-    headerButtonLabel: 'Unlock User',
-    systemStatus: `User Account is Locked for 'Failed Logins'`,
-    isDisabled: false,
-    className: 'lockedStatus',
-    buttonType: 'danger',
+    headerButtonLabel: 'Unlocked',
+    systemStatus: 'System Status',
+    isDisabled: true,
+    className: 'unlockedStatus',
+    buttonType: 'secondary',
   },
 }

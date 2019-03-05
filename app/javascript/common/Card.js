@@ -37,7 +37,7 @@ const Cards = props => {
     <div className={classField} id={props.id}>
       <div className={`card ${editClass} double-gap-top`}>
         <div className="card-header">
-          <span>{props.cardHeaderText}</span>
+          <span className="card-title">{props.cardHeaderText}</span>
           {props.cardHeaderButton &&
             !props.cardActionButtons && (
               <span className={statusClassName}>
