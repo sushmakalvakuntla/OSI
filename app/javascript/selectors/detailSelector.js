@@ -16,7 +16,7 @@ export const selectDetailRecords = state => {
   return userDetails
 }
 
-export const selectAuditEvents = state => safeGet(state, 'fetchDetails.details.records.auditevents', [])
+export const selectAuditEvents = state => safeGet(state, 'fetchAuditEvents.auditEvents', [])
 
 export const selectCWSPrivileges = state => {
   const CWSPrivileges = safeGet(state, 'fetchDetails.details.records.user.cws_privileges', [])

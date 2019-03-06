@@ -2,6 +2,8 @@ import UserService from '../_services/users'
 import * as actionTypes from '../actions/actionTypes'
 import { takeLatest, call, put } from 'redux-saga/effects'
 import { fetchDetailsActions } from '../actions/detailActions'
+import { fetchUserAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
+
 // worker saga: makes the api call when watcher saga sees the action
 export function* saveDetails(action) {
   const successAlert =
@@ -23,7 +25,10 @@ export function* saveDetails(action) {
       saveUserDetails,
       successAlert,
     })
+    // send a message to start a fetch saga.
+    yield put(clearAuditEvents())
     yield put(fetchDetailsActions(saveUserDetailsActions.id))
+    yield put(fetchUserAuditEventsActions(saveUserDetailsActions.id))
   } catch (error) {
     // dispatch a failure action to the store with the error
     yield put({

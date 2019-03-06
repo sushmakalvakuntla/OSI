@@ -10,7 +10,6 @@ import {
   selectPossibleRolesList,
   selectAccountStatus,
   selectAssignedPermissions,
-  selectAuditEvents,
   selectCWSPrivileges,
   officeName,
   selectPossiblePermissionsList,
@@ -30,6 +29,7 @@ import {
   checkStatus,
   statusButtonProperties,
 } from './detailSelector'
+
 describe('selectors', () => {
   const editDetails = {
     edit_details: {
@@ -160,26 +160,6 @@ describe('selectors', () => {
         },
       }
       expect(selectUserDetailObject(state)).toEqual(undefined)
-    })
-  })
-
-  describe('#auditEvents', () => {
-    const auditEvents = [
-      {
-        event_type: 'User Created',
-        event_source: 'CAP',
-        timestamp: '2019-01-14 15:10:41',
-      },
-    ]
-
-    it('selects the audit events', () => {
-      const state = getState({ auditEvents: auditEvents })
-      expect(selectAuditEvents(state)).toEqual(auditEvents)
-    })
-
-    it('selects an empty array when there are no audit events', () => {
-      const state = getState({})
-      expect(selectAuditEvents(state)).toEqual([])
     })
   })
 

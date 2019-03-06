@@ -30,7 +30,28 @@ describe Elastic::AuditEventQueryBuilder do
       output = Elastic::AuditEventQueryBuilder.get_search(input_query)
       expect(output).to eq(expected_output)
     end
+    it 'processs a user id correctly' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { term: { 'event.user_id.keyword': '12345-abcdef' } },
+              { match_phrase_prefix: { 'event_source': 'CAP' } }
+            ]
+          }
+        },
+        from: 0,
+        size: 50,
+        sort: [{ "timestamp": { order: 'desc' } }, { "event.user_name.keyword": { order: 'desc' } }]
+      }
+      input_query = { "query": [
+        { "field": 'user_id', "value": '12345-abcdef' }
+      ],
+                      "sort": [], "size": 50, "from": 0 }
 
+      output = Elastic::AuditEventQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
     it 'processes invalid search criteria by removing it' do
       expected_output = {
         query: {

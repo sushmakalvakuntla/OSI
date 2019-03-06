@@ -81,13 +81,13 @@ describe('reducer', () => {
     expect(resendRegistrationEmail(undefined, randomAction)).toEqual(state)
   })
 
-  it('clears details', () => {
+  it('clears resend invite', () => {
     const before = { registrationResentDateTime: {}, fetching: false, error: null }
     let after
     expect(
       () =>
         (after = resendRegistrationEmail(before, {
-          type: actionTypes.CLEAR_USER_DETAILS,
+          type: actionTypes.CLEAR_RESEND_INVITE,
         }))
     ).not.toThrow()
     expect(after).not.toEqual(before)

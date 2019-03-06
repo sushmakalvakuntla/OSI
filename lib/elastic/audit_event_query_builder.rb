@@ -26,7 +26,8 @@ module Elastic
     end
 
     SUBQUERIES = {
-      office_ids: ->(value) { { terms: { 'event.office_id.keyword': value } } unless value.empty? }
+      office_ids: ->(value) { { terms: { 'event.office_id.keyword': value } } unless value.empty? },
+      user_id: ->(value) { { term: { 'event.user_id.keyword': value } } unless value.empty? }
     }.freeze
 
     def self.sort_query

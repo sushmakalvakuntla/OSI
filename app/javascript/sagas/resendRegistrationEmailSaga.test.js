@@ -29,15 +29,20 @@ describe('sagas', () => {
             id,
           })
         )
-        expect(gen.next({ resendEmailStatus, id }).value).toEqual(
+        expect(gen.next().value).toEqual(
           put({
-            type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST,
-            payload: { id: id },
+            type: actionTypes.FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
+            payload: { query: [{ field: 'user_id', value: id }] },
           })
         )
-        expect(gen.next({ resendEmailStatus, id }).value).toEqual(
+        expect(gen.next().value).toEqual(
           put({
-            type: actionTypes.CLEAR_ADDED_USER_DETAILS,
+            type: actionTypes.CLEAR_AUDIT_EVENTS,
+          })
+        )
+        expect(gen.next().value).toEqual(
+          put({
+            type: actionTypes.CLEAR_RESEND_INVITE,
           })
         )
         expect(gen.next().done).toBe(true)

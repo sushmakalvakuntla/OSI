@@ -15,7 +15,7 @@ feature 'Add User Page' do
     click_add_user
 
     email_address = new_email_address
-
+    puts "New email address for completing an add #{email_address}"
     fill_in('Email', with: email_address, match: :prefer_exact)
 
     # now enter a valid RACFID valid
@@ -41,15 +41,13 @@ feature 'Add User Page' do
     message = "Successfully added new user. Registration email has been sent to #{email_address}"
     expect(page.find('div.successMessage-customizable').text).to eq(message)
 
-    # Should be able to click the 'edit' button now, but the test becomes unstable in our
-    # environments.
-    # Instead, capture the new user's detail page URL and revisit.
-    new_user_detail_page = current_url
-    click_link 'User List'
-    visit new_user_detail_page
+    puts "New user added #{current_url}"
 
+    fill_in('Phone Number', with: '916-555-1111')
     click_on('RESEND INVITE')
-
+    # changed field values are retained after submitting the resend.
+    # also the phone number is reformatted to remove non-digits
+    find_field('Phone Number', with: '9165551111')
     resend_registration_email_success
 
     expect(detail_page_value('User Status'))
@@ -73,9 +71,10 @@ feature 'Add User Page' do
     deactivate_any_active_added_user
     page_has_user_list_headers
     click_add_user
+    email_address = new_email_address
+    fill_in('Email', with: email_address, match: :prefer_exact)
 
-    fill_in('Email', with: new_email_address, match: :prefer_exact)
-
+    puts "Email address for add-user accessibility #{email_address}"
     # now enter a valid RACFID valid
     valid_racfid = 'AUTO1I'
     fill_in('CWS Login', with: valid_racfid, match: :prefer_exact)
@@ -107,6 +106,7 @@ feature 'Add User Page' do
 
     # correct the email to a proper address
     email_address = new_email_address
+    puts "Email address for add-user invalid-data testing #{email_address}"
     fill_in('Email', with: email_address, match: :prefer_exact)
     expect(page).to have_button('Verify User', disabled: false)
 

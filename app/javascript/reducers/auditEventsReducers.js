@@ -13,6 +13,10 @@ const initialValue = {
       field: 'office_ids',
       value: [],
     },
+    {
+      field: 'user_id',
+      value: '',
+    },
   ],
   auditEvents: [],
   fetching: false,
@@ -40,6 +44,13 @@ function fetchAuditEvents(state = initialValue, { type, payload, error }) {
         error,
         fetching: false,
         auditEvents: null,
+      }
+    }
+
+    case actionTypes.CLEAR_AUDIT_EVENTS: {
+      return {
+        ...state,
+        fetching: false,
       }
     }
 

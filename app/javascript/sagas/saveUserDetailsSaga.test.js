@@ -49,6 +49,11 @@ describe('sagas', () => {
             successAlert: successAlert,
           })
         )
+        expect(gen.next({}).value).toEqual(
+          put({
+            type: actionTypes.CLEAR_AUDIT_EVENTS,
+          })
+        )
         expect(
           gen.next({
             id: id,
@@ -59,6 +64,12 @@ describe('sagas', () => {
           put({
             type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST,
             payload: { id: id },
+          })
+        )
+        expect(gen.next({}).value).toEqual(
+          put({
+            type: actionTypes.FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
+            payload: { query: [{ field: 'user_id', value: id }] },
           })
         )
         expect(gen.next().done).toBe(true)
@@ -94,6 +105,11 @@ describe('sagas', () => {
           })
         )
         // starts a retrieval saga
+        expect(gen.next({}).value).toEqual(
+          put({
+            type: actionTypes.CLEAR_AUDIT_EVENTS,
+          })
+        )
         expect(
           gen.next({
             id: id,
@@ -104,6 +120,12 @@ describe('sagas', () => {
           put({
             type: actionTypes.FETCH_DETAILS_API_CALL_REQUEST,
             payload: { id: id },
+          })
+        )
+        expect(gen.next({}).value).toEqual(
+          put({
+            type: actionTypes.FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
+            payload: { query: [{ field: 'user_id', value: id }] },
           })
         )
         expect(gen.next().done).toBe(true)

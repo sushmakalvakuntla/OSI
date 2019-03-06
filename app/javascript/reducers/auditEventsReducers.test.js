@@ -62,4 +62,12 @@ describe('fetchAuditEvents', () => {
     expect(after.auditEvents).toBeFalsy()
     expect(after.error).toEqual('error happened')
   })
+
+  it('clears audit events', () => {
+    const requestAction = {
+      type: actionTypes.CLEAR_AUDIT_EVENTS,
+    }
+    const state = { fetching: false }
+    expect(fetchAuditEvents(state, requestAction)).toEqual({ error: undefined, fetching: false })
+  })
 })

@@ -45,8 +45,6 @@ export const cardHeaderText = state => {
   }
 }
 
-export const selectAuditEvents = state => safeGet(state, 'fetchAuditEvents.auditEvents', []) || []
-
 export const displayChangeLog = state => {
   const roles = safeGet(state, 'userList.adminAccountDetails.roles', [])
   if (roles.includes('Super-admin')) {

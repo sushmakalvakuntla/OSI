@@ -216,6 +216,7 @@ module UserListPageHelper
 
     loop do
       puts 'get first active...'
+      sleep 2
       active_row = first_active_user_on_page
       puts "returned from search for first #{active_row}  <<"
       deactivate_user active_row unless active_row.nil?

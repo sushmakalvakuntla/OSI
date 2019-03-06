@@ -66,52 +66,16 @@ module Users
       end
 
       context 'with a user' do
-        let(:search_server) { Infrastructure::HttpService.new('http://stub.example.com') }
-        let(:audit_events_query) do
-          {
-            "query": {
-              "bool": {
-                "must": [
-                  { "match": { "event_source": 'CAP' } },
-                  { "term": { "event.user_id.keyword": '33' } }
-                ]
-              }
-            },
-            "size": 100,
-            "from": 0,
-            "sort": [{ "timestamp": { "order": 'desc' } }]
-          }
-        end
-        let(:es_audit_events) do
-          [
-            { _source: { comments: 'creation' } },
-            { _source: { comments: 'other' } }
-          ]
-        end
-        let(:audit_events) { [{ comments: 'creation' }, { comments: 'other' }] }
-        let(:audit_events_response) { { hits: { hits: es_audit_events } } }
-        let(:token) { 'token' }
-        let(:good_es_response) { double(body: audit_events_response, status: 200) }
-
-        before do
-          allow(search_server).to receive(:post).with('/dora/auditevents/auditevent/_search',
-                                                      audit_events_query,
-                                                      token)
-                                                .and_return(good_es_response)
-          allow(Infrastructure::HttpService).to receive(:new).with('https://dora.test')
-                                                             .and_return(search_server)
-        end
-
         it 'returns a user_detail' do
           allow(response).to receive(:status).and_return(200)
           allow(response).to receive(:body).and_return(id: 'El')
-          allow(es_response).to receive(:body).and_return(audit_events_response)
+          allow(es_response).to receive(:body).and_return(id: 'El')
           allow(http_service)
             .to receive(:get)
             .with('/perry/idm/users/33', token)
             .and_return(response)
           expect(user_repository.get_users_details('33', token))
-            .to eq User.new(id: 'El', auditevents: audit_events)
+            .to eq User.new(id: 'El')
         end
       end
     end

@@ -33,7 +33,7 @@ function resendRegistrationEmail(state = initialState, action) {
         error: action.error,
       }
 
-    case actionTypes.CLEAR_USER_DETAILS:
+    case actionTypes.CLEAR_RESEND_INVITE:
       return {
         ...state,
         fetching: false,

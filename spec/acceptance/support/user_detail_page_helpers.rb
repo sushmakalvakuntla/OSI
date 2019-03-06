@@ -84,8 +84,8 @@ module UserDetailPageHelper
   end
 
   def resend_registration_email_success
-    expect(page.find('div.successMessage-customizable').text)
-      .to eq('Registration email has been sent successfully')
+    expect(page.has_selector?('div.successMessage-customizable',
+                              text: 'Registration email has been sent successfully')).to be
   end
 
   private

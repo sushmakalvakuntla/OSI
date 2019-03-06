@@ -3,7 +3,6 @@ import UserDetail from '../views/userDetail/UserDetail'
 import {
   selectDetailRecords,
   isUserEditable,
-  selectAuditEvents,
   selectPossibleRolesList,
   disableRolesDropDown,
   fetchingStatus,
@@ -28,6 +27,7 @@ import {
   selectCWSPrivileges,
   statusButtonProperties,
 } from '../selectors/detailSelector'
+import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { rolesList } from '../selectors/rolesListSelector'
 import {
@@ -47,6 +47,7 @@ import { resendRegistrationEmailActions } from '../actions/resendRegistrationEma
 import { bindActionCreators } from 'redux'
 import { addUserRecords } from '../selectors/addUserSelector'
 import { clearAddedUserDetailActions } from '../actions/addUserActions'
+import { fetchUserAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
 
 function mapStateToProps(state) {
   return {
@@ -97,11 +98,13 @@ function mapDispatchToProps(dispatch) {
     fetchDetailsActions,
     fetchPermissionsActions,
     fetchRolesActions,
+    fetchUserAuditEventsActions,
     saveUserDetailsActions,
     resendRegistrationEmailActions,
     clearDetails,
     clearAddedUserDetailActions,
     clearSaveAlert,
+    clearAuditEvents,
     handleDropdownChangeAction,
     handleInputChangeAction,
     fetchChangeLogAdminDetailsActions,

@@ -21,10 +21,12 @@ export default class UserDetail extends Component {
     this.props.actions.fetchDetailsActions(this.props.match.params.id)
     this.props.actions.fetchPermissionsActions()
     this.props.actions.fetchRolesActions()
+    this.props.actions.fetchUserAuditEventsActions(this.props.match.params.id)
   }
 
   componentWillUnmount() {
     this.props.actions.clearDetails()
+    this.props.actions.clearAuditEvents()
   }
 
   onSaveDetails = () => {
@@ -36,8 +38,8 @@ export default class UserDetail extends Component {
 
   onResendInvite = () => {
     this.props.actions.resendRegistrationEmailActions(this.props.details.id)
-    this.props.actions.clearSaveAlert()
     this.setState({ resendEmailAlert: true })
+    this.props.actions.clearSaveAlert()
   }
 
   onReset = () => {
