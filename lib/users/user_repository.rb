@@ -16,7 +16,7 @@ module Users
 
     def get_users_details(id, token)
       response = @http_service.get("/perry/idm/users/#{id}", token)
-      Rails.logger.info "404 response from perry with token #{token}"
+      Rails.logger.info "404 response from perry with token #{token}" if response.status == 404
       return {} if response.status == 404
 
       User.new(response.body)

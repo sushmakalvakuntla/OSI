@@ -1,30 +1,30 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import ChangeLog, { sortByName, sortByType, viewHeightSize } from './ChangeLog'
+import ChangeLog, { sortByName, sortByType, sortByMadeTo, viewHeightSize } from './ChangeLog'
 
 describe('ChangeLog', () => {
   let wrapper
   const events = [
     {
-      event: { admin_name: 'Dorfler, Marvin', admin_role: 'Office Admin', user_name: 'User Name', user_roles: 'USER-ROLE' },
+      event: { admin_name: 'Dorfler, Marvin', admin_role: 'Office Admin', user_name: 'User Name3', user_roles: 'USER-ROLE3' },
       event_type: 'B',
       user_login: 'wrong2',
       timestamp: '2019-01-03 14:22:22',
     },
     {
-      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin', user_name: 'User Name2', user_roles: 'USER-ROLE2' },
+      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin', user_name: 'User Name3', user_roles: 'USER-ROLE3' },
       event_type: 'C',
       user_login: 'wrong1',
       timestamp: '2019-01-04 14:22:00',
     },
     {
-      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin', user_name: 'User Name3', user_roles: 'USER-ROLE3' },
+      event: { admin_name: 'Mosely, Alonso', admin_role: 'State Admin', user_name: 'User Name2', user_roles: 'USER-ROLE2' },
       event_type: 'C',
       user_login: 'wrong1',
       timestamp: '2019-01-04 14:21:00',
     },
     {
-      event: { admin_name: 'Walsh, Jack', admin_role: 'County Admin', user_name: 'User Name4', user_roles: 'USER-ROLE4' },
+      event: { admin_name: 'Walsh, Jack', admin_role: 'County Admin', user_name: 'User Name', user_roles: 'USER-ROLE' },
       event_type: 'A',
       user_login: 'wrong3',
       timestamp: '2019-01-02 14:22:22',
@@ -59,7 +59,7 @@ describe('ChangeLog', () => {
 
   it('renders the date field correctly sorted by latest first', () => {
     const mounted = mount(
-      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" />
+      <ChangeLog auditEvents={events} userDetails={{}} adminDetails={{}} userOfficeName="" adminOfficeName="" />
     )
     const trs = mounted.find('TrComponent')
     expect(
@@ -75,7 +75,7 @@ describe('ChangeLog', () => {
 
   it('renders the admin name field with formatted display of admin role', () => {
     const mounted = mount(
-      <ChangeLog auditEvents={events} userDetails={''} adminDetails={''} userOfficeName="" adminOfficeName="" isListView={true} />
+      <ChangeLog auditEvents={events} userDetails={{}} adminDetails={{}} userOfficeName="" adminOfficeName="" isListView={true} />
     )
     const trs = mounted.find('TrComponent')
     const madeToHeader = trs
@@ -91,16 +91,16 @@ describe('ChangeLog', () => {
     expect(madeByHeader.text()).toEqual('Made By')
 
     expect(trs.at(1).text()).toEqual(
-      ['January 4, 2019 02:22 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
     )
     expect(trs.at(2).text()).toEqual(
-      ['January 4, 2019 02:21 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
     )
     expect(trs.at(3).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
     )
     expect(trs.at(4).text()).toEqual(
-      ['January 2, 2019 02:22 PM', 'User Name4 (USER-ROLE4)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
     )
     expect(
       trs
@@ -108,28 +108,28 @@ describe('ChangeLog', () => {
         .childAt(0)
         .childAt(1)
         .text()
-    ).toEqual('User Name2 (USER-ROLE2)')
+    ).toEqual('User Name3 (USER-ROLE3)')
     expect(
       trs
         .at(2)
         .childAt(0)
         .childAt(1)
         .text()
-    ).toEqual('User Name3 (USER-ROLE3)')
+    ).toEqual('User Name2 (USER-ROLE2)')
     expect(
       trs
         .at(3)
         .childAt(0)
         .childAt(1)
         .text()
-    ).toEqual('User Name (USER-ROLE)')
+    ).toEqual('User Name3 (USER-ROLE3)')
     expect(
       trs
         .at(4)
         .childAt(0)
         .childAt(1)
         .text()
-    ).toEqual('User Name4 (USER-ROLE4)')
+    ).toEqual('User Name (USER-ROLE)')
 
     expect(
       trs
@@ -163,17 +163,56 @@ describe('ChangeLog', () => {
     madeByHeader.simulate('click') // sort by Made By
 
     expect(trs.at(1).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
     )
     expect(trs.at(2).text()).toEqual(
-      ['January 4, 2019 02:22 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
     )
     expect(trs.at(3).text()).toEqual(
-      ['January 4, 2019 02:21 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
     )
     expect(trs.at(4).text()).toEqual(
-      ['January 2, 2019 02:22 PM', 'User Name4 (USER-ROLE4)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
     )
+
+    madeToHeader.simulate('click') // descending
+    expect(trs.at(1).text()).toEqual(
+      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+    )
+    expect(trs.at(2).text()).toEqual(
+      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+    )
+    expect(trs.at(3).text()).toEqual(
+      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+    )
+    expect(trs.at(4).text()).toEqual(
+      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+    )
+  })
+
+  describe('sortByMadeTo', () => {
+    it('sorts by event user_name', () => {
+      const rowA = { event: { user_name: 'apple' } }
+      const rowB = { event: { user_name: 'banana' } }
+      expect(sortByMadeTo(rowA, rowB)).toEqual(-1)
+      expect(sortByMadeTo(rowB, rowA)).toEqual(1)
+    })
+
+    it('breaks a tie with timestamp', () => {
+      const rowA = {
+        event: { user_name: 'apple' },
+        timestamp: '2050-01-01 12:00:00',
+      }
+      const rowB = {
+        event: { user_name: 'apple' },
+        timestamp: '2000-01-01 12:00:00',
+      }
+
+      expect(sortByMadeTo(rowA, rowB, false)).toEqual(-1)
+      expect(sortByMadeTo(rowB, rowA, false)).toEqual(1)
+      expect(sortByMadeTo(rowA, rowB, true)).toEqual(1)
+      expect(sortByMadeTo(rowB, rowA, true)).toEqual(-1)
+    })
   })
 
   describe('sortByName', () => {

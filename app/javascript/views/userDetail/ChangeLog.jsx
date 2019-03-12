@@ -13,7 +13,14 @@ export const sortByName = (a, b, desc) => {
   }
   return aName > bName ? 1 : -1
 }
-
+export const sortByMadeTo = (a, b, desc) => {
+  const aName = safeGet(a, 'event.user_name', '')
+  const bName = safeGet(b, 'event.user_name', '')
+  if (aName === bName) {
+    return timestampCompareDescending(a, b, desc)
+  }
+  return aName > bName ? 1 : -1
+}
 export const sortByType = (a, b, desc) => {
   const aType = safeGet(a, 'event_type', '')
   const bType = safeGet(b, 'event_type', '')
@@ -58,7 +65,7 @@ const columnConfig = (
     Cell: row => {
       return `${row.original.event.user_name} (${row.original.event.user_roles})`
     },
-    sortMethod: sortByName,
+    sortMethod: sortByMadeTo,
     show: Boolean(isListView),
   },
 

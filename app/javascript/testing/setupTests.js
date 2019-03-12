@@ -22,3 +22,7 @@ const sessionStorage = (() => {
 Object.defineProperty(window, 'sessionStorage', {
   value: sessionStorage,
 })
+
+window.alert = msg => {}
+window.matchMedia = () => ({})
+window.scrollTo = () => {}
