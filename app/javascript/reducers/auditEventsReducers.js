@@ -49,8 +49,8 @@ function fetchAuditEvents(state = initialValue, { type, payload, error }) {
 
     case actionTypes.CLEAR_AUDIT_EVENTS: {
       return {
-        ...state,
         fetching: false,
+        auditEvents: null,
       }
     }
 

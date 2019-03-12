@@ -68,6 +68,6 @@ describe('fetchAuditEvents', () => {
       type: actionTypes.CLEAR_AUDIT_EVENTS,
     }
     const state = { fetching: false }
-    expect(fetchAuditEvents(state, requestAction)).toEqual({ error: undefined, fetching: false })
+    expect(fetchAuditEvents(state, requestAction)).toEqual({ auditEvents: null, fetching: false })
   })
 })

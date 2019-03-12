@@ -34,6 +34,10 @@ class UserList extends PureComponent {
     this.props.actions.clearAddedUserDetailActions()
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearAuditEvents()
+  }
+
   componentDidUpdate(prevProps) {
     if (isEqual(prevProps.inputData, {}) && this.props.inputData.officeNames) {
       this.props.actions.setSearch([

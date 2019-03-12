@@ -16,6 +16,7 @@ describe('UsersList', () => {
   let mockSetSearchActions
   let mockFetchChangeLogAdminDetailsActions
   let mockFetchDetailsActions
+  let mockClearAuditEvents
 
   const query = [
     {
@@ -65,6 +66,7 @@ describe('UsersList', () => {
     mockHandleCheckBoxChangeActions = jest.fn()
     mockFetchChangeLogAdminDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockFetchDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockClearAuditEvents = jest.fn()
 
     wrapper = shallow(
       <UsersList
@@ -81,6 +83,7 @@ describe('UsersList', () => {
           setSearch: mockSetSearchActions,
           fetchChangeLogAdminDetailsActions: mockFetchChangeLogAdminDetailsActions,
           fetchDetailsActions: mockFetchDetailsActions,
+          clearAuditEvents: mockClearAuditEvents,
         }}
         cardHeaderValue="County: CountyName"
         query={query}
@@ -90,6 +93,14 @@ describe('UsersList', () => {
         disableLifecycleMethods: true,
       }
     )
+  })
+
+  describe('#componentWillUnmount', () => {
+    it('componentWillUnmount should be called on unmount', () => {
+      const componentWillUnmount = jest.spyOn(wrapper.instance(), 'componentWillUnmount')
+      wrapper.unmount()
+      expect(componentWillUnmount).toHaveBeenCalledWith()
+    })
   })
 
   describe('renders components', () => {

@@ -35,16 +35,6 @@ describe('sagas', () => {
             payload: { query: [{ field: 'user_id', value: id }] },
           })
         )
-        expect(gen.next().value).toEqual(
-          put({
-            type: actionTypes.CLEAR_AUDIT_EVENTS,
-          })
-        )
-        expect(gen.next().value).toEqual(
-          put({
-            type: actionTypes.CLEAR_RESEND_INVITE,
-          })
-        )
         expect(gen.next().done).toBe(true)
       })
     })

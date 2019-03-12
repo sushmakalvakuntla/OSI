@@ -49,11 +49,6 @@ describe('sagas', () => {
             successAlert: successAlert,
           })
         )
-        expect(gen.next({}).value).toEqual(
-          put({
-            type: actionTypes.CLEAR_AUDIT_EVENTS,
-          })
-        )
         expect(
           gen.next({
             id: id,
@@ -105,11 +100,6 @@ describe('sagas', () => {
           })
         )
         // starts a retrieval saga
-        expect(gen.next({}).value).toEqual(
-          put({
-            type: actionTypes.CLEAR_AUDIT_EVENTS,
-          })
-        )
         expect(
           gen.next({
             id: id,

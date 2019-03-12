@@ -12,7 +12,7 @@ import {
   handleCheckBoxChangeActions,
 } from '../actions/userListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
-import { fetchAuditEventsActions } from '../actions/auditEventActions'
+import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
 import { fetchRolesActions } from '../actions/rolesActions'
 import { checkOfficeNames, cardHeaderText, displayChangeLog } from '../selectors/userListSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
@@ -66,6 +66,7 @@ function mapDispatchToProps(dispatch) {
         handleSearchChange,
         fetchRolesActions,
         clearAddedUserDetailActions,
+        clearAuditEvents,
         handleCheckBoxChangeActions,
         fetchChangeLogAdminDetailsActions,
         fetchAuditEventsActions,
