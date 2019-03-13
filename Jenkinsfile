@@ -106,21 +106,10 @@ node(node_to_run_on()) {
           ],
           wait: false
       }
-      stage('Deploy Preint') {
-        withCredentials([usernameColonPassword(credentialsId: 'fa186416-faac-44c0-a2fa-089aed50ca17', variable: 'jenkinsauth')]) {
-          sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/preint/job/deploy-cap/buildWithParameters?token=${JENKINS_TRIGGER_TOKEN}&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
+      stage('TriggerReleasePipeline'){
+           withCredentials([usernameColonPassword(credentialsId: 'fa186416-faac-44c0-a2fa-089aed50ca17', variable: 'jenkinsauth')]) {
+          sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/PreInt-Integration/job/deploy-cap/buildWithParameters?token=trigger-cap-deploy&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
         }
-      }
-      stage('Update Pre-int manifest') {
-        updateManifest("cap", "preint", GITHUB_CREDENTIALS_ID, newTag)
-      }
-      stage('Deploy Integration') {
-        withCredentials([usernameColonPassword(credentialsId: 'fa186416-faac-44c0-a2fa-089aed50ca17', variable: 'jenkinsauth')]) {
-          sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/Integration%20Environment/job/deploy-cap/buildWithParameters?token=${JENKINS_TRIGGER_TOKEN}&cause=Caused%20by%20Build%20${newTag}&version=${newTag}&BROWSER=FIREFOX'"
-        }
-      }
-      stage('Update Integration manifest') {
-        updateManifest("cap", "integration", GITHUB_CREDENTIALS_ID, newTag)
       }
       stage('Clean Up') {
         sh "docker images ${DOCKER_GROUP}/${DOCKER_IMAGE} --filter \"before=${DOCKER_GROUP}/${DOCKER_IMAGE}:${newTag}\" -q | xargs docker rmi -f || true"
