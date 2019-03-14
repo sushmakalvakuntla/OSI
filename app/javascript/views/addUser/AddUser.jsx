@@ -105,6 +105,7 @@ export default class AddUser extends Component {
     const { dashboardUrl, dashboardClickHandler, validateNewUserError } = this.props
     return this.state.addUser ? (
       <div>
+        <meta name="format-detection" content="telephone=no" />
         <PageHeader pageTitle="Add User" button="" />
         <div className="container">
           <div className="col-md-12">
