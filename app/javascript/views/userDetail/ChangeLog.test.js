@@ -198,6 +198,13 @@ describe('ChangeLog', () => {
       expect(sortByMadeTo(rowB, rowA)).toEqual(1)
     })
 
+    it('sorts by event user_name case insensitively', () => {
+      const rowA = { event: { user_name: 'apple' } }
+      const rowB = { event: { user_name: 'Banana' } }
+      expect(sortByMadeTo(rowA, rowB)).toEqual(-1)
+      expect(sortByMadeTo(rowB, rowA)).toEqual(1)
+    })
+
     it('breaks a tie with timestamp', () => {
       const rowA = {
         event: { user_name: 'apple' },
@@ -218,7 +225,7 @@ describe('ChangeLog', () => {
   describe('sortByName', () => {
     it('sorts by event admin_name', () => {
       const rowA = { event: { admin_name: 'apple' } }
-      const rowB = { event: { admin_name: 'banana' } }
+      const rowB = { event: { admin_name: 'Banana' } }
       expect(sortByName(rowA, rowB)).toEqual(-1)
       expect(sortByName(rowB, rowA)).toEqual(1)
     })
@@ -243,7 +250,7 @@ describe('ChangeLog', () => {
 
   describe('sortByType', () => {
     it('sorts by event event_type', () => {
-      const rowA = { event: { admin_name: 'apple' }, event_type: 'X' }
+      const rowA = { event: { admin_name: 'apple' }, event_type: 'x' }
       const rowB = { event: { admin_name: 'apple' }, event_type: 'Y' }
       expect(sortByType(rowA, rowB)).toEqual(-1)
       expect(sortByType(rowB, rowA)).toEqual(1)

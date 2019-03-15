@@ -6,24 +6,24 @@ import { checkDate } from '../../_utils/formatters'
 import safeGet from 'lodash.get'
 
 export const sortByName = (a, b, desc) => {
-  const aName = safeGet(a, 'event.admin_name', '')
-  const bName = safeGet(b, 'event.admin_name', '')
+  const aName = safeGet(a, 'event.admin_name', '').toLowerCase()
+  const bName = safeGet(b, 'event.admin_name', '').toLowerCase()
   if (aName === bName) {
     return timestampCompareDescending(a, b, desc)
   }
   return aName > bName ? 1 : -1
 }
 export const sortByMadeTo = (a, b, desc) => {
-  const aName = safeGet(a, 'event.user_name', '')
-  const bName = safeGet(b, 'event.user_name', '')
+  const aName = safeGet(a, 'event.user_name', '').toLowerCase()
+  const bName = safeGet(b, 'event.user_name', '').toLowerCase()
   if (aName === bName) {
     return timestampCompareDescending(a, b, desc)
   }
   return aName > bName ? 1 : -1
 }
 export const sortByType = (a, b, desc) => {
-  const aType = safeGet(a, 'event_type', '')
-  const bType = safeGet(b, 'event_type', '')
+  const aType = safeGet(a, 'event_type', '').toLowerCase()
+  const bType = safeGet(b, 'event_type', '').toLowerCase()
 
   if (aType === bType) {
     return timestampCompareDescending(a, b, desc)
