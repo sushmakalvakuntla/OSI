@@ -12,12 +12,9 @@ require 'chromedriver-helper'
 Capybara.register_driver :selenium do |app|
   if ENV['FIREFOX']
     caps = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: true)
-    browser_options = Selenium::WebDriver::Firefox::Options.new
-    browser_options.args << '--headless'
     puts 'Running in FIREFOX'
     Capybara::Selenium::Driver.new(app,
                                    browser: :firefox,
-                                   options: browser_options,
                                    desired_capabilities: caps)
   else
     puts 'Running in CHROME'

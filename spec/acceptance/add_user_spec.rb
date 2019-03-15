@@ -19,7 +19,8 @@ feature 'Add User Page' do
     fill_in('Email', with: email_address, match: :prefer_exact)
 
     # now enter a valid RACFID valid
-    valid_racfid = 'AUTO1I'
+    valid_racfid = ENV.fetch('ADD_RACFID', 'AUTO1I').to_s
+
     fill_in('CWS Login', with: valid_racfid, match: :prefer_exact)
 
     verify_and_wait_to_complete
@@ -76,7 +77,7 @@ feature 'Add User Page' do
 
     puts "Email address for add-user accessibility #{email_address}"
     # now enter a valid RACFID valid
-    valid_racfid = 'AUTO1I'
+    valid_racfid = ENV.fetch('ADD_RACFID', 'AUTO1I').to_s
     fill_in('CWS Login', with: valid_racfid, match: :prefer_exact)
 
     check_accessibility
@@ -124,13 +125,13 @@ feature 'Add User Page' do
 
     click_button 'Verify User'
 
-    unauthorized_racfid = 'AUTO1IA'
+    unauthorized_racfid = ENV.fetch('WRONG_COUNTY_RACFID', 'AUTO1IA').to_s
     fill_in('CWS Login', with: unauthorized_racfid, match: :prefer_exact)
 
     verify_and_wait_to_fail('You cannot add this user because they exist in Madera county.')
 
     # now enter a valid RACFID valid
-    valid_racfid = 'AUTO1I'
+    valid_racfid = ENV.fetch('ADD_RACFID', 'AUTO1I').to_s
     fill_in('CWS Login', with: valid_racfid, match: :prefer_exact)
 
     verify_and_wait_to_complete
