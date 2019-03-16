@@ -11,8 +11,8 @@ releasePipeline()
 
 def releasePipeline(){
   parameters([
-    string(name: 'version', defaultValue: '', description: 'App version to deploy')
-    string(name: 'ADD_RACFID', defaultValue: 'AUTO1I', description: 'RACFID for valid user to add in tests')
+    string(name: 'version', defaultValue: '', description: 'App version to deploy'),
+    string(name: 'ADD_RACFID', defaultValue: 'AUTO1I', description: 'RACFID for valid user to add in tests'),
     string(name: 'WRONG_COUNTY_RACFID', defaultValue: 'AUTO1IA', description: 'RACFID for invalid user because of the wrong county')
   ])
 
