@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid } from '@cwds/components'
 import ChangeLogDetails from './ChangeLogDetailsView'
-import { checkDate } from '../../_utils/formatters'
+import { checkDate, formatAdminWithRole } from '../../_utils/formatters'
 import safeGet from 'lodash.get'
 
 export const sortByName = (a, b, desc) => {
@@ -75,7 +75,7 @@ const columnConfig = (
     accessor: d => d,
     minWidth: 70,
     Cell: row => {
-      return `${row.original.event.admin_name} (${row.original.event.admin_role})`
+      return `${formatAdminWithRole(row.original.event.admin_name, row.original.event.admin_role)}`
     },
     sortMethod: sortByName,
   },
