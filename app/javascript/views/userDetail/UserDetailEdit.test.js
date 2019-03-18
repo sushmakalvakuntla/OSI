@@ -110,6 +110,12 @@ describe('UserDetailEdit', () => {
       expect(wrapper.find('[label="Email"]').exists()).toBe(true)
     })
 
+    describe('meta tag to disable hyperlinks for the phone number', () => {
+      it('verifies the meta tag exists', () => {
+        expect(wrapper.find('meta[name="format-detection"]').props().content).toBe('telephone=no')
+      })
+    })
+
     it('renders the <ShowField/> children at label:fullName', () => {
       const expectedValue = [`${details.last_name}`, `${', '}`, `${details.first_name}`, `${' '}`, `${details.middle_name}`]
       expect(

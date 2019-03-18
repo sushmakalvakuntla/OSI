@@ -47,6 +47,7 @@ const UserDetailEdit = ({
         statusClassName={statusClassName}
         headerButtonType={headerButtonType}
       >
+        <meta name="format-detection" content="telephone=no" />
         <div className="col-md-12">
           <div className="row">
             <div className="col-md-3">
