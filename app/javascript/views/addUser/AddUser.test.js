@@ -34,12 +34,6 @@ describe('VerifyUser', () => {
     })
   })
 
-  describe('meta tag to disable hyperlinks for the phone number', () => {
-    it('verifies the meta tag exists', () => {
-      expect(wrapper.find('meta[name="format-detection"]').props().content).toBe('telephone=no')
-    })
-  })
-
   describe('#validateField', () => {
     it('validates email when correct format and special characters are given as input', () => {
       const instance = wrapper.instance()

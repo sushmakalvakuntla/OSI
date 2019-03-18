@@ -106,7 +106,6 @@ export default class AddUser extends Component {
     return this.state.addUser ? (
       <div>
         <PageHeader pageTitle="Add User" button="" />
-        <meta name="format-detection" content="telephone=no" />
         <div className="container">
           <div className="col-md-12">
             Back to: <LinkRWD text="Dashboard" href={dashboardUrl} clickHandler={dashboardClickHandler} />

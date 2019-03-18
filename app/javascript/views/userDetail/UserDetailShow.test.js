@@ -100,12 +100,6 @@ describe('UserDetailShow', () => {
       ).toEqual('Assigned Permissions')
     })
 
-    describe('meta tag to disable hyperlinks for the phone number', () => {
-      it('verifies the meta tag exists', () => {
-        expect(wrapper.find('meta[name="format-detection"]').props().content).toBe('telephone=no')
-      })
-    })
-
     it('renders the <ShowField/> props.children at label:fullName', () => {
       const expectedValue = [`${details.last_name}`, `${', '}`, `${details.first_name}`, `${' '}`, `${details.middle_name}`]
       expect(
@@ -114,6 +108,12 @@ describe('UserDetailShow', () => {
           .at(0)
           .props().children
       ).toEqual(expectedValue)
+    })
+
+    describe('meta tag to disable hyperlinks for the phone number', () => {
+      it('verifies the meta tag exists', () => {
+        expect(wrapper.find('div[x-ms-format-detection="none"]').exists()).toBe(true)
+      })
     })
   })
 })
