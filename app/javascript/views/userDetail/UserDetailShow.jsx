@@ -58,7 +58,7 @@ const UserDetailShow = ({
             <div className="col-md-3">
               <ShowField label="Email">{details.email}</ShowField>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3" x-ms-format-detection="none">
               <ShowField label="Office Phone Number">
                 <span>{officePhoneNumber}</span>
               </ShowField>
@@ -71,7 +71,7 @@ const UserDetailShow = ({
             </div>
           </div>
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-3" x-ms-format-detection="none">
               <ShowField label="Phone Number">
                 <span>{workerPhoneNumber}</span>
               </ShowField>

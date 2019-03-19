@@ -184,7 +184,6 @@ export default class UserDetail extends Component {
   render() {
     return (
       <div>
-        <meta name="format-detection" content="telephone=no" />
         <PageHeader pageTitle="User Profile" button={this.pageButton()} />
         <div className="container">
           <div className="col-md-12">

@@ -1,4 +1,12 @@
-import { formatPhoneNumberWithExt, formatPhoneNumber, checkDate, formatRoles, formatDate, formatPermissions } from './formatters'
+import {
+  formatPhoneNumberWithExt,
+  formatPhoneNumber,
+  checkDate,
+  formatRoles,
+  formatDate,
+  formatPermissions,
+  formatAdminWithRole,
+} from './formatters'
 
 describe('#formatPhoneNumberWithExt', () => {
   describe('When phone & extension exists ', () => {
@@ -185,5 +193,31 @@ describe('#formatPermissions', () => {
   it('renders false when given empty array ', () => {
     const assignedPermissions = []
     expect(formatPermissions(assignedPermissions, list)).toEqual(false)
+  })
+})
+
+describe('#formatAdminWithRole', () => {
+  it('returns both adminName and adminRole when there is adminRole', () => {
+    const adminName = 'Some Admin'
+    const adminRole = 'State Administrator'
+    expect(formatAdminWithRole(adminName, adminRole)).toEqual('Some Admin (State Administrator)')
+  })
+
+  it('returns only adminName when adminRole is empty string', () => {
+    const adminName = 'Some Admin'
+    const adminRole = ''
+    expect(formatAdminWithRole(adminName, adminRole)).toEqual('Some Admin')
+  })
+
+  it('returns only adminName when adminRole is undefined', () => {
+    const adminName = 'Some Admin'
+    const adminRole = undefined
+    expect(formatAdminWithRole(adminName, adminRole)).toEqual('Some Admin')
+  })
+
+  it('returns only adminName when adminRole is null', () => {
+    const adminName = 'Some Admin'
+    const adminRole = null
+    expect(formatAdminWithRole(adminName, adminRole)).toEqual('Some Admin')
   })
 })

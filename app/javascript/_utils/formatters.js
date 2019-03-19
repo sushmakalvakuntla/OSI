@@ -71,3 +71,11 @@ export function formatPermissions(assignedPermissions, permissionList) {
       .join(', ')
   )
 }
+
+export const formatAdminWithRole = (adminName, adminRole) => {
+  if (adminRole) {
+    return `${adminName} (${adminRole})`
+  } else {
+    return `${adminName}`
+  }
+}

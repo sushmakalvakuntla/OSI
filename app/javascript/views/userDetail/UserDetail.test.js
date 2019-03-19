@@ -87,12 +87,6 @@ describe('UserDetail', () => {
     })
   })
 
-  describe('meta tag to disable hyperlinks for the phone number', () => {
-    it('verifies the meta tag exists', () => {
-      expect(wrapper.find('meta[name="format-detection"]').props().content).toBe('telephone=no')
-    })
-  })
-
   describe('Setting state', () => {
     describe('#handleDropDownChange() function', () => {
       it('should set the Status state when event is triggered', () => {
