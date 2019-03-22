@@ -62,12 +62,6 @@ describe('AddVerifiedUser', () => {
       ).toEqual('Phone Number')
     })
 
-    describe('meta tag to disable hyperlinks for the phone number', () => {
-      it('verifies the meta tag exists', () => {
-        expect(wrapper.find('div[x-ms-format-detection="none"]').exists()).toBe(true)
-      })
-    })
-
     it('renders the <ShowField/> props.children at label:fullName', () => {
       const expectedValue = [
         `${verifyNewUserDetails.user.last_name}`,

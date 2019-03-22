@@ -40,12 +40,12 @@ const AddNewUser = ({ onAddUser, verifyNewUserDetails, officeName, officePhoneNu
                   <div className="col-md-3">
                     <ShowField label="Email">{verifyNewUserDetails.user.email}</ShowField>
                   </div>
-                  <div className="col-md-3" x-ms-format-detection="none">
+                  <div className="col-md-3">
                     <ShowField label="Office Phone Number">
                       <span>{officePhoneNumber}</span>
                     </ShowField>
                   </div>
-                  <div className="col-md-3" x-ms-format-detection="none">
+                  <div className="col-md-3">
                     <ShowField label="Phone Number">{workerPhoneNumber}</ShowField>
                   </div>
                 </div>

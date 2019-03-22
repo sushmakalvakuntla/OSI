@@ -109,11 +109,5 @@ describe('UserDetailShow', () => {
           .props().children
       ).toEqual(expectedValue)
     })
-
-    describe('meta tag to disable hyperlinks for the phone number', () => {
-      it('verifies the meta tag exists', () => {
-        expect(wrapper.find('div[x-ms-format-detection="none"]').exists()).toBe(true)
-      })
-    })
   })
 })
