@@ -14,6 +14,13 @@ feature 'User List Page' do
   scenario 'page is accessible' do
     pending 'page has accessibility issues'
     login
+    page_has_basic_text
+    click_add_user
+    click_link 'User List'
+    page_has_basic_text
+    puts current_url
+    sleep 5
+
     check_accessibility
   end
 

@@ -125,13 +125,6 @@ module UserListPageHelper
     end
   end
 
-  def office_name_filter
-    first(
-      :xpath,
-      "//label[contains(text(),'Filter by Office Name')]/following-sibling::div/div/div"
-    )
-  end
-
   def selected_offices
     offices = []
     all(:xpath,
@@ -144,17 +137,15 @@ module UserListPageHelper
   end
 
   def pick_single_office_name
-    page.find_by_id('searchOfficeName').click
+    office_selectbox.click
     # choose the first office in the list.
-    office_name = page.find_by_id('searchOfficeName').find_by_id('react-select-2-option-0').text
-    page.find_by_id('searchOfficeName').find_by_id('react-select-2-option-0').click
-    page.find_by_id('searchOfficeName').click
+    office_name = office_selectbox.find_by_id('react-select-2-option-0').text
+    office_selectbox.find_by_id('react-select-2-option-0').click
+    office_selectbox.click
     office_name
   end
 
   def select_office_by_name(office_name)
-    office_selectbox = page.find_by_id('searchOfficeName')
-
     office_selectbox.click
     office_selectbox.first('div', text: office_name).click
   end
@@ -165,12 +156,16 @@ module UserListPageHelper
     end
   end
 
+  def office_selectbox
+    page.find_by_id('searchOfficeName')
+  end
+
   def unselect_office(office_name)
     return if office_name.blank?
 
-    office_name_filter.find(:xpath,
-                            "//*[contains(text(), '#{office_name}')]/following-sibling::*")
-                      .click
+    office_selectbox.find(:xpath,
+                          "//*[contains(text(), '#{office_name}')]/following-sibling::*")
+                    .click
   end
 
   def search_by_office(office_name, last_name = '', include_inactive = false)

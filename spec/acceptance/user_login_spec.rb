@@ -17,6 +17,7 @@ feature 'User Sign in' do
   scenario 'invalid mfa code throws an error message on mfa screen' do
     cognito_login_with_invalid_mfa
     sleep 2
+
     expect(page)
       .to have_text('Error. Incorrect code. You have 2 attempts remaining.')
     invalid_mfa
