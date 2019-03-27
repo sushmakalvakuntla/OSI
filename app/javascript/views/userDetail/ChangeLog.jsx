@@ -90,7 +90,7 @@ const columnConfig = (
     sortMethod: sortByType,
   },
   {
-    Header: 'Notes & Details',
+    Header: 'Details',
     // eslint-disable-next-line react/display-name
     Cell: row => (
       <ChangeLogDetails
@@ -102,6 +102,7 @@ const columnConfig = (
         adminOfficeName={adminOfficeName}
         getUserDetails={getUserDetails}
         isListView={isListView}
+        sortable={false}
       />
     ),
     minWidth: 50,

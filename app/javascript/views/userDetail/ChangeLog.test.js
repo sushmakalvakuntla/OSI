@@ -90,6 +90,8 @@ describe('ChangeLog', () => {
       .childAt(2)
     expect(madeByHeader.text()).toEqual('Made By')
 
+    expect(trs.at(0).text()).toEqual(['Date/Time', 'Made To', 'Made By', 'Type', 'Details'].join(''))
+
     expect(trs.at(1).text()).toEqual(
       ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
     )
