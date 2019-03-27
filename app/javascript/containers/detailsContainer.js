@@ -48,6 +48,8 @@ import { bindActionCreators } from 'redux'
 import { addUserRecords } from '../selectors/addUserSelector'
 import { clearAddedUserDetailActions } from '../actions/addUserActions'
 import { fetchUserAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
+import { fetchOfficesActions } from '../actions/officesActions'
+import { fetchAccountActions } from '../actions/userListActions'
 
 function mapStateToProps(state) {
   return {
@@ -109,6 +111,8 @@ function mapDispatchToProps(dispatch) {
     handleInputChangeAction,
     fetchChangeLogAdminDetailsActions,
     handleStatusChangeAction,
+    fetchAccountActions,
+    fetchOfficesActions,
   }
   return {
     actions: bindActionCreators(actions, dispatch),

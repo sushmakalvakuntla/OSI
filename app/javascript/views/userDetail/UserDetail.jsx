@@ -18,6 +18,8 @@ export default class UserDetail extends Component {
   }
 
   componentDidMount() {
+    this.props.actions.fetchAccountActions()
+    this.props.actions.fetchOfficesActions()
     this.props.actions.fetchDetailsActions(this.props.match.params.id)
     this.props.actions.fetchPermissionsActions()
     this.props.actions.fetchRolesActions()
@@ -113,26 +115,26 @@ export default class UserDetail extends Component {
             headerButtonType={this.props.statusButtonProperties.buttonType}
           />
         ) : (
-          <UserDetailShow
-            details={this.props.details}
-            startDate={this.props.startDate}
-            accountStatus={this.props.accountStatus}
-            userStatus={this.props.userStatus}
-            userStatusDescription={this.props.userStatusDescription}
-            assignedPermissions={this.props.assignedPermissions}
-            officeName={this.props.officeName}
-            assignedRole={this.props.assignedRole}
-            lastLoginDateTime={this.props.lastLoginDateTime}
-            officePhoneNumber={this.props.officePhoneNumber}
-            workerPhoneNumber={this.props.workerPhoneNumber}
-            handleUserStatusChange={this.onUserStatusChange}
-            headerButtonLabel={this.props.statusButtonProperties.headerButtonLabel}
-            systemStatus={this.props.statusButtonProperties.systemStatus}
-            isLockButtonDisabled={this.props.statusButtonProperties.isDisabled}
-            statusClassName={this.props.statusButtonProperties.className}
-            headerButtonType={this.props.statusButtonProperties.buttonType}
-          />
-        )}
+            <UserDetailShow
+              details={this.props.details}
+              startDate={this.props.startDate}
+              accountStatus={this.props.accountStatus}
+              userStatus={this.props.userStatus}
+              userStatusDescription={this.props.userStatusDescription}
+              assignedPermissions={this.props.assignedPermissions}
+              officeName={this.props.officeName}
+              assignedRole={this.props.assignedRole}
+              lastLoginDateTime={this.props.lastLoginDateTime}
+              officePhoneNumber={this.props.officePhoneNumber}
+              workerPhoneNumber={this.props.workerPhoneNumber}
+              handleUserStatusChange={this.onUserStatusChange}
+              headerButtonLabel={this.props.statusButtonProperties.headerButtonLabel}
+              systemStatus={this.props.statusButtonProperties.systemStatus}
+              isLockButtonDisabled={this.props.statusButtonProperties.isDisabled}
+              statusClassName={this.props.statusButtonProperties.className}
+              headerButtonType={this.props.statusButtonProperties.buttonType}
+            />
+          )}
         <br />
         <div className="row">
           <div className="col-md-12">
@@ -161,12 +163,12 @@ export default class UserDetail extends Component {
         </div>
       </div>
     ) : (
-      <div className="row">
-        <div className="col-md-12">
-          <Cards cardHeaderText="User not found" />
+        <div className="row">
+          <div className="col-md-12">
+            <Cards cardHeaderText="User not found" />
+          </div>
         </div>
-      </div>
-    )
+      )
   }
 
   pageButton = () => {
@@ -201,8 +203,8 @@ export default class UserDetail extends Component {
               <span>{'Loading...'}</span>
             </Cards>
           ) : (
-            this.renderCards()
-          )}
+                this.renderCards()
+              )}
         </div>
       </div>
     )
@@ -255,7 +257,7 @@ UserDetail.propTypes = {
 
 UserDetail.defaultProps = {
   dashboardUrl: '/',
-  dashboardClickHandler: () => {},
+  dashboardClickHandler: () => { },
   statusButtonProperties: {
     headerButtonLabel: 'Unlocked',
     systemStatus: 'System Status',
