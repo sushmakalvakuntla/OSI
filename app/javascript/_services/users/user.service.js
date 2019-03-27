@@ -11,7 +11,7 @@ class UserService {
   }
 
   static auditEvents({ query = [], sort = [], size = 100, from = 0 }) {
-    const q = encodeURIComponent(JSON.stringify({ query, sort, size: 100, from }))
+    const q = encodeURIComponent(JSON.stringify({ query, sort, size: 100, from: 0 }))
     return ApiService.get(`/audit_events?q=${q}`).then(({ data }) => data)
   }
 

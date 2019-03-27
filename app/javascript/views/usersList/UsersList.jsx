@@ -32,6 +32,7 @@ class UserList extends PureComponent {
     ])
     this.props.actions.setPage(Math.floor(this.props.from / this.props.size))
     this.props.actions.clearAddedUserDetailActions()
+    this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
   componentWillUnmount() {
@@ -78,6 +79,7 @@ class UserList extends PureComponent {
       { field: 'office_ids', value: this.props.officeNames },
       { field: 'enabled', value: this.props.includeInactive ? '' : true },
     ])
+    this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
   isDisabledSearchBtn = () => {

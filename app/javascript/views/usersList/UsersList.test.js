@@ -17,6 +17,7 @@ describe('UsersList', () => {
   let mockFetchChangeLogAdminDetailsActions
   let mockFetchDetailsActions
   let mockClearAuditEvents
+  let mockFetchAuditEventsActions
 
   const query = [
     {
@@ -66,6 +67,7 @@ describe('UsersList', () => {
     mockHandleCheckBoxChangeActions = jest.fn()
     mockFetchChangeLogAdminDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockFetchDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockFetchAuditEventsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockClearAuditEvents = jest.fn()
 
     wrapper = shallow(
@@ -83,6 +85,7 @@ describe('UsersList', () => {
           setSearch: mockSetSearchActions,
           fetchChangeLogAdminDetailsActions: mockFetchChangeLogAdminDetailsActions,
           fetchDetailsActions: mockFetchDetailsActions,
+          fetchAuditEventsActions: mockFetchAuditEventsActions,
           clearAuditEvents: mockClearAuditEvents,
         }}
         cardHeaderValue="County: CountyName"
@@ -130,6 +133,7 @@ describe('UsersList', () => {
             fetchRolesActions: () => {},
             setPage: () => {},
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
           }}
           adminAccountDetails={{ roles: ['State-admin'] }}
@@ -221,6 +225,7 @@ describe('UsersList', () => {
             fetchRolesActions: () => {},
             setPage: () => {},
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
           }}
           query={query}
@@ -258,6 +263,7 @@ describe('UsersList', () => {
             fetchRolesActions: () => {},
             setPage: () => {},
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
           }}
           query={query}
@@ -360,6 +366,7 @@ describe('UsersList', () => {
             setSearch: () => {},
             setPage: () => {},
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
           }}
           query={query}
           lastName="last_name_value"
@@ -384,6 +391,7 @@ describe('UsersList', () => {
             setSearch: () => {},
             setPage: () => {},
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
           }}
           query={query}
           lastName="new_last_name"
@@ -446,6 +454,7 @@ describe('UsersList', () => {
             setSearch: mockSetSearch,
             setPage: mockSetPage,
             clearAddedUserDetailActions: mockClearAddedUserDetailActions,
+            fetchAuditEventsActions: mockFetchAuditEventsActions,
           }}
           from={0}
           sort={[]}
@@ -528,6 +537,7 @@ describe('UsersList', () => {
             setSearch: mockSetSearch,
             setOfficesList: mockSetOfficesListAction,
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
           }}
           from={0}
           sort={[]}
@@ -592,6 +602,7 @@ describe('UsersList', () => {
             setSearch: () => {},
             setPage: () => {},
             clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
           }}
           from={0}
           size={50}
