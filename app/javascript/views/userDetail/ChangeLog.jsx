@@ -5,6 +5,15 @@ import ChangeLogDetails from './ChangeLogDetailsView'
 import { checkDate, formatAdminWithRole } from '../../_utils/formatters'
 import safeGet from 'lodash.get'
 
+const NoChangeLogComp = () => {
+  return (
+    <React.Fragment>
+      <h1>No Change Logs</h1>
+      <p>There is no record of change logs at this time</p>
+    </React.Fragment>
+  )
+}
+
 export const sortByName = (a, b, desc) => {
   const aName = safeGet(a, 'event.admin_name', '').toLowerCase()
   const bName = safeGet(b, 'event.admin_name', '').toLowerCase()
@@ -122,7 +131,9 @@ const ChangeLog = ({
   <Rolodex>
     <Card>
       <CardHeader>
-        <CardTitle style={{ fontSize: '1.75rem', fontWeight: 400 }}>Change Log ({auditEvents.length})</CardTitle>
+        <CardTitle style={{ fontSize: '1.75rem', fontWeight: 400 }}>
+          {`Change Log ${auditEvents.length === 0 ? '' : `(${auditEvents.length})`}`}
+        </CardTitle>
       </CardHeader>
       <CardBody className="pt-0">
         <DataGrid
@@ -131,20 +142,24 @@ const ChangeLog = ({
           style={{
             maxHeight: viewHeightSize(isListView),
           }}
-          columns={columnConfig(
-            userDetails,
-            getAdminDetails,
-            adminDetails,
-            userOfficeName,
-            adminOfficeName,
-            getUserDetails,
-            isListView
-          )}
+          columns={
+            auditEvents.length === 0
+              ? [{}]
+              : columnConfig(
+                  userDetails,
+                  getAdminDetails,
+                  adminDetails,
+                  userOfficeName,
+                  adminOfficeName,
+                  getUserDetails,
+                  isListView
+                )
+          }
           sortable={true}
           className="client-grid audit-events"
           minRows={3}
           maxRows={100}
-          noDataText={'No records found'}
+          noDataText={NoChangeLogComp()}
           showPaginationBottom={false}
           defaultSorted={[
             {

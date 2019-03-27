@@ -6,7 +6,7 @@ const NoPrivilegesComp = () => {
   return (
     <React.Fragment>
       <h1>No Privileges from CWS-CMS</h1>
-      <p>There is no record of Privileges provided by the CWS-CMS at this time.</p>
+      <p>There is no record of privileges provided by CWS-CMS at this time.</p>
     </React.Fragment>
   )
 }
@@ -30,7 +30,7 @@ const CWSPrivileges = ({ CWSPrivileges }) => (
     <Card>
       <CardHeader>
         <CardTitle style={{ fontSize: '1.75rem', fontWeight: 400 }}>
-          {`Privileges from CWS-CMS (${CWSPrivileges.length})`}
+          {`Privileges from CWS-CMS ${CWSPrivileges.length === 0 ? '' : `(${CWSPrivileges.length})`}`}
         </CardTitle>
       </CardHeader>
       <CardBody className="pt-0">
@@ -40,7 +40,7 @@ const CWSPrivileges = ({ CWSPrivileges }) => (
           style={{
             maxHeight: '500px',
           }}
-          columns={cwsPrivilegesColumnConfig()}
+          columns={CWSPrivileges.length === 0 ? [{}] : cwsPrivilegesColumnConfig()}
           sortable={true}
           defaultSorted={[
             {

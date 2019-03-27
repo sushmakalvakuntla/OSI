@@ -39,6 +39,7 @@ describe('ChangeLog', () => {
     expect(wrapper.find('Card').exists()).toBe(true)
     expect(wrapper.find('CardHeader').exists()).toBe(true)
     expect(wrapper.find('CardTitle').exists()).toBe(true)
+    expect(wrapper.find('CardTitle').props().children).toBe('Change Log (4)')
     expect(wrapper.find('CardBody').exists()).toBe(true)
   })
 
@@ -286,6 +287,13 @@ describe('ChangeLog', () => {
       expect(viewHeightSize('')).toEqual('500px')
       expect(viewHeightSize(null)).toEqual('500px')
       expect(viewHeightSize(undefined)).toEqual('500px')
+    })
+  })
+
+  describe('#rendersnodata', () => {
+    it('returns no records', () => {
+      wrapper = shallow(<ChangeLog auditEvents={[]} />)
+      expect(wrapper.find('CardTitle').props().children).toBe('Change Log ')
     })
   })
 })

@@ -28,12 +28,14 @@ describe('CWSPrivileges', () => {
   describe('render CWS Privileges table', () => {
     it('with records', () => {
       wrapper = shallow(<CWSPrivileges CWSPrivileges={cwsPrivileges} />)
+      expect(wrapper.find('CardTitle').props().children).toBe('Privileges from CWS-CMS (7)')
       expect(wrapper.find('DataGrid').props().data.length).toBe(7)
     })
 
     it('without records', () => {
       cwsPrivileges = []
       wrapper = shallow(<CWSPrivileges CWSPrivileges={cwsPrivileges} />)
+      expect(wrapper.find('CardTitle').props().children).toBe('Privileges from CWS-CMS ')
       expect(wrapper.find('DataGrid').props().data.length).toBe(0)
     })
   })
