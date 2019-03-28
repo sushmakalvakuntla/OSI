@@ -8,8 +8,8 @@ import { fetchUserAuditEventsActions } from '../actions/auditEventActions'
 export function* saveDetails(action) {
   const successAlert =
     action.payload.details.email === undefined
-      ? 'Your changes have been made successfully'
-      : 'Your changes have been made successfully. A Registration invite will be sent to the new email.'
+      ? 'Your changes have been made successfully.'
+      : ['Your changes have been made successfully.', ' Please notify the user of this change. ']
   try {
     const saveUserDetailsActions = action.payload
     const saveUserDetails = yield call(

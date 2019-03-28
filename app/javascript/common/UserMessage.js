@@ -3,11 +3,14 @@ import React from 'react'
 import { Alert } from '@cwds/components'
 
 const UserMessage = ({ errorMsg, successMsg }) => {
+  const successWithEmailChange = Array.isArray(successMsg) ? successMsg[1] : ''
+  const successAlertMessage = Array.isArray(successMsg) ? successMsg[0] : successMsg
   return (
     <React.Fragment>
-      {successMsg && (
+      {successAlertMessage && (
         <Alert className="successMessage-customizable" color="success">
-          {successMsg}
+          {successAlertMessage}
+          <b>{successWithEmailChange}</b>
         </Alert>
       )}
       {errorMsg && (
@@ -20,7 +23,7 @@ const UserMessage = ({ errorMsg, successMsg }) => {
 }
 UserMessage.propTypes = {
   errorMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  successMsg: PropTypes.string,
+  successMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 }
 
 export default UserMessage

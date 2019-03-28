@@ -239,7 +239,7 @@ UserDetail.propTypes = {
   workerPhoneNumber: PropTypes.string,
   auditEvents: PropTypes.array,
   isPhoneNumberValid: PropTypes.bool,
-  saveSuccessMsg: PropTypes.string,
+  saveSuccessMsg: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   unformattedPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   phoneExtensionNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   changeLogAdminOfficeName: PropTypes.string,
