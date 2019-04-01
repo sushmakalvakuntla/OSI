@@ -23,9 +23,15 @@ describe('User Message', () => {
   })
 
   it('verify success block with successMsg', () => {
-    const props = 'Successfull'
+    const props = 'Successful'
     const errorComp = shallow(<UserMessage successMsg={props} />)
     expect(errorComp.find('Alert').length).toEqual(1)
     expect(errorComp.contains(props)).toBe(true)
+  })
+
+  it('verify success block with successMsg when email is edited', () => {
+    const props = ['Successful', 'Please notify to someone']
+    const errorComp = shallow(<UserMessage successMsg={props} />)
+    expect(errorComp.contains('Successful', <b>Please notify someone</b>)).toBe(true)
   })
 })

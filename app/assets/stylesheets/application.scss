@@ -113,7 +113,8 @@ input[type=number]::-webkit-outer-spin-button {
   border-color: #2974a2 !important;
 }
 
-.col-md-3 {
+.col-md-3,
+.col-md-1 {
   padding-left: 0;
   word-break: break-all;
 }

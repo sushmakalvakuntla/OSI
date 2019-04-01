@@ -304,13 +304,11 @@ describe('UserDetail', () => {
       wrapper.setProps({
         userDetailError: null,
         displayAlert: true,
-        saveSuccessMsg: 'Your changes have been made successfully. A Registration invite will be sent to the new email.',
+        saveSuccessMsg: ['Your changes have been made successfully', 'Please notify'],
       })
       const alertBox = wrapper.find('UserMessage')
       expect(alertBox.length).toBe(1)
-      expect(alertBox.props().successMsg).toEqual(
-        'Your changes have been made successfully. A Registration invite will be sent to the new email.'
-      )
+      expect(alertBox.props().successMsg).toEqual(['Your changes have been made successfully', 'Please notify'])
     })
 
     it('does not display <UserMessage/>', () => {

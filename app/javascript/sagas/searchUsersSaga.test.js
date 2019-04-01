@@ -1,4 +1,4 @@
-import { watchUserSearchParamUpdates, doSomething } from './searchUsersSaga'
+import { watchUserSearchParamUpdates, searchUserList } from './searchUsersSaga'
 import { getSearchParams } from '../selectors/userListSelector'
 import { takeLatest, put, select } from 'redux-saga/effects'
 import {
@@ -7,30 +7,23 @@ import {
   USER_LIST_SET_SORT,
   USER_LIST_SET_SEARCH,
   FETCH_USERS_API_CALL_REQUEST,
-  FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
 } from '../actions/actionTypes'
 
 describe('sagas', () => {
   it('starts the worker fetch saga', () => {
     const gen = watchUserSearchParamUpdates()
     expect(gen.next().value).toEqual(
-      takeLatest([USER_LIST_SET_SEARCH, USER_LIST_SET_SORT, USER_LIST_SET_PAGE, USER_LIST_SET_PAGE_SIZE], doSomething)
+      takeLatest([USER_LIST_SET_SEARCH, USER_LIST_SET_SORT, USER_LIST_SET_PAGE, USER_LIST_SET_PAGE_SIZE], searchUserList)
     )
   })
 
   describe('when successful', () => {
     it('executes the happy-path saga', () => {
-      const gen = doSomething()
+      const gen = searchUserList()
       expect(gen.next().value).toEqual(select(getSearchParams))
       expect(gen.next(['Hello', 'Bye']).value).toEqual(
         put({
           type: FETCH_USERS_API_CALL_REQUEST,
-          payload: ['Hello', 'Bye'],
-        })
-      )
-      expect(gen.next(['event', 'event_type']).value).toEqual(
-        put({
-          type: FETCH_AUDIT_EVENTS_API_CALL_REQUEST,
           payload: ['Hello', 'Bye'],
         })
       )
@@ -39,7 +32,7 @@ describe('sagas', () => {
 
   describe('when failure', () => {
     it('handles error', () => {
-      const gen = doSomething()
+      const gen = searchUserList()
       expect(gen.next().value).toEqual(select(getSearchParams))
       expect(gen.throw('SEARCH ERROR FAILURE').value).toEqual(
         put({

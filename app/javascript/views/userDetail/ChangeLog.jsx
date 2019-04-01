@@ -111,9 +111,9 @@ const columnConfig = (
         adminOfficeName={adminOfficeName}
         getUserDetails={getUserDetails}
         isListView={isListView}
-        sortable={false}
       />
     ),
+    sortable: false,
     minWidth: 50,
   },
 ]
