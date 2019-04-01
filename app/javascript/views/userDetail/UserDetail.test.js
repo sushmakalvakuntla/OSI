@@ -23,6 +23,8 @@ describe('UserDetail', () => {
   let mockFetchChangeLogAdminDetailsAction
   let mockFetchAuditEventsActions
   let mockUserStatusChange
+  let mockFetchAccountActions
+  let mockFetchOfficeActions
 
   beforeEach(() => {
     // Register mock dispatchActions
@@ -40,6 +42,8 @@ describe('UserDetail', () => {
     mockHandleInputChangeAction = jest.fn()
     mockFetchAuditEventsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockUserStatusChange = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockFetchAccountActions = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockFetchOfficeActions = jest.fn().mockReturnValue(Promise.resolve([]))
     const initialDetails = { id: '12345' }
     const match = { params: { id: '12345' } }
     const details = { id: '12345', email: '' }
@@ -69,6 +73,8 @@ describe('UserDetail', () => {
             fetchUserAuditEventsActions: mockFetchAuditEventsActions,
             clearAuditEvents: mockClearAuditEvents,
             handleStatusChangeAction: mockUserStatusChange,
+            fetchAccountActions: mockFetchAccountActions,
+            fetchOfficesActions: mockFetchOfficeActions,
           }}
           match={match}
         />

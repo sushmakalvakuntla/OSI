@@ -18,6 +18,8 @@ export default class UserDetail extends Component {
   }
 
   componentDidMount() {
+    this.props.actions.fetchAccountActions()
+    this.props.actions.fetchOfficesActions()
     this.props.actions.fetchDetailsActions(this.props.match.params.id)
     this.props.actions.fetchPermissionsActions()
     this.props.actions.fetchRolesActions()
