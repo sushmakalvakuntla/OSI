@@ -26,7 +26,7 @@ node('cap-slave') {
         */
       }
       stage('Build Docker Image') {
-        app = docker.build("${DOCKER_GROUP}/${DOCKER_IMAGE}:${env.BUILD_ID}", "-f docker/web/Dockerfile .")
+        app = buildDockerImageForTest('./docker/web/Dockerfile')
       }
 
       stage('Verify SemVer Label') {
@@ -35,7 +35,7 @@ node('cap-slave') {
 
       app.withRun("-e CI=true") { container ->
         stage('Lint') {
-          sh "docker exec -t ${container.id} yarn lint"
+          lint()
           sh "docker exec -t ${container.id} bundler-audit"
           sh "docker exec -t ${container.id} brakeman"
         }

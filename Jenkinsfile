@@ -52,13 +52,13 @@ node(node_to_run_on()) {
         newTag = newSemVer(env.APP_VERSION)
       }
 
-      stage('Build Docker Image') {
-        app = docker.build("${DOCKER_GROUP}/${DOCKER_IMAGE}:${newTag}", "-f docker/web/Dockerfile .")
+      stage('Build Docker Test Image') {
+         app = buildDockerImageForTest('./docker/web/Dockerfile')
       }
 
       app.withRun("--env CI=true") { container ->
         stage('Lint') {
-          sh "docker exec -t ${container.id} yarn lint"
+          lint()
           sh "docker exec -t ${container.id} bundler-audit"
           sh "docker exec -t ${container.id} brakeman"
         }
@@ -91,6 +91,11 @@ node(node_to_run_on()) {
       stage('Tag Repo') {
         tagGithubRepo(newTag, GITHUB_CREDENTIALS_ID)
       }
+
+      stage('Build Docker Image') {
+        app = docker.build("${DOCKER_GROUP}/${DOCKER_IMAGE}:${newTag}", "-f docker/web/Dockerfile .")
+      }
+
       stage('Publish Image') {
         withDockerRegistry([credentialsId: DOCKER_REGISTRY_CREDENTIALS_ID]) {
           app.push()
