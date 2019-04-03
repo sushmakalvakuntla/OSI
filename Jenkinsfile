@@ -53,12 +53,14 @@ node(node_to_run_on()) {
       }
 
       stage('Build Docker Image') {
-        app = buildDockerImageForTest('./docker/web/Dockerfile')
+        app = docker.build("${DOCKER_GROUP}/${DOCKER_IMAGE}:${newTag}", "-f docker/web/Dockerfile .")
       }
 
       app.withRun("--env CI=true") { container ->
         stage('Lint') {
-          lint()
+          sh "docker exec -t ${container.id} yarn lint"
+          sh "docker exec -t ${container.id} bundler-audit"
+          sh "docker exec -t ${container.id} brakeman"
         }
 
         stage('Unit Test') {
