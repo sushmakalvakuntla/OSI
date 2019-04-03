@@ -21,12 +21,12 @@ module LoginHelper
 
     puts "visited: landed on #{current_url}"
 
-    submit_json_form(login_json) if current_url.include?('login.html')
+    submit_json_form(login_json) if page.has_content?('Authorization JSON')
   end
 
   def cognito_login
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
-    return unless current_url.include?('login')
+    return unless login_page?
 
     puts "Fill in user name with #{ENV.fetch('COGNITO_USERNAME', 'no-reply@osi.ca.gov')}"
     puts "Fill in pass with #{ENV.fetch('COGNITO_PASSWORD', 'password')}"
@@ -38,7 +38,7 @@ module LoginHelper
 
   def cognito_invalid_login
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
-    return unless current_url.include?('login')
+    return unless login_page?
 
     fill_in 'Email', with: 'no-reply@osi.ca.gov'
     fill_in 'Password', with: 'password'
@@ -47,19 +47,23 @@ module LoginHelper
 
   def cognito_login_with_invalid_mfa
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
-    return unless current_url.include?('login')
+    return unless login_page?
 
-    fill_in 'Email', with: 'y_test111+role2@outlook.com'
-    fill_in 'Password', with: 'Password123*'
+    fill_in 'Email', with: ENV.fetch('INVALID_MFA_USER', 'y_test111+role2@outlook.com')
+    fill_in 'Password', with: ENV.fetch('INVALID_MFA_PASSWORD', 'Password123*')
     click_on 'Sign In'
     invalid_mfa
   end
 
   def click_forgot_password_link
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
-    return unless current_url.include?('login')
+    return unless login_page?
 
     click_link 'Forgot your password?'
+  end
+
+  def login_page?
+    page.has_content?('Log In')
   end
 
   def reset_password
