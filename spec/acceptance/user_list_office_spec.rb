@@ -26,6 +26,7 @@ feature 'user list filters by office' do
     puts "changelog counts: #{filtered_changelog_count} ?< #{all_count_changelog}"
 
     expect(filtered_users_count).to be < all_users_count
-    expect(filtered_changelog_count).to be < all_count_changelog
+    puts "Can't rely on filtered counts of changelog to be less than 100.  Make sure it's not more."
+    expect(filtered_changelog_count).to be <= all_count_changelog
   end
 end

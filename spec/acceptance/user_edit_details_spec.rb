@@ -72,7 +72,7 @@ feature 'User Edit' do
     expect(new_selected_permissions).to eq(expected_remainder)
 
     click_button 'SAVE'
-    click_button 'Confirm'
+    click_button 'Confirm' if has_button? 'Confirm'
     sleep 1
     expect_success
 

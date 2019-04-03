@@ -42,7 +42,7 @@ feature 'User Forgot Password Page' do
     click_forgot_password_link
     expect(page).to have_text('Password Reset')
     reset_password
-    pending
+
     'We seem to have exceeded our threshold for attempts' if page.has_text? 'Attempt limit exceeded'
     expect(page).to have_text('Please check your email.')
     check_accessibility
