@@ -89,6 +89,11 @@ node(node_to_run_on()) {
       stage('Tag Repo') {
         tagGithubRepo(newTag, GITHUB_CREDENTIALS_ID)
       }
+
+      stage('Build Docker Image') {
+        app = docker.build("${DOCKER_GROUP}/${DOCKER_IMAGE}:${newTag}", "-f docker/web/Dockerfile .")
+      }
+
       stage('Publish Image') {
         withDockerRegistry([credentialsId: DOCKER_REGISTRY_CREDENTIALS_ID]) {
           app.push()
