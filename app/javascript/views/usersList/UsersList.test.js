@@ -91,6 +91,8 @@ describe('UsersList', () => {
         cardHeaderValue="County: CountyName"
         query={query}
         includeInactive={false}
+        searchedForUsers={true}
+        officesList={['office1', 'office2']}
       />,
       {
         disableLifecycleMethods: true,
@@ -112,7 +114,7 @@ describe('UsersList', () => {
     })
 
     it('checks card component props', () => {
-      expect(wrapper.find('Cards').props().cardHeaderText).toBe('County: CountyName')
+      expect(wrapper.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
     })
 
     it('display <ChangeLog/> ', () => {
@@ -147,7 +149,7 @@ describe('UsersList', () => {
           userDetails={details}
         />
       )
-      expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('State Administrator view')
+      expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
     })
 
     it('renders PageHeader component', () => {
@@ -184,9 +186,35 @@ describe('UsersList', () => {
       expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['someOffice1', 'someOffice2'])
     })
 
+    it('first name change calls handleSearchChange Actions', () => {
+      wrapper.find('#searchWithFirstName').simulate('change', { target: { value: 'someFirstName' } })
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('firstName', 'someFirstName')
+    })
+
     it('last name change calls handleSearchChange Actions', () => {
-      wrapper.find('#searchLastName').simulate('change', { target: { value: 'someLastName' } })
+      wrapper.find('#searchWithLastName').simulate('change', { target: { value: 'someLastName' } })
       expect(mockHandleSearchChange).toHaveBeenCalledWith('lastName', 'someLastName')
+    })
+
+    it('email change calls handleSearchChange Actions', () => {
+      wrapper.find('#searchWithEmail').simulate('change', { target: { value: 'someEmail' } })
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('email', 'someEmail')
+    })
+
+    it('CWSLogin change calls handleSearchChange Actions', () => {
+      wrapper.find('#searchWithCWSLogin').simulate('change', { target: { value: 'someCWSLogin' } })
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('CWSLogin', 'someCWSLogin')
+    })
+  })
+
+  describe('#handleOfficeChange', () => {
+    it('Office change calls handleSearchChange Actions', () => {
+      const newQuery = [{ field: 'office_ids', value: ['offices1'] }]
+      const offices = [{ value: 'offices1', label: 'OfficeOne' }]
+      wrapper.find('#searchOfficeName').simulate('change', offices)
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
+      expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
+      expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({ query: [{ field: 'office_ids', value: ['offices1'] }] })
     })
   })
 
@@ -243,7 +271,7 @@ describe('UsersList', () => {
         },
         {
           field: 'office_ids',
-          value: ['east', 'north', 'south', 'west'],
+          value: ['north', 'south', 'east', 'west'],
         },
         { field: 'enabled', value: true },
       ]
@@ -281,7 +309,7 @@ describe('UsersList', () => {
         },
         {
           field: 'office_ids',
-          value: ['east', 'north', 'south', 'west'],
+          value: ['north', 'south', 'east', 'west'],
         },
         { field: 'enabled', value: '' },
       ]
@@ -434,7 +462,6 @@ describe('UsersList', () => {
     let mockFetchRolesActions
     let mockSetSearch
     let mockSetPage
-    let component
     let mockClearAddedUserDetailActions
 
     beforeEach(() => {
@@ -444,7 +471,7 @@ describe('UsersList', () => {
       mockSetSearch = jest.fn()
       mockSetPage = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
-      component = mount(
+      wrapper = mount(
         <UsersList
           dashboardUrl={'dburl'}
           actions={{
@@ -474,31 +501,8 @@ describe('UsersList', () => {
       )
     })
 
-    it('fetch the updated user list', () => {
-      component.instance().componentDidMount()
-      expect(mockSetSearch).toHaveBeenCalledWith([
-        { field: 'last_name', value: 'some_value' },
-        { field: 'office_ids', value: ['north'] },
-        { field: 'enabled', value: true },
-      ])
-    })
-
-    it('fetch the updated user list with both and inactive users', () => {
-      component.setProps({ includeInactive: true })
-      component.instance().componentDidMount()
-      expect(mockSetSearch).toHaveBeenCalledWith([
-        { field: 'last_name', value: 'some_value' },
-        { field: 'office_ids', value: ['north'] },
-        { field: 'enabled', value: '' },
-      ])
-    })
-
     it('fetches the account details', () => {
       expect(mockFetchAccountActions).toHaveBeenCalledWith()
-    })
-
-    it('sets the pageIndex', () => {
-      expect(mockSetPage).toHaveBeenCalledWith(0)
     })
 
     it('fetches the office list', () => {
@@ -507,85 +511,6 @@ describe('UsersList', () => {
 
     it('fetches the roles list', () => {
       expect(mockFetchRolesActions).toHaveBeenCalledWith()
-    })
-  })
-
-  describe('#componentDidUpdate', () => {
-    let mockSetSearch
-    let wrapperLocal
-    const query = [
-      {
-        field: 'last_name',
-        value: 'last_name_value',
-      },
-      {
-        field: 'office_ids',
-        value: ['north'],
-      },
-    ]
-
-    beforeEach(() => {
-      mockSetSearch = jest.fn()
-      wrapperLocal = mount(
-        <UsersList
-          dashboardUrl={'dburl'}
-          actions={{
-            fetchAccountActions: () => {},
-            fetchOfficesActions: () => {},
-            fetchRolesActions: () => {},
-            setPage: () => {},
-            setSearch: mockSetSearch,
-            setOfficesList: mockSetOfficesListAction,
-            clearAddedUserDetailActions: () => {},
-            fetchAuditEventsActions: () => {},
-          }}
-          from={0}
-          sort={[]}
-          size={50}
-          total={25}
-          query={query}
-          lastName="some_value"
-          officeNames={['north']}
-          inputData={{ officeNames: ['north'] }}
-          includeInactive={false}
-          auditEvents={auditEvents}
-          userDetails={details}
-          changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
-          changeLogAdminOfficeName={'Admin Office'}
-        />
-      )
-    })
-
-    it('fetches users called', () => {
-      // TODO: make a stronger expectation of args based on API query DSL (when it emerges)
-      const prevProps = { inputData: {} }
-
-      wrapperLocal.instance().componentDidUpdate(prevProps)
-      expect(mockSetSearch).toHaveBeenCalledWith([
-        { field: 'last_name', value: 'some_value' },
-        { field: 'office_ids', value: ['north'] },
-        { field: 'enabled', value: true },
-      ])
-    })
-
-    it('fetch users who are inactive and active based on includeInactive props', () => {
-      const prevProps = { inputData: {} }
-      wrapperLocal.setProps({ includeInactive: true })
-
-      wrapperLocal.instance().componentDidUpdate(prevProps)
-      expect(mockSetSearch).toHaveBeenCalledWith([
-        { field: 'last_name', value: 'some_value' },
-        { field: 'office_ids', value: ['north'] },
-        { field: 'enabled', value: '' },
-      ])
-    })
-
-    it('fetches users not called with prevProps', () => {
-      const prevProps = {
-        inputData: { field: 'lastName', value: 'someValiue' },
-      }
-      wrapperLocal.instance().componentDidUpdate(prevProps)
-      expect(mockSetSearch).not.toHaveBeenCalledWith(prevProps)
     })
   })
 
@@ -617,6 +542,7 @@ describe('UsersList', () => {
           selectedOfficesList={['somevalue']}
           includeInactive={false}
           auditEvents={auditEvents}
+          searchedForUsers={true}
         />
       )
 

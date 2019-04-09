@@ -45,6 +45,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         total,
         fetching: false,
         error: null,
+        searchedForUsers: true,
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:

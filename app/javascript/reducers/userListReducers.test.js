@@ -95,6 +95,7 @@ describe('reducer', () => {
           },
         },
       },
+      searchedForUsers: true,
     }
     const before = {}
     let after
