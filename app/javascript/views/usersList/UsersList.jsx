@@ -244,8 +244,77 @@ class UserList extends PureComponent {
     )
   }
 
-  render() {
+  renderComponents = () => {
     const { officesList, officeNames } = this.props
+    return (
+      <Cards cardHeaderText={'Search Existing User Accounts'}>
+        <br />
+        <span>
+          Search using any combination of the fields below. The ability to create a new user is available after a search has been
+          conducted.{' '}
+        </span>
+        <br />
+        {this.renderSearchComponents()}
+        {this.props.error && (
+          <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
+            <strong>Oh no!</strong> An unexpected error occurred!
+          </Alert>
+        )}
+        <br />
+        <div>
+          {this.props.searchedForUsers ? (
+            <div className="row">
+              <div className="col-md-12">
+                <hr
+                  style={{
+                    width: '105.8%',
+                    height: '1px',
+                    border: 'none',
+                    color: '#333',
+                    backgroundColor: '#333',
+                    marginLeft: '-30px',
+                  }}
+                />
+                <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px' }}>
+                  <span>Results found based on Search Criteria</span>
+                </div>
+                <div className="col-md-3" style={{ marginTop: '20px' }}>
+                  <CheckboxBank
+                    label="Include Inactive"
+                    options={[{ label: 'Include Inactive', value: 'true' }]}
+                    value={[this.props.includeInactive.toString()]}
+                    name="status"
+                    onChange={this.handleCheckBoxChange}
+                  />
+                </div>
+                <div className="col-md-4">
+                  <DropDown
+                    id="searchOfficeName"
+                    selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
+                    options={officesList}
+                    placeholder={`Filter by Office Name (${officesList.length})`}
+                    onChange={officesList => this.handleOfficeChange(officesList)}
+                    multiSelect={true}
+                  />
+                </div>
+              </div>
+              <div>
+                {this.renderUsersTable({
+                  data: this.props.userList,
+                  officesList,
+                  rolesList: this.props.rolesList,
+                })}
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+      </Cards>
+    )
+  }
+
+  render() {
     return (
       <div role="main">
         {this.state.addUser ? (
@@ -255,71 +324,7 @@ class UserList extends PureComponent {
             <PageHeader pageTitle="Manage Users" button="" />
             <div className="container">
               {this.renderBreadcrumb()}
-              <Cards cardHeaderText={'Search Existing User Accounts'}>
-                <br />
-                <span>
-                  Search using any combination of the fields below. The ability to create a new user is available after a search
-                  has been conducted.{' '}
-                </span>
-                <br />
-                {this.renderSearchComponents()}
-                {this.props.error && (
-                  <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
-                    <strong>Oh no!</strong> An unexpected error occurred!
-                  </Alert>
-                )}
-                <br />
-                <div>
-                  {this.props.searchedForUsers ? (
-                    <div className="row">
-                      <div className="col-md-12">
-                        <hr
-                          style={{
-                            width: '105.8%',
-                            height: '1px',
-                            border: 'none',
-                            color: '#333',
-                            backgroundColor: '#333',
-                            marginLeft: '-30px',
-                          }}
-                        />
-                        <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px' }}>
-                          <span>Results found based on Search Criteria</span>
-                        </div>
-                        <div className="col-md-3" style={{ marginTop: '20px' }}>
-                          <CheckboxBank
-                            label="Include Inactive"
-                            options={[{ label: 'Include Inactive', value: 'true' }]}
-                            value={[this.props.includeInactive.toString()]}
-                            name="status"
-                            onChange={this.handleCheckBoxChange}
-                          />
-                        </div>
-                        <div className="col-md-4">
-                          <DropDown
-                            id="searchOfficeName"
-                            selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
-                            options={officesList}
-                            placeholder={`Filter by Office Name (${officesList.length})`}
-                            onChange={officesList => this.handleOfficeChange(officesList)}
-                            multiSelect={true}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        {this.renderUsersTable({
-                          data: this.props.userList,
-                          officesList,
-                          rolesList: this.props.rolesList,
-                        })}
-                      </div>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </Cards>
-
+              {this.renderComponents()}
               {this.props.displayChangeLog ? (
                 <div className="col-md-12 card-margin">
                   <ChangeLog
