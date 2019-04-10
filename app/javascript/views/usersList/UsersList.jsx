@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect } from 'react-router-dom'
-import { Link as LinkRWD, InputComponent, PageHeader, Alert } from 'react-wood-duck'
-import { CheckboxBank, Button } from '@cwds/components'
+import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
+import { CheckboxBank } from '@cwds/components'
 import DropDown from '../../common/DropDown'
 import Cards from '../../common/Card'
 import ReactTable from 'react-table'
@@ -11,6 +11,7 @@ import './UsersList.scss'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { formatRoles } from '../../_utils/formatters'
 import ChangeLog from '../userDetail/ChangeLog'
+import SearchUsers from './SearchUsers'
 
 class UserList extends PureComponent {
   constructor(props) {
@@ -150,97 +151,21 @@ class UserList extends PureComponent {
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
 
+  handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
+
   renderSearchComponents = () => {
     const { lastName, firstName, email, CWSLogin } = this.props
     return (
-      <div>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="col-md-3">
-              <InputComponent
-                label="First Name"
-                id="searchWithFirstName"
-                fieldClassName="form-group"
-                type="text"
-                value={firstName}
-                onChange={event => this.props.actions.handleSearchChange('firstName', event.target.value)}
-                placeholder=""
-                autoComplete="off"
-              />
-            </div>
-            <div className="col-md-3">
-              <InputComponent
-                label="Last Name"
-                id="searchWithLastName"
-                fieldClassName="form-group"
-                type="text"
-                value={lastName}
-                onChange={event => this.props.actions.handleSearchChange('lastName', event.target.value)}
-                placeholder=""
-                autoComplete="off"
-              />
-            </div>
-            <div className="col-md-3">
-              <InputComponent
-                label="Email"
-                id="searchWithEmail"
-                fieldClassName="form-group"
-                type="text"
-                value={email}
-                onChange={event => this.props.actions.handleSearchChange('email', event.target.value)}
-                placeholder=""
-                autoComplete="off"
-              />
-            </div>
-            <div className="col-md-3">
-              <InputComponent
-                label="CWS Login"
-                id="searchWithCWSLogin"
-                fieldClassName="form-group"
-                type="text"
-                value={CWSLogin}
-                onChange={event => this.props.actions.handleSearchChange('CWSLogin', event.target.value)}
-                placeholder=""
-                autocomplete="off"
-              />
-            </div>
-          </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-md-12">
-            <div className="pull-right" style={{ paddingRight: '12px', paddingTop: '0px' }}>
-              <div className="col-md-4 col-sm-2" style={{ paddingLeft: '0px' }}>
-                <Button
-                  color="primary"
-                  className="buttons-height"
-                  size="lg"
-                  id="searchForUsers"
-                  type="submit"
-                  onClick={this.submitSearch}
-                  disabled={this.isDisabledSearchBtn()}
-                >
-                  SEARCH
-                </Button>
-              </div>
-              <div className="col-md-1 vertical-line" id="vertical-line3" style={{ height: '40px' }} />
-              <div>
-                <Button
-                  color="primary"
-                  className="buttons-height"
-                  size="lg"
-                  id=""
-                  type="create"
-                  onClick={this.handleOnAdd}
-                  disabled={false}
-                >
-                  CREATE A NEW USER
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SearchUsers
+        lastName={lastName}
+        firstName={firstName}
+        email={email}
+        CWSLogin={CWSLogin}
+        isDisabledSearchBtn={this.isDisabledSearchBtn}
+        handleInput={this.handleOnInput}
+        handleOnSearch={this.submitSearch}
+        handleOnCreateUser={this.handleOnAdd}
+      />
     )
   }
 

@@ -164,6 +164,13 @@ describe('UsersList', () => {
     })
   })
 
+  describe('#handleOnInput', () => {
+    it('sets state based on the user action', () => {
+      const myFunction = wrapper.instance().handleOnInput
+      expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+    })
+  })
+
   describe('#Alert', () => {
     it('sets state based on the user action', () => {
       wrapper.setProps({ error: 'IfSomeErrorShowsUp' })
@@ -176,34 +183,6 @@ describe('UsersList', () => {
       const pageIndex = 'someValue'
       wrapper.instance().handlePageChange(pageIndex)
       expect(mockSetPageActions).toHaveBeenCalledWith(pageIndex)
-    })
-  })
-
-  describe('#handleSearchInputChange', () => {
-    it('office name change calls handleSearchChange Actions', () => {
-      const value = [{ value: 'someOffice1', label: 'someOfficeOne' }, { value: 'someOffice2', label: 'someOfficeTwo' }]
-      wrapper.find('#searchOfficeName').simulate('change', value)
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['someOffice1', 'someOffice2'])
-    })
-
-    it('first name change calls handleSearchChange Actions', () => {
-      wrapper.find('#searchWithFirstName').simulate('change', { target: { value: 'someFirstName' } })
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('firstName', 'someFirstName')
-    })
-
-    it('last name change calls handleSearchChange Actions', () => {
-      wrapper.find('#searchWithLastName').simulate('change', { target: { value: 'someLastName' } })
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('lastName', 'someLastName')
-    })
-
-    it('email change calls handleSearchChange Actions', () => {
-      wrapper.find('#searchWithEmail').simulate('change', { target: { value: 'someEmail' } })
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('email', 'someEmail')
-    })
-
-    it('CWSLogin change calls handleSearchChange Actions', () => {
-      wrapper.find('#searchWithCWSLogin').simulate('change', { target: { value: 'someCWSLogin' } })
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('CWSLogin', 'someCWSLogin')
     })
   })
 
