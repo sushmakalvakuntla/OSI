@@ -28,14 +28,13 @@ feature 'User List Page' do
     login
     sleep 2
     page_has_basic_text
-    page_has_user_list_headers
-    search_users(last_name: '', include_inactive: true)
+   # page_has_user_list_headers
+    search_users(last_name: 'kennedy', include_inactive: true)
     sleep 2
-
     first_count = page_count_users
     expect(first_count).to be > 0
     puts "count users #{first_count}"
-
+    search_inactive_users
     user1_link = first_user_link
     user2_link = second_user_link
 
