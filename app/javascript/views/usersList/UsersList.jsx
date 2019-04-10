@@ -153,24 +153,8 @@ class UserList extends PureComponent {
 
   handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
 
-  renderSearchComponents = () => {
-    const { lastName, firstName, email, CWSLogin } = this.props
-    return (
-      <SearchUsers
-        lastName={lastName}
-        firstName={firstName}
-        email={email}
-        CWSLogin={CWSLogin}
-        isDisabledSearchBtn={this.isDisabledSearchBtn}
-        handleInput={this.handleOnInput}
-        handleOnSearch={this.submitSearch}
-        handleOnCreateUser={this.handleOnAdd}
-      />
-    )
-  }
-
   renderComponents = () => {
-    const { officesList, officeNames } = this.props
+    const { officesList, officeNames, lastName, firstName, email, CWSLogin } = this.props
     return (
       <Cards cardHeaderText={'Search Existing User Accounts'}>
         <br />
@@ -179,7 +163,16 @@ class UserList extends PureComponent {
           conducted.{' '}
         </span>
         <br />
-        {this.renderSearchComponents()}
+        <SearchUsers
+          lastName={lastName}
+          firstName={firstName}
+          email={email}
+          CWSLogin={CWSLogin}
+          isDisabledSearchBtn={this.isDisabledSearchBtn}
+          handleInput={this.handleOnInput}
+          handleOnSearch={this.submitSearch}
+          handleOnCreateUser={this.handleOnAdd}
+        />
         {this.props.error && (
           <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
             <strong>Oh no!</strong> An unexpected error occurred!
