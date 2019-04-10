@@ -7,7 +7,7 @@ describe Elastic::QueryBuilder do
   describe '#subquery_as_es' do
     let(:subqueries) do
       {
-        cannoli: ->(value) { value unless value.empty? }
+        cannoli: ->(value) { { conjunction: 'OR', query: value } unless value.empty? }
       }.freeze
     end
 
@@ -15,7 +15,7 @@ describe Elastic::QueryBuilder do
       expect(Elastic::QueryBuilder.subquery_as_es(
                { field: 'cannoli', value: 'delicious' },
                subqueries
-             )).to eq 'delicious'
+             )).to eq(conjunction: 'OR', query: 'delicious')
     end
 
     it 'ignores an unrecognized subquery' do
