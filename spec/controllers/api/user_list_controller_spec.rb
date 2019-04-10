@@ -10,15 +10,16 @@ module Api
       let(:partial_user_response) do
         { records: [user.to_hash], meta: { total: 1, req: {} } }
       end
-      let(:ascending_last_first_name_sort) do
-        [
-          { "last_name.for_sort": { "order": 'asc' } },
-          { "first_name.for_sort": { "order": 'asc' } }
-        ]
+
+      let(:sort_score_and_name) do
+        [{ "_score": 'desc' },
+         { "last_name.for_sort": { "order": 'asc' } },
+         { "first_name.for_sort": { "order": 'asc' } }]
       end
+
       let(:match_all_query) do
         { query: { match_all: {} }, from: 51, size: 25,
-          sort: ascending_last_first_name_sort }
+          sort: sort_score_and_name }
       end
       it 'has a route' do
         expect(get: 'api/user_list').to route_to(
@@ -63,13 +64,6 @@ module Api
             sort: [] }
         end
 
-        let(:ascending_last_first_name_sort) do
-          [
-            { "last_name.for_sort": { "order": 'asc' } },
-            { "first_name.for_sort": { "order": 'asc' } }
-          ]
-        end
-
         before do
           allow(Users::UserRepository).to receive(:new)
             .with(no_args).and_return(user_repository)
@@ -78,10 +72,22 @@ module Api
 
         it 'returns a userlist / search limited by last_name' do
           allow(Users::UserRepository).to receive(:search).with(
-            { query:
-              { "bool":
-                { "must": [{ match_phrase_prefix: { last_name: 'Smith' } }] } },
-              from: 51, size: 25, sort: ascending_last_first_name_sort }, 'token'
+            { query: {
+              bool: {
+                must: [
+                  {
+                    bool: {
+                      should: [
+                        { match_phrase_prefix: {
+                          last_name: { boost: 3.0, query: 'Smith' }
+                        } }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+              from: 51, size: 25, sort: sort_score_and_name }, 'token'
           ).and_return(api_response)
 
           partial_user_response[:meta] = { req: match_last_name_with_paging, total: 1 }
@@ -99,17 +105,24 @@ module Api
 
         describe 'when offices are specified' do
           let(:match_last_name_and_offices_with_paging) do
-            { query: [{ field: 'last_name', value: 'Smith' },
-                      { field: 'office_ids', value: [1, 2, 3] }],
+            { query: [
+              { field: 'office_ids', value: [1, 2, 3] },
+              { field: 'last_name', value: 'Smith' }
+            ],
               from: 51, size: 25,
               sort: [] }
           end
           it 'returns a userlist / search limited by last_name AND the specified offices' do
             allow(Users::UserRepository).to receive(:search).with(
               { query: { "bool":
-                         { "must": [{ match_phrase_prefix: { last_name: 'Smith' } },
-                                    { terms: { "office_id.keyword": [1, 2, 3] } }] } },
-                from: 51, size: 25, sort: ascending_last_first_name_sort }, 'token'
+                         { "must": [
+                           { terms: { "office_id.keyword": [1, 2, 3] } },
+                           { bool:
+                                { should:
+                                  [{ match_phrase_prefix:
+                                     { last_name: { boost: 3.0, query: 'Smith' } } }] } }
+                         ] } },
+                from: 51, size: 25, sort: sort_score_and_name }, 'token'
             ).and_return(api_response)
             partial_user_response[:meta] = { req: match_last_name_and_offices_with_paging,
                                              total: 1 }
