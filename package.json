@@ -26,7 +26,7 @@
     "seed-users": "scripts/seed-users"
   },
   "dependencies": {
-    "@cwds/components": "0.6.0",
+    "@cwds/components": "1.2.1",
     "@rails/webpacker": "3.5",
     "axios": "^0.18.0",
     "babel-loader": "^7.1.4",

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, ModalBody, ModalFooter, ModalHeader, Button } from '@cwds/components'
+import { Modal, ModalBody, ModalFooter, ModalHeader, PrimitiveButton as Button } from '@cwds/components'
 
 export default class NoPermissionsWarning extends Component {
   constructor(props) {
