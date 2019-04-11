@@ -37,9 +37,9 @@ feature 'User List Page' do
     search_inactive_users
 
     user1_link = first_user_link
-    user2_link = second_user_link
+    # user2_link = second_user_link
 
-    puts "We have two links:  #{user1_link.text} and #{user2_link.text}"
+    puts "We have two links:  #{user1_link.text} "
 
     # last_name = user2_link.text.match(/([^,]*),/)[1]
     # search_users(last_name: last_name)
