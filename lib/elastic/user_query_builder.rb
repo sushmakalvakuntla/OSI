@@ -13,7 +13,12 @@ module Elastic
       if leaves.blank?
         match_all
       else
-        bool_and_query(leaves)
+        or_combined = bool_or_query(leaves)
+
+        and_leaves = (leaves.select { |s| s[:conjunction] == 'AND' }).map { |s| s[:query] }
+        and_leaves << or_combined
+
+        bool_and_query(and_leaves)
       end
     end
 
@@ -31,13 +36,36 @@ module Elastic
     end
 
     SUBQUERIES = {
-      office_ids: ->(value) { { terms: { 'office_id.keyword': value } } unless value.empty? },
-      last_name: ->(value) { { match_phrase_prefix: { last_name: value } } unless value.empty? },
-      enabled: ->(value) { { term: { enabled: value.to_s } } unless value.to_s.empty? }
+      last_name: lambda do |value|
+        unless value.empty?
+          { conjunction: 'OR', query: {
+            match_phrase_prefix: { last_name: { query: value, boost: 3.0 } }
+          } }
+        end
+      end,
+      first_name: lambda do |value|
+        unless value.empty?
+          { conjunction: 'OR', query: {
+            match_phrase_prefix: { first_name: value }
+          } }
+        end
+      end,
+      office_ids: lambda do |value|
+        unless value.empty?
+          { conjunction: 'AND', query:
+            { terms: { 'office_id.keyword': value } } }
+        end
+      end,
+      enabled: lambda do |value|
+        unless value.to_s.empty?
+          { conjunction: 'AND', query:
+            { term: { enabled: value.to_s } } }
+        end
+      end
     }.freeze
 
     def self.sort_query
-      { sort: [{ "last_name.for_sort": { order: 'asc' } },
+      { sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
                { "first_name.for_sort": { order: 'asc' } }] }
     end
 
@@ -47,6 +75,16 @@ module Elastic
           bool: {
             must: query_leaves
           }
+        }
+      }
+    end
+
+    def self.bool_or_query(leaves)
+      or_leaves = leaves.select { |s| s[:conjunction] == 'OR' }
+      query_leaves = or_leaves.map { |s| s[:query] }
+      {
+        bool: {
+          should: query_leaves
         }
       }
     end
