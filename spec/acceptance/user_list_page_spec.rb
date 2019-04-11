@@ -29,7 +29,7 @@ feature 'User List Page' do
     sleep 2
     page_has_basic_text
     # page_has_user_list_headers
-    search_users(last_name: 'kennedy', include_inactive: true)
+    search_users(last_name: 'kennedy')
     sleep 2
     first_count = page_count_users
     expect(first_count).to be > 0
@@ -49,7 +49,7 @@ feature 'User List Page' do
     expect_sorted_list(users_on_page)
     second_count = page_count_users
 
-    expect(second_count).to be < first_count
+    expect(second_count).to be > first_count
     puts "count users #{second_count}"
   end
 end
