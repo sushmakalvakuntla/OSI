@@ -40,6 +40,17 @@ export const setSearch = query => ({
 })
 
 /**
+ * Set search
+ * @param {Object[]} query
+ * @param {string} query[].field Identifier for the field on which to search
+ * @param {string|number|boolean} query[].value Value on which to search
+ */
+export const setSearchForTiles = (type, query) => ({
+  type,
+  payload: { query: query },
+})
+
+/**
  * Updates the "preflight" search input for both `last_name` and `office_name`)
  * @param {string} lastName and @param {Array} officeNames search string
  */

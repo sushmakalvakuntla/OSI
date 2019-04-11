@@ -26,6 +26,38 @@ const initialValue = {
   inputData: {},
   adminAccountDetails: {},
   includeInactive: false,
+  dashboardTiles: [
+    {
+      title: 'Active Users',
+      type: actionTypes.GET_ACTIVE_USERS_REQUEST,
+      query: [
+        {
+          field: 'enabled',
+          value: true,
+        },
+        {
+          field: 'status',
+          value: 'CONFIRMED',
+        },
+      ],
+      count: '',
+    },
+    {
+      title: 'Inactive Users',
+      type: actionTypes.GET_INACTIVE_USERS_REQUEST,
+      query: [
+        {
+          field: 'enabled',
+          value: false,
+        },
+        {
+          field: 'status',
+          value: 'CONFIRMED',
+        },
+      ],
+      count: '',
+    },
+  ],
 }
 
 function userListReducer(state = initialValue, { type, payload, error, meta }) {
@@ -48,6 +80,38 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
+        users: null,
+      }
+
+    case actionTypes.GET_ACTIVE_USERS_REQUEST:
+      return { ...state, fetching: true, error: null, query: payload.query }
+
+    case actionTypes.GET_ACTIVE_USERS_SUCCESS:
+      state.dashboardTiles[0].count = payload.meta.total
+      return {
+        ...state,
+        dashboardTiles: [...state.dashboardTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_INACTIVE_USERS_REQUEST:
+      return { ...state, fetching: true, error: null, query: payload.query }
+
+    case actionTypes.GET_INACTIVE_USERS_SUCCESS:
+      state.dashboardTiles[1].count = payload.meta.total
+      return {
+        ...state,
+        dashboardTiles: [...state.dashboardTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_ACTIVE_USERS_FAILURE:
       return {
         ...state,
         error,

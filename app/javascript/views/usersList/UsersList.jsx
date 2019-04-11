@@ -12,6 +12,7 @@ import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } f
 import { isEqual } from 'lodash'
 import { formatRoles } from '../../_utils/formatters'
 import ChangeLog from '../userDetail/ChangeLog'
+import CommonTile from './CommonTile'
 
 class UserList extends PureComponent {
   constructor(props) {
@@ -25,11 +26,11 @@ class UserList extends PureComponent {
     this.props.actions.fetchAccountActions()
     this.props.actions.fetchOfficesActions()
     this.props.actions.fetchRolesActions()
-    this.props.actions.setSearch([
-      { field: 'last_name', value: this.props.lastName },
-      { field: 'office_ids', value: this.props.officeNames },
-      { field: 'enabled', value: this.props.includeInactive ? '' : true },
-    ])
+    // this.props.actions.setSearch([
+    //   { field: 'last_name', value: this.props.lastName },
+    //   { field: 'office_ids', value: this.props.officeNames },
+    //   { field: 'enabled', value: this.props.includeInactive ? '' : true },
+    // ])
     this.props.actions.setPage(Math.floor(this.props.from / this.props.size))
     this.props.actions.clearAddedUserDetailActions()
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
@@ -238,12 +239,22 @@ class UserList extends PureComponent {
                   </Alert>
                 )}
                 <br />
-                {this.renderUsersTable({
+                {/* {this.renderUsersTable({
                   data: this.props.userList,
                   officesList: this.props.officesList,
                   rolesList: this.props.rolesList,
-                })}
+                })} */}
               </Cards>
+              {this.props.dashboardTiles.map((dashboardTile, index) => (
+                <CommonTile
+                  key={index}
+                  query={dashboardTile.query}
+                  count={dashboardTile.count}
+                  title={dashboardTile.title}
+                  type={dashboardTile.type}
+                  setSearchForTiles={this.props.actions.setSearchForTiles}
+                />
+              ))}
               {this.props.displayChangeLog ? (
                 <div className="col-md-12 card-margin">
                   <ChangeLog

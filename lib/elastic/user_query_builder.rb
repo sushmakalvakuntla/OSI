@@ -33,7 +33,8 @@ module Elastic
     SUBQUERIES = {
       office_ids: ->(value) { { terms: { 'office_id.keyword': value } } unless value.empty? },
       last_name: ->(value) { { match_phrase_prefix: { last_name: value } } unless value.empty? },
-      enabled: ->(value) { { term: { enabled: value.to_s } } unless value.to_s.empty? }
+      enabled: ->(value) { { term: { enabled: value.to_s } } unless value.to_s.empty? },
+      status: ->(value) { { match_phrase_prefix: { status: value } } unless value.empty? }
     }.freeze
 
     def self.sort_query
