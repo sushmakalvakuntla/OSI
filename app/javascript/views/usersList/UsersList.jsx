@@ -232,7 +232,7 @@ class UserList extends PureComponent {
             {this.renderPageHeader()}
             <div className="container">
               {this.renderBreadcrumb()}
-              <Cards cardHeaderText={this.props.cardHeaderValue} columnMediumWidth="9" columnLargeWidth="9" columnXsmallWidth="9">
+              <Cards cardHeaderText={this.props.cardHeaderValue} columnMediumWidth={9} columnLargeWidth={9} columnXsmallWidth={9}>
                 {this.renderSearchComponents()}
                 {this.props.error && (
                   <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>

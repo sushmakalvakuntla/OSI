@@ -1,6 +1,22 @@
 import * as actionTypes from '../actions/actionTypes'
 import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
 
+const getTilesInitialState = (userType, action, fieldType1, value1, fieldType2, value2) => ({
+  title: userType,
+  type: action,
+  query: [
+    {
+      field: fieldType1,
+      value: value1,
+    },
+    {
+      field: fieldType2,
+      value: value2,
+    },
+  ],
+  count: '',
+})
+
 const initialValue = {
   sort: [
     // {
@@ -27,36 +43,9 @@ const initialValue = {
   adminAccountDetails: {},
   includeInactive: false,
   dashboardTiles: [
-    {
-      title: 'Active Users',
-      type: actionTypes.GET_ACTIVE_USERS_REQUEST,
-      query: [
-        {
-          field: 'enabled',
-          value: true,
-        },
-        {
-          field: 'status',
-          value: 'CONFIRMED',
-        },
-      ],
-      count: '',
-    },
-    {
-      title: 'Inactive Users',
-      type: actionTypes.GET_INACTIVE_USERS_REQUEST,
-      query: [
-        {
-          field: 'enabled',
-          value: false,
-        },
-        {
-          field: 'status',
-          value: 'CONFIRMED',
-        },
-      ],
-      count: '',
-    },
+    getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
+    getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
+    getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
   ],
 }
 
@@ -99,6 +88,14 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         error: null,
       }
 
+    case actionTypes.GET_ACTIVE_USERS_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
+        users: null,
+      }
+
     case actionTypes.GET_INACTIVE_USERS_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
 
@@ -111,7 +108,27 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         error: null,
       }
 
-    case actionTypes.GET_ACTIVE_USERS_FAILURE:
+    case actionTypes.GET_INACTIVE_USERS_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
+        users: null,
+      }
+
+    case actionTypes.GET_LOCKED_USERS_REQUEST:
+      return { ...state, fetching: true, error: null, query: payload.query }
+
+    case actionTypes.GET_LOCKED_USERS_SUCCESS:
+      state.dashboardTiles[2].count = payload.meta.total
+      return {
+        ...state,
+        dashboardTiles: [...state.dashboardTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_LOCKED_USERS_FAILURE:
       return {
         ...state,
         error,
