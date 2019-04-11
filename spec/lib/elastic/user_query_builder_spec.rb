@@ -68,6 +68,89 @@ describe Elastic::UserQueryBuilder do
       expect(output).to eq(expected_output)
     end
 
+    it 'processes the combination of enabled and status parameters' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { term: { 'enabled': 'true' } },
+              { match_phrase_prefix: { 'status': 'CONFIRMED' } },
+              { bool: {
+                should: []
+              } }
+
+            ]
+          }
+        },
+        from: 0,
+        size: 50,
+        sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
+               { "first_name.for_sort": { order: 'asc' } }]
+      }
+      input_query = { "query": [{ "field": 'enabled', "value": 'true' },
+                                { "field": 'status', "value": 'CONFIRMED' }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+
+    it 'processes the combination of enabled and locked parameters' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { term: { 'enabled': 'false' } },
+              { term: { 'locked': 'true' } },
+              { bool: {
+                should: []
+              } }
+
+            ]
+          }
+        },
+        from: 0,
+        size: 50,
+        sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
+               { "first_name.for_sort": { order: 'asc' } }]
+      }
+      input_query = { "query": [{ "field": 'enabled', "value": 'false' },
+                                { "field": 'locked', "value": 'true' }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+
+    it 'processes the combination of enabled, locked and office parameters' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { term: { 'enabled': 'false' } },
+              { term: { 'locked': 'true' } },
+              { terms: { 'office_id.keyword': %w[north south east west] } },
+              { bool: {
+                should: []
+              } }
+
+            ]
+          }
+        },
+        from: 0,
+        size: 50,
+        sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
+               { "first_name.for_sort": { order: 'asc' } }]
+      }
+      input_query = { "query": [{ "field": 'enabled', "value": 'false' },
+                                { "field": 'locked', "value": 'true' },
+                                { "field": 'office_ids', "value": %w[north south east west] }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+
     it 'processes invalid search criteria by removing it' do
       expected_output = {
         query: {

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect } from 'react-router-dom'
 import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
-import { CheckboxBank } from '@cwds/components'
+import CheckBoxRadio from '../../common/CheckBoxRadio'
 import DropDown from '../../common/DropDown'
 import Cards from '../../common/Card'
 import ReactTable from 'react-table'
@@ -197,12 +197,12 @@ class SearchUserList extends PureComponent {
                   <span>Results found based on Search Criteria</span>
                 </div>
                 <div className="col-md-3" style={{ marginTop: '20px' }}>
-                  <CheckboxBank
+                  <CheckBoxRadio
+                    id="includeInactive"
                     label="Include Inactive"
-                    options={[{ label: 'Include Inactive', value: 'true' }]}
-                    value={[this.props.includeInactive.toString()]}
-                    name="status"
+                    type="checkbox"
                     onChange={this.handleCheckBoxChange}
+                    checked={this.props.includeInactive}
                   />
                 </div>
                 <div className="col-md-4">

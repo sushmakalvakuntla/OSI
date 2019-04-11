@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { InputComponent } from 'react-wood-duck'
-import { Button } from '@cwds/components'
+import { PrimitiveButton as Button } from '@cwds/components'
 /* eslint camelcase: 0 */
 
 const SearchUsers = ({

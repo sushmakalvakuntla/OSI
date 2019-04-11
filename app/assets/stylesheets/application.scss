@@ -14,10 +14,9 @@
 *= require_self
 */
 
-@import 'bootstrap-sprockets';
-@import 'bootstrap';
-@import 'react-wood-duck/dist/styles/application.scss';
-@import '@cwds/core/dist/styles';
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "react-wood-duck/dist/styles/application.scss";
 
 body {
   background-color: #e8e8e8;
@@ -32,8 +31,8 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -239,4 +238,11 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #fff;
   padding-left: 0;
   width: 0;
+}
+
+input[type='checkbox']:checked + label::before,
+input[type='checkbox']:checked + span::before {
+  background-position: 50%;
+  background-image: none !important;
+  background-repeat: no-repeat;
 }

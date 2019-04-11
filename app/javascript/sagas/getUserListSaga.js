@@ -20,6 +20,6 @@ export function* searchUserList(action) {
   }
 }
 
-export function* SearchUserListSaga() {
+export function* searchUserListSaga() {
   yield takeLatest(actionTypes.FETCH_USERS_API_CALL_REQUEST, searchUserList)
 }

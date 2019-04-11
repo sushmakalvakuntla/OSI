@@ -1,11 +1,11 @@
 import UserService from '../_services/users'
-import { SearchUserListSaga, searchUserList } from './getUserListSaga'
+import { searchUserListSaga, searchUserList } from './getUserListSaga'
 import * as actionTypes from '../actions/actionTypes'
 import { takeLatest, call, put } from 'redux-saga/effects'
 
 describe('sagas', () => {
   it('starts the worker fetch saga', () => {
-    const gen = SearchUserListSaga()
+    const gen = searchUserListSaga()
     expect(gen.next().value).toEqual(takeLatest(actionTypes.FETCH_USERS_API_CALL_REQUEST, searchUserList))
   })
 
