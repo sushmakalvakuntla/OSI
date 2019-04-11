@@ -28,7 +28,7 @@ feature 'User List Page' do
     login
     sleep 2
     page_has_basic_text
-   # page_has_user_list_headers
+    # page_has_user_list_headers
     search_users(last_name: 'kennedy', include_inactive: true)
     sleep 2
     first_count = page_count_users

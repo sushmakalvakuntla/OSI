@@ -107,7 +107,7 @@ module UserListPageHelper
     last_name == '' ? force_change_script('#searchWithLastName', 'Search user list') : ''
   end
 
-  def search_users(last_name: '', include_inactive: false)
+  def search_users(last_name: '')
     return if find_field('Last Name').value == last_name
 
     puts "search for '#{last_name}'"
@@ -117,15 +117,10 @@ module UserListPageHelper
     click_on 'SEARCH'
   end
 
-  def search_inactive_users( include_inactive: false)
+  def search_inactive_users
     include_inactive_label = page.find('label', text: 'Include Inactive')
-    include_inactive_checkbox = include_inactive_label.sibling('input')
-
-    if include_inactive_checkbox.checked? != include_inactive
-      # clicking the inactive label performs a search
-      include_inactive_label.click
-    end
-  end 
+    include_inactive_label.click
+  end
 
   def selected_offices
     offices = []
