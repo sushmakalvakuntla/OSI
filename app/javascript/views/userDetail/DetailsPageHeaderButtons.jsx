@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '@cwds/components'
+import { PrimitiveButton as Button } from '@cwds/components'
 import NoPermissionsWarning from './NoPermissionsWarning'
 
 const PageHeaderButtons = ({ isUserEditable, onSaveDetails, onReset, disableButtons, isPermissionsEmpty }) => (

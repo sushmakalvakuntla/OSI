@@ -78,6 +78,10 @@
     margin-top: 10px;
   }
 
+  .rt-tbody .rt-td {
+    overflow: hidden;
+  }
+
   .btn.btn-default {
     background-color: transparent;
     color: #09798e;
@@ -100,6 +104,11 @@
     text-align: left;
     font-weight: bold;
   }
+}
+
+.inactive-checkbox {
+  width: 11em;
+  vertical-align: text-bottom;
 }
 
 .card-margin {

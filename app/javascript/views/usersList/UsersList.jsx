@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect } from 'react-router-dom'
 import { Link as LinkRWD, InputComponent, PageHeader, Alert } from 'react-wood-duck'
-import { CheckboxBank, Button } from '@cwds/components'
+import CheckBoxRadio from '../../common/CheckBoxRadio'
+import { PrimitiveButton as Button } from '@cwds/components'
 import DropDown from '../../common/DropDown'
 import Cards from '../../common/Card'
 import ReactTable from 'react-table'
@@ -162,7 +163,7 @@ class UserList extends PureComponent {
         pageTitle="Manage Users"
         button={
           <div className="pull-right">
-            <Button color="default" size="lg" type="cancel" id="resetButton" className="page-buttons" onClick={this.handleOnAdd}>
+            <Button color="default" size="lg" type="cancel" id="addButton" className="page-buttons" onClick={this.handleOnAdd}>
               + ADD A USER
             </Button>
           </div>
@@ -191,12 +192,12 @@ class UserList extends PureComponent {
           </div>
           <div className="col-md-6 col-sm-6">
             <div style={{ float: 'right' }}>
-              <CheckboxBank
+              <CheckBoxRadio
+                id="includeInactive"
                 label="Include Inactive"
-                options={[{ label: 'Include Inactive', value: 'true' }]}
-                value={[this.props.includeInactive.toString()]}
-                name="status"
+                type="checkbox"
                 onChange={this.handleCheckBoxChange}
+                checked={this.props.includeInactive}
               />
             </div>
             <InputComponent

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, ModalBody, ModalHeader, Avatar, Button } from '@cwds/components'
+import { Modal, ModalBody, ModalHeader, Avatar, PrimitiveButton as Button } from '@cwds/components'
 import { checkDate } from '../../_utils/formatters'
 import { Circle } from '../../_utils/faIcons'
 

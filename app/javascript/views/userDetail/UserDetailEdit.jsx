@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Cards from '../../common/Card'
 import ShowField from '../../common/ShowField'
 import { InputComponent } from 'react-wood-duck'
-import { Button } from '@cwds/components'
+import { PrimitiveButton as Button } from '@cwds/components'
 import DropDown from '../../common/DropDown'
 import { STATUS } from '../../_constants/constants'
 /* eslint camelcase: 0 */

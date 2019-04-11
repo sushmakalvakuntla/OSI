@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { Button } from '@cwds/components'
+import { PrimitiveButton as Button } from '@cwds/components'
 
 const Cards = props => {
   const {
