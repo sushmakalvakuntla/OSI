@@ -61,6 +61,18 @@ module Elastic
           { conjunction: 'AND', query:
             { term: { enabled: value.to_s } } }
         end
+      end,
+      locked: lambda do |value|
+        unless value.to_s.empty?
+          { conjunction: 'AND', query:
+            { term: { locked: value.to_s } } }
+        end
+      end,
+      status: lambda do |value|
+        unless value.empty?
+          { conjunction: 'AND', query:
+            { match_phrase_prefix: { status: value } } }
+        end
       end
     }.freeze
 
