@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Tile from './Tile'
+import { Tile } from '@cwds/components'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -10,14 +10,12 @@ class CommonTile extends Component {
 
   render() {
     return (
-      <div className="col-md-4">
-        <Tile title={this.props.title}>
-          <div>{this.props.count}</div>
-          <div className="text-right">
-            <Link to="/">View</Link>
-          </div>
-        </Tile>
-      </div>
+      <Tile title={this.props.title}>
+        <div className="tilesContent">{this.props.count}</div>
+        <div className="text-right">
+          <Link to="/">View</Link>
+        </div>
+      </Tile>
     )
   }
 }

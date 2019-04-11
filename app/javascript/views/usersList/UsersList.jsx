@@ -232,7 +232,7 @@ class UserList extends PureComponent {
             {this.renderPageHeader()}
             <div className="container">
               {this.renderBreadcrumb()}
-              <Cards cardHeaderText={this.props.cardHeaderValue}>
+              <Cards cardHeaderText={this.props.cardHeaderValue} columnMediumWidth="9" columnLargeWidth="9" columnXsmallWidth="9">
                 {this.renderSearchComponents()}
                 {this.props.error && (
                   <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
@@ -246,16 +246,18 @@ class UserList extends PureComponent {
                   rolesList: this.props.rolesList,
                 })} */}
               </Cards>
-              {this.props.dashboardTiles.map((dashboardTile, index) => (
-                <CommonTile
-                  key={index}
-                  query={dashboardTile.query}
-                  count={dashboardTile.count}
-                  title={dashboardTile.title}
-                  type={dashboardTile.type}
-                  setSearchForTiles={this.props.actions.setSearchForTiles}
-                />
-              ))}
+              <div className="tilesPanel col-md-3">
+                {this.props.dashboardTiles.map((dashboardTile, index) => (
+                  <CommonTile
+                    key={index}
+                    query={dashboardTile.query}
+                    count={dashboardTile.count}
+                    title={dashboardTile.title}
+                    type={dashboardTile.type}
+                    setSearchForTiles={this.props.actions.setSearchForTiles}
+                  />
+                ))}
+              </div>
               {this.props.displayChangeLog ? (
                 <div className="col-md-12 card-margin">
                   <ChangeLog
