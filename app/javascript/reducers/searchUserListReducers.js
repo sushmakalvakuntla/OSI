@@ -25,7 +25,7 @@ const initialValue = {
   error: null,
   inputData: {},
   adminAccountDetails: {},
-  includeInactive: false,
+  includeInactive: true,
 }
 
 function searchUserListReducer(state = initialValue, { type, payload, error, meta }) {
