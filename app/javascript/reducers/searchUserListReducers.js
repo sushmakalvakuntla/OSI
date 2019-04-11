@@ -28,7 +28,7 @@ const initialValue = {
   includeInactive: false,
 }
 
-function userListReducer(state = initialValue, { type, payload, error, meta }) {
+function searchUserListReducer(state = initialValue, { type, payload, error, meta }) {
   switch (type) {
     case actionTypes.FETCH_USERS_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
@@ -123,4 +123,4 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
   }
 }
 
-export default userListReducer
+export default searchUserListReducer

@@ -1,9 +1,9 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
-import UsersList from './UsersList.jsx'
+import SearchUserList from './SearchUserList.jsx'
 import { Link } from 'react-router-dom'
 
-describe('UsersList', () => {
+describe('SearchUserList', () => {
   let wrapper
   let mockSetPageActions
   let mockSetPageSizeActions
@@ -71,7 +71,7 @@ describe('UsersList', () => {
     mockClearAuditEvents = jest.fn()
 
     wrapper = shallow(
-      <UsersList
+      <SearchUserList
         dashboardUrl={'dburl'}
         actions={{
           setPage: mockSetPageActions,
@@ -126,7 +126,7 @@ describe('UsersList', () => {
 
     it('cardHeaderText is passed to Card props as value', () => {
       const wrapperLocal = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -223,7 +223,7 @@ describe('UsersList', () => {
   describe('#submitSearch', () => {
     it('calls the setSearch Actions', () => {
       const wrapperLocal = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -261,7 +261,7 @@ describe('UsersList', () => {
 
     it('calls the setSearch Actions with includeInactive props as true', () => {
       const wrapperLocal = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -363,7 +363,7 @@ describe('UsersList', () => {
     ]
     it('returns true when query and entered search criteria are same', () => {
       const component = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -388,7 +388,7 @@ describe('UsersList', () => {
 
     it('returns false when search query and entered search criteria are different', () => {
       const component = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -451,7 +451,7 @@ describe('UsersList', () => {
       mockSetPage = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
       wrapper = mount(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             fetchAccountActions: mockFetchAccountActions,
@@ -496,7 +496,7 @@ describe('UsersList', () => {
   describe('#UserList output', () => {
     it('contains Table and headers', () => {
       const component = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -558,8 +558,8 @@ describe('UsersList', () => {
     })
 
     it('default props', () => {
-      expect(UsersList.defaultProps.dashboardUrl).toEqual('/')
-      expect(UsersList.defaultProps.dashboardClickHandler).not.toThrow()
+      expect(SearchUserList.defaultProps.dashboardUrl).toEqual('/')
+      expect(SearchUserList.defaultProps.dashboardClickHandler).not.toThrow()
     })
   })
 })

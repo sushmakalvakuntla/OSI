@@ -7,13 +7,13 @@ import DropDown from '../../common/DropDown'
 import Cards from '../../common/Card'
 import ReactTable from 'react-table'
 import Pagination from './Pagination'
-import './UsersList.scss'
+import './SearchUserList.scss'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { formatRoles } from '../../_utils/formatters'
 import ChangeLog from '../userDetail/ChangeLog'
 import SearchUsers from './SearchUsers'
 
-class UserList extends PureComponent {
+class SearchUserList extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -267,7 +267,7 @@ class UserList extends PureComponent {
   }
 }
 
-UserList.propTypes = {
+SearchUserList.propTypes = {
   page: PropTypes.number,
   from: PropTypes.number,
   size: PropTypes.number,
@@ -311,7 +311,7 @@ UserList.propTypes = {
   searchedForUsers: PropTypes.bool,
 }
 
-UserList.defaultProps = {
+SearchUserList.defaultProps = {
   dashboardUrl: '/',
   dashboardClickHandler: () => {},
   sort: [],
@@ -320,4 +320,4 @@ UserList.defaultProps = {
   lastName: '',
   officeNames: [],
 }
-export default UserList
+export default SearchUserList

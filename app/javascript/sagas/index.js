@@ -1,5 +1,5 @@
 export { getAuditEventsSaga } from './getAuditEventsSaga'
-export { countyUsersListSaga } from './getUserListSaga'
+export { SearchUserListSaga } from './getUserListSaga'
 export { detailsSaga } from './getDetailsSaga'
 export { officesSaga } from './getOfficesSaga'
 export { permissionsSaga } from './getPermissionsSaga'

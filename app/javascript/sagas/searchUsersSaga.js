@@ -1,6 +1,6 @@
 import { takeLatest, select, put } from 'redux-saga/effects'
-import { getSearchParams } from '../selectors/userListSelector'
-import { searchUsers } from '../actions/userListActions'
+import { getSearchParams } from '../selectors/searchUserListSelector'
+import { searchUsers } from '../actions/searchUserListActions'
 import * as actionTypes from '../actions/actionTypes'
 
 export function* searchUserList(action) {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import GlobalHeader from '../common/GlobalHeader'
 import { bindActionCreators } from 'redux'
-import { fetchAccountActions } from '../actions/userListActions'
+import { fetchAccountActions } from '../actions/searchUserListActions'
 import { userName } from '../selectors/globalHeaderSelectors'
 
 function mapStateToProps(state) {

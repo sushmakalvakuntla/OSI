@@ -1,17 +1,17 @@
 import safeGet from 'lodash.get'
 
 export const selectUserRecords = state => {
-  if (!state.userList) return []
-  return Array.isArray(state.userList.users) ? state.userList.users : []
+  if (!state.searchUserList) return []
+  return Array.isArray(state.searchUserList.users) ? state.searchUserList.users : []
 }
 
 export const isLoading = state => {
-  return state.userList.fetching || false
+  return state.searchUserList.fetching || false
 }
 
-export const getSearchParams = ({ userList }) => {
-  if (!userList) return {}
-  const { from, size, sort, query } = userList
+export const getSearchParams = ({ searchUserList }) => {
+  if (!searchUserList) return {}
+  const { from, size, sort, query } = searchUserList
   const out = {}
   out.from = from
   out.size = size
@@ -20,8 +20,8 @@ export const getSearchParams = ({ userList }) => {
   return out
 }
 
-export const getSerializedSearchParams = ({ userList }) => {
-  return encodeURIComponent(JSON.stringify(getSearchParams({ userList })))
+export const getSerializedSearchParams = ({ searchUserList }) => {
+  return encodeURIComponent(JSON.stringify(getSearchParams({ searchUserList })))
 }
 
 export const checkOfficeNames = offices => {
@@ -33,8 +33,8 @@ export const checkOfficeNames = offices => {
 }
 
 export const cardHeaderText = state => {
-  const roles = safeGet(state, 'userList.adminAccountDetails.roles', [])
-  const countyName = safeGet(state, 'userList.adminAccountDetails.county_name', '')
+  const roles = safeGet(state, 'searchUserList.adminAccountDetails.roles', [])
+  const countyName = safeGet(state, 'searchUserList.adminAccountDetails.county_name', '')
   const role = roles || []
   if (role.includes('Super-admin')) {
     return 'Global Administrator view'
@@ -46,7 +46,7 @@ export const cardHeaderText = state => {
 }
 
 export const displayChangeLog = state => {
-  const roles = safeGet(state, 'userList.adminAccountDetails.roles', [])
+  const roles = safeGet(state, 'searchUserList.adminAccountDetails.roles', [])
   if (roles.includes('Super-admin')) {
     return false
   } else if (roles.includes('State-admin')) {
