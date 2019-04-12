@@ -1,9 +1,9 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
-import UsersList from './UsersList.jsx'
+import SearchUserList from './SearchUserList.jsx'
 import { Link } from 'react-router-dom'
 
-describe('UsersList', () => {
+describe('SearchUserList', () => {
   let wrapper
   let mockSetPageActions
   let mockSetPageSizeActions
@@ -91,7 +91,7 @@ describe('UsersList', () => {
     mockClearAuditEvents = jest.fn()
 
     wrapper = shallow(
-      <UsersList
+      <SearchUserList
         dashboardUrl={'dburl'}
         actions={{
           setPage: mockSetPageActions,
@@ -113,6 +113,8 @@ describe('UsersList', () => {
         query={query}
         includeInactive={false}
         searchPageTiles={searchPageTiles}
+        searchedForUsers={true}
+        officesList={['office1', 'office2']}
       />,
       {
         disableLifecycleMethods: true,
@@ -134,7 +136,7 @@ describe('UsersList', () => {
     })
 
     it('checks card component props', () => {
-      expect(wrapper.find('Cards').props().cardHeaderText).toBe('County: CountyName')
+      expect(wrapper.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
     })
 
     it('display <ChangeLog/> ', () => {
@@ -146,7 +148,7 @@ describe('UsersList', () => {
 
     it('cardHeaderText is passed to Card props as value', () => {
       const wrapperLocal = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -170,7 +172,7 @@ describe('UsersList', () => {
           searchPageTiles={searchPageTiles}
         />
       )
-      expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('State Administrator view')
+      expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
     })
 
     it('renders PageHeader component', () => {
@@ -182,6 +184,13 @@ describe('UsersList', () => {
     it('sets state based on the user action', () => {
       wrapper.instance().handleOnAdd()
       expect(wrapper.instance().state.addUser).toEqual(true)
+    })
+  })
+
+  describe('#handleOnInput', () => {
+    it('sets state based on the user action', () => {
+      const myFunction = wrapper.instance().handleOnInput
+      expect(() => myFunction('Hello@gmail.com')).not.toThrow()
     })
   })
 
@@ -200,16 +209,14 @@ describe('UsersList', () => {
     })
   })
 
-  describe('#handleSearchInputChange', () => {
-    it('office name change calls handleSearchChange Actions', () => {
-      const value = [{ value: 'someOffice1', label: 'someOfficeOne' }, { value: 'someOffice2', label: 'someOfficeTwo' }]
-      wrapper.find('#searchOfficeName').simulate('change', value)
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['someOffice1', 'someOffice2'])
-    })
-
-    it('last name change calls handleSearchChange Actions', () => {
-      wrapper.find('#searchLastName').simulate('change', { target: { value: 'someLastName' } })
-      expect(mockHandleSearchChange).toHaveBeenCalledWith('lastName', 'someLastName')
+  describe('#handleOfficeChange', () => {
+    it('Office change calls handleSearchChange Actions', () => {
+      const newQuery = [{ field: 'office_ids', value: ['offices1'] }]
+      const offices = [{ value: 'offices1', label: 'OfficeOne' }]
+      wrapper.find('#searchOfficeName').simulate('change', offices)
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
+      expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
+      expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({ query: [{ field: 'office_ids', value: ['offices1'] }] })
     })
   })
 
@@ -239,7 +246,7 @@ describe('UsersList', () => {
   describe('#submitSearch', () => {
     it('calls the setSearch Actions', () => {
       const wrapperLocal = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -267,7 +274,7 @@ describe('UsersList', () => {
         },
         {
           field: 'office_ids',
-          value: ['east', 'north', 'south', 'west'],
+          value: ['north', 'south', 'east', 'west'],
         },
         { field: 'enabled', value: true },
       ]
@@ -278,7 +285,7 @@ describe('UsersList', () => {
 
     it('calls the setSearch Actions with includeInactive props as true', () => {
       const wrapperLocal = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -306,7 +313,7 @@ describe('UsersList', () => {
         },
         {
           field: 'office_ids',
-          value: ['east', 'north', 'south', 'west'],
+          value: ['north', 'south', 'east', 'west'],
         },
         { field: 'enabled', value: '' },
       ]
@@ -381,7 +388,7 @@ describe('UsersList', () => {
     ]
     it('returns true when query and entered search criteria are same', () => {
       const component = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -407,7 +414,7 @@ describe('UsersList', () => {
 
     it('returns false when search query and entered search criteria are different', () => {
       const component = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -462,7 +469,6 @@ describe('UsersList', () => {
     let mockSetSearch
     let mockSetSearchForTiles
     let mockSetPage
-    let component
     let mockClearAddedUserDetailActions
 
     beforeEach(() => {
@@ -473,8 +479,8 @@ describe('UsersList', () => {
       mockSetSearchForTiles = jest.fn()
       mockSetPage = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
-      component = mount(
-        <UsersList
+      wrapper = mount(
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             fetchAccountActions: mockFetchAccountActions,
@@ -505,31 +511,8 @@ describe('UsersList', () => {
       )
     })
 
-    it('fetch the updated user list', () => {
-      component.instance().componentDidMount()
-      expect(mockSetSearch).toHaveBeenCalledWith([
-        { field: 'last_name', value: 'some_value' },
-        { field: 'office_ids', value: ['north'] },
-        { field: 'enabled', value: true },
-      ])
-    })
-
-    it('fetch the updated user list with both and inactive users', () => {
-      component.setProps({ includeInactive: true })
-      component.instance().componentDidMount()
-      expect(mockSetSearch).toHaveBeenCalledWith([
-        { field: 'last_name', value: 'some_value' },
-        { field: 'office_ids', value: ['north'] },
-        { field: 'enabled', value: '' },
-      ])
-    })
-
     it('fetches the account details', () => {
       expect(mockFetchAccountActions).toHaveBeenCalledWith()
-    })
-
-    it('sets the pageIndex', () => {
-      expect(mockSetPage).toHaveBeenCalledWith(0)
     })
 
     it('fetches the office list', () => {
@@ -558,7 +541,7 @@ describe('UsersList', () => {
     beforeEach(() => {
       mockSetSearch = jest.fn()
       wrapperLocal = mount(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             fetchAccountActions: () => {},
@@ -625,7 +608,7 @@ describe('UsersList', () => {
   describe('#UserList output', () => {
     it('contains Table and headers', () => {
       const component = shallow(
-        <UsersList
+        <SearchUserList
           dashboardUrl={'dburl'}
           actions={{
             searchUsers: () => {},
@@ -651,6 +634,7 @@ describe('UsersList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           searchPageTiles={searchPageTiles}
+          searchedForUsers={true}
         />
       )
 
@@ -687,8 +671,8 @@ describe('UsersList', () => {
     })
 
     it('default props', () => {
-      expect(UsersList.defaultProps.dashboardUrl).toEqual('/')
-      expect(UsersList.defaultProps.dashboardClickHandler).not.toThrow()
+      expect(SearchUserList.defaultProps.dashboardUrl).toEqual('/')
+      expect(SearchUserList.defaultProps.dashboardClickHandler).not.toThrow()
     })
   })
 })

@@ -6,14 +6,14 @@ import {
   checkOfficeNames,
   cardHeaderText,
   displayChangeLog,
-} from './userListSelector'
+} from './searchUserListSelector'
 
 describe('selectors', () => {
   describe('#selectUserRecords', () => {
     it('returns array of users', () => {
       const users = []
       const state = {
-        userList: {
+        searchUserList: {
           users,
         },
       }
@@ -21,7 +21,7 @@ describe('selectors', () => {
     })
 
     it('returns empty array if no users defined', () => {
-      const state = { userList: {} }
+      const state = { searchUserList: {} }
       expect(selectUserRecords(state)).toEqual([])
       expect(selectUserRecords({})).toEqual([])
     })
@@ -30,7 +30,7 @@ describe('selectors', () => {
   describe('#isLoading', () => {
     it('returns true if fetching', () => {
       const state = {
-        userList: {},
+        searchUserList: {},
       }
       expect(isLoading(state)).toEqual(false)
     })
@@ -39,7 +39,7 @@ describe('selectors', () => {
   describe('getSearchParams', () => {
     it('returns the search params', () => {
       const state = {
-        userList: {
+        searchUserList: {
           from: 0,
           size: 10,
           sort: [{ field: 'haystack' }, { field: 'other_haystack', desc: true }],
@@ -67,7 +67,7 @@ describe('selectors', () => {
   describe('getSerializedSearchParams', () => {
     it('returns the serialized json repr of search params', () => {
       const state = {
-        userList: {
+        searchUserList: {
           size: 20,
           from: 40,
         },
@@ -104,7 +104,7 @@ describe('selectors', () => {
   describe('#cardHeaderText', () => {
     const getState = role => {
       return {
-        userList: {
+        searchUserList: {
           adminAccountDetails: {
             county_name: 'County1',
             roles: role,
@@ -140,22 +140,22 @@ describe('selectors', () => {
 
   describe('#displayChangeLog', () => {
     it('returns true if logged in user role is Office Admin', () => {
-      const state = { userList: { adminAccountDetails: { roles: ['Office-admin'] } } }
+      const state = { searchUserList: { adminAccountDetails: { roles: ['Office-admin'] } } }
       expect(displayChangeLog(state)).toBe(true)
     })
 
     it('returns true if logged in user role is County Admin', () => {
-      const state = { userList: { adminAccountDetails: { roles: ['County-admin'] } } }
+      const state = { searchUserList: { adminAccountDetails: { roles: ['County-admin'] } } }
       expect(displayChangeLog(state)).toBe(true)
     })
 
     it('returns false if logged in user role is State admin', () => {
-      const state = { userList: { adminAccountDetails: { roles: ['State-admin'] } } }
+      const state = { searchUserList: { adminAccountDetails: { roles: ['State-admin'] } } }
       expect(displayChangeLog(state)).toBe(false)
     })
 
     it('returns false if logged in user role is Super admin', () => {
-      const state = { userList: { adminAccountDetails: { roles: ['Super-admin'] } } }
+      const state = { searchUserList: { adminAccountDetails: { roles: ['Super-admin'] } } }
       expect(displayChangeLog(state)).toBe(false)
     })
   })

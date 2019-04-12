@@ -29,7 +29,7 @@ describe('UserService', () => {
       )
       getSearchSpy23.mockReturnValue(Promise.resolve({}))
       UserService.search(q)
-      expect(getSearchSpy23).toHaveBeenCalledWith(`/user_list?q=${q}`)
+      expect(getSearchSpy23).toHaveBeenCalledWith(`/search_user_list?q=${q}`)
     })
   })
 
@@ -59,7 +59,7 @@ describe('UserService', () => {
       const lastName = 'don'
       getSpy.mockReturnValue(Promise.resolve({}))
       UserService.fetch(lastName)
-      expect(getSpy).toHaveBeenCalledWith(`/user_list?last_name=${lastName}`)
+      expect(getSpy).toHaveBeenCalledWith(`/search_user_list?last_name=${lastName}`)
     })
   })
 

@@ -85,7 +85,7 @@ node(node_to_run_on()) {
       stage('Acceptance Test smoke test') {
         sh "docker-compose up -d --build"
         sh "sleep ${ACCEPTANCE_SLEEP_TIME}"
-        sh "docker-compose exec --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=county-admin-web:3000 -T county-admin-test bundle exec rspec spec/acceptance/user_list_page_spec.rb"
+        sh "docker-compose exec --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=county-admin-web:3000 -T county-admin-test bundle exec rspec spec/acceptance/search_user_list_page_spec.rb"
       }
 
       stage('Tag Repo') {

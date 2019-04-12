@@ -1,4 +1,4 @@
-import reducer from './userListReducers'
+import reducer from './searchUserListReducers'
 import * as actionTypes from '../actions/actionTypes'
 import { getTilesInitialState } from '../_utils/commonHelper'
 
@@ -101,6 +101,7 @@ describe('reducer', () => {
           },
         },
       },
+      searchedForUsers: true,
     }
     const before = {}
     let after

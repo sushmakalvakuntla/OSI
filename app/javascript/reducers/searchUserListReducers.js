@@ -26,15 +26,15 @@ const initialValue = {
   error: null,
   inputData: {},
   adminAccountDetails: {},
-  includeInactive: false,
   searchPageTiles: [
     getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
     getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
     getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
   ],
+  includeInactive: true,
 }
 
-function userListReducer(state = initialValue, { type, payload, error, meta }) {
+function searchUserListReducer(state = initialValue, { type, payload, error, meta }) {
   switch (type) {
     case actionTypes.FETCH_USERS_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
@@ -51,6 +51,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         total,
         fetching: false,
         error: null,
+        searchedForUsers: true,
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
@@ -188,4 +189,4 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
   }
 }
 
-export default userListReducer
+export default searchUserListReducer

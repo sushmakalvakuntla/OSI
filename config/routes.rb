@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   namespace :api, defaults: { format: 'json' } do
-    resources :user_list, only: [:index] do
+    resources :search_user_list, only: [:index] do
     end
     get 'verify_user', to: 'verify_user#index'
 

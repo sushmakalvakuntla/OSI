@@ -2,11 +2,11 @@
 
 module UserListPageHelper
   def click_add_user
-    click_button '+ ADD A USER'
+    click_button 'CREATE A NEW USER'
   end
 
   def page_has_basic_text
-    expect(page).to have_content('County:')
+    expect(page).to have_content('Search Existing User Accounts')
   end
 
   def page_has_user_list_headers
@@ -103,26 +103,23 @@ module UserListPageHelper
   end
 
   def safe_fill_in_last_name(last_name)
-    fill_in 'searchLastName', with: last_name
-    last_name == '' ? force_change_script('#searchLastName', 'Search user list') : ''
+    fill_in 'searchWithLastName', with: last_name
+    last_name == '' ? force_change_script('#searchWithLastName', 'Search user list') : ''
   end
 
-  def search_users(last_name: '', include_inactive: false)
-    return if find_field('Search user list').value == last_name
+  def search_users(last_name: '')
+    return if find_field('Last Name').value == last_name
 
     puts "search for '#{last_name}'"
 
     safe_fill_in_last_name(last_name)
 
-    include_inactive_label = page.find('label', text: 'Include Inactive')
-    include_inactive_checkbox = include_inactive_label.sibling('input')
+    click_on 'SEARCH'
+  end
 
-    if include_inactive_checkbox.checked? != include_inactive
-      # clicking the inactive label performs a search
-      include_inactive_label.click
-    else
-      click_on 'Search'
-    end
+  def search_inactive_users
+    include_inactive_label = page.find('label', text: 'Include Inactive')
+    include_inactive_label.click
   end
 
   def selected_offices

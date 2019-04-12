@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import UsersList from '../views/usersList/UsersList'
+import SearchUserList from '../views/searchUserList/SearchUserList'
 import {
   searchUsers,
   setPage,
@@ -11,11 +11,11 @@ import {
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
-} from '../actions/userListActions'
+} from '../actions/searchUserListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
 import { fetchRolesActions } from '../actions/rolesActions'
-import { checkOfficeNames, cardHeaderText, displayChangeLog } from '../selectors/userListSelector'
+import { checkOfficeNames, cardHeaderText, displayChangeLog } from '../selectors/searchUserListSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { officesList } from '../selectors/officeListSelector'
 import { rolesList } from '../selectors/rolesListSelector'
@@ -24,33 +24,34 @@ import { fetchChangeLogAdminDetailsActions, fetchDetailsActions } from '../actio
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { selectDetailRecords, officeName } from '../selectors/detailSelector'
 function mapStateToProps(state) {
-  const { userList } = state
+  const { searchUserList } = state
   return {
-    userList: userList.users || [],
+    userList: searchUserList.users || [],
     cardHeaderValue: cardHeaderText(state),
-    fetching: userList.fetching,
+    fetching: searchUserList.fetching,
     userListUrl: '/#',
     dashboardUrl: '/',
-    size: userList.size,
-    from: userList.from,
-    sort: userList.sort,
-    query: userList.query,
-    aggregate: userList.aggregate,
-    total: userList.total,
-    error: userList.error,
+    size: searchUserList.size,
+    searchedForUsers: searchUserList.searchedForUsers,
+    from: searchUserList.from,
+    sort: searchUserList.sort,
+    query: searchUserList.query,
+    aggregate: searchUserList.aggregate,
+    total: searchUserList.total,
+    error: searchUserList.error,
     officesList: officesList(state),
-    inputData: userList.inputData,
-    lastName: userList.inputData.lastName,
-    officeNames: checkOfficeNames(userList.inputData.officeNames),
+    inputData: searchUserList.inputData,
+    lastName: searchUserList.inputData.lastName,
+    officeNames: checkOfficeNames(searchUserList.inputData.officeNames),
     rolesList: rolesList(state),
-    includeInactive: userList.includeInactive,
+    includeInactive: searchUserList.includeInactive,
     auditEvents: selectAuditEvents(state),
     changeLogAdminDetails: selectChangeLogAdminDetails(state),
     changeLogAdminOfficeName: selectChangeLogAdminOfficeName(state),
     userOfficeName: officeName(state),
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
-    searchPageTiles: userList.searchPageTiles,
+    searchPageTiles: searchUserList.searchPageTiles,
   }
 }
 
@@ -83,4 +84,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UsersList)
+)(SearchUserList)
