@@ -3,7 +3,7 @@ import { initSagas } from '../initSagas'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { createStore, applyMiddleware } from 'redux'
 import { SyncStore, observeStore } from './syncStore'
-import { getSearchParams } from '../selectors/userListSelector'
+import { getSearchParams } from '../selectors/searchUserListSelector'
 import reducer from '../reducers'
 
 const sessionStore = new SyncStore(window.sessionStorage)

@@ -25,10 +25,10 @@ const initialValue = {
   error: null,
   inputData: {},
   adminAccountDetails: {},
-  includeInactive: false,
+  includeInactive: true,
 }
 
-function userListReducer(state = initialValue, { type, payload, error, meta }) {
+function searchUserListReducer(state = initialValue, { type, payload, error, meta }) {
   switch (type) {
     case actionTypes.FETCH_USERS_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
@@ -45,6 +45,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         total,
         fetching: false,
         error: null,
+        searchedForUsers: true,
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
@@ -122,4 +123,4 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
   }
 }
 
-export default userListReducer
+export default searchUserListReducer

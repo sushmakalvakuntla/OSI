@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import userList from './userListReducers'
+import searchUserList from './searchUserListReducers'
 import fetchDetails from './detailsReducers'
 import fetchPermissions from './permissionsReducers'
 import fetchOffices from './officesReducers'
@@ -10,7 +10,7 @@ import resendRegistrationEmail from './resendRegistrationEmailReducers'
 import fetchChangeLogDetails from './changeLogDetailsReducers'
 import fetchAuditEvents from './auditEventsReducers'
 const reducer = combineReducers({
-  userList,
+  searchUserList,
   fetchDetails,
   fetchPermissions,
   fetchOffices,

@@ -7,7 +7,7 @@ import {
   setSort,
   fetchAccountActions,
   handleCheckBoxChangeActions,
-} from './userListActions'
+} from './searchUserListActions'
 import {
   FETCH_USERS_API_CALL_REQUEST,
   USER_LIST_SET_PAGE_SIZE,
@@ -29,7 +29,7 @@ describe('#fetchAccountActions', () => {
   })
 })
 
-describe('UserList Actions', () => {
+describe('SearchUserListActions Actions', () => {
   describe('#searchUsers', () => {
     it('returns type and payload', () => {
       const params = { query: {} }

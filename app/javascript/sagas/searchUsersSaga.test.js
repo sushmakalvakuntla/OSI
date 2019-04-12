@@ -1,5 +1,5 @@
 import { watchUserSearchParamUpdates, searchUserList } from './searchUsersSaga'
-import { getSearchParams } from '../selectors/userListSelector'
+import { getSearchParams } from '../selectors/searchUserListSelector'
 import { takeLatest, put, select } from 'redux-saga/effects'
 import {
   USER_LIST_SET_PAGE,

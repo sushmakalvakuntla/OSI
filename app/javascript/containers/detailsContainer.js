@@ -49,7 +49,7 @@ import { addUserRecords } from '../selectors/addUserSelector'
 import { clearAddedUserDetailActions } from '../actions/addUserActions'
 import { fetchUserAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
 import { fetchOfficesActions } from '../actions/officesActions'
-import { fetchAccountActions } from '../actions/userListActions'
+import { fetchAccountActions } from '../actions/searchUserListActions'
 
 function mapStateToProps(state) {
   return {

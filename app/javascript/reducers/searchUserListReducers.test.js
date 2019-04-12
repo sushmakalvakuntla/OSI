@@ -1,4 +1,4 @@
-import reducer from './userListReducers'
+import reducer from './searchUserListReducers'
 import * as actionTypes from '../actions/actionTypes'
 
 describe('reducer', () => {
@@ -95,6 +95,7 @@ describe('reducer', () => {
           },
         },
       },
+      searchedForUsers: true,
     }
     const before = {}
     let after
