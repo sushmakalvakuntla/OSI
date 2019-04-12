@@ -1,21 +1,6 @@
 import * as actionTypes from '../actions/actionTypes'
 import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
-
-const getTilesInitialState = (userType, action, fieldType1, value1, fieldType2, value2) => ({
-  title: userType,
-  type: action,
-  query: [
-    {
-      field: fieldType1,
-      value: value1,
-    },
-    {
-      field: fieldType2,
-      value: value2,
-    },
-  ],
-  count: 0,
-})
+import { getTilesInitialState } from '../_utils/commonHelper'
 
 const initialValue = {
   sort: [
@@ -96,10 +81,10 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         users: null,
       }
 
-    case actionTypes.GET_INACTIVE_USERS_REQUEST:
+    case actionTypes.GET_LOCKED_USERS_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
 
-    case actionTypes.GET_INACTIVE_USERS_SUCCESS:
+    case actionTypes.GET_LOCKED_USERS_SUCCESS:
       state.searchPageTiles[1].count = payload.meta.total
       return {
         ...state,
@@ -108,7 +93,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         error: null,
       }
 
-    case actionTypes.GET_INACTIVE_USERS_FAILURE:
+    case actionTypes.GET_LOCKED_USERS_FAILURE:
       return {
         ...state,
         error,
@@ -116,10 +101,10 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         users: null,
       }
 
-    case actionTypes.GET_LOCKED_USERS_REQUEST:
+    case actionTypes.GET_INACTIVE_USERS_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
 
-    case actionTypes.GET_LOCKED_USERS_SUCCESS:
+    case actionTypes.GET_INACTIVE_USERS_SUCCESS:
       state.searchPageTiles[2].count = payload.meta.total
       return {
         ...state,
@@ -128,7 +113,7 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
         error: null,
       }
 
-    case actionTypes.GET_LOCKED_USERS_FAILURE:
+    case actionTypes.GET_INACTIVE_USERS_FAILURE:
       return {
         ...state,
         error,
