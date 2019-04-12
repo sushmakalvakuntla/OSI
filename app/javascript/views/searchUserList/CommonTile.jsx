@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Tile } from '@cwds/components'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 class CommonTile extends Component {
