@@ -12,9 +12,7 @@ class CommonTile extends Component {
     return (
       <Tile title={this.props.title}>
         <div className="tilesContent">{this.props.count}</div>
-        <div className="text-right">
-          <Link to="/">View</Link>
-        </div>
+        <div className="text-right">{/* <Link to="/">View</Link> */}</div>
       </Tile>
     )
   }

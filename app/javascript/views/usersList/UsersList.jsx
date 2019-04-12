@@ -27,11 +27,11 @@ class UserList extends PureComponent {
     this.props.actions.fetchAccountActions()
     this.props.actions.fetchOfficesActions()
     this.props.actions.fetchRolesActions()
-    // this.props.actions.setSearch([
-    //   { field: 'last_name', value: this.props.lastName },
-    //   { field: 'office_ids', value: this.props.officeNames },
-    //   { field: 'enabled', value: this.props.includeInactive ? '' : true },
-    // ])
+    this.props.actions.setSearch([
+      { field: 'last_name', value: this.props.lastName },
+      { field: 'office_ids', value: this.props.officeNames },
+      { field: 'enabled', value: this.props.includeInactive ? '' : true },
+    ])
     this.props.actions.setPage(Math.floor(this.props.from / this.props.size))
     this.props.actions.clearAddedUserDetailActions()
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
@@ -240,11 +240,11 @@ class UserList extends PureComponent {
                   </Alert>
                 )}
                 <br />
-                {/* {this.renderUsersTable({
+                {this.renderUsersTable({
                   data: this.props.userList,
                   officesList: this.props.officesList,
                   rolesList: this.props.rolesList,
-                })} */}
+                })}
               </Cards>
               <div className="tilesPanel col-md-3">
                 {this.props.searchPageTiles.map((searchPageTile, index) => (
