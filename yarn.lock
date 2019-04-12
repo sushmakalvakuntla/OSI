@@ -7443,9 +7443,10 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-wood-duck@^0.1.79:
-  version "0.1.79"
-  resolved "https://registry.yarnpkg.com/react-wood-duck/-/react-wood-duck-0.1.79.tgz#ca891991c117d6af37e704f59b13bc6849fc7c1f"
+react-wood-duck@^0.1.80:
+  version "0.1.80"
+  resolved "https://registry.yarnpkg.com/react-wood-duck/-/react-wood-duck-0.1.80.tgz#962352613cf119438f3545dd0ce84b805b0e06de"
+  integrity sha512-BAkch2826f9RooQImIxDGTSvJylwX9k916XLJQqFdecgum7b7TL3puX4t5qAdvFypJx7QWbW9mRmVhCs87jnFw==
   dependencies:
     babel-runtime "^6.6.1"
     bootstrap "^3.3.7"
