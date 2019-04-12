@@ -21,7 +21,11 @@ class CommonTile extends Component {
 }
 
 CommonTile.propTypes = {
-  gridValue: PropTypes.string,
+  setSearchForTiles: PropTypes.func,
+  type: PropTypes.string,
+  query: PropTypes.array,
+  title: PropTypes.string,
+  count: PropTypes.number,
 }
 
 export default CommonTile

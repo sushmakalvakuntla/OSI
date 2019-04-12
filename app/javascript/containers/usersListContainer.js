@@ -50,7 +50,7 @@ function mapStateToProps(state) {
     userOfficeName: officeName(state),
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
-    dashboardTiles: userList.dashboardTiles,
+    searchPageTiles: userList.searchPageTiles,
   }
 }
 

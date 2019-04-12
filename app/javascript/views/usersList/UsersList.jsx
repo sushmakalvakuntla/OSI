@@ -247,13 +247,13 @@ class UserList extends PureComponent {
                 })} */}
               </Cards>
               <div className="tilesPanel col-md-3">
-                {this.props.dashboardTiles.map((dashboardTile, index) => (
+                {this.props.searchPageTiles.map((searchPageTile, index) => (
                   <CommonTile
                     key={index}
-                    query={dashboardTile.query}
-                    count={dashboardTile.count}
-                    title={dashboardTile.title}
-                    type={dashboardTile.type}
+                    query={searchPageTile.query}
+                    count={searchPageTile.count}
+                    title={searchPageTile.title}
+                    type={searchPageTile.type}
                     setSearchForTiles={this.props.actions.setSearchForTiles}
                   />
                 ))}
@@ -320,6 +320,7 @@ UserList.propTypes = {
   auditEvents: PropTypes.array,
   userDetails: PropTypes.object,
   displayChangeLog: PropTypes.bool,
+  searchPageTiles: PropTypes.array,
 }
 
 UserList.defaultProps = {

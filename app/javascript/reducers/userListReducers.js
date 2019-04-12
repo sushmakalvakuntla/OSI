@@ -14,7 +14,7 @@ const getTilesInitialState = (userType, action, fieldType1, value1, fieldType2, 
       value: value2,
     },
   ],
-  count: '',
+  count: 0,
 })
 
 const initialValue = {
@@ -42,7 +42,7 @@ const initialValue = {
   inputData: {},
   adminAccountDetails: {},
   includeInactive: false,
-  dashboardTiles: [
+  searchPageTiles: [
     getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
     getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
     getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
@@ -80,10 +80,10 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
       return { ...state, fetching: true, error: null, query: payload.query }
 
     case actionTypes.GET_ACTIVE_USERS_SUCCESS:
-      state.dashboardTiles[0].count = payload.meta.total
+      state.searchPageTiles[0].count = payload.meta.total
       return {
         ...state,
-        dashboardTiles: [...state.dashboardTiles],
+        searchPageTiles: [...state.searchPageTiles],
         fetching: false,
         error: null,
       }
@@ -100,10 +100,10 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
       return { ...state, fetching: true, error: null, query: payload.query }
 
     case actionTypes.GET_INACTIVE_USERS_SUCCESS:
-      state.dashboardTiles[1].count = payload.meta.total
+      state.searchPageTiles[1].count = payload.meta.total
       return {
         ...state,
-        dashboardTiles: [...state.dashboardTiles],
+        searchPageTiles: [...state.searchPageTiles],
         fetching: false,
         error: null,
       }
@@ -120,10 +120,10 @@ function userListReducer(state = initialValue, { type, payload, error, meta }) {
       return { ...state, fetching: true, error: null, query: payload.query }
 
     case actionTypes.GET_LOCKED_USERS_SUCCESS:
-      state.dashboardTiles[2].count = payload.meta.total
+      state.searchPageTiles[2].count = payload.meta.total
       return {
         ...state,
-        dashboardTiles: [...state.dashboardTiles],
+        searchPageTiles: [...state.searchPageTiles],
         fetching: false,
         error: null,
       }
