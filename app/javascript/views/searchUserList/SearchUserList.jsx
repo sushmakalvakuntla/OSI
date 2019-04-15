@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect } from 'react-router-dom'
 import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
@@ -11,6 +11,7 @@ import './SearchUserList.scss'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { formatRoles } from '../../_utils/formatters'
 import ChangeLog from '../userDetail/ChangeLog'
+import CommonTile from './CommonTile'
 import SearchUsers from './SearchUsers'
 
 class SearchUserList extends PureComponent {
@@ -156,79 +157,93 @@ class SearchUserList extends PureComponent {
   renderComponents = () => {
     const { officesList, officeNames, lastName, firstName, email, CWSLogin } = this.props
     return (
-      <Cards cardHeaderText={'Search Existing User Accounts'}>
-        <br />
-        <span>
-          Search using any combination of the fields below. The ability to create a new user is available after a search has been
-          conducted.{' '}
-        </span>
-        <br />
-        <SearchUsers
-          lastName={lastName}
-          firstName={firstName}
-          email={email}
-          CWSLogin={CWSLogin}
-          isDisabledSearchBtn={this.isDisabledSearchBtn}
-          handleInput={this.handleOnInput}
-          handleOnSearch={this.submitSearch}
-          handleOnCreateUser={this.handleOnAdd}
-        />
-        {this.props.error && (
-          <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
-            <strong>Oh no!</strong> An unexpected error occurred!
-          </Alert>
-        )}
-        <br />
-        <div>
-          {this.props.searchedForUsers ? (
-            <div className="row">
-              <div className="col-md-12">
-                <hr
-                  style={{
-                    width: '105.8%',
-                    height: '1px',
-                    border: 'none',
-                    color: '#333',
-                    backgroundColor: '#333',
-                    marginLeft: '-30px',
-                  }}
-                />
-                <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px' }}>
-                  <span>Results found based on Search Criteria</span>
-                </div>
-                <div className="col-md-3" style={{ marginTop: '20px' }}>
-                  <CheckBoxRadio
-                    id="includeInactive"
-                    label="Include Inactive"
-                    type="checkbox"
-                    onChange={this.handleCheckBoxChange}
-                    checked={this.props.includeInactive}
-                  />
-                </div>
-                <div className="col-md-4">
-                  <DropDown
-                    id="searchOfficeName"
-                    selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
-                    options={officesList}
-                    placeholder={`Filter by Office Name (${officesList.length})`}
-                    onChange={officesList => this.handleOfficeChange(officesList)}
-                    multiSelect={true}
-                  />
-                </div>
-              </div>
-              <div>
-                {this.renderUsersTable({
-                  data: this.props.userList,
-                  officesList,
-                  rolesList: this.props.rolesList,
-                })}
-              </div>
-            </div>
-          ) : (
-            ''
+      <Fragment>
+        <Cards cardHeaderText={'Search Existing User Accounts'} columnMediumWidth={9} columnLargeWidth={9} columnXsmallWidth={9}>
+          <br />
+          <span>
+            Search using any combination of the fields below. The ability to create a new user is available after a search has
+            been conducted.{' '}
+          </span>
+          <br />
+          <SearchUsers
+            lastName={lastName}
+            firstName={firstName}
+            email={email}
+            CWSLogin={CWSLogin}
+            isDisabledSearchBtn={this.isDisabledSearchBtn}
+            handleInput={this.handleOnInput}
+            handleOnSearch={this.submitSearch}
+            handleOnCreateUser={this.handleOnAdd}
+          />
+          {this.props.error && (
+            <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
+              <strong>Oh no!</strong> An unexpected error occurred!
+            </Alert>
           )}
+          <br />
+          <div>
+            {this.props.searchedForUsers ? (
+              <div className="row">
+                <div className="col-md-12">
+                  <hr
+                    style={{
+                      width: '105.8%',
+                      height: '1px',
+                      border: 'none',
+                      color: '#333',
+                      backgroundColor: '#333',
+                      marginLeft: '-30px',
+                    }}
+                  />
+                  <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px' }}>
+                    <span>Results found based on Search Criteria</span>
+                  </div>
+                  <div className="col-md-3" style={{ marginTop: '20px' }}>
+                    <CheckBoxRadio
+                      id="includeInactive"
+                      label="Include Inactive"
+                      type="checkbox"
+                      onChange={this.handleCheckBoxChange}
+                      checked={this.props.includeInactive}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <DropDown
+                      id="searchOfficeName"
+                      selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
+                      options={officesList}
+                      placeholder={`Filter by Office Name (${officesList.length})`}
+                      onChange={officesList => this.handleOfficeChange(officesList)}
+                      multiSelect={true}
+                    />
+                  </div>
+                </div>
+                <div>
+                  {this.renderUsersTable({
+                    data: this.props.userList,
+                    officesList,
+                    rolesList: this.props.rolesList,
+                  })}
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
+        </Cards>
+        <div className="tilesPanel col-md-3">
+          {this.props.searchPageTiles.map((searchPageTile, index) => (
+            <CommonTile
+              key={index}
+              query={searchPageTile.query}
+              count={searchPageTile.count}
+              title={searchPageTile.title}
+              type={searchPageTile.type}
+              setSearchForTiles={this.props.actions.setSearchForTiles}
+            />
+          ))}
         </div>
-      </Cards>
+      </Fragment>
     )
   }
 
@@ -308,6 +323,7 @@ SearchUserList.propTypes = {
   auditEvents: PropTypes.array,
   userDetails: PropTypes.object,
   displayChangeLog: PropTypes.bool,
+  searchPageTiles: PropTypes.array,
   searchedForUsers: PropTypes.bool,
 }
 

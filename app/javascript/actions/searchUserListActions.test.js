@@ -7,6 +7,7 @@ import {
   setSort,
   fetchAccountActions,
   handleCheckBoxChangeActions,
+  setSearchForTiles,
 } from './searchUserListActions'
 import {
   FETCH_USERS_API_CALL_REQUEST,
@@ -64,6 +65,16 @@ describe('SearchUserListActions Actions', () => {
       expect(setSearch(query)).toEqual({
         type: USER_LIST_SET_SEARCH,
         payload: query,
+      })
+    })
+  })
+
+  describe('#setSearchForTiles', () => {
+    it('returns type and payload', () => {
+      const query = {}
+      expect(setSearchForTiles('GET_ACTIVE_USERS_REQUEST', query)).toEqual({
+        payload: { query: {} },
+        type: 'GET_ACTIVE_USERS_REQUEST',
       })
     })
   })

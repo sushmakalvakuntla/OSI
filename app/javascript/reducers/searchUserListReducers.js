@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes'
 import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
+import { getTilesInitialState, modifyTileData } from '../_utils/commonHelper'
 
 const initialValue = {
   sort: [
@@ -25,6 +26,11 @@ const initialValue = {
   error: null,
   inputData: {},
   adminAccountDetails: {},
+  searchPageTiles: [
+    getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
+    getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
+    getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
+  ],
   includeInactive: true,
 }
 
@@ -49,6 +55,66 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
+        users: null,
+      }
+
+    case actionTypes.GET_ACTIVE_USERS_REQUEST:
+      return { ...state, fetching: true, error: null, query: payload.query }
+
+    case actionTypes.GET_ACTIVE_USERS_SUCCESS:
+      modifyTileData(state.searchPageTiles, 'Active Users', payload)
+      return {
+        ...state,
+        searchPageTiles: [...state.searchPageTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_ACTIVE_USERS_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
+        users: null,
+      }
+
+    case actionTypes.GET_LOCKED_USERS_REQUEST:
+      return { ...state, fetching: true, error: null, query: payload.query }
+
+    case actionTypes.GET_LOCKED_USERS_SUCCESS:
+      modifyTileData(state.searchPageTiles, 'Locked Users', payload)
+      return {
+        ...state,
+        searchPageTiles: [...state.searchPageTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_LOCKED_USERS_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
+        users: null,
+      }
+
+    case actionTypes.GET_INACTIVE_USERS_REQUEST:
+      return { ...state, fetching: true, error: null, query: payload.query }
+
+    case actionTypes.GET_INACTIVE_USERS_SUCCESS:
+      modifyTileData(state.searchPageTiles, 'Inactive Users', payload)
+      return {
+        ...state,
+        searchPageTiles: [...state.searchPageTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_INACTIVE_USERS_FAILURE:
       return {
         ...state,
         error,

@@ -10,6 +10,7 @@ import {
   handleSearchChange,
   fetchAccountActions,
   handleCheckBoxChangeActions,
+  setSearchForTiles,
 } from '../actions/searchUserListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
@@ -50,6 +51,7 @@ function mapStateToProps(state) {
     userOfficeName: officeName(state),
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
+    searchPageTiles: searchUserList.searchPageTiles,
   }
 }
 
@@ -72,6 +74,7 @@ function mapDispatchToProps(dispatch) {
         fetchChangeLogAdminDetailsActions,
         fetchAuditEventsActions,
         fetchDetailsActions,
+        setSearchForTiles,
       },
       dispatch
     ),

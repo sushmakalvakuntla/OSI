@@ -14,6 +14,7 @@ describe('SearchUserList', () => {
   let mockClearAddedUserDetailActions
   let mockHandleCheckBoxChangeActions
   let mockSetSearchActions
+  let mockSetSearchForTiles
   let mockFetchChangeLogAdminDetailsActions
   let mockFetchDetailsActions
   let mockClearAuditEvents
@@ -55,6 +56,24 @@ describe('SearchUserList', () => {
     email: 'email@email.com',
   }
 
+  const searchPageTiles = [
+    {
+      title: 'user Type',
+      type: 'action',
+      query: [
+        {
+          field: 'fieldType1',
+          value: 'value1',
+        },
+        {
+          field: 'fieldType2',
+          value: 'value2',
+        },
+      ],
+      count: 0,
+    },
+  ]
+
   beforeEach(() => {
     mockSetPageActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockSetPageSizeActions = jest.fn().mockReturnValue(Promise.resolve([]))
@@ -64,6 +83,7 @@ describe('SearchUserList', () => {
     mockHandleSearchChange = jest.fn().mockReturnValue(Promise.resolve([]))
     mockClearAddedUserDetailActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockSetSearchActions = jest.fn().mockReturnValue(Promise.resolve([]))
+    mockSetSearchForTiles = jest.fn().mockReturnValue(Promise.resolve([]))
     mockHandleCheckBoxChangeActions = jest.fn()
     mockFetchChangeLogAdminDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockFetchDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
@@ -83,6 +103,7 @@ describe('SearchUserList', () => {
           clearAddedUserDetailActions: mockClearAddedUserDetailActions,
           handleCheckBoxChangeActions: mockHandleCheckBoxChangeActions,
           setSearch: mockSetSearchActions,
+          setSearchForTiles: mockSetSearchForTiles,
           fetchChangeLogAdminDetailsActions: mockFetchChangeLogAdminDetailsActions,
           fetchDetailsActions: mockFetchDetailsActions,
           fetchAuditEventsActions: mockFetchAuditEventsActions,
@@ -91,6 +112,7 @@ describe('SearchUserList', () => {
         cardHeaderValue="County: CountyName"
         query={query}
         includeInactive={false}
+        searchPageTiles={searchPageTiles}
         searchedForUsers={true}
         officesList={['office1', 'office2']}
       />,
@@ -147,6 +169,7 @@ describe('SearchUserList', () => {
           cardHeaderValue="State Administrator view"
           auditEvents={auditEvents}
           userDetails={details}
+          searchPageTiles={searchPageTiles}
         />
       )
       expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
@@ -241,6 +264,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          searchPageTiles={searchPageTiles}
         />
       )
       const newQuery = [
@@ -279,6 +303,7 @@ describe('SearchUserList', () => {
           includeInactive={true}
           auditEvents={auditEvents}
           userDetails={details}
+          searchPageTiles={searchPageTiles}
         />
       )
       const newQuery = [
@@ -381,6 +406,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          searchPageTiles={searchPageTiles}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(true)
@@ -406,6 +432,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          searchPageTiles={searchPageTiles}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(false)
@@ -440,6 +467,7 @@ describe('SearchUserList', () => {
     let mockFetchOfficeListActions
     let mockFetchRolesActions
     let mockSetSearch
+    let mockSetSearchForTiles
     let mockSetPage
     let mockClearAddedUserDetailActions
 
@@ -448,6 +476,7 @@ describe('SearchUserList', () => {
       mockFetchOfficeListActions = jest.fn()
       mockFetchRolesActions = jest.fn()
       mockSetSearch = jest.fn()
+      mockSetSearchForTiles = jest.fn()
       mockSetPage = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
       wrapper = mount(
@@ -458,6 +487,7 @@ describe('SearchUserList', () => {
             fetchOfficesActions: mockFetchOfficeListActions,
             fetchRolesActions: mockFetchRolesActions,
             setSearch: mockSetSearch,
+            setSearchForTiles: mockSetSearchForTiles,
             setPage: mockSetPage,
             clearAddedUserDetailActions: mockClearAddedUserDetailActions,
             fetchAuditEventsActions: mockFetchAuditEventsActions,
@@ -476,6 +506,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
           changeLogAdminOfficeName={'Admin Office'}
+          searchPageTiles={searchPageTiles}
         />
       )
     })
@@ -521,6 +552,7 @@ describe('SearchUserList', () => {
           selectedOfficesList={['somevalue']}
           includeInactive={false}
           auditEvents={auditEvents}
+          searchPageTiles={searchPageTiles}
           searchedForUsers={true}
         />
       )
