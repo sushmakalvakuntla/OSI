@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes'
 import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
-import { getTilesInitialState } from '../_utils/commonHelper'
+import { getTilesInitialState, modifyTileData } from '../_utils/commonHelper'
 
 const initialValue = {
   sort: [
@@ -66,7 +66,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
       return { ...state, fetching: true, error: null, query: payload.query }
 
     case actionTypes.GET_ACTIVE_USERS_SUCCESS:
-      state.searchPageTiles[0].count = payload.meta.total
+      modifyTileData(state.searchPageTiles, 'Active Users', payload)
       return {
         ...state,
         searchPageTiles: [...state.searchPageTiles],
@@ -86,7 +86,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
       return { ...state, fetching: true, error: null, query: payload.query }
 
     case actionTypes.GET_LOCKED_USERS_SUCCESS:
-      state.searchPageTiles[1].count = payload.meta.total
+      modifyTileData(state.searchPageTiles, 'Locked Users', payload)
       return {
         ...state,
         searchPageTiles: [...state.searchPageTiles],
@@ -106,7 +106,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
       return { ...state, fetching: true, error: null, query: payload.query }
 
     case actionTypes.GET_INACTIVE_USERS_SUCCESS:
-      state.searchPageTiles[2].count = payload.meta.total
+      modifyTileData(state.searchPageTiles, 'Inactive Users', payload)
       return {
         ...state,
         searchPageTiles: [...state.searchPageTiles],

@@ -41,6 +41,7 @@ export const setSearch = query => ({
 
 /**
  * Set search for tiles
+ * @param {string} type
  * @param {Object[]} query
  * @param {string} query[].field Identifier for the field on which to search
  * @param {string|number|boolean} query[].value Value on which to search
