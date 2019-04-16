@@ -148,10 +148,12 @@ class SearchUserList extends PureComponent {
   handleOfficeChange = officesList => {
     this.props.actions.handleSearchChange('officeNames', officesList.map(selectedOptions => selectedOptions.value))
     const selectedOffices = officesList.map(selectedOptions => selectedOptions.value)
-    this.props.actions.setSearch([{ field: 'office_ids', value: selectedOffices }])
+    this.props.actions.setSearch([
+      { field: 'office_ids', value: selectedOffices },
+      { field: 'last_name', value: this.props.lastName },
+    ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
-
   handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
 
   renderComponents = () => {
