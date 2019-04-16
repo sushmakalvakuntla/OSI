@@ -37,12 +37,14 @@ describe Elastic::UserQueryBuilder do
       expect(output).to eq(expected_output)
     end
 
-    it 'processes the combination of last name, first name, and office parameters' do
+    it 'processes the combination of last name, first name, email, racfid and office parameters' do
       expected_output = {
         query: {
           bool: {
             must: [
               { terms: { 'office_id.keyword': %w[north south east west] } },
+              { match: { 'email.keyword': 'example+john@example.com' } },
+              { match: { 'racfid.keyword': 'RACFID' } },
               {
                 bool: {
                   should: [
@@ -61,7 +63,9 @@ describe Elastic::UserQueryBuilder do
       }
       input_query = { "query": [{ "field": 'last_name', "value": 'Smith' },
                                 { "field": 'first_name', "value": 'John' },
-                                { "field": 'office_ids', "value": %w[north south east west] }],
+                                { "field": 'office_ids', "value": %w[north south east west] },
+                                { "field": 'email', "value": 'example+john@example.com' },
+                                { "field": 'racfid', "value": 'RACFID' }],
                       "sort": [], "size": 50, "from": 0 }
 
       output = Elastic::UserQueryBuilder.get_search(input_query)

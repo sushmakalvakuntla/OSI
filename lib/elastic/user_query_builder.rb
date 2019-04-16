@@ -4,8 +4,7 @@ module Elastic
   class UserQueryBuilder
     include QueryBuilder
     def self.get_search(request)
-      query(request[:query])
-        .merge(paginate_query(request)).merge(sort_query)
+      query(request[:query]).merge(paginate_query(request)).merge(sort_query)
     end
 
     def self.query(query)
@@ -45,33 +44,27 @@ module Elastic
       end,
       first_name: lambda do |value|
         unless value.empty?
-          { conjunction: 'OR', query: {
-            match_phrase_prefix: { first_name: value }
-          } }
+          { conjunction: 'OR', query: { match_phrase_prefix: { first_name: value } } }
         end
       end,
       office_ids: lambda do |value|
-        unless value.empty?
-          { conjunction: 'AND', query:
-            { terms: { 'office_id.keyword': value } } }
-        end
+        { conjunction: 'AND', query: { terms: { 'office_id.keyword': value } } } unless value.empty?
+      end,
+      email: lambda do |value|
+        { conjunction: 'AND', query: { match: { 'email.keyword': value } } } unless value.empty?
+      end,
+      racfid: lambda do |value|
+        { conjunction: 'AND', query: { match: { 'racfid.keyword': value } } } unless value.empty?
       end,
       enabled: lambda do |value|
-        unless value.to_s.empty?
-          { conjunction: 'AND', query:
-            { term: { enabled: value.to_s } } }
-        end
+        { conjunction: 'AND', query: { term: { enabled: value.to_s } } } unless value.to_s.empty?
       end,
       locked: lambda do |value|
-        unless value.to_s.empty?
-          { conjunction: 'AND', query:
-            { term: { locked: value.to_s } } }
-        end
+        { conjunction: 'AND', query: { term: { locked: value.to_s } } } unless value.to_s.empty?
       end,
       status: lambda do |value|
         unless value.empty?
-          { conjunction: 'AND', query:
-            { match_phrase_prefix: { status: value } } }
+          { conjunction: 'AND', query: { match_phrase_prefix: { status: value } } }
         end
       end
     }.freeze
@@ -83,30 +76,18 @@ module Elastic
 
     def self.bool_and_query(query_leaves)
       {
-        query: {
-          bool: {
-            must: query_leaves
-          }
-        }
+        query: { bool: { must: query_leaves } }
       }
     end
 
     def self.bool_or_query(leaves)
       or_leaves = leaves.select { |s| s[:conjunction] == 'OR' }
       query_leaves = or_leaves.map { |s| s[:query] }
-      {
-        bool: {
-          should: query_leaves
-        }
-      }
+      { bool: { should: query_leaves } }
     end
 
     def self.match_all
-      {
-        query: {
-          match_all: {}
-        }
-      }
+      { query: { match_all: {} } }
     end
   end
 end
