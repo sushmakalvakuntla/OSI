@@ -243,20 +243,6 @@ describe('SearchUserList', () => {
     })
   })
 
-  describe('#getChangeLogAdminDetails', () => {
-    it('should fetch changeLog admin details when event is triggered', () => {
-      wrapper.instance().getChangeLogAdminDetails('SOME_ID')
-      expect(mockFetchChangeLogAdminDetailsActions).toHaveBeenCalledWith('SOME_ID')
-    })
-  })
-
-  describe('#getChangeLogUserDetails', () => {
-    it('should fetch changeLog admin details when event is triggered', () => {
-      wrapper.instance().getChangeLogUserDetails('SOME_ID')
-      expect(mockFetchDetailsActions).toHaveBeenCalledWith('SOME_ID')
-    })
-  })
-
   describe('#submitSearch', () => {
     it('calls the setSearch Actions', () => {
       const wrapperLocal = shallow(

@@ -151,14 +151,6 @@ class SearchUserList extends PureComponent {
     )
   }
 
-  getChangeLogAdminDetails = value => {
-    this.props.actions.fetchChangeLogAdminDetailsActions(value)
-  }
-
-  getChangeLogUserDetails = value => {
-    this.props.actions.fetchDetailsActions(value)
-  }
-
   handleOfficeChange = officesList => {
     this.props.actions.handleSearchChange('officeNames', officesList.map(selectedOptions => selectedOptions.value))
     const selectedOffices = officesList.map(selectedOptions => selectedOptions.value)
@@ -279,8 +271,8 @@ class SearchUserList extends PureComponent {
                 <div className="col-md-12 card-margin">
                   <ChangeLog
                     auditEvents={this.props.auditEvents}
-                    getAdminDetails={this.getChangeLogAdminDetails}
-                    getUserDetails={this.getChangeLogUserDetails}
+                    getAdminDetails={this.props.actions.fetchChangeLogAdminDetailsActions}
+                    getUserDetails={this.props.actions.fetchDetailsActions}
                     adminDetails={this.props.changeLogAdminDetails}
                     userDetails={this.props.userDetails}
                     userOfficeName={this.props.userOfficeName}
@@ -352,5 +344,6 @@ SearchUserList.defaultProps = {
   officesList: [],
   lastName: '',
   officeNames: [],
+  searchPageTiles: [],
 }
 export default SearchUserList
