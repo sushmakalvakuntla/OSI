@@ -13,6 +13,7 @@ const SearchUsers = ({
   handleOnSearch,
   handleOnCreateUser,
   handleInput,
+  isDisabledAddUsrBtn,
 }) => (
   <div>
     <div className="row">
@@ -93,7 +94,7 @@ const SearchUsers = ({
               id=""
               type="create"
               onClick={handleOnCreateUser}
-              disabled={false}
+              disabled={isDisabledAddUsrBtn()}
             >
               CREATE A NEW USER
             </Button>
@@ -113,6 +114,7 @@ SearchUsers.propTypes = {
   handleOnCreateUser: PropTypes.func,
   handleOnSearch: PropTypes.func,
   handleInput: PropTypes.func,
+  isDisabledAddUsrBtn: PropTypes.func,
 }
 
 export default SearchUsers
