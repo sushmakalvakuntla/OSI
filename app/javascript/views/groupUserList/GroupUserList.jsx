@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
+import { Link as LinkRWD, PageHeader } from 'react-wood-duck'
 import { Link } from 'react-router-dom'
 import Cards from '../../common/Card'
 import ReactTable from 'react-table'
@@ -11,23 +11,19 @@ import queryString from 'query-string'
 class GroupUserList extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      users: []
-    }
-  }
-
-  componentDidMount() {
-    const filterType = queryString.parse(this.props.location.search).filterType;
+    const filterType = queryString.parse(this.props.location.search).filterType
     if (filterType) {
-        this.setState({users: this.findUsersList(filterType) });
+      this.state = { users: this.findUsersList(filterType) }
+    } else {
+      this.state = { users: [] }
     }
   }
 
   findUsersList(filterType) {
-    return this.props.searchPageTiles.filter((tile) => tile.type === filterType)[0].users;
+    return this.props.searchPageTiles.filter(tile => tile.type === filterType)[0].users
   }
 
-  renderUsersTable = ({ data, officesList, rolesList}) => {
+  renderUsersTable = ({ data, officesList, rolesList }) => {
     const translateOffice = getOfficeTranslator(officesList)
     const translateRoles = data => formatRoles(data.roles, rolesList)
     return (
@@ -43,11 +39,11 @@ class GroupUserList extends PureComponent {
             { Header: 'Role', id: 'user_role', accessor: translateRoles },
           ]}
           manual
-          showPagination = {false}
+          showPagination={false}
           sorted={this.props.sort.map(d => ({ id: d.field, desc: d.desc }))}
           sortable={false}
           loading={this.props.fetching}
-//          onFetchData={this.search}
+          //          onFetchData={this.search}
           className="-striped -highlight"
           onSortedChange={this.handleSortChange}
         />
@@ -69,20 +65,20 @@ class GroupUserList extends PureComponent {
   }
 
   renderComponents = () => {
-    const { officesList, officeNames, lastName, firstName, email, CWSLogin } = this.props
+    const { officesList, rolesList } = this.props
     return (
       <Fragment>
         <Cards cardHeaderText={'Filter User List'} columnMediumWidth={9} columnLargeWidth={9} columnXsmallWidth={9}>
           <div>
-              <div className="row">
-                <div>
-                  {this.renderUsersTable({
-                    data: this.state.users,
-                    officesList,
-                    rolesList: this.props.rolesList,
-                  })}
-                </div>
+            <div className="row">
+              <div>
+                {this.renderUsersTable({
+                  data: this.state.users,
+                  officesList,
+                  rolesList,
+                })}
               </div>
+            </div>
           </div>
         </Cards>
       </Fragment>
@@ -94,11 +90,11 @@ class GroupUserList extends PureComponent {
       <div role="main">
         {
           <div>
-              <PageHeader pageTitle="Filter User List" button="" />
-              <div className="container">
-                {this.renderBreadcrumb()}
-                {this.renderComponents()}
-              </div>
+            <PageHeader pageTitle="Filter User List" button="" />
+            <div className="container">
+              {this.renderBreadcrumb()}
+              {this.renderComponents()}
+            </div>
           </div>
         }
       </div>
@@ -107,6 +103,11 @@ class GroupUserList extends PureComponent {
 }
 
 GroupUserList.propTypes = {
+  searchPageTiles: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  rolesList: PropTypes.array,
+  officesList: PropTypes.array,
   fetching: PropTypes.bool,
   userList: PropTypes.array,
   dashboardUrl: PropTypes.string,

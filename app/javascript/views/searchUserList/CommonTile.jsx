@@ -18,17 +18,24 @@ class CommonTile extends Component {
   }
 
   renderViewLink() {
-    if (this.props.count === 0 )   {
-      return;
+    if (this.props.count === 0) {
+      return <div />
     }
     return (
       <div className="text-right">
-              {<Link to={{pathname: "/user_group_search",
-                          search: "?filterType=" + this.props.type}}>View</Link>}
+        {
+          <Link
+            to={{
+              pathname: '/user_group_search',
+              search: `?filterType=${this.props.type}`,
+            }}
+          >
+            View
+          </Link>
+        }
       </div>
-    );
+    )
   }
-
 }
 
 CommonTile.propTypes = {

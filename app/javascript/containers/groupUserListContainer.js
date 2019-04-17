@@ -5,11 +5,11 @@ import { officesList } from '../selectors/officeListSelector'
 import { rolesList } from '../selectors/rolesListSelector'
 
 function mapStateToProps(state) {
-const { searchUserList } = state
+  const { searchUserList } = state
   return {
-      officesList: officesList(state),
-      rolesList: rolesList(state),
-      searchPageTiles: searchUserList.searchPageTiles,
+    officesList: officesList(state),
+    rolesList: rolesList(state),
+    searchPageTiles: searchUserList.searchPageTiles,
   }
 }
 
@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       {
-        //empty for now
+        // empty for now
       },
       dispatch
     ),
