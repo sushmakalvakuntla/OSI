@@ -165,6 +165,13 @@ module UserListPageHelper
                     .click
   end
 
+  def undo_all_search
+    # will be changed to click RESET SEARCH SOON
+    clear_offices_from_select
+    safe_fill_in_last_name('')
+    click_on 'SEARCH'
+  end
+
   def search_by_office(office_name, last_name = '', include_inactive = false)
     # TODO: expand this to cover all three elements
     # return if find_field('Search user list').value == last_name
@@ -275,5 +282,10 @@ module UserListPageHelper
 
   def has_more_pages?
     current_page_number < total_pages
+  end
+
+  def check_the_button(button_name, disabled_status)
+    puts "checking '#{button_name}' button for '#{disabled_status}' status"
+    expect(page).to have_button(button_name, disabled: disabled_status)
   end
 end

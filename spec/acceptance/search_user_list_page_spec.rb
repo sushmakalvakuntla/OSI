@@ -15,7 +15,7 @@ feature 'User List Page' do
     pending 'page has accessibility issues'
     login
     page_has_basic_text
-    click_add_user
+    # click_add_user - will check its availability while status check
     click_link 'User List'
     page_has_basic_text
     puts current_url
@@ -52,5 +52,15 @@ feature 'User List Page' do
 
     expect(second_count).to be <= first_count
     puts "count users #{second_count}"
+  end
+
+  scenario 'create user button is disabled before search and enabled after' do
+    login
+    undo_all_search
+    sleep 2
+    check_the_button('CREATE A NEW USER', true)
+    search_users(last_name: 'Man')
+    sleep 2
+    check_the_button('CREATE A NEW USER', false)
   end
 end

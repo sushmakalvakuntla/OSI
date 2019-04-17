@@ -75,6 +75,20 @@ class SearchUserList extends PureComponent {
     return lastNameSearch && lastNameSearch.value === lastName
   }
 
+  isSearchValueAbsent = node => {
+    return !node || !node.value.length
+  }
+
+  isDisabledAddUsrBtn = () => {
+    const { query } = this.props
+    const lastName = query.find(({ field }) => field === 'last_name')
+    const firstName = query.find(({ field }) => field === 'first_name')
+    const officeSearch = query.find(({ field }) => field === 'office_ids')
+    const racfid = query.find(({ field }) => field === 'racfid')
+    const email = query.find(({ field }) => field === 'email')
+    return [lastName, firstName, officeSearch, racfid, email].every(this.isSearchValueAbsent)
+  }
+
   getTotalPages = () => {
     const { userList: records, total, size } = this.props
     if (!records) return -1
@@ -176,6 +190,7 @@ class SearchUserList extends PureComponent {
             handleInput={this.handleOnInput}
             handleOnSearch={this.submitSearch}
             handleOnCreateUser={this.handleOnAdd}
+            isDisabledAddUsrBtn={this.isDisabledAddUsrBtn}
           />
           {this.props.error && (
             <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>

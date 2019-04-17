@@ -5,9 +5,16 @@ import SearchUsers from './SearchUsers'
 describe('SearchUsers', () => {
   const isDisabledSearchBtn = jest.fn()
   const handleInput = jest.fn()
+  const isDisabledAddUsrBtn = jest.fn()
   let wrapper
   beforeEach(() => {
-    wrapper = shallow(<SearchUsers isDisabledSearchBtn={isDisabledSearchBtn} handleInput={handleInput} />)
+    wrapper = shallow(
+      <SearchUsers
+        isDisabledSearchBtn={isDisabledSearchBtn}
+        handleInput={handleInput}
+        isDisabledAddUsrBtn={isDisabledAddUsrBtn}
+      />
+    )
   })
 
   describe('renders the components', () => {

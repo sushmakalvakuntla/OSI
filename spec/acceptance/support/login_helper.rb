@@ -115,7 +115,7 @@ module LoginHelper
     {
       'user': 'RACFID',
       'staffId': 'aa1',
-      'roles': ['CWS-admin', 'County-admin'],
+      'roles': ['State-admin'],
       'county_code': '56',
       'county_cws_code': '1123',
       'county_name': 'Madera',

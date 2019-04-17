@@ -395,28 +395,14 @@ describe('SearchUserList', () => {
         field: 'last_name',
         value: 'last_name_value',
       },
-      {
-        field: 'office_ids',
-        value: ['somevalue'],
-      },
     ]
     it('returns true when query and entered search criteria are same', () => {
       const component = shallow(
         <SearchUserList
           dashboardUrl={'dburl'}
-          actions={{
-            searchUsers: () => {},
-            fetchAccountActions: () => {},
-            fetchOfficesActions: () => {},
-            fetchRolesActions: () => {},
-            setSearch: () => {},
-            setPage: () => {},
-            clearAddedUserDetailActions: () => {},
-            fetchAuditEventsActions: () => {},
-          }}
+          actions={defaultEmptyActions}
           query={query}
           lastName="last_name_value"
-          officeNames={['somevalue']}
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
@@ -430,19 +416,9 @@ describe('SearchUserList', () => {
       const component = shallow(
         <SearchUserList
           dashboardUrl={'dburl'}
-          actions={{
-            searchUsers: () => {},
-            fetchAccountActions: () => {},
-            fetchOfficesActions: () => {},
-            fetchRolesActions: () => {},
-            setSearch: () => {},
-            setPage: () => {},
-            clearAddedUserDetailActions: () => {},
-            fetchAuditEventsActions: () => {},
-          }}
+          actions={defaultEmptyActions}
           query={query}
           lastName="new_last_name"
-          officeNames={['new_value']}
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
@@ -450,6 +426,137 @@ describe('SearchUserList', () => {
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(false)
+    })
+  })
+
+  describe('#isDisabledAddUsrBtn', () => {
+    it('returns true when search query contains all empty fields', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={allEmptySearchQuery}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(true)
+    })
+
+    it('returns false when search query contains non-empty last_name field', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={prepareQuery('last_name')}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
+    })
+
+    it('returns false when search query contains non-empty first_name field', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={prepareQuery('first_name')}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
+    })
+
+    it('returns false when search query contains non-empty email field', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={prepareQuery('email')}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
+    })
+
+    it('returns false when search query contains non-empty racfid field', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={prepareQuery('racfid')}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
+    })
+
+    it('returns false when search query contains non-empty office-ids field', () => {
+      const query = [
+        {
+          field: 'office_ids',
+          value: ['some_value1', 'some_value2'],
+        },
+      ]
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={query}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
+    })
+
+    it('returns true when search query is empty', () => {
+      const query = []
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          query={query}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledAddUsrBtn()).toEqual(true)
+    })
+  })
+
+  describe('#isSearchValueAbsent', () => {
+    it('returns true for undefined node', () => {
+      let node
+      expect(wrapper.instance().isSearchValueAbsent(node)).toBe(true)
+    })
+
+    it('returns true for zero-sized value', () => {
+      const node = { field: 'last_name', value: '' }
+      expect(wrapper.instance().isSearchValueAbsent(node)).toBe(true)
+    })
+
+    it('returns false for non-empty value', () => {
+      const node = { field: 'last_name', value: 'some_name' }
+      expect(wrapper.instance().isSearchValueAbsent(node)).toBe(false)
     })
   })
 
@@ -608,4 +715,45 @@ describe('SearchUserList', () => {
       expect(SearchUserList.defaultProps.dashboardClickHandler).not.toThrow()
     })
   })
+
+  function prepareQuery(fieldName) {
+    const result = allEmptySearchQuery.slice()
+    const objIndex = result.findIndex(obj => obj.field === fieldName)
+    result[objIndex].value = 'new_value'
+    return result
+  }
+
+  const defaultEmptyActions = {
+    searchUsers: () => {},
+    fetchAccountActions: () => {},
+    fetchOfficesActions: () => {},
+    fetchRolesActions: () => {},
+    setSearch: () => {},
+    setPage: () => {},
+    clearAddedUserDetailActions: () => {},
+    fetchAuditEventsActions: () => {},
+  }
+
+  const allEmptySearchQuery = [
+    {
+      field: 'last_name',
+      value: '',
+    },
+    {
+      field: 'first_name',
+      value: '',
+    },
+    {
+      field: 'office_ids',
+      value: [],
+    },
+    {
+      field: 'racfid',
+      value: '',
+    },
+    {
+      field: 'email',
+      value: '',
+    },
+  ]
 })
