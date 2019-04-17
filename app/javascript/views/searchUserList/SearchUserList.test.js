@@ -210,13 +210,27 @@ describe('SearchUserList', () => {
   })
 
   describe('#handleOfficeChange', () => {
-    it('Office change calls handleSearchChange Actions', () => {
-      const newQuery = [{ field: 'office_ids', value: ['offices1'] }]
+    it('Office change calls handleOfficeChange Actions', () => {
+      const newQuery = [{ field: 'office_ids', value: ['offices1'] }, { field: 'last_name', value: '' }]
       const offices = [{ value: 'offices1', label: 'OfficeOne' }]
       wrapper.find('#searchOfficeName').simulate('change', offices)
       expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
       expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
-      expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({ query: [{ field: 'office_ids', value: ['offices1'] }] })
+      expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({
+        query: [{ field: 'office_ids', value: ['offices1'] }],
+      })
+    })
+
+    it('Office change calls handleOfficeChange Actions with last name', () => {
+      const newQuery = [{ field: 'office_ids', value: ['offices1'] }, { field: 'last_name', value: 'SOME_LAST_NAME' }]
+      const offices = [{ value: 'offices1', label: 'OfficeOne' }]
+      wrapper.setProps({ lastName: 'SOME_LAST_NAME' })
+      wrapper.find('#searchOfficeName').simulate('change', offices)
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
+      expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
+      expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({
+        query: [{ field: 'office_ids', value: ['offices1'] }],
+      })
     })
   })
 
