@@ -30,7 +30,7 @@ module Elastic
 
     def self.query_leaves(query)
       query.map do |subquery|
-        Elastic::QueryBuilder.subquery_as_es(subquery, SUBQUERIES)
+        Elastic::QueryBuilder.subquery_as_es(subquery, SUBQUERIES) unless subquery[:value].blank?
       end.compact
     end
 
