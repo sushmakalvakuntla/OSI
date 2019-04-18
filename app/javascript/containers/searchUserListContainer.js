@@ -24,7 +24,7 @@ import { fetchChangeLogAdminDetailsActions, fetchDetailsActions } from '../actio
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { selectDetailRecords, officeName } from '../selectors/detailSelector'
 function mapStateToProps(state) {
-  const { searchUserList } = state
+  const { searchUserList, searchTilesReducer } = state
   return {
     userList: searchUserList.users || [],
     cardHeaderValue: cardHeaderText(state),
@@ -54,7 +54,7 @@ function mapStateToProps(state) {
     userOfficeName: officeName(state),
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
-    searchPageTiles: searchUserList.searchPageTiles,
+    searchPageTiles: searchTilesReducer.searchPageTiles,
   }
 }
 

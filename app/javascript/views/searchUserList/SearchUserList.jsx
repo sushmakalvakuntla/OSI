@@ -265,7 +265,7 @@ class SearchUserList extends PureComponent {
           {this.props.searchPageTiles.map((searchPageTile, index) => (
             <CommonTile
               key={index}
-              query={searchPageTile.query}
+              tilesQuery={searchPageTile.tilesQuery}
               count={searchPageTile.count}
               title={searchPageTile.title}
               type={searchPageTile.type}

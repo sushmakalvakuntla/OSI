@@ -1,7 +1,7 @@
 export const getTilesInitialState = (userType, action, fieldType1, value1, fieldType2, value2) => ({
   title: userType,
   type: action,
-  query: [
+  tilesQuery: [
     {
       field: fieldType1,
       value: value1,
