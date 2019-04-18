@@ -626,6 +626,11 @@ describe('SearchUserList', () => {
       expect(wrapper.instance().isSearchValueAbsent(node)).toBe(true)
     })
 
+    it('returns true when there is no value', () => {
+      const node = { field: 'first_name' }
+      expect(wrapper.instance().isSearchValueAbsent(node)).toBe(true)
+    })
+
     it('returns true for zero-sized value', () => {
       const node = { field: 'last_name', value: '' }
       expect(wrapper.instance().isSearchValueAbsent(node)).toBe(true)

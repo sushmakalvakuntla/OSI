@@ -84,7 +84,7 @@ class SearchUserList extends PureComponent {
   }
 
   isSearchValueAbsent = node => {
-    return !node || !node.value.length
+    return !node || !node.value || !node.value.length
   }
 
   isDisabledAddUsrBtn = () => {
