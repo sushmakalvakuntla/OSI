@@ -71,6 +71,24 @@ describe Elastic::UserQueryBuilder do
       output = Elastic::UserQueryBuilder.get_search(input_query)
       expect(output).to eq(expected_output)
     end
+    it 'processes the missing value parameters safely' do
+      expected_output = {
+        query: { match_all: {} },
+        from: 0,
+        size: 50,
+        sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
+               { "first_name.for_sort": { order: 'asc' } }]
+      }
+      input_query = { "query": [{ "field": 'last_name' },
+                                { "field": 'first_name' },
+                                { "field": 'office_ids' },
+                                { "field": 'email' },
+                                { "field": 'racfid'  }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
 
     it 'processes the combination of enabled and status parameters' do
       expected_output = {
