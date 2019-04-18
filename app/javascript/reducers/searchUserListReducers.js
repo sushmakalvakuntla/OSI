@@ -13,12 +13,24 @@ const initialValue = {
   size: 50,
   query: [
     {
+      field: 'first_name',
+      value: '',
+    },
+    {
       field: 'last_name',
       value: '',
     },
     {
       field: 'office_ids',
       value: [],
+    },
+    {
+      field: 'email',
+      value: '',
+    },
+    {
+      field: 'racfid',
+      value: '',
     },
   ],
   users: [],

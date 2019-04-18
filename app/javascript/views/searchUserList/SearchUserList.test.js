@@ -22,6 +22,10 @@ describe('SearchUserList', () => {
 
   const query = [
     {
+      field: 'first_name',
+      value: 'first_name_value',
+    },
+    {
       field: 'last_name',
       value: 'last_name_value',
     },
@@ -115,6 +119,10 @@ describe('SearchUserList', () => {
         searchPageTiles={searchPageTiles}
         searchedForUsers={true}
         officesList={['office1', 'office2']}
+        firstName=""
+        lastName=""
+        email=""
+        CWSLogin=""
       />,
       {
         disableLifecycleMethods: true,
@@ -163,6 +171,9 @@ describe('SearchUserList', () => {
           adminAccountDetails={{ roles: ['State-admin'] }}
           query={query}
           lastName="last_name_value"
+          firstName="first_name_value"
+          racfid="RACFID"
+          email="email+address@example.com"
           officeNames={['north', 'south', 'east', 'west']}
           includeInactive={false}
           officeList={[{ value: 'someOffice1', label: 'someOfficeOne' }, { value: 'someOffice2', label: 'someOfficeTwo' }]}
@@ -190,6 +201,13 @@ describe('SearchUserList', () => {
   describe('#handleOnInput', () => {
     it('sets state based on the user action', () => {
       const myFunction = wrapper.instance().handleOnInput
+      expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+    })
+  })
+
+  describe('#handleEmailSearch', () => {
+    it('sets state based on the user action', () => {
+      const myFunction = wrapper.instance().handleEmailSearch
       expect(() => myFunction('Hello@gmail.com')).not.toThrow()
     })
   })
@@ -234,6 +252,26 @@ describe('SearchUserList', () => {
     })
   })
 
+  describe('#validateEmailField', () => {
+    it('validates email when correct format and special characters are given as input', () => {
+      const instance = wrapper.instance()
+      instance.validateEmailField('foo@gmail.com')
+      expect(wrapper.instance().state.errorMessage).toEqual('')
+      instance.validateEmailField(`foo!#$%^....&*-_+={'?/@gmail.com`)
+      expect(wrapper.instance().state.errorMessage).toEqual('')
+    })
+
+    it('validates email when not allowed characters are given as input', () => {
+      const instance = wrapper.instance()
+      instance.validateEmailField('foo@<|}][()>@gmail.com')
+      expect(wrapper.instance().state.errorMessage).toEqual('Please enter a valid email.')
+      instance.validateEmailField('fo@o@gmail.com')
+      expect(wrapper.instance().state.errorMessage).toEqual('Please enter a valid email.')
+      instance.validateEmailField('someValue')
+      expect(wrapper.instance().state.errorMessage).toEqual('Please enter a valid email.')
+    })
+  })
+
   describe('#handlePageSizeChange', () => {
     it('calls the setPageSize Actions', () => {
       const pageIndex = 'someValue'
@@ -259,7 +297,10 @@ describe('SearchUserList', () => {
             setSearch: mockSetSearchActions,
           }}
           query={query}
+          firstName="first_name_value"
           lastName="last_name_value"
+          email="email+address@example.com"
+          CWSLogin="RACFID"
           officeNames={['north', 'south', 'east', 'west']}
           includeInactive={false}
           auditEvents={auditEvents}
@@ -269,12 +310,24 @@ describe('SearchUserList', () => {
       )
       const newQuery = [
         {
+          field: 'first_name',
+          value: 'first_name_value',
+        },
+        {
           field: 'last_name',
           value: 'last_name_value',
         },
         {
           field: 'office_ids',
           value: ['north', 'south', 'east', 'west'],
+        },
+        {
+          field: 'email',
+          value: 'email+address@example.com',
+        },
+        {
+          field: 'racfid',
+          value: 'RACFID',
         },
         { field: 'enabled', value: true },
       ]
@@ -298,8 +351,11 @@ describe('SearchUserList', () => {
             setSearch: mockSetSearchActions,
           }}
           query={query}
+          firstName="first_name_value"
           lastName="last_name_value"
           officeNames={['north', 'south', 'east', 'west']}
+          CWSLogin="RACFID"
+          email="email+address@example.com"
           includeInactive={true}
           auditEvents={auditEvents}
           userDetails={details}
@@ -308,12 +364,24 @@ describe('SearchUserList', () => {
       )
       const newQuery = [
         {
+          field: 'first_name',
+          value: 'first_name_value',
+        },
+        {
           field: 'last_name',
           value: 'last_name_value',
         },
         {
           field: 'office_ids',
           value: ['north', 'south', 'east', 'west'],
+        },
+        {
+          field: 'email',
+          value: 'email+address@example.com',
+        },
+        {
+          field: 'racfid',
+          value: 'RACFID',
         },
         { field: 'enabled', value: '' },
       ]
@@ -342,7 +410,19 @@ describe('SearchUserList', () => {
     it('calls the handleCheckBoxChange Actions with includeInactive props as false', () => {
       const query = [
         {
+          field: 'first_name',
+          value: '',
+        },
+        {
           field: 'last_name',
+          value: 'last_name_value',
+        },
+        {
+          field: 'email',
+          value: '',
+        },
+        {
+          field: 'racfid',
           value: '',
         },
         {
@@ -351,6 +431,7 @@ describe('SearchUserList', () => {
         },
         { field: 'enabled', value: '' },
       ]
+      wrapper.setProps({ lastName: 'last_name_value' })
       wrapper.instance().handleCheckBoxChange()
       expect(mockHandleCheckBoxChangeActions).toHaveBeenCalledWith()
       expect(mockSetSearchActions).toHaveBeenCalledWith(query)
@@ -359,7 +440,19 @@ describe('SearchUserList', () => {
     it('calls the handleCheckBoxChange Actions with includeInactive props as true ', () => {
       const query = [
         {
+          field: 'first_name',
+          value: '',
+        },
+        {
           field: 'last_name',
+          value: '',
+        },
+        {
+          field: 'email',
+          value: '',
+        },
+        {
+          field: 'racfid',
           value: '',
         },
         {
@@ -376,19 +469,17 @@ describe('SearchUserList', () => {
   })
 
   describe('#isDisabledSearchBtn', () => {
-    const query = [
-      {
-        field: 'last_name',
-        value: 'last_name_value',
-      },
-    ]
-    it('returns true when query and entered search criteria are same', () => {
+    it('returns true when all search fields are empty ', () => {
       const component = shallow(
         <SearchUserList
           dashboardUrl={'dburl'}
           actions={defaultEmptyActions}
           query={query}
-          lastName="last_name_value"
+          lastName=""
+          firstName=""
+          email=""
+          CWSLogin=""
+          officeNames={['somevalue']}
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
@@ -398,7 +489,7 @@ describe('SearchUserList', () => {
       expect(component.instance().isDisabledSearchBtn()).toEqual(true)
     })
 
-    it('returns false when search query and entered search criteria are different', () => {
+    it('returns false when any of the seach fields is non-empty', () => {
       const component = shallow(
         <SearchUserList
           dashboardUrl={'dburl'}
@@ -604,7 +695,10 @@ describe('SearchUserList', () => {
           size={50}
           total={25}
           query={query}
+          firstName="some_firstname_value"
           lastName="some_value"
+          racfid="RACFID"
+          email="email@example.com"
           officeNames={['north']}
           inputData={{ officeNames: ['north'] }}
           selectedOfficesList={['somevalue']}
@@ -650,12 +744,6 @@ describe('SearchUserList', () => {
           size={50}
           total={25}
           query={query}
-          sort={[
-            {
-              field: 'last_name',
-              desc: 'value',
-            },
-          ]}
           selectedOfficesList={['somevalue']}
           includeInactive={false}
           auditEvents={auditEvents}
@@ -674,7 +762,7 @@ describe('SearchUserList', () => {
       expect(wrapper.find('ReactTable').prop('columns')[1].id).toBe('enabled')
       expect(wrapper.find('ReactTable').prop('columns')[2].id).toBe('last_login_date_time')
       expect(wrapper.find('ReactTable').prop('columns')[3].accessor).toBe('racfid')
-      expect(component.find('ReactTable').prop('sorted')).toEqual([{ desc: 'value', id: 'last_name' }])
+      expect(component.find('ReactTable').prop('sorted')).toEqual([])
       expect(
         wrapper
           .find('ReactTable')

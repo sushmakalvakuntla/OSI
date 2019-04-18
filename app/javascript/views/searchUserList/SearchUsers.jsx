@@ -13,6 +13,10 @@ const SearchUsers = ({
   handleOnSearch,
   handleOnCreateUser,
   handleInput,
+  handleEmailSearch,
+  errorMessage,
+  valid,
+  disableSearch,
   isDisabledAddUsrBtn,
 }) => (
   <div>
@@ -26,7 +30,6 @@ const SearchUsers = ({
             type="text"
             value={firstName}
             onChange={event => handleInput('firstName', event.target.value)}
-            placeholder=""
             autoComplete="off"
           />
         </div>
@@ -38,7 +41,6 @@ const SearchUsers = ({
             type="text"
             value={lastName}
             onChange={event => handleInput('lastName', event.target.value)}
-            placeholder=""
             autoComplete="off"
           />
         </div>
@@ -49,9 +51,10 @@ const SearchUsers = ({
             fieldClassName="form-group"
             type="text"
             value={email}
-            onChange={event => handleInput('email', event.target.value)}
-            placeholder=""
+            onChange={event => handleEmailSearch('email', event.target.value)}
             autoComplete="off"
+            validationErrorMessage={errorMessage}
+            validationError={valid}
           />
         </div>
         <div className="col-md-3">
@@ -62,8 +65,9 @@ const SearchUsers = ({
             type="text"
             value={CWSLogin}
             onChange={event => handleInput('CWSLogin', event.target.value)}
-            placeholder=""
             autocomplete="off"
+            maxLength={8}
+            allowCharacters={/^[A-Z0-9]+$/i}
           />
         </div>
       </div>
@@ -80,7 +84,7 @@ const SearchUsers = ({
               id="searchForUsers"
               type="submit"
               onClick={handleOnSearch}
-              disabled={isDisabledSearchBtn()}
+              disabled={disableSearch || isDisabledSearchBtn()}
             >
               SEARCH
             </Button>
@@ -110,10 +114,14 @@ SearchUsers.propTypes = {
   lastName: PropTypes.string,
   email: PropTypes.string,
   CWSLogin: PropTypes.string,
+  errorMessage: PropTypes.string,
   isDisabledSearchBtn: PropTypes.func,
   handleOnCreateUser: PropTypes.func,
   handleOnSearch: PropTypes.func,
   handleInput: PropTypes.func,
+  handleEmailSearch: PropTypes.func,
+  disableSearch: PropTypes.bool,
+  valid: PropTypes.bool,
   isDisabledAddUsrBtn: PropTypes.func,
 }
 

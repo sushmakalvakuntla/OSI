@@ -5,14 +5,17 @@ import SearchUsers from './SearchUsers'
 describe('SearchUsers', () => {
   const isDisabledSearchBtn = jest.fn()
   const handleInput = jest.fn()
+  const handleEmailSearch = jest.fn()
   const isDisabledAddUsrBtn = jest.fn()
   let wrapper
+
   beforeEach(() => {
     wrapper = shallow(
       <SearchUsers
         isDisabledSearchBtn={isDisabledSearchBtn}
         handleInput={handleInput}
         isDisabledAddUsrBtn={isDisabledAddUsrBtn}
+        handleEmailSearch={handleEmailSearch}
       />
     )
   })
@@ -83,14 +86,14 @@ describe('SearchUsers', () => {
         expect(handleInput).toHaveBeenCalledWith('lastName', 'Some Last Name')
       })
 
-      it('#Email, handleInputChange function is called when onChange event triggered', () => {
+      it('#Email, handleEmailSearch function is called when onChange event triggered', () => {
         wrapper
           .find('InputComponent')
           .at(2)
           .simulate('change', {
             target: { value: 'someEmail@gmail.com' },
           })
-        expect(handleInput).toHaveBeenCalledWith('email', 'someEmail@gmail.com')
+        expect(handleEmailSearch).toHaveBeenCalledWith('email', 'someEmail@gmail.com')
       })
 
       it('#CWSLogin, handleInputChange function is called when onChange event triggered', () => {

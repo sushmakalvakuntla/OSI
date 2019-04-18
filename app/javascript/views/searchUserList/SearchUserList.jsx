@@ -19,6 +19,9 @@ class SearchUserList extends PureComponent {
     super(props)
     this.state = {
       addUser: false,
+      disableSearch: true,
+      valid: true,
+      errorMessage: '',
     }
   }
 
@@ -39,7 +42,10 @@ class SearchUserList extends PureComponent {
   handleCheckBoxChange = () => {
     this.props.actions.handleCheckBoxChangeActions()
     this.props.actions.setSearch([
+      { field: 'first_name', value: this.props.firstName },
       { field: 'last_name', value: this.props.lastName },
+      { field: 'email', value: this.props.email },
+      { field: 'racfid', value: this.props.CWSLogin },
       { field: 'office_ids', value: this.props.officeNames },
       { field: 'enabled', value: !this.props.includeInactive ? '' : true },
     ])
@@ -60,8 +66,11 @@ class SearchUserList extends PureComponent {
   submitSearch = e => {
     e.preventDefault()
     this.props.actions.setSearch([
+      { field: 'first_name', value: this.props.firstName },
       { field: 'last_name', value: this.props.lastName },
       { field: 'office_ids', value: this.props.officeNames },
+      { field: 'email', value: this.props.email },
+      { field: 'racfid', value: this.props.CWSLogin },
       { field: 'enabled', value: this.props.includeInactive ? '' : true },
     ])
 
@@ -70,9 +79,8 @@ class SearchUserList extends PureComponent {
   }
 
   isDisabledSearchBtn = () => {
-    const { lastName, query } = this.props
-    const lastNameSearch = query.find(({ field }) => field === 'last_name')
-    return lastNameSearch && lastNameSearch.value === lastName
+    const { lastName = '', firstName = '', email = '', CWSLogin = '' } = this.props
+    return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
   }
 
   isSearchValueAbsent = node => {
@@ -143,10 +151,9 @@ class SearchUserList extends PureComponent {
   }
 
   renderBreadcrumb = () => {
-    const { dashboardUrl, dashboardClickHandler } = this.props
     return (
       <div>
-        Back to: <LinkRWD text="Dashboard" href={dashboardUrl} clickHandler={dashboardClickHandler} />
+        Back to: <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
       </div>
     )
   }
@@ -161,6 +168,16 @@ class SearchUserList extends PureComponent {
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
   handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
+
+  handleEmailSearch = (name, value) => {
+    this.props.actions.handleSearchChange(name, value)
+    this.validateEmailField(value)
+  }
+
+  validateEmailField = value => {
+    const emailValueValid = /^(?:[a-zA-Z0-9_!#$%&’*+/=?`'{^.-]*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6})?$/i.test(value)
+    emailValueValid ? this.setState({ errorMessage: '' }) : this.setState({ errorMessage: 'Please enter a valid email.' })
+  }
 
   renderComponents = () => {
     const { officesList, officeNames, lastName, firstName, email, CWSLogin } = this.props
@@ -180,6 +197,10 @@ class SearchUserList extends PureComponent {
             CWSLogin={CWSLogin}
             isDisabledSearchBtn={this.isDisabledSearchBtn}
             handleInput={this.handleOnInput}
+            handleEmailSearch={this.handleEmailSearch}
+            valid={this.state.valid}
+            disableSearch={this.state.errorMessage !== ''}
+            errorMessage={this.state.errorMessage}
             handleOnSearch={this.submitSearch}
             handleOnCreateUser={this.handleOnAdd}
             isDisabledAddUsrBtn={this.isDisabledAddUsrBtn}
@@ -196,7 +217,7 @@ class SearchUserList extends PureComponent {
                 <div className="col-md-12">
                   <hr
                     style={{
-                      width: '105.8%',
+                      width: '107.9%',
                       height: '1px',
                       border: 'none',
                       color: '#333',
@@ -319,8 +340,8 @@ SearchUserList.propTypes = {
   officesList: PropTypes.array,
   handleSearchChange: PropTypes.func,
   officeNames: PropTypes.array,
-  lastName: PropTypes.string,
   firstName: PropTypes.string,
+  lastName: PropTypes.string,
   email: PropTypes.string,
   CWSLogin: PropTypes.string,
   inputData: PropTypes.object,
@@ -342,7 +363,6 @@ SearchUserList.defaultProps = {
   sort: [],
   pageSizeOptions: [5, 10, 25, 50, 100],
   officesList: [],
-  lastName: '',
   officeNames: [],
   searchPageTiles: [],
 }
