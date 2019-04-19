@@ -11,6 +11,29 @@ describe Elastic::UserQueryBuilder do
   end
 
   describe '.get_search' do
+    it 'processes enabled = false correctly' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { term: { 'enabled': 'false' } },
+              { match_phrase_prefix: { 'status': 'CONFIRMED' } },
+              { bool: {
+                should: []
+              } }
+            ]
+          }
+        },
+        from: 0,
+        size: 10,
+        sort: [sort_score_and_name]
+      }
+      input_query = {
+        "query": [{ "field": 'enabled', "value": false }], "sort": [], "size": 10, "from": 0
+      }
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
     it 'processes the combination of last name and office parameters' do
       expected_output = {
         query: {

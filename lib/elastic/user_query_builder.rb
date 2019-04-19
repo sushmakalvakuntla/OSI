@@ -28,9 +28,13 @@ module Elastic
       }
     end
 
+    def self.missing(value)
+      value.nil? || value == ''
+    end
+
     def self.query_leaves(query)
       query.map do |subquery|
-        Elastic::QueryBuilder.subquery_as_es(subquery, SUBQUERIES) unless subquery[:value].blank?
+        Elastic::QueryBuilder.subquery_as_es(subquery, SUBQUERIES) unless missing(subquery[:value])
       end.compact
     end
 
