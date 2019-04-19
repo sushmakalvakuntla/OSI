@@ -17,7 +17,6 @@ describe Elastic::UserQueryBuilder do
           bool: {
             must: [
               { term: { 'enabled': 'false' } },
-              { match_phrase_prefix: { 'status': 'CONFIRMED' } },
               { bool: {
                 should: []
               } }
@@ -26,7 +25,7 @@ describe Elastic::UserQueryBuilder do
         },
         from: 0,
         size: 10,
-        sort: [sort_score_and_name]
+        sort: sort_score_and_name
       }
       input_query = {
         "query": [{ "field": 'enabled', "value": false }], "sort": [], "size": 10, "from": 0
