@@ -1,6 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
 import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
-import { getTilesInitialState } from '../_utils/commonHelper'
 
 const initialValue = {
   sort: [
@@ -38,11 +37,6 @@ const initialValue = {
   error: null,
   inputData: {},
   adminAccountDetails: {},
-  searchPageTiles: [
-    getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
-    getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
-    getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
-  ],
   includeInactive: true,
 }
 
