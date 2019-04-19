@@ -40,6 +40,7 @@ package-lock.json
 /config/master.key
 /public/packs
 /public/packs-test
+/public/fonts
 /node_modules
 yarn-debug.log*
 .yarn-integrity
