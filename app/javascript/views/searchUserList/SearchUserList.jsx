@@ -86,6 +86,11 @@ class SearchUserList extends PureComponent {
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
+  submitClear = () => {
+    this.props.actions.clearSearch()
+    this.setState({ errorMessage: '' })
+  }
+
   isDisabledSearchBtn = () => {
     const { lastName, firstName, email, CWSLogin } = this.props
     return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
@@ -103,6 +108,11 @@ class SearchUserList extends PureComponent {
     const racfid = query.find(({ field }) => field === 'racfid')
     const email = query.find(({ field }) => field === 'email')
     return [lastName, firstName, officeSearch, racfid, email].every(this.isSearchValueAbsent)
+  }
+
+  isDisabledClearBtn = () => {
+    const { lastName = '', firstName = '', email = '', CWSLogin = '', officeNames = [] } = this.props
+    return lastName === '' && firstName === '' && email === '' && CWSLogin === '' && officeNames.length === 0
   }
 
   getTotalPages = () => {
@@ -216,6 +226,8 @@ class SearchUserList extends PureComponent {
             handleOnSearch={this.submitSearch}
             handleOnCreateUser={this.handleOnAdd}
             isDisabledAddUsrBtn={this.isDisabledAddUsrBtn}
+            isDisabledClearBtn={this.isDisabledClearBtn}
+            handleOnClear={this.submitClear}
           />
           {this.props.error && (
             <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>

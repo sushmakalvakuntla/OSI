@@ -7,6 +7,7 @@ describe('SearchUsers', () => {
   const handleInput = jest.fn()
   const handleEmailSearch = jest.fn()
   const isDisabledAddUsrBtn = jest.fn()
+  const isDisabledClearBtn = jest.fn()
   let mockHandleOnSearchActions
   let wrapper
 
@@ -20,6 +21,7 @@ describe('SearchUsers', () => {
         isDisabledAddUsrBtn={isDisabledAddUsrBtn}
         handleEmailSearch={handleEmailSearch}
         handleOnSearch={mockHandleOnSearchActions}
+        isDisabledClearBtn={isDisabledClearBtn}
       />
     )
   })
@@ -59,14 +61,21 @@ describe('SearchUsers', () => {
           .find('Button')
           .at(0)
           .props().children
-      ).toBe('SEARCH')
+      ).toBe('CREATE A NEW USER')
 
       expect(
         wrapper
           .find('Button')
           .at(1)
           .props().children
-      ).toBe('CREATE A NEW USER')
+      ).toBe('CLEAR')
+
+      expect(
+        wrapper
+          .find('Button')
+          .at(2)
+          .props().children
+      ).toBe('SEARCH')
     })
 
     describe('#handleInput', () => {

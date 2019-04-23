@@ -11,6 +11,7 @@ import {
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
+  clearSearch,
 } from '../actions/searchUserListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
@@ -85,6 +86,7 @@ function mapDispatchToProps(dispatch) {
         fetchAuditEventsActions,
         fetchDetailsActions,
         setSearchForTiles,
+        clearSearch,
       },
       dispatch
     ),
