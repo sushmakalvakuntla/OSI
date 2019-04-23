@@ -59,6 +59,29 @@ describe Elastic::UserQueryBuilder do
       expect(output).to eq(expected_output)
     end
 
+    it 'processes the case-insensitive racfid parameters' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { match: { 'racfid.keyword': 'RACFID' } },
+              bool: {
+                should: []
+              }
+            ]
+          }
+        },
+        from: 0,
+        size: 50,
+        sort: sort_score_and_name
+      }
+      input_query = { "query": [{ "field": 'racfid', "value": 'RacfiD' }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+
     it 'processes the combination of last name, first name, email, racfid and office parameters' do
       expected_output = {
         query: {

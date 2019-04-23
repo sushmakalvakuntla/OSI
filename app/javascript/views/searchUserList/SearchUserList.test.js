@@ -229,7 +229,14 @@ describe('SearchUserList', () => {
 
   describe('#handleOfficeChange', () => {
     it('Office change calls handleOfficeChange Actions', () => {
-      const newQuery = [{ field: 'office_ids', value: ['offices1'] }, { field: 'last_name', value: '' }]
+      const newQuery = [
+        { field: 'office_ids', value: ['offices1'] },
+        { field: 'last_name', value: '' },
+        { field: 'first_name', value: '' },
+        { field: 'email', value: '' },
+        { field: 'racfid', value: '' },
+        { field: 'enabled', value: true },
+      ]
       const offices = [{ value: 'offices1', label: 'OfficeOne' }]
       wrapper.find('#searchOfficeName').simulate('change', offices)
       expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
@@ -240,7 +247,14 @@ describe('SearchUserList', () => {
     })
 
     it('Office change calls handleOfficeChange Actions with last name', () => {
-      const newQuery = [{ field: 'office_ids', value: ['offices1'] }, { field: 'last_name', value: 'SOME_LAST_NAME' }]
+      const newQuery = [
+        { field: 'office_ids', value: ['offices1'] },
+        { field: 'last_name', value: 'SOME_LAST_NAME' },
+        { field: 'first_name', value: '' },
+        { field: 'email', value: '' },
+        { field: 'racfid', value: '' },
+        { field: 'enabled', value: true },
+      ]
       const offices = [{ value: 'offices1', label: 'OfficeOne' }]
       wrapper.setProps({ lastName: 'SOME_LAST_NAME' })
       wrapper.find('#searchOfficeName').simulate('change', offices)
@@ -300,7 +314,7 @@ describe('SearchUserList', () => {
           firstName="first_name_value"
           lastName="last_name_value"
           email="email+address@example.com"
-          CWSLogin="RACFID"
+          CWSLogin="racfid"
           officeNames={['north', 'south', 'east', 'west']}
           includeInactive={false}
           auditEvents={auditEvents}
@@ -327,7 +341,7 @@ describe('SearchUserList', () => {
         },
         {
           field: 'racfid',
-          value: 'RACFID',
+          value: 'racfid',
         },
         { field: 'enabled', value: true },
       ]
@@ -354,7 +368,7 @@ describe('SearchUserList', () => {
           firstName="first_name_value"
           lastName="last_name_value"
           officeNames={['north', 'south', 'east', 'west']}
-          CWSLogin="RACFID"
+          CWSLogin="racfid"
           email="email+address@example.com"
           includeInactive={true}
           auditEvents={auditEvents}
@@ -381,7 +395,7 @@ describe('SearchUserList', () => {
         },
         {
           field: 'racfid',
-          value: 'RACFID',
+          value: 'racfid',
         },
         { field: 'enabled', value: '' },
       ]

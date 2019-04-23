@@ -164,6 +164,10 @@ class SearchUserList extends PureComponent {
     this.props.actions.setSearch([
       { field: 'office_ids', value: selectedOffices },
       { field: 'last_name', value: this.props.lastName },
+      { field: 'first_name', value: this.props.firstName },
+      { field: 'email', value: this.props.email },
+      { field: 'racfid', value: this.props.CWSLogin },
+      { field: 'enabled', value: this.props.includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }

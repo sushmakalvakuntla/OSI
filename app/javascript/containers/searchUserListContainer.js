@@ -15,7 +15,15 @@ import {
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
 import { fetchRolesActions } from '../actions/rolesActions'
-import { checkOfficeNames, cardHeaderText, displayChangeLog } from '../selectors/searchUserListSelector'
+import {
+  checkOfficeNames,
+  cardHeaderText,
+  displayChangeLog,
+  email,
+  CWSLogin,
+  firstName,
+  lastName,
+} from '../selectors/searchUserListSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { officesList } from '../selectors/officeListSelector'
 import { rolesList } from '../selectors/rolesListSelector'
@@ -41,10 +49,10 @@ function mapStateToProps(state) {
     error: searchUserList.error,
     officesList: officesList(state),
     inputData: searchUserList.inputData,
-    firstName: searchUserList.inputData.firstName,
-    email: searchUserList.inputData.email,
-    CWSLogin: searchUserList.inputData.CWSLogin,
-    lastName: searchUserList.inputData.lastName,
+    firstName: firstName(state),
+    email: email(state),
+    CWSLogin: CWSLogin(state),
+    lastName: lastName(state),
     officeNames: checkOfficeNames(searchUserList.inputData.officeNames),
     rolesList: rolesList(state),
     includeInactive: searchUserList.includeInactive,

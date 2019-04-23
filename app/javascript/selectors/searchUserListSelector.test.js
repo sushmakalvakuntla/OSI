@@ -6,6 +6,10 @@ import {
   checkOfficeNames,
   cardHeaderText,
   displayChangeLog,
+  email,
+  firstName,
+  lastName,
+  CWSLogin,
 } from './searchUserListSelector'
 
 describe('selectors', () => {
@@ -79,6 +83,86 @@ describe('selectors', () => {
       let parsed
       expect(() => (parsed = JSON.parse(decodeURIComponent(serialized)))).not.toThrow()
       expect(parsed).toEqual({ size: 20, from: 40 })
+    })
+  })
+
+  describe('#email', () => {
+    it('returns email', () => {
+      const state = {
+        searchUserList: {
+          inputData: { email: 'email@email.com' },
+        },
+      }
+      expect(email(state)).toEqual('email@email.com')
+    })
+
+    it('returns empty when email not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(email(state)).toEqual('')
+    })
+  })
+
+  describe('#lastName', () => {
+    it('returns lastName', () => {
+      const state = {
+        searchUserList: {
+          inputData: { lastName: 'lastName' },
+        },
+      }
+      expect(lastName(state)).toEqual('lastName')
+    })
+
+    it('returns empty when lastName not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(lastName(state)).toEqual('')
+    })
+  })
+
+  describe('#firstName', () => {
+    it('returns firstName', () => {
+      const state = {
+        searchUserList: {
+          inputData: { firstName: 'firstName' },
+        },
+      }
+      expect(firstName(state)).toEqual('firstName')
+    })
+
+    it('returns empty when firstName not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(firstName(state)).toEqual('')
+    })
+  })
+
+  describe('#CWSLogin', () => {
+    it('returns CWSLogin', () => {
+      const state = {
+        searchUserList: {
+          inputData: { CWSLogin: 'CWSLogin' },
+        },
+      }
+      expect(CWSLogin(state)).toEqual('CWSLogin')
+    })
+
+    it('returns empty when CWSLogin not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(CWSLogin(state)).toEqual('')
     })
   })
 

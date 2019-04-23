@@ -5,6 +5,14 @@ export const selectUserRecords = state => {
   return Array.isArray(state.searchUserList.users) ? state.searchUserList.users : []
 }
 
+export const email = state => safeGet(state, 'searchUserList.inputData.email', '')
+
+export const CWSLogin = state => safeGet(state, 'searchUserList.inputData.CWSLogin', '')
+
+export const firstName = state => safeGet(state, 'searchUserList.inputData.firstName', '')
+
+export const lastName = state => safeGet(state, 'searchUserList.inputData.lastName', '')
+
 export const isLoading = state => {
   return state.searchUserList.fetching || false
 }

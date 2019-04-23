@@ -58,7 +58,8 @@ module Elastic
         { conjunction: 'AND', query: { match: { 'email.keyword': value } } } unless value.empty?
       end,
       racfid: lambda do |value|
-        { conjunction: 'AND', query: { match: { 'racfid.keyword': value } } } unless value.empty?
+        { conjunction: 'AND', query: { match: { 'racfid.keyword': value.upcase } } } unless value
+                                                                                            .empty?
       end,
       enabled: lambda do |value|
         { conjunction: 'AND', query: { term: { enabled: value.to_s } } } unless value.to_s.empty?
