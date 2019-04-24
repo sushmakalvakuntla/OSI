@@ -120,7 +120,6 @@ describe('SearchUserList', () => {
         query={query}
         includeInactive={false}
         searchPageTiles={searchPageTiles}
-        searchedForUsers={true}
         officesList={['office1', 'office2']}
         firstName=""
         lastName=""
@@ -689,6 +688,7 @@ describe('SearchUserList', () => {
           email=""
           CWSLogin=""
           officeNames={[]}
+          query={query}
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
@@ -708,6 +708,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          query={query}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -722,6 +723,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          query={query}
           searchPageTiles={searchPageTiles}
         />
       )
@@ -737,6 +739,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          query={query}
           searchPageTiles={searchPageTiles}
         />
       )
@@ -752,6 +755,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          query={query}
           searchPageTiles={searchPageTiles}
         />
       )
@@ -767,6 +771,7 @@ describe('SearchUserList', () => {
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}
+          query={query}
           searchPageTiles={searchPageTiles}
         />
       )

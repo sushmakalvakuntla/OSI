@@ -110,7 +110,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
     case actionTypes.USER_LIST_CLEAR_SEARCH:
       return {
         ...state,
-        searchedForUsers: false,
         inputData: initialValue.inputData,
         query: initialValue.query,
         includeInactive: initialValue.includeInactive,

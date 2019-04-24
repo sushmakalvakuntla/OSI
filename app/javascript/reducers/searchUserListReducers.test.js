@@ -95,7 +95,6 @@ describe('reducer', () => {
           },
         },
       },
-      searchedForUsers: true,
     }
     const before = {}
     let after
@@ -196,7 +195,6 @@ describe('reducer', () => {
         email: 'some@email.com',
       },
       includeInactive: false,
-      searchedForUsers: true,
     }
     const action = {
       type: actionTypes.USER_LIST_CLEAR_SEARCH,
@@ -209,7 +207,6 @@ describe('reducer', () => {
       email: '',
       officeNames: [],
     })
-    expect(after.searchedForUsers).toEqual(false)
     expect(after.includeInactive).toEqual(true)
   })
 

@@ -64,12 +64,12 @@ feature 'User List Page' do
   end
 
   scenario 'clear button clears all search' do
-      login
-      undo_all_search
-      check_the_button('CLEAR', true)
-      search_users(last_name: 'Man')
-      check_the_button('CLEAR', false)
-      click_button 'CLEAR'
-      check_the_button('CLEAR', true)
-    end
+    login
+    undo_all_search
+    check_the_button('CLEAR', true)
+    search_users(last_name: 'Man')
+    check_the_button('CLEAR', false)
+    click_button 'CLEAR'
+    check_the_button('CLEAR', true)
+  end
 end

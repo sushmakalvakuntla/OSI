@@ -378,7 +378,6 @@ SearchUserList.propTypes = {
   userDetails: PropTypes.object,
   displayChangeLog: PropTypes.bool,
   searchPageTiles: PropTypes.array,
-  searchedForUsers: PropTypes.bool,
 }
 
 SearchUserList.defaultProps = {
