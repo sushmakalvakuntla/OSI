@@ -238,7 +238,7 @@ describe('SearchUserList', () => {
         { field: 'enabled', value: true },
       ]
       const offices = [{ value: 'offices1', label: 'OfficeOne' }]
-      wrapper.find('#searchOfficeName').simulate('change', offices)
+      wrapper.instance().handleOfficeChange(offices)
       expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
       expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
       expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({
@@ -257,7 +257,7 @@ describe('SearchUserList', () => {
       ]
       const offices = [{ value: 'offices1', label: 'OfficeOne' }]
       wrapper.setProps({ lastName: 'SOME_LAST_NAME' })
-      wrapper.find('#searchOfficeName').simulate('change', offices)
+      wrapper.instance().handleOfficeChange(offices)
       expect(mockHandleSearchChange).toHaveBeenCalledWith('officeNames', ['offices1'])
       expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
       expect(mockFetchAuditEventsActions).toHaveBeenCalledWith({
@@ -742,46 +742,37 @@ describe('SearchUserList', () => {
     it('fetches the roles list', () => {
       expect(mockFetchRolesActions).toHaveBeenCalledWith()
     })
+
+    it('performs search with query', () => {
+      const query = [
+        { field: 'first_name', value: 'some_firstname_value' },
+        { field: 'last_name', value: 'some_value' },
+        { field: 'email', value: 'email@example.com' },
+        { field: 'racfid', value: undefined },
+        { field: 'office_ids', value: ['north'] },
+        { field: 'enabled', value: true },
+      ]
+      expect(mockSetSearch).toHaveBeenCalledWith(query)
+    })
   })
 
   describe('#UserList output', () => {
-    it('contains Table and headers', () => {
-      const component = shallow(
-        <SearchUserList
-          dashboardUrl={'dburl'}
-          actions={{
-            searchUsers: () => {},
-            fetchAccountActions: () => {},
-            fetchOfficesActions: () => {},
-            fetchRolesActions: () => {},
-            setSearch: () => {},
-            setPage: () => {},
-            clearAddedUserDetailActions: () => {},
-            fetchAuditEventsActions: () => {},
-          }}
-          from={0}
-          size={50}
-          total={25}
-          query={query}
-          selectedOfficesList={['somevalue']}
-          includeInactive={false}
-          auditEvents={auditEvents}
-          searchPageTiles={searchPageTiles}
-          searchedForUsers={true}
-        />
-      )
-
+    it('contains Table and headers with non-empty search field', () => {
       const value = 'value'
       const original = {
         id: '1234AGFS',
       }
+      wrapper.setProps({ lastName: 'last_name' })
+      const event = { preventDefault: () => {} }
+      wrapper.instance().submitSearch(event)
+      expect(wrapper.instance().isDisabledAddUsrBtn()).toEqual(false)
       expect(wrapper.find('ReactTable').length).toBe(1)
       expect(wrapper.find('ReactTable').prop('columns').length).toBe(6)
       expect(wrapper.find('ReactTable').prop('columns')[0].id).toBe('last_name')
       expect(wrapper.find('ReactTable').prop('columns')[1].id).toBe('enabled')
       expect(wrapper.find('ReactTable').prop('columns')[2].id).toBe('last_login_date_time')
       expect(wrapper.find('ReactTable').prop('columns')[3].accessor).toBe('racfid')
-      expect(component.find('ReactTable').prop('sorted')).toEqual([])
+      expect(wrapper.find('ReactTable').prop('sorted')).toEqual([])
       expect(
         wrapper
           .find('ReactTable')

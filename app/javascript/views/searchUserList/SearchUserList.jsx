@@ -30,6 +30,14 @@ class SearchUserList extends PureComponent {
     this.props.actions.fetchOfficesActions()
     this.props.actions.fetchRolesActions()
     this.props.actions.clearAddedUserDetailActions()
+    this.props.actions.setSearch([
+      { field: 'first_name', value: this.props.firstName },
+      { field: 'last_name', value: this.props.lastName },
+      { field: 'email', value: this.props.email },
+      { field: 'racfid', value: this.props.CWSLogin },
+      { field: 'office_ids', value: this.props.officeNames },
+      { field: 'enabled', value: this.props.includeInactive ? '' : true },
+    ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
@@ -79,7 +87,7 @@ class SearchUserList extends PureComponent {
   }
 
   isDisabledSearchBtn = () => {
-    const { lastName = '', firstName = '', email = '', CWSLogin = '' } = this.props
+    const { lastName, firstName, email, CWSLogin } = this.props
     return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
   }
 
@@ -216,7 +224,7 @@ class SearchUserList extends PureComponent {
           )}
           <br />
           <div>
-            {this.props.searchedForUsers ? (
+            {!this.isDisabledAddUsrBtn() ? (
               <div className="row">
                 <div className="col-md-12">
                   <hr

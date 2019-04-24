@@ -40,7 +40,6 @@ function mapStateToProps(state) {
     userListUrl: '/#',
     dashboardUrl: '/',
     size: searchUserList.size,
-    searchedForUsers: searchUserList.searchedForUsers,
     from: searchUserList.from,
     sort: searchUserList.sort,
     query: searchUserList.query,
