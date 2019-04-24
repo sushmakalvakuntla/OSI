@@ -111,10 +111,9 @@ module UserListPageHelper
     return if find_field('Last Name').value == last_name
 
     puts "search for '#{last_name}'"
-
     safe_fill_in_last_name(last_name)
-
-    click_on 'SEARCH'
+    body_element = page.find('#searchWithLastName')
+    body_element.native.send_keys(:enter)
   end
 
   def search_inactive_users

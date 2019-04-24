@@ -7,15 +7,19 @@ describe('SearchUsers', () => {
   const handleInput = jest.fn()
   const handleEmailSearch = jest.fn()
   const isDisabledAddUsrBtn = jest.fn()
+  let mockHandleOnSearchActions
   let wrapper
 
   beforeEach(() => {
+    mockHandleOnSearchActions = jest.fn()
+
     wrapper = shallow(
       <SearchUsers
         isDisabledSearchBtn={isDisabledSearchBtn}
         handleInput={handleInput}
         isDisabledAddUsrBtn={isDisabledAddUsrBtn}
         handleEmailSearch={handleEmailSearch}
+        handleOnSearch={mockHandleOnSearchActions}
       />
     )
   })
@@ -104,6 +108,15 @@ describe('SearchUsers', () => {
             target: { value: 'ABCDE' },
           })
         expect(handleInput).toHaveBeenCalledWith('CWSLogin', 'ABCDE')
+      })
+
+      it('#handleOnSearch', () => {
+        wrapper.find('#searchForUsers').simulate('click')
+        expect(mockHandleOnSearchActions).toHaveBeenCalledWith()
+      })
+
+      it('renders form with props', () => {
+        expect(wrapper.find('form').props().onSubmit).not.toThrow()
       })
     })
   })
