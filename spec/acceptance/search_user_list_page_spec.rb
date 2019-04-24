@@ -57,8 +57,19 @@ feature 'User List Page' do
 
   scenario 'create user button is disabled before search and enabled after' do
     login
+    undo_all_search
+    check_the_button('CREATE A NEW USER', true)
     search_users(last_name: 'Man')
-    sleep 2
     check_the_button('CREATE A NEW USER', false)
   end
+
+  scenario 'clear button clears all search' do
+      login
+      undo_all_search
+      check_the_button('CLEAR', true)
+      search_users(last_name: 'Man')
+      check_the_button('CLEAR', false)
+      click_button 'CLEAR'
+      check_the_button('CLEAR', true)
+    end
 end
