@@ -54,6 +54,7 @@ const SearchUsers = ({
             onChange={event => handleEmailSearch('email', event.target.value)}
             autoComplete="off"
             validationErrorMessage={errorMessage}
+            maxLength={50}
             validationError={valid}
           />
         </div>
