@@ -166,10 +166,7 @@ module UserListPageHelper
   end
 
   def undo_all_search
-    # will be changed to click RESET SEARCH SOON
-    clear_offices_from_select
-    safe_fill_in_last_name('')
-    click_on 'SEARCH'
+    click_on 'CLEAR' if has_button? 'CLEAR'
   end
 
   def force_change_script(node_id, _node_label)

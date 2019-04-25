@@ -14,6 +14,7 @@ describe('SearchUserList', () => {
   let mockClearAddedUserDetailActions
   let mockHandleCheckBoxChangeActions
   let mockSetSearchActions
+  let mockClearSearchActions
   let mockSetSearchForTiles
   let mockFetchChangeLogAdminDetailsActions
   let mockFetchDetailsActions
@@ -93,6 +94,7 @@ describe('SearchUserList', () => {
     mockFetchDetailsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockFetchAuditEventsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockClearAuditEvents = jest.fn()
+    mockClearSearchActions = jest.fn()
 
     wrapper = shallow(
       <SearchUserList
@@ -112,12 +114,12 @@ describe('SearchUserList', () => {
           fetchDetailsActions: mockFetchDetailsActions,
           fetchAuditEventsActions: mockFetchAuditEventsActions,
           clearAuditEvents: mockClearAuditEvents,
+          clearSearch: mockClearSearchActions,
         }}
         cardHeaderValue="County: CountyName"
         query={query}
         includeInactive={false}
         searchPageTiles={searchPageTiles}
-        searchedForUsers={true}
         officesList={['office1', 'office2']}
         firstName=""
         lastName=""
@@ -283,6 +285,12 @@ describe('SearchUserList', () => {
       expect(wrapper.instance().state.errorMessage).toEqual('Please enter a valid email.')
       instance.validateEmailField('someValue')
       expect(wrapper.instance().state.errorMessage).toEqual('Please enter a valid email.')
+    })
+
+    it('validates empty email field input', () => {
+      const instance = wrapper.instance()
+      instance.validateEmailField('')
+      expect(wrapper.instance().state.errorMessage).toEqual('')
     })
   })
 
@@ -482,6 +490,19 @@ describe('SearchUserList', () => {
     })
   })
 
+  describe('#submitClear', () => {
+    it('calls the clearSearch Actions', () => {
+      wrapper.instance().submitClear()
+      expect(mockClearSearchActions).toHaveBeenCalledWith()
+    })
+
+    it('resets errorMessage to empty string', () => {
+      wrapper.instance().setState({ errorMessage: 'some_error_message' })
+      wrapper.instance().submitClear()
+      expect(wrapper.instance().state.errorMessage).toEqual('')
+    })
+  })
+
   describe('#isDisabledSearchBtn', () => {
     it('returns true when all search fields are empty ', () => {
       const component = shallow(
@@ -503,7 +524,7 @@ describe('SearchUserList', () => {
       expect(component.instance().isDisabledSearchBtn()).toEqual(true)
     })
 
-    it('returns false when any of the seach fields is non-empty', () => {
+    it('returns false when any of the search fields is non-empty', () => {
       const component = shallow(
         <SearchUserList
           dashboardUrl={'dburl'}
@@ -653,6 +674,108 @@ describe('SearchUserList', () => {
     it('returns false for non-empty value', () => {
       const node = { field: 'last_name', value: 'some_name' }
       expect(wrapper.instance().isSearchValueAbsent(node)).toBe(false)
+    })
+  })
+
+  describe('#isDisabledClearBtn', () => {
+    it('returns true when all search fields are empty ', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          lastName=""
+          firstName=""
+          email=""
+          CWSLogin=""
+          officeNames={[]}
+          query={query}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledClearBtn()).toEqual(true)
+    })
+
+    it('returns false when lastName search field is non-empty', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          lastName="new_last_name"
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+          query={query}
+        />
+      )
+      expect(component.instance().isDisabledClearBtn()).toEqual(false)
+    })
+
+    it('returns false when firstName search field is non-empty', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          firstName="new_first_name"
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          query={query}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledClearBtn()).toEqual(false)
+    })
+
+    it('returns false when email search field is non-empty', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          email="new_email"
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          query={query}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledClearBtn()).toEqual(false)
+    })
+
+    it('returns false when CWSLogin search field is non-empty', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          CWSLogin="new_CWSLogin"
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          query={query}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledClearBtn()).toEqual(false)
+    })
+
+    it('returns false when officeNames list is non-empty', () => {
+      const component = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={defaultEmptyActions}
+          officeNames={['new_CWSLogin']}
+          includeInactive={false}
+          auditEvents={auditEvents}
+          userDetails={details}
+          query={query}
+          searchPageTiles={searchPageTiles}
+        />
+      )
+      expect(component.instance().isDisabledClearBtn()).toEqual(false)
     })
   })
 
