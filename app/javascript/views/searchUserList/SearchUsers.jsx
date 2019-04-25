@@ -77,8 +77,8 @@ const SearchUsers = ({
         </div>
         <br />
         <div className="row">
-          <div className="col-md-12">
-            <div className="pull-right" style={{ paddingTop: '0px', display: 'flex' }}>
+          <div className="col-md-12" style={{ paddingTop: '10px' }}>
+            <div className="pull-right" style={{ padding: '0 15px 0 0', display: 'flex' }}>
               <div style={{ paddingRight: '15px' }}>
                 <Button
                   className="buttons-height"
