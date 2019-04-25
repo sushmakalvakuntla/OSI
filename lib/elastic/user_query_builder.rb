@@ -7,6 +7,10 @@ module Elastic
       query(request[:query]).merge(paginate_query(request)).merge(sort_query)
     end
 
+    def self.get_count(request)
+      query(request[:query])
+    end
+
     def self.query(query)
       leaves = query_leaves(query)
       if leaves.blank?

@@ -33,6 +33,7 @@ describe Elastic::UserQueryBuilder do
       output = Elastic::UserQueryBuilder.get_search(input_query)
       expect(output).to eq(expected_output)
     end
+
     it 'processes the combination of last name and office parameters' do
       expected_output = {
         query: {
@@ -338,6 +339,34 @@ describe Elastic::UserQueryBuilder do
 
     output = Elastic::UserQueryBuilder.query(input_query[:query])
     expect(output).to eq(expected_output)
+  end
+
+  describe '.get_count' do
+    it 'process the query according to the input' do
+      input_query = { "query": [{ "field": 'last_name', "value": 'Smith' },
+                                { "field": 'office_ids', "value": %w[north south east west] }],
+                      "sort": [], "size": 50, "from": 0 }
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { terms: { 'office_id.keyword': %w[north south east west] } },
+              bool: {
+                should: [
+                  {
+                    match_phrase_prefix: {
+                      last_name: { query: 'Smith', boost: 3.0 }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+      output = Elastic::UserQueryBuilder.get_count(input_query)
+      expect(output).to eq(expected_output)
+    end
   end
 
   describe '.paginate_query' do
