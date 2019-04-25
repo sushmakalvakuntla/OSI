@@ -7,15 +7,21 @@ describe('SearchUsers', () => {
   const handleInput = jest.fn()
   const handleEmailSearch = jest.fn()
   const isDisabledAddUsrBtn = jest.fn()
+  const isDisabledClearBtn = jest.fn()
+  let mockHandleOnSearchActions
   let wrapper
 
   beforeEach(() => {
+    mockHandleOnSearchActions = jest.fn()
+
     wrapper = shallow(
       <SearchUsers
         isDisabledSearchBtn={isDisabledSearchBtn}
         handleInput={handleInput}
         isDisabledAddUsrBtn={isDisabledAddUsrBtn}
         handleEmailSearch={handleEmailSearch}
+        handleOnSearch={mockHandleOnSearchActions}
+        isDisabledClearBtn={isDisabledClearBtn}
       />
     )
   })
@@ -55,14 +61,21 @@ describe('SearchUsers', () => {
           .find('Button')
           .at(0)
           .props().children
-      ).toBe('SEARCH')
+      ).toBe('CREATE A NEW USER')
 
       expect(
         wrapper
           .find('Button')
           .at(1)
           .props().children
-      ).toBe('CREATE A NEW USER')
+      ).toBe('CLEAR')
+
+      expect(
+        wrapper
+          .find('Button')
+          .at(2)
+          .props().children
+      ).toBe('SEARCH')
     })
 
     describe('#handleInput', () => {
@@ -104,6 +117,18 @@ describe('SearchUsers', () => {
             target: { value: 'ABCDE' },
           })
         expect(handleInput).toHaveBeenCalledWith('CWSLogin', 'ABCDE')
+      })
+
+      // I found this:  https://github.com/airbnb/enzyme/issues/308
+      // simulated click on submit button in the form does not submit the form
+      // so here we simulate the submitting the form itself
+      it('#handleOnSearch', () => {
+        wrapper.find('form').simulate('submit')
+        expect(mockHandleOnSearchActions).toHaveBeenCalledWith()
+      })
+
+      it('renders form with props', () => {
+        expect(wrapper.find('form').props().onSubmit).not.toThrow()
       })
     })
   })

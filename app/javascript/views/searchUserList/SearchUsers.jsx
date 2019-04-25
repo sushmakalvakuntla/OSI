@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { InputComponent } from 'react-wood-duck'
-import { PrimitiveButton as Button } from '@cwds/components'
+import { Button } from '@cwds/components'
 /* eslint camelcase: 0 */
 
 const SearchUsers = ({
@@ -18,6 +18,8 @@ const SearchUsers = ({
   valid,
   disableSearch,
   isDisabledAddUsrBtn,
+  isDisabledClearBtn,
+  handleOnClear,
 }) => (
   <form onSubmit={handleOnSearch} autoComplete="off">
     <div>
@@ -75,33 +77,43 @@ const SearchUsers = ({
         </div>
         <br />
         <div className="row">
-          <div className="col-md-12">
-            <div className="pull-right" style={{ paddingRight: '26px', paddingTop: '10px' }}>
-              <div className="col-md-4 col-sm-2" style={{ paddingLeft: '0px' }}>
+          <div className="col-md-12" style={{ paddingTop: '10px' }}>
+            <div className="pull-right" style={{ padding: '0 15px 0 0', display: 'flex' }}>
+              <div style={{ paddingRight: '15px' }}>
                 <Button
-                  color="primary"
-                  className="buttons-height"
-                  size="lg"
-                  id="searchForUsers"
-                  type="submit"
-                  onClick={handleOnSearch}
-                  disabled={disableSearch || isDisabledSearchBtn()}
-                >
-                  SEARCH
-                </Button>
-              </div>
-              <div className="col-md-1 vertical-line" id="vertical-line3" style={{ height: '40px' }} />
-              <div>
-                <Button
-                  color="primary"
                   className="buttons-height"
                   size="lg"
                   id=""
-                  type="create"
+                  type="button"
                   onClick={handleOnCreateUser}
                   disabled={isDisabledAddUsrBtn()}
                 >
                   CREATE A NEW USER
+                </Button>
+              </div>
+              <div className="col-md-1 vertical-line" id="vertical-line3" style={{ height: '40px' }} />
+              <div className="col-md-4 col-sm-2" style={{ paddingLeft: '0px' }}>
+                <Button
+                  className="buttons-height"
+                  size="lg"
+                  id="clearSearch"
+                  type="button"
+                  onClick={handleOnClear}
+                  disabled={isDisabledClearBtn()}
+                >
+                  CLEAR
+                </Button>
+              </div>
+              <div className="col-md-4 col-sm-2" style={{ paddingLeft: '0px' }}>
+                <Button
+                  primary={true}
+                  className="buttons-height"
+                  size="lg"
+                  id="searchForUsers"
+                  type="submit"
+                  disabled={disableSearch || isDisabledSearchBtn()}
+                >
+                  SEARCH
                 </Button>
               </div>
             </div>
@@ -126,6 +138,8 @@ SearchUsers.propTypes = {
   disableSearch: PropTypes.bool,
   valid: PropTypes.bool,
   isDisabledAddUsrBtn: PropTypes.func,
+  isDisabledClearBtn: PropTypes.func,
+  handleOnClear: PropTypes.func,
 }
 
 export default SearchUsers

@@ -9,7 +9,7 @@ RUN mkdir /app
 WORKDIR app
 ADD Gemfile Gemfile.lock /app/
 RUN gem update --system
-RUN gem install bundler && bundle install
+RUN RAILS_ENV=production gem install bundler && bundle install
 ADD . /app
 
 

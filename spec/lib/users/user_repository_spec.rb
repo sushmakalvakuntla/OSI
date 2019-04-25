@@ -302,4 +302,19 @@ module Users
       expect(UserRepository.search('my query', 'token')).to eq('content')
     end
   end
+
+  describe '.count' do
+    let(:search_server) { Infrastructure::HttpService.new('http://stub.example.com') }
+    let(:good_response) { double(body: 'content') }
+    let(:token) { 'token' }
+    before do
+      allow(search_server).to receive(:post).with('/dora/users/user/_count', 'my query', token)
+                                            .and_return(good_response)
+      allow(Infrastructure::HttpService).to receive(:new).with('https://dora.test')
+                                                         .and_return(search_server)
+    end
+    it 'posts the given token to a count service' do
+      expect(UserRepository.count('my query', 'token')).to eq('content')
+    end
+  end
 end

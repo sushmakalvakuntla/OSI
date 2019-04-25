@@ -35,7 +35,13 @@ const initialValue = {
   users: [],
   fetching: false,
   error: null,
-  inputData: {},
+  inputData: {
+    lastName: '',
+    firstName: '',
+    CWSLogin: '',
+    email: '',
+    officeNames: [],
+  },
   adminAccountDetails: {},
   includeInactive: true,
 }
@@ -57,7 +63,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         total,
         fetching: false,
         error: null,
-        searchedForUsers: true,
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
@@ -100,6 +105,14 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         ...state,
         from: 0,
         query,
+      }
+
+    case actionTypes.USER_LIST_CLEAR_SEARCH:
+      return {
+        ...state,
+        inputData: initialValue.inputData,
+        query: initialValue.query,
+        includeInactive: initialValue.includeInactive,
       }
 
     // TODO: fix FSA

@@ -12,7 +12,8 @@ module UserDetailPageHelper
     all(:xpath,
         "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div/div")
       .to_a.each do |p|
-      permissions << p.text unless p.text == '' || p.text == 'Select...'
+      # skip empty, preview and nodes with the role of 'option' -- meaning not selected yet.
+      permissions << p.text unless p.text == '' || p.text == 'Select...' || p[:role] == 'option'
     end
     permissions
   end
@@ -20,6 +21,7 @@ module UserDetailPageHelper
   def remove_permission(permission)
     return if permission.blank?
 
+    puts "remove permission #{permission}"
     permissions_select.find(:xpath,
                             "//*[contains(text(), '#{permission}')]/following-sibling::*")
                       .click
@@ -27,8 +29,9 @@ module UserDetailPageHelper
 
   def add_permission(permission)
     # open the drop-down
-    permissions_click
+    permissions_select
     sleep 1
+
     find(:xpath,
          "//*[@id='AssignPermissions']/./div[2]/div/div[contains(text(), '#{permission}')]")
       .click
@@ -48,12 +51,13 @@ module UserDetailPageHelper
 
   def change_status(new_status)
     # return if there's nothing to do.
-    return if find_by_id('StatusDropDown').text == new_status
+    return false if find_by_id('StatusDropDown').text == new_status
 
     # find the status selectbox and drop it down
 
     find_by_id('StatusDropDown').click
     find_by_id('StatusDropDown').find(:xpath, 'div/div/*', text: new_status).click
+    true
   end
 
   def expect_success
@@ -88,6 +92,13 @@ module UserDetailPageHelper
                               text: 'Registration email has been sent successfully')).to be
   end
 
+  def save_and_confirm
+    click_button 'SAVE'
+    click_button 'Confirm' if has_button? 'Confirm'
+    expect_success
+    sleep 3
+  end
+
   private
 
   def permissions_click
@@ -95,6 +106,10 @@ module UserDetailPageHelper
   end
 
   def permissions_select
+    # click off the componenet first.  Should collapse the select if it was expended.
+
+    find('label', text: 'Assigned Permissions').click
+    permissions_click
     first(
       :xpath,
       "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div"

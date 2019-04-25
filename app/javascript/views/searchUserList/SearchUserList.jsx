@@ -28,6 +28,14 @@ class SearchUserList extends PureComponent {
     this.props.actions.fetchOfficesActions()
     this.props.actions.fetchRolesActions()
     this.props.actions.clearAddedUserDetailActions()
+    this.props.actions.setSearch([
+      { field: 'first_name', value: this.props.firstName },
+      { field: 'last_name', value: this.props.lastName },
+      { field: 'email', value: this.props.email },
+      { field: 'racfid', value: this.props.CWSLogin },
+      { field: 'office_ids', value: this.props.officeNames },
+      { field: 'enabled', value: this.props.includeInactive ? '' : true },
+    ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
@@ -62,8 +70,13 @@ class SearchUserList extends PureComponent {
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
+  submitClear = () => {
+    this.props.actions.clearSearch()
+    this.setState({ errorMessage: '' })
+  }
+
   isDisabledSearchBtn = () => {
-    const { lastName = '', firstName = '', email = '', CWSLogin = '' } = this.props
+    const { lastName, firstName, email, CWSLogin } = this.props
     return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
   }
 
@@ -79,6 +92,11 @@ class SearchUserList extends PureComponent {
     const racfid = query.find(({ field }) => field === 'racfid')
     const email = query.find(({ field }) => field === 'email')
     return [lastName, firstName, officeSearch, racfid, email].every(this.isSearchValueAbsent)
+  }
+
+  isDisabledClearBtn = () => {
+    const { lastName = '', firstName = '', email = '', CWSLogin = '', officeNames = [] } = this.props
+    return lastName === '' && firstName === '' && email === '' && CWSLogin === '' && officeNames.length === 0
   }
 
   renderExactMatches = () => {
@@ -162,6 +180,8 @@ class SearchUserList extends PureComponent {
             handleOnSearch={this.submitSearch}
             handleOnCreateUser={this.handleOnAdd}
             isDisabledAddUsrBtn={this.isDisabledAddUsrBtn}
+            isDisabledClearBtn={this.isDisabledClearBtn}
+            handleOnClear={this.submitClear}
           />
           {this.props.error && (
             <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
@@ -170,7 +190,7 @@ class SearchUserList extends PureComponent {
           )}
           <br />
           <div>
-            {this.props.searchedForUsers ? (
+            {!this.isDisabledAddUsrBtn() ? (
               <div className="row">
                 <div className="col-md-12">
                   <hr

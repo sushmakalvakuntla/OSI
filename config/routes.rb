@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     resources :search_user_list, only: [:index] do
     end
+    get 'users_list_count', to:  'search_user_list#users_list_count'
     get 'verify_user', to: 'verify_user#index'
 
     resources :user_detail, only: [:show] do

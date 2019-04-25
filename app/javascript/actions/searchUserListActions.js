@@ -40,6 +40,13 @@ export const setSearch = query => ({
 })
 
 /**
+ * Clear search
+ */
+export const clearSearch = () => ({
+  type: actionTypes.USER_LIST_CLEAR_SEARCH,
+})
+
+/**
  * Set search for tiles
  * @param {string} type
  * @param {Object[]} query

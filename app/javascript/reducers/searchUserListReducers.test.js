@@ -95,7 +95,6 @@ describe('reducer', () => {
           },
         },
       },
-      searchedForUsers: true,
     }
     const before = {}
     let after
@@ -185,6 +184,30 @@ describe('reducer', () => {
       payload: 42,
     })
     expect(after.from).toEqual(0)
+  })
+
+  it('handles clear search', () => {
+    const before = {
+      inputData: {
+        lastName: 'someLastName',
+        firstName: 'someFirstName',
+        CWSLogin: 'someCWDSLogin',
+        email: 'some@email.com',
+      },
+      includeInactive: false,
+    }
+    const action = {
+      type: actionTypes.USER_LIST_CLEAR_SEARCH,
+    }
+    const after = reducer(before, action)
+    expect(after.inputData).toEqual({
+      lastName: '',
+      firstName: '',
+      CWSLogin: '',
+      email: '',
+      officeNames: [],
+    })
+    expect(after.includeInactive).toEqual(true)
   })
 
   it('handles page updates', () => {

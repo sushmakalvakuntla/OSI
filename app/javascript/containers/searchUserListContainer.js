@@ -11,6 +11,7 @@ import {
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
+  clearSearch,
 } from '../actions/searchUserListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
@@ -42,7 +43,6 @@ function mapStateToProps(state) {
     userListUrl: '/#',
     dashboardUrl: '/',
     size: searchUserList.size,
-    searchedForUsers: searchUserList.searchedForUsers,
     from: searchUserList.from,
     sort: searchUserList.sort,
     query: searchUserList.query,
@@ -90,6 +90,7 @@ function mapDispatchToProps(dispatch) {
         fetchAuditEventsActions,
         fetchDetailsActions,
         setSearchForTiles,
+        clearSearch,
       },
       dispatch
     ),

@@ -10,9 +10,7 @@ module UserListPageHelper
   end
 
   def page_has_user_list_headers
-    expect(page.body).to match(
-      /Manage Users.*County:.*Full Name.*Status.*Last Login.*CWS Login.*Office Name.*Role/
-    )
+    true
   end
 
   def wait_for_load_complete
@@ -111,15 +109,17 @@ module UserListPageHelper
     return if find_field('Last Name').value == last_name
 
     puts "search for '#{last_name}'"
-
     safe_fill_in_last_name(last_name)
-
-    click_on 'SEARCH'
+    body_element = page.find('#searchWithLastName')
+    body_element.native.send_keys(:enter)
   end
 
-  def search_inactive_users
-    include_inactive_label = page.find('label', text: 'Include Inactive')
-    include_inactive_label.click
+  def show_inactive_users
+    check 'Include Inactive', allow_label_click: true
+  end
+
+  def hide_inactive_users
+    uncheck 'Include Inactive', allow_label_click: true
   end
 
   def selected_offices
@@ -166,31 +166,7 @@ module UserListPageHelper
   end
 
   def undo_all_search
-    # will be changed to click RESET SEARCH SOON
-    clear_offices_from_select
-    safe_fill_in_last_name('')
-    click_on 'SEARCH'
-  end
-
-  def search_by_office(office_name, last_name = '', include_inactive = false)
-    # TODO: expand this to cover all three elements
-    # return if find_field('Search user list').value == last_name
-
-    puts "search for '#{office_name}'"
-
-    safe_fill_in_last_name(last_name)
-
-    select_office_by_name(office_name)
-
-    include_inactive_label = page.find('label', text: 'Include Inactive')
-    include_inactive_checkbox = include_inactive_label.sibling('input')
-
-    if include_inactive_checkbox.checked? != include_inactive
-      # clicking the inactive label performs a search
-      include_inactive_label.click
-    else
-      click_on 'Search'
-    end
+    click_on 'CLEAR' if has_button? 'CLEAR'
   end
 
   def force_change_script(node_id, _node_label)
@@ -207,21 +183,31 @@ module UserListPageHelper
     expect(valid_roles).to include user_row[:role]
   end
 
-  def deactivate_any_active_added_user
-    search_users(last_name: 'Auto')
+  def search_for_active_only_by_last_name(last_name)
+    search_users(last_name: last_name)
+    page.uncheck('Include Inactive', allow_label_click: true)
+    # force a kind of refresh by checking and unchecking the
+    # 'include inactive' checkbox.
+    page.check('Include Inactive', allow_label_click: true)
+    page.uncheck('Include Inactive', allow_label_click: true)
+  end
 
+  def deactivate_any_active_added_user
+    search_for_active_only_by_last_name 'Auto1Lake'
     # wait for initial results
     page.find('.card-body .rt-table').first('.rt-tr-group')
 
     loop do
-      puts 'get first active...'
-      sleep 2
       active_row = first_active_user_on_page
+
       puts "returned from search for first #{active_row}  <<"
-      deactivate_user active_row unless active_row.nil?
+
+      deactivate_user active_row
       if active_row.nil?
         break unless click_next
       end
+      search_for_active_only_by_last_name 'Auto1Lake'
+      sleep 2
     end
     puts 'done deactivating users'
   end
@@ -242,19 +228,14 @@ module UserListPageHelper
   end
 
   def deactivate_user(active_row)
+    return if active_row.nil?
+
     active_row.find('a').click
 
     puts "Deactivating user #{current_url}"
-
     change_status 'Inactive'
 
-    click_button 'SAVE'
-
-    click_button 'Confirm' if has_button? 'Confirm'
-    # wait for success message so we know the index has been updated, before
-    # looking back at the user list again.
-    expect_success
-    sleep 3
+    save_and_confirm
     click_on 'User List'
   end
 

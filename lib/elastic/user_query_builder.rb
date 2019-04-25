@@ -7,6 +7,10 @@ module Elastic
       query(request[:query]).merge(paginate_query(request)).merge(sort_query)
     end
 
+    def self.get_count(request)
+      query(request[:query])
+    end
+
     def self.query(query)
       leaves = query_leaves(query)
       if leaves.blank?
@@ -55,7 +59,8 @@ module Elastic
         { conjunction: 'AND', query: { terms: { 'office_id.keyword': value } } } unless value.empty?
       end,
       email: lambda do |value|
-        { conjunction: 'AND', query: { match: { 'email.keyword': value } } } unless value.empty?
+        { conjunction: 'AND', query: { match: { 'email.keyword': value.downcase } } } unless value
+                                                                                             .empty?
       end,
       racfid: lambda do |value|
         { conjunction: 'AND', query: { match: { 'racfid.keyword': value.upcase } } } unless value

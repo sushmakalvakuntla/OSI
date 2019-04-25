@@ -8,6 +8,7 @@ import {
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
+  clearSearch,
 } from './searchUserListActions'
 import {
   FETCH_USERS_API_CALL_REQUEST,
@@ -18,6 +19,7 @@ import {
   HANDLE_INPUT_CHANGE,
   FETCH_ACCOUNT_API_CALL_REQUEST,
   HANDLE_CHECKBOX_CHANGE,
+  USER_LIST_CLEAR_SEARCH,
 } from './actionTypes'
 
 describe('#fetchAccountActions', () => {
@@ -65,6 +67,14 @@ describe('SearchUserListActions Actions', () => {
       expect(setSearch(query)).toEqual({
         type: USER_LIST_SET_SEARCH,
         payload: query,
+      })
+    })
+  })
+
+  describe('#clearSearch', () => {
+    it('returns type', () => {
+      expect(clearSearch()).toEqual({
+        type: USER_LIST_CLEAR_SEARCH,
       })
     })
   })

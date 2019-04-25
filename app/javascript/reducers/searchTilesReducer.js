@@ -2,16 +2,6 @@ import * as actionTypes from '../actions/actionTypes'
 import { getTilesInitialState, modifyTileData } from '../_utils/commonHelper'
 
 const initialValue = {
-  query: [
-    {
-      field: 'last_name',
-      value: '',
-    },
-    {
-      field: 'office_ids',
-      value: [],
-    },
-  ],
   searchPageTiles: [
     getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
     getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
