@@ -1,13 +1,9 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import SearchUserList from './SearchUserList.jsx'
-import { Link } from 'react-router-dom'
 
 describe('SearchUserList', () => {
   let wrapper
-  let mockSetPageActions
-  let mockSetPageSizeActions
-  let mockSetSortActions
   let mockSetNextSearchActions
   let mockSetOfficesListAction
   let mockHandleSearchChange
@@ -60,6 +56,15 @@ describe('SearchUserList', () => {
     email: 'email@email.com',
   }
 
+  const exactMatches = [
+    {
+      first_name: 'first name',
+      last_name: 'last name',
+      county_name: 'county',
+      email: 'email@email.com',
+    },
+  ]
+
   const searchPageTiles = [
     {
       title: 'user Type',
@@ -79,9 +84,6 @@ describe('SearchUserList', () => {
   ]
 
   beforeEach(() => {
-    mockSetPageActions = jest.fn().mockReturnValue(Promise.resolve([]))
-    mockSetPageSizeActions = jest.fn().mockReturnValue(Promise.resolve([]))
-    mockSetSortActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockSetNextSearchActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockSetOfficesListAction = jest.fn().mockReturnValue(Promise.resolve([]))
     mockHandleSearchChange = jest.fn().mockReturnValue(Promise.resolve([]))
@@ -98,9 +100,6 @@ describe('SearchUserList', () => {
       <SearchUserList
         dashboardUrl={'dburl'}
         actions={{
-          setPage: mockSetPageActions,
-          setPageSize: mockSetPageSizeActions,
-          setSort: mockSetSortActions,
           setNextSearch: mockSetNextSearchActions,
           setOfficesList: mockSetOfficesListAction,
           handleSearchChange: mockHandleSearchChange,
@@ -123,6 +122,7 @@ describe('SearchUserList', () => {
         lastName=""
         email=""
         CWSLogin=""
+        exactMatches={exactMatches}
       />,
       {
         disableLifecycleMethods: true,
@@ -163,7 +163,6 @@ describe('SearchUserList', () => {
             fetchAccountActions: () => {},
             fetchOfficesActions: () => {},
             fetchRolesActions: () => {},
-            setPage: () => {},
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
@@ -181,6 +180,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
@@ -216,14 +216,6 @@ describe('SearchUserList', () => {
     it('sets state based on the user action', () => {
       wrapper.setProps({ error: 'IfSomeErrorShowsUp' })
       expect(wrapper.find('Alert').length).toEqual(1)
-    })
-  })
-
-  describe('#handlePageChange', () => {
-    it('calls the setPage Actions', () => {
-      const pageIndex = 'someValue'
-      wrapper.instance().handlePageChange(pageIndex)
-      expect(mockSetPageActions).toHaveBeenCalledWith(pageIndex)
     })
   })
 
@@ -286,15 +278,6 @@ describe('SearchUserList', () => {
     })
   })
 
-  describe('#handlePageSizeChange', () => {
-    it('calls the setPageSize Actions', () => {
-      const pageIndex = 'someValue'
-      const pageSize = 30
-      wrapper.instance().handlePageSizeChange(pageSize, pageIndex)
-      expect(mockSetPageSizeActions).toHaveBeenCalledWith(pageSize)
-    })
-  })
-
   describe('#submitSearch', () => {
     it('calls the setSearch Actions', () => {
       const wrapperLocal = shallow(
@@ -305,7 +288,6 @@ describe('SearchUserList', () => {
             fetchAccountActions: () => {},
             fetchOfficesActions: () => {},
             fetchRolesActions: () => {},
-            setPage: () => {},
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
@@ -320,6 +302,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       const newQuery = [
@@ -359,7 +342,6 @@ describe('SearchUserList', () => {
             fetchAccountActions: () => {},
             fetchOfficesActions: () => {},
             fetchRolesActions: () => {},
-            setPage: () => {},
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
@@ -374,6 +356,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       const newQuery = [
@@ -402,21 +385,6 @@ describe('SearchUserList', () => {
       const event = { preventDefault: () => {} }
       wrapperLocal.instance().submitSearch(event)
       expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
-    })
-  })
-
-  describe('#handleSortChange', () => {
-    it('calls the sortChange Actions', () => {
-      const shiftKey = 'someKey'
-      const column = 'Full Name'
-      const newSorted = [
-        {
-          id: 'someId',
-          desc: 'someValue',
-        },
-      ]
-      wrapper.instance().handleSortChange(newSorted, column, shiftKey)
-      expect(mockSetSortActions).toHaveBeenCalledWith([{ desc: 'someValue', field: 'someId' }])
     })
   })
 
@@ -498,6 +466,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(true)
@@ -514,6 +483,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(false)
@@ -531,6 +501,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(true)
@@ -546,6 +517,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -561,6 +533,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -576,6 +549,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -591,6 +565,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -612,6 +587,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -628,6 +604,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(true)
@@ -656,36 +633,12 @@ describe('SearchUserList', () => {
     })
   })
 
-  describe('getTotalPages', () => {
-    it('retuns 1 when resultset is empty', () => {
-      wrapper.setProps({ size: 10, userList: [], total: 419 })
-      expect(wrapper.instance().getTotalPages()).toEqual(1)
-    })
-
-    it('calculates correct page count (total / size) + 1 if there is a remainder.', () => {
-      wrapper.setProps({ size: 10, userList: [{}], total: 419 })
-      expect(wrapper.instance().getTotalPages()).toEqual(42)
-      wrapper.setProps({ size: 10, total: 420, userList: [{}] })
-      expect(wrapper.instance().getTotalPages()).toEqual(42)
-      wrapper.setProps({ size: 10, total: 421, userList: [{}] })
-      expect(wrapper.instance().getTotalPages()).toEqual(43)
-    })
-
-    it('returns -1 (indeterminate) when total numPages can not be calculated', () => {
-      wrapper.setProps({ size: undefined, userList: [{}], total: undefined })
-      expect(wrapper.instance().getTotalPages()).toEqual(-1)
-      wrapper.setProps({ size: 0, userList: [{}], total: 0 })
-      expect(wrapper.instance().getTotalPages()).toEqual(-1)
-    })
-  })
-
   describe('#componentDidMount', () => {
     let mockFetchAccountActions
     let mockFetchOfficeListActions
     let mockFetchRolesActions
     let mockSetSearch
     let mockSetSearchForTiles
-    let mockSetPage
     let mockClearAddedUserDetailActions
 
     beforeEach(() => {
@@ -694,7 +647,6 @@ describe('SearchUserList', () => {
       mockFetchRolesActions = jest.fn()
       mockSetSearch = jest.fn()
       mockSetSearchForTiles = jest.fn()
-      mockSetPage = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
       wrapper = mount(
         <SearchUserList
@@ -705,7 +657,6 @@ describe('SearchUserList', () => {
             fetchRolesActions: mockFetchRolesActions,
             setSearch: mockSetSearch,
             setSearchForTiles: mockSetSearchForTiles,
-            setPage: mockSetPage,
             clearAddedUserDetailActions: mockClearAddedUserDetailActions,
             fetchAuditEventsActions: mockFetchAuditEventsActions,
           }}
@@ -727,6 +678,7 @@ describe('SearchUserList', () => {
           changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
           changeLogAdminOfficeName={'Admin Office'}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
     })
@@ -744,71 +696,6 @@ describe('SearchUserList', () => {
     })
   })
 
-  describe('#UserList output', () => {
-    it('contains Table and headers', () => {
-      const component = shallow(
-        <SearchUserList
-          dashboardUrl={'dburl'}
-          actions={{
-            searchUsers: () => {},
-            fetchAccountActions: () => {},
-            fetchOfficesActions: () => {},
-            fetchRolesActions: () => {},
-            setSearch: () => {},
-            setPage: () => {},
-            clearAddedUserDetailActions: () => {},
-            fetchAuditEventsActions: () => {},
-          }}
-          from={0}
-          size={50}
-          total={25}
-          query={query}
-          selectedOfficesList={['somevalue']}
-          includeInactive={false}
-          auditEvents={auditEvents}
-          searchPageTiles={searchPageTiles}
-          searchedForUsers={true}
-        />
-      )
-
-      const value = 'value'
-      const original = {
-        id: '1234AGFS',
-      }
-      expect(wrapper.find('ReactTable').length).toBe(1)
-      expect(wrapper.find('ReactTable').prop('columns').length).toBe(6)
-      expect(wrapper.find('ReactTable').prop('columns')[0].id).toBe('last_name')
-      expect(wrapper.find('ReactTable').prop('columns')[1].id).toBe('enabled')
-      expect(wrapper.find('ReactTable').prop('columns')[2].id).toBe('last_login_date_time')
-      expect(wrapper.find('ReactTable').prop('columns')[3].accessor).toBe('racfid')
-      expect(component.find('ReactTable').prop('sorted')).toEqual([])
-      expect(
-        wrapper
-          .find('ReactTable')
-          .prop('columns')[0]
-          .Cell({ value, original })
-      ).toEqual(<Link to="/user_details/1234AGFS">value</Link>)
-    })
-
-    it('renders navigation link to Dashboard', () => {
-      expect(
-        wrapper
-          .find('Link')
-          .at(0)
-          .html()
-      ).toContain('Dashboard')
-    })
-
-    it('first link is pointed at dashboard', () => {
-      expect(wrapper.find('Link').get(0).props.href).toEqual('dburl')
-    })
-
-    it('default props', () => {
-      expect(SearchUserList.defaultProps.dashboardUrl).toEqual('/')
-      expect(SearchUserList.defaultProps.dashboardClickHandler).not.toThrow()
-    })
-  })
-
   function prepareQuery(fieldName) {
     const result = allEmptySearchQuery.slice()
     const objIndex = result.findIndex(obj => obj.field === fieldName)
@@ -822,7 +709,6 @@ describe('SearchUserList', () => {
     fetchOfficesActions: () => {},
     fetchRolesActions: () => {},
     setSearch: () => {},
-    setPage: () => {},
     clearAddedUserDetailActions: () => {},
     fetchAuditEventsActions: () => {},
   }

@@ -1,14 +1,14 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import SearchResultList from './SearchResultList'
+import SearchResultComponent from './SearchResultComponent'
 
-describe('SearchResultList', () => {
+describe('SearchResultComponent', () => {
   let wrapper
   const resultList = [{ first_name: 'firstName', last_name: 'lastName' }, { first_name: 'firstName1', last_name: 'lastName1' }]
   const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
   const rolesList = [{ label: ' ROLE ONE', value: 'role1' }, { label: 'ROLE TWO', value: 'role2' }]
   beforeEach(() => {
-    wrapper = shallow(<SearchResultList value={resultList} officeList={officesList} rolesList={rolesList} />)
+    wrapper = shallow(<SearchResultComponent value={resultList} officeList={officesList} rolesList={rolesList} />)
   })
 
   describe('renders the components', () => {

@@ -34,7 +34,7 @@ import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../
 import { selectDetailRecords, officeName } from '../selectors/detailSelector'
 function mapStateToProps(state) {
   const { searchUserList, searchTilesReducer } = state
-  console.log('conta', selectSearchResultList(state))
+  //  console.log('conta', selectSearchResultList(state))
   return {
     userList: searchUserList.users || [],
     cardHeaderValue: cardHeaderText(state),
