@@ -8,16 +8,14 @@ feature 'user list filters by office' do
   scenario 'Filter by office user list page' do
     login
     sleep 2
-    clear_offices_from_select
-
-    search_users(last_name: '', include_inactive: false)
+    search_users(last_name: 'A')
     wait_for_load_complete
     expand_changelog_component
     all_count_changelog = count_changelog_events
     all_users_count = total_count_users
     office_name = 'CWDS CARES IM Lake Testing Office BinthuK2' # pick_single_office_name
 
-    search_by_office(office_name, '', false)
+    select_office_by_name(office_name)
 
     filtered_users_count = total_count_users
     expand_changelog_component
