@@ -23,6 +23,7 @@ import {
   CWSLogin,
   firstName,
   lastName,
+  selectSearchResultList,
 } from '../selectors/searchUserListSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { officesList } from '../selectors/officeListSelector'
@@ -33,6 +34,7 @@ import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../
 import { selectDetailRecords, officeName } from '../selectors/detailSelector'
 function mapStateToProps(state) {
   const { searchUserList, searchTilesReducer } = state
+  console.log('conta', selectSearchResultList(state))
   return {
     userList: searchUserList.users || [],
     cardHeaderValue: cardHeaderText(state),
@@ -63,6 +65,8 @@ function mapStateToProps(state) {
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
     searchPageTiles: searchTilesReducer.searchPageTiles,
+    exactMatches: selectSearchResultList(state).exactMatches,
+    fuzzyMatches: selectSearchResultList(state).fuzzyMatches,
   }
 }
 

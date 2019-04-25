@@ -13,6 +13,7 @@ import { formatRoles } from '../../_utils/formatters'
 import ChangeLog from '../userDetail/ChangeLog'
 import CommonTile from './CommonTile'
 import SearchUsers from './SearchUsers'
+import SearchResultList from './SearchResultList'
 
 class SearchUserList extends PureComponent {
   constructor(props) {
@@ -106,6 +107,13 @@ class SearchUserList extends PureComponent {
   }
 
   getCurrentPageNumber = () => Math.floor(this.props.from / this.props.size)
+
+  renderExactMatches = () => {
+    const { exactMatches, officesList, rolesList } = this.props
+    return exactMatches.map((value, key) => (
+      <SearchResultList value={value} key={key} officeList={officesList} rolesList={rolesList} />
+    ))
+  }
 
   renderUsersTable = ({ data, officesList, rolesList }) => {
     const translateOffice = getOfficeTranslator(officesList)
@@ -241,7 +249,7 @@ class SearchUserList extends PureComponent {
                       checked={this.props.includeInactive}
                     />
                   </div>
-                  <div className="col-md-4">
+                  <div className="col-md-4" style={{ marginBottom: '10px' }}>
                     <DropDown
                       id="searchOfficeName"
                       selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
@@ -252,19 +260,15 @@ class SearchUserList extends PureComponent {
                     />
                   </div>
                 </div>
-                <div>
-                  {this.renderUsersTable({
-                    data: this.props.userList,
-                    officesList,
-                    rolesList: this.props.rolesList,
-                  })}
-                </div>
+                <div />
               </div>
             ) : (
               ''
             )}
           </div>
+          {this.renderExactMatches()}
         </Cards>
+
         <div className="tilesPanel col-md-3">
           {this.props.searchPageTiles.map((searchPageTile, index) => (
             <CommonTile
@@ -359,6 +363,7 @@ SearchUserList.propTypes = {
   displayChangeLog: PropTypes.bool,
   searchPageTiles: PropTypes.array,
   searchedForUsers: PropTypes.bool,
+  exactMatches: PropTypes.array,
 }
 
 SearchUserList.defaultProps = {

@@ -26,5 +26,6 @@ export const getOfficeTranslator = officesList => {
   officesList.forEach(office => {
     officeMap[office.value] = office
   })
+
   return user => translateOfficeMap(user, officeMap)
 }

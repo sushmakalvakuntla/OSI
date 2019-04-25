@@ -40,6 +40,26 @@ export const checkOfficeNames = offices => {
   }
 }
 
+export const selectSearchResultList = state => {
+  const users = selectUserRecords(state)
+  const query = safeGet(state, 'searchUserList.query')
+  const CWSLogin = query.find(({ field }) => field === 'racfid')
+  const email = query.find(({ field }) => field === 'email')
+  const lastName = query.find(({ field }) => field === 'last_name')
+  const firstName = query.find(({ field }) => field === 'first_name')
+  const exactMatches = []
+  const fuzzyMatches = []
+  users.forEach(user => {
+    const isMatched =
+      CWSLogin.value === user.racfid ||
+      firstName.value === user.first_name ||
+      lastName.value === user.last_name ||
+      email.value === user.email
+    return isMatched ? exactMatches.push(user) : !isMatched ? fuzzyMatches.push(user) : []
+  })
+  return { exactMatches, fuzzyMatches }
+}
+
 export const cardHeaderText = state => {
   const roles = safeGet(state, 'searchUserList.adminAccountDetails.roles', [])
   const countyName = safeGet(state, 'searchUserList.adminAccountDetails.county_name', '')

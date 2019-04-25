@@ -59,6 +59,22 @@ export function formatRoles(assignedRoles, rolesList) {
   return role
 }
 
+export function formatOffices(assignedOffices, officesList) {
+  const officeNames = [assignedOffices]
+  let office = ''
+  if (!Array.isArray(officeNames)) return ''
+  if (officeNames && officeNames.length !== 0) {
+    office = officeNames
+      .map(office => officesList.find(d => d.value === office))
+      .filter(value => value)
+      .map(({ value, label }) => label)[0]
+  }
+  if (office === undefined) {
+    office = officeNames[0]
+  }
+  return office
+}
+
 export function formatPermissions(assignedPermissions, permissionList) {
   if (!Array.isArray(assignedPermissions)) return ''
   return (
