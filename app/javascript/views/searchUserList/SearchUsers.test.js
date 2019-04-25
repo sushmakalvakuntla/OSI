@@ -119,8 +119,11 @@ describe('SearchUsers', () => {
         expect(handleInput).toHaveBeenCalledWith('CWSLogin', 'ABCDE')
       })
 
+      // I found this:  https://github.com/airbnb/enzyme/issues/308
+      // simulated click on submit button in the form does not submit the form
+      // so here we simulate the submitting the form itself
       it('#handleOnSearch', () => {
-        wrapper.find('#searchForUsers').simulate('click')
+        wrapper.find('form').simulate('submit')
         expect(mockHandleOnSearchActions).toHaveBeenCalledWith()
       })
 
