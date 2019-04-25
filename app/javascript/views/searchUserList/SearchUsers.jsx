@@ -84,7 +84,7 @@ const SearchUsers = ({
                   className="buttons-height"
                   size="lg"
                   id=""
-                  type="create"
+                  type="button"
                   onClick={handleOnCreateUser}
                   disabled={isDisabledAddUsrBtn()}
                 >
@@ -97,7 +97,7 @@ const SearchUsers = ({
                   className="buttons-height"
                   size="lg"
                   id="clearSearch"
-                  type="submit"
+                  type="button"
                   onClick={handleOnClear}
                   disabled={isDisabledClearBtn()}
                 >
@@ -111,7 +111,6 @@ const SearchUsers = ({
                   size="lg"
                   id="searchForUsers"
                   type="submit"
-                  onClick={handleOnSearch}
                   disabled={disableSearch || isDisabledSearchBtn()}
                 >
                   SEARCH
