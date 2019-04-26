@@ -12,14 +12,14 @@ describe('sagas', () => {
   describe('#activeUsersList', () => {
     beforeEach(() => {
       UserService.fetch = jest.fn()
-      UserService.search = jest.fn()
+      UserService.searchForTiles = jest.fn()
     })
 
     describe('when successful', () => {
       it('executes the happy-path saga', () => {
         const searchParams = {}
         const gen = activeUsersList({ payload: searchParams })
-        expect(gen.next().value).toEqual(call(UserService.search, searchParams))
+        expect(gen.next().value).toEqual(call(UserService.searchForTiles, searchParams))
         const resObj = {}
         expect(gen.next(resObj).value).toEqual(
           put({
@@ -36,7 +36,7 @@ describe('sagas', () => {
         const searchParams = {}
         const action = { payload: searchParams }
         const gen = activeUsersList(action)
-        expect(gen.next().value).toEqual(call(UserService.search, searchParams))
+        expect(gen.next().value).toEqual(call(UserService.searchForTiles, searchParams))
         expect(gen.throw('I have made a huge mistake').value).toEqual(
           put({
             type: actionTypes.GET_ACTIVE_USERS_FAILURE,
