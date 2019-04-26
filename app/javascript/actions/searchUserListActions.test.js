@@ -1,10 +1,7 @@
 import {
   searchUsers,
-  setPageSize,
-  setPage,
   setSearch,
   handleSearchChange,
-  setSort,
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
@@ -12,10 +9,7 @@ import {
 } from './searchUserListActions'
 import {
   FETCH_USERS_API_CALL_REQUEST,
-  USER_LIST_SET_PAGE_SIZE,
-  USER_LIST_SET_PAGE,
   USER_LIST_SET_SEARCH,
-  USER_LIST_SET_SORT,
   HANDLE_INPUT_CHANGE,
   FETCH_ACCOUNT_API_CALL_REQUEST,
   HANDLE_CHECKBOX_CHANGE,
@@ -39,24 +33,6 @@ describe('SearchUserListActions Actions', () => {
       expect(searchUsers(params)).toEqual({
         type: FETCH_USERS_API_CALL_REQUEST,
         payload: params,
-      })
-    })
-  })
-
-  describe('#setPageSize', () => {
-    it('returns type and payload', () => {
-      expect(setPageSize(20)).toEqual({
-        type: USER_LIST_SET_PAGE_SIZE,
-        payload: 20,
-      })
-    })
-  })
-
-  describe('#setPage', () => {
-    it('returns type and payload', () => {
-      expect(setPage(2)).toEqual({
-        type: USER_LIST_SET_PAGE,
-        payload: 2,
       })
     })
   })
@@ -97,16 +73,6 @@ describe('SearchUserListActions Actions', () => {
       expect(handleSearchChange(key, value)).toEqual({
         type: HANDLE_INPUT_CHANGE,
         payload: { key, value },
-      })
-    })
-  })
-
-  describe('#setSort', () => {
-    it('returns type and payload', () => {
-      const sort = []
-      expect(setSort(sort)).toEqual({
-        type: USER_LIST_SET_SORT,
-        payload: sort,
       })
     })
   })

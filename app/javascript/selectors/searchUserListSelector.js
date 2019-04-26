@@ -1,4 +1,5 @@
 import safeGet from 'lodash.get'
+import React from 'react'
 
 export const selectUserRecords = state => {
   if (!state.searchUserList) return []
@@ -58,6 +59,17 @@ export const selectSearchResultList = state => {
     return isMatched ? exactMatches.push(user) : !isMatched ? fuzzyMatches.push(user) : []
   })
   return { exactMatches, fuzzyMatches }
+}
+
+export const exactMatchResultText = state => {
+  const { exactMatches } = selectSearchResultList(state)
+  return exactMatches.length > 1 ? (
+    <span>
+      <b>Exact</b> matches found based on search criteria
+    </span>
+  ) : (
+    ''
+  )
 }
 
 export const cardHeaderText = state => {

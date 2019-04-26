@@ -73,17 +73,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         users: null,
       }
 
-    case actionTypes.USER_LIST_SET_PAGE:
-      return { ...state, from: payload * state.size }
-
-    // TODO: fix FSA
-    case actionTypes.USER_LIST_SET_SORT:
-      const sort = payload
-      return {
-        ...state,
-        sort,
-      }
-
     case actionTypes.HANDLE_INPUT_CHANGE:
       return {
         ...state,
@@ -114,11 +103,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         query: initialValue.query,
         includeInactive: initialValue.includeInactive,
       }
-
-    // TODO: fix FSA
-    case actionTypes.USER_LIST_SET_PAGE_SIZE:
-      const size = payload
-      return { ...state, size, from: 0 }
 
     case actionTypes.FETCH_ACCOUNT_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null }

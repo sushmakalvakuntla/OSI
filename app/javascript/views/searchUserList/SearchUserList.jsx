@@ -143,6 +143,7 @@ class SearchUserList extends PureComponent {
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
+
   handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
 
   handleEmailSearch = (name, value) => {
@@ -204,9 +205,7 @@ class SearchUserList extends PureComponent {
                     }}
                   />
                   <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px', fontSize: '14px' }}>
-                    <span>
-                      <b>Exact</b> matches found based on search criteria
-                    </span>
+                    {this.props.exactMatchResultText}
                   </div>
                   <div className="col-md-3" style={{ marginTop: '12px' }}>
                     <CheckBoxRadio
@@ -228,15 +227,13 @@ class SearchUserList extends PureComponent {
                     />
                   </div>
                 </div>
-                <div />
+                <div className="col-md-12"> {this.renderExactMatches()}</div>
               </div>
             ) : (
               ''
             )}
           </div>
-          {this.renderExactMatches()}
         </Cards>
-
         <div className="tilesPanel col-md-3">
           {this.props.searchPageTiles.map((searchPageTile, index) => (
             <CommonTile
@@ -289,21 +286,12 @@ class SearchUserList extends PureComponent {
 }
 
 SearchUserList.propTypes = {
-  from: PropTypes.number,
-  size: PropTypes.number,
   fetching: PropTypes.bool,
   userList: PropTypes.array,
   dashboardUrl: PropTypes.string,
   cardHeaderValue: PropTypes.string,
   dashboardClickHandler: PropTypes.func,
   actions: PropTypes.object.isRequired,
-  total: PropTypes.number,
-  sort: PropTypes.arrayOf(
-    PropTypes.shape({
-      field: PropTypes.string.isRequired,
-      desc: PropTypes.bool,
-    })
-  ),
   query: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string,
@@ -328,15 +316,13 @@ SearchUserList.propTypes = {
   userDetails: PropTypes.object,
   displayChangeLog: PropTypes.bool,
   searchPageTiles: PropTypes.array,
-  searchedForUsers: PropTypes.bool,
   exactMatches: PropTypes.array,
+  exactMatchResultText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
 
 SearchUserList.defaultProps = {
   dashboardUrl: '/',
   dashboardClickHandler: () => {},
-  sort: [],
-  pageSizeOptions: [5, 10, 25, 50, 100],
   officesList: [],
   officeNames: [],
   searchPageTiles: [],

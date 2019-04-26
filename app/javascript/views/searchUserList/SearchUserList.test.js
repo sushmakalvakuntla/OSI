@@ -670,6 +670,7 @@ describe('SearchUserList', () => {
           auditEvents={auditEvents}
           userDetails={details}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(true)
@@ -686,6 +687,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           query={query}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -702,6 +704,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           query={query}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -718,6 +721,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           query={query}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -734,6 +738,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           query={query}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -750,6 +755,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           query={query}
           searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)

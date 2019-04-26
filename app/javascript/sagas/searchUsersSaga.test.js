@@ -1,20 +1,12 @@
 import { watchUserSearchParamUpdates, searchUserList } from './searchUsersSaga'
 import { getSearchParams } from '../selectors/searchUserListSelector'
 import { takeLatest, put, select } from 'redux-saga/effects'
-import {
-  USER_LIST_SET_PAGE,
-  USER_LIST_SET_PAGE_SIZE,
-  USER_LIST_SET_SORT,
-  USER_LIST_SET_SEARCH,
-  FETCH_USERS_API_CALL_REQUEST,
-} from '../actions/actionTypes'
+import { USER_LIST_SET_SEARCH, FETCH_USERS_API_CALL_REQUEST } from '../actions/actionTypes'
 
 describe('sagas', () => {
   it('starts the worker fetch saga', () => {
     const gen = watchUserSearchParamUpdates()
-    expect(gen.next().value).toEqual(
-      takeLatest([USER_LIST_SET_SEARCH, USER_LIST_SET_SORT, USER_LIST_SET_PAGE, USER_LIST_SET_PAGE_SIZE], searchUserList)
-    )
+    expect(gen.next().value).toEqual(takeLatest([USER_LIST_SET_SEARCH], searchUserList))
   })
 
   describe('when successful', () => {
