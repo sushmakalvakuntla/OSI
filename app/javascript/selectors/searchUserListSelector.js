@@ -56,14 +56,14 @@ export const selectSearchResultList = state => {
       firstName.value === user.first_name ||
       lastName.value === user.last_name ||
       email.value === user.email
-    return isMatched ? exactMatches.push(user) : !isMatched ? fuzzyMatches.push(user) : []
+    return isMatched ? exactMatches.push(user) : fuzzyMatches.push(user)
   })
   return { exactMatches, fuzzyMatches }
 }
 
 export const exactMatchResultText = state => {
   const { exactMatches } = selectSearchResultList(state)
-  return exactMatches.length > 1 ? (
+  return exactMatches.length > 0 ? (
     <span>
       <b>Exact</b> matches found based on search criteria
     </span>

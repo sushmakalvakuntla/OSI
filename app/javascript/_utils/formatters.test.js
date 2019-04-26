@@ -6,6 +6,7 @@ import {
   formatDate,
   formatPermissions,
   formatAdminWithRole,
+  formatOffices,
 } from './formatters'
 
 describe('#formatPhoneNumberWithExt', () => {
@@ -219,5 +220,42 @@ describe('#formatAdminWithRole', () => {
     const adminName = 'Some Admin'
     const adminRole = null
     expect(formatAdminWithRole(adminName, adminRole)).toEqual('Some Admin')
+  })
+})
+
+// describe('#formatOffices', () => {
+//   it('returns office name when office id exist', () => {
+//     const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
+//     const assignedOffices = ['office1']
+//     expect(formatOffices(officesList, assignedOffices)).toEqual('09/01/2001')
+//   })
+// })
+
+describe('#formatOffices', () => {
+  const list = [
+    { value: 'foo', label: 'FOO_DESC' },
+    { value: 'bar', label: 'BAR_DESC' },
+    { value: 'quo', label: 'QUO_DESC' },
+    { value: 'qux', label: 'QUX_DESC' },
+  ]
+  it('return first index of the array ', () => {
+    expect(formatOffices('foo', list)).toEqual('FOO_DESC')
+    expect(formatOffices('qux', list)).toEqual('QUX_DESC')
+  })
+
+  it('return empty when there is no role ', () => {
+    expect(formatOffices('', list)).toEqual('')
+  })
+
+  it('return original-id when it is not in the list ', () => {
+    expect(formatOffices(['bad'], list)).toEqual(['bad'])
+  })
+
+  it('return empty array when role is empty array', () => {
+    expect(formatOffices({}, list)).toEqual({})
+  })
+
+  it('return empty array when role is empty ', () => {
+    expect(formatOffices([], list)).toEqual([])
   })
 })
