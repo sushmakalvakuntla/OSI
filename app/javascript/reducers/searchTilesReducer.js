@@ -6,6 +6,14 @@ const initialValue = {
     getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
     getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
     getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
+    getTilesInitialState(
+      'Unregistered Users',
+      actionTypes.GET_UNREGISTERED_USERS_REQUEST,
+      'enabled',
+      true,
+      'status',
+      'FORCE_CHANGE_PASSWORD'
+    ),
   ],
 }
 
@@ -28,7 +36,6 @@ function searchForTiles(state = initialValue, { type, payload, error, meta }) {
         ...state,
         error,
         fetching: false,
-        users: null,
       }
 
     case actionTypes.GET_LOCKED_USERS_REQUEST:
@@ -48,7 +55,6 @@ function searchForTiles(state = initialValue, { type, payload, error, meta }) {
         ...state,
         error,
         fetching: false,
-        users: null,
       }
 
     case actionTypes.GET_INACTIVE_USERS_REQUEST:
@@ -68,7 +74,25 @@ function searchForTiles(state = initialValue, { type, payload, error, meta }) {
         ...state,
         error,
         fetching: false,
-        users: null,
+      }
+
+    case actionTypes.GET_UNREGISTERED_USERS_REQUEST:
+      return { ...state, fetching: true, error: null }
+
+    case actionTypes.GET_UNREGISTERED_USERS_SUCCESS:
+      modifyTileData(state.searchPageTiles, 'Unregistered Users', payload)
+      return {
+        ...state,
+        searchPageTiles: [...state.searchPageTiles],
+        fetching: false,
+        error: null,
+      }
+
+    case actionTypes.GET_UNREGISTERED_USERS_FAILURE:
+      return {
+        ...state,
+        error,
+        fetching: false,
       }
 
     default:

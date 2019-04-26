@@ -33,6 +33,24 @@ describe('UserService', () => {
     })
   })
 
+  describe('#searchForTiles', () => {
+    let getSearchForTilesSpy
+    beforeEach(() => {
+      getSearchForTilesSpy = jest.spyOn(ApiService, 'get')
+    })
+
+    it('calls #searchForTiles ApiService', () => {
+      const q = encodeURIComponent(
+        JSON.stringify({
+          query: [],
+        })
+      )
+      getSearchForTilesSpy.mockReturnValue(Promise.resolve({}))
+      UserService.searchForTiles(q)
+      expect(getSearchForTilesSpy).toHaveBeenCalledWith(`/users_list_count?q=${q}`)
+    })
+  })
+
   describe('#auitEvents', () => {
     let getAuditEventsSpy
     beforeEach(() => {

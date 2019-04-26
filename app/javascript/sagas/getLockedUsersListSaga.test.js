@@ -12,14 +12,14 @@ describe('sagas', () => {
   describe('#lockedUsersList', () => {
     beforeEach(() => {
       UserService.fetch = jest.fn()
-      UserService.search = jest.fn()
+      UserService.searchForTiles = jest.fn()
     })
 
     describe('when successful', () => {
       it('executes the happy-path saga', () => {
         const searchParams = {}
         const gen = lockedUsersList({ payload: searchParams })
-        expect(gen.next().value).toEqual(call(UserService.search, searchParams))
+        expect(gen.next().value).toEqual(call(UserService.searchForTiles, searchParams))
         const resObj = {}
         expect(gen.next(resObj).value).toEqual(
           put({
@@ -36,7 +36,7 @@ describe('sagas', () => {
         const searchParams = {}
         const action = { payload: searchParams }
         const gen = lockedUsersList(action)
-        expect(gen.next().value).toEqual(call(UserService.search, searchParams))
+        expect(gen.next().value).toEqual(call(UserService.searchForTiles, searchParams))
         expect(gen.throw('I have made a huge mistake').value).toEqual(
           put({
             type: actionTypes.GET_LOCKED_USERS_FAILURE,
