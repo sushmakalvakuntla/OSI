@@ -68,10 +68,11 @@ export function formatOffices(assignedOffices, officesList) {
       .map(office => officesList.find(d => d.value === office))
       .filter(value => value)
       .map(({ value, label }) => label)[0]
+    if (office === undefined) {
+      office = assignedOffice[0]
+    }
   }
-  if (office === undefined) {
-    office = assignedOffice[0]
-  }
+
   return office
 }
 
