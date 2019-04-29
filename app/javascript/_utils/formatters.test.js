@@ -223,14 +223,6 @@ describe('#formatAdminWithRole', () => {
   })
 })
 
-// describe('#formatOffices', () => {
-//   it('returns office name when office id exist', () => {
-//     const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
-//     const assignedOffices = ['office1']
-//     expect(formatOffices(officesList, assignedOffices)).toEqual('09/01/2001')
-//   })
-// })
-
 describe('#formatOffices', () => {
   const list = [
     { value: 'foo', label: 'FOO_DESC' },
@@ -243,7 +235,7 @@ describe('#formatOffices', () => {
     expect(formatOffices('qux', list)).toEqual('QUX_DESC')
   })
 
-  it('return empty when there is no role ', () => {
+  it('return empty when there is no office ', () => {
     expect(formatOffices('', list)).toEqual('')
   })
 
@@ -251,7 +243,7 @@ describe('#formatOffices', () => {
     expect(formatOffices(['bad'], list)).toEqual(['bad'])
   })
 
-  it('return empty array when role is empty array', () => {
+  it('return empty object when role is empty array', () => {
     expect(formatOffices({}, list)).toEqual({})
   })
 

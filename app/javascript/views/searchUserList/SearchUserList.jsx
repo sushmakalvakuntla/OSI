@@ -107,7 +107,7 @@ class SearchUserList extends PureComponent {
       </div>
     ) : exactMatches.length < 1 ? (
       <div className="no-search-results-box">
-        We didnt find any <b>exact</b> matches based on search criteria.
+        We didn&apos;t find any <b>exact</b> matches based on search criteria.
       </div>
     ) : (
       exactMatches.map((value, key) => (

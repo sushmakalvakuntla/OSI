@@ -60,17 +60,17 @@ export function formatRoles(assignedRoles, rolesList) {
 }
 
 export function formatOffices(assignedOffices, officesList) {
-  const officeNames = [assignedOffices]
+  const assignedOffice = [assignedOffices]
   let office = ''
-  if (!Array.isArray(officeNames)) return ''
-  if (officeNames && officeNames.length !== 0) {
-    office = officeNames
+  if (!Array.isArray(assignedOffice)) return ''
+  if (assignedOffice && assignedOffice.length !== 0) {
+    office = assignedOffice
       .map(office => officesList.find(d => d.value === office))
       .filter(value => value)
       .map(({ value, label }) => label)[0]
   }
   if (office === undefined) {
-    office = officeNames[0]
+    office = assignedOffice[0]
   }
   return office
 }
