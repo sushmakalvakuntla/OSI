@@ -1,18 +1,16 @@
 import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
 import CheckBoxRadio from '../../common/CheckBoxRadio'
 import DropDown from '../../common/DropDown'
 import Cards from '../../common/Card'
-import ReactTable from 'react-table'
-import Pagination from './Pagination'
 import './SearchUserList.scss'
-import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
-import { formatRoles } from '../../_utils/formatters'
 import ChangeLog from '../userDetail/ChangeLog'
 import CommonTile from './CommonTile'
 import SearchUsers from './SearchUsers'
+import SearchResultComponent from './SearchResultComponent'
+import { Icon } from '@cwds/components'
 
 class SearchUserList extends PureComponent {
   constructor(props) {
@@ -59,18 +57,6 @@ class SearchUserList extends PureComponent {
     ])
   }
 
-  handlePageChange = pageIndex => {
-    window.scrollTo(0, 0)
-    this.props.actions.setPage(pageIndex)
-  }
-
-  handlePageSizeChange = pageSize => {
-    window.scrollTo(0, 0)
-    this.props.actions.setPageSize(pageSize)
-  }
-
-  handleSortChange = newSorted => this.props.actions.setSort(newSorted.map(s => ({ field: s.id, desc: s.desc })))
-
   submitSearch = e => {
     e.preventDefault()
     this.props.actions.setSearch([
@@ -81,8 +67,6 @@ class SearchUserList extends PureComponent {
       { field: 'racfid', value: this.props.CWSLogin },
       { field: 'enabled', value: this.props.includeInactive ? '' : true },
     ])
-
-    this.props.actions.setPage(Math.floor(this.props.from / this.props.size))
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
 
@@ -115,56 +99,26 @@ class SearchUserList extends PureComponent {
     return lastName === '' && firstName === '' && email === '' && CWSLogin === '' && officeNames.length === 0
   }
 
-  getTotalPages = () => {
-    const { userList: records, total, size } = this.props
-    if (!records) return -1
-    if (records && Array.isArray(records) && !records.length) return 1
-    if (total && size) return Math.ceil(total / size)
-    return -1
-  }
-
-  getCurrentPageNumber = () => Math.floor(this.props.from / this.props.size)
-
-  renderUsersTable = ({ data, officesList, rolesList }) => {
-    const translateOffice = getOfficeTranslator(officesList)
-    const translateRoles = data => formatRoles(data.roles, rolesList)
-    return (
-      <div className="col-md-12" style={{ marginTop: '30px' }}>
-        <ReactTable
-          data={data}
-          showPaginationTop={true}
-          showPaginationBottom={this.props.size >= 20}
-          columns={[
-            {
-              Header: 'Full Name',
-              id: 'last_name',
-              accessor: toFullName,
-              Cell: ({ value, original }) => <Link to={`/user_details/${original.id}`}>{value}</Link>,
-              minWidth: 200,
-            },
-            { Header: 'Status', id: 'enabled', accessor: accountStatusFormat, minWidth: 60 },
-            { Header: 'Last Login', id: 'last_login_date_time', minWidth: 150, accessor: lastLoginDate },
-            { Header: 'CWS Login', minWidth: 80, accessor: 'racfid' },
-            { Header: 'Office Name', id: 'office_name', accessor: translateOffice },
-            { Header: 'Role', id: 'user_role', accessor: translateRoles },
-          ]}
-          manual
-          sorted={this.props.sort.map(d => ({ id: d.field, desc: d.desc }))}
-          sortable={false}
-          page={this.getCurrentPageNumber()}
-          pages={this.getTotalPages()}
-          pageSize={this.props.size}
-          pageSizeOptions={this.props.pageSizeOptions}
-          defaultPageSize={10}
-          loading={this.props.fetching}
-          onFetchData={this.search}
-          className="-striped -highlight"
-          onPageChange={this.handlePageChange}
-          onPageSizeChange={this.handlePageSizeChange}
-          onSortedChange={this.handleSortChange}
-          PaginationComponent={Pagination}
-        />
+  renderExactMatches = () => {
+    const { exactMatches, officesList, rolesList, fetching } = this.props
+    return fetching ? (
+      <div style={{ textAlign: 'center', marginTop: '10%' }}>
+        <Icon name="circle-notch" size="2x" spin />
       </div>
+    ) : exactMatches.length < 1 ? (
+      <div className="no-search-results-box">
+        We didn&apos;t find any <b>exact</b> matches based on search criteria.
+      </div>
+    ) : (
+      exactMatches.map((value, key) => (
+        <SearchResultComponent
+          value={value}
+          key={key}
+          officeList={officesList}
+          rolesList={rolesList}
+          fetching={this.props.fetching}
+        />
+      ))
     )
   }
 
@@ -189,6 +143,7 @@ class SearchUserList extends PureComponent {
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
+
   handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
 
   handleEmailSearch = (name, value) => {
@@ -249,10 +204,10 @@ class SearchUserList extends PureComponent {
                       marginLeft: '-30px',
                     }}
                   />
-                  <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px' }}>
-                    <span>Results found based on Search Criteria</span>
+                  <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px', fontSize: '14px' }}>
+                    {this.props.exactMatchResultText}
                   </div>
-                  <div className="col-md-3" style={{ marginTop: '20px' }}>
+                  <div className="col-md-3" style={{ marginTop: '12px' }}>
                     <CheckBoxRadio
                       id="includeInactive"
                       label="Include Inactive"
@@ -261,7 +216,7 @@ class SearchUserList extends PureComponent {
                       checked={this.props.includeInactive}
                     />
                   </div>
-                  <div className="col-md-4">
+                  <div className="col-md-4" style={{ marginBottom: '10px' }}>
                     <DropDown
                       id="searchOfficeName"
                       selectedOption={officesList.filter(({ value }) => officeNames.includes(value))}
@@ -272,13 +227,7 @@ class SearchUserList extends PureComponent {
                     />
                   </div>
                 </div>
-                <div>
-                  {this.renderUsersTable({
-                    data: this.props.userList,
-                    officesList,
-                    rolesList: this.props.rolesList,
-                  })}
-                </div>
+                <div className="col-md-12"> {this.renderExactMatches()}</div>
               </div>
             ) : (
               ''
@@ -337,29 +286,18 @@ class SearchUserList extends PureComponent {
 }
 
 SearchUserList.propTypes = {
-  page: PropTypes.number,
-  from: PropTypes.number,
-  size: PropTypes.number,
   fetching: PropTypes.bool,
   userList: PropTypes.array,
   dashboardUrl: PropTypes.string,
   cardHeaderValue: PropTypes.string,
   dashboardClickHandler: PropTypes.func,
   actions: PropTypes.object.isRequired,
-  total: PropTypes.number,
-  sort: PropTypes.arrayOf(
-    PropTypes.shape({
-      field: PropTypes.string.isRequired,
-      desc: PropTypes.bool,
-    })
-  ),
   query: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
     })
   ),
-  pageSizeOptions: PropTypes.arrayOf(PropTypes.number),
   error: PropTypes.any,
   officesList: PropTypes.array,
   handleSearchChange: PropTypes.func,
@@ -378,13 +316,13 @@ SearchUserList.propTypes = {
   userDetails: PropTypes.object,
   displayChangeLog: PropTypes.bool,
   searchPageTiles: PropTypes.array,
+  exactMatches: PropTypes.array,
+  exactMatchResultText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
 
 SearchUserList.defaultProps = {
   dashboardUrl: '/',
   dashboardClickHandler: () => {},
-  sort: [],
-  pageSizeOptions: [5, 10, 25, 50, 100],
   officesList: [],
   officeNames: [],
   searchPageTiles: [],

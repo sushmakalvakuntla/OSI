@@ -3,9 +3,6 @@ import { bindActionCreators } from 'redux'
 import SearchUserList from '../views/searchUserList/SearchUserList'
 import {
   searchUsers,
-  setPage,
-  setPageSize,
-  setSort,
   setSearch,
   handleSearchChange,
   fetchAccountActions,
@@ -24,6 +21,8 @@ import {
   CWSLogin,
   firstName,
   lastName,
+  selectSearchResultList,
+  exactMatchResultText,
 } from '../selectors/searchUserListSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { officesList } from '../selectors/officeListSelector'
@@ -63,6 +62,9 @@ function mapStateToProps(state) {
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
     searchPageTiles: searchTilesReducer.searchPageTiles,
+    exactMatches: selectSearchResultList(state).exactMatches,
+    fuzzyMatches: selectSearchResultList(state).fuzzyMatches,
+    exactMatchResultText: exactMatchResultText(state),
   }
 }
 
@@ -72,9 +74,6 @@ function mapDispatchToProps(dispatch) {
       {
         searchUsers,
         fetchAccountActions,
-        setPage,
-        setPageSize,
-        setSort,
         setSearch,
         fetchOfficesActions,
         handleSearchChange,

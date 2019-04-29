@@ -6,6 +6,7 @@ import {
   formatDate,
   formatPermissions,
   formatAdminWithRole,
+  formatOffices,
 } from './formatters'
 
 describe('#formatPhoneNumberWithExt', () => {
@@ -219,5 +220,26 @@ describe('#formatAdminWithRole', () => {
     const adminName = 'Some Admin'
     const adminRole = null
     expect(formatAdminWithRole(adminName, adminRole)).toEqual('Some Admin')
+  })
+})
+
+describe('#formatOffices', () => {
+  const list = [
+    { value: 'foo', label: 'FOO_DESC' },
+    { value: 'bar', label: 'BAR_DESC' },
+    { value: 'quo', label: 'QUO_DESC' },
+    { value: 'qux', label: 'QUX_DESC' },
+  ]
+  it('return first index of the array ', () => {
+    expect(formatOffices('foo', list)).toEqual('FOO_DESC')
+    expect(formatOffices('qux', list)).toEqual('QUX_DESC')
+  })
+
+  it('return empty when there is no office ', () => {
+    expect(formatOffices('', list)).toEqual('')
+  })
+
+  it('return original-id when it is not in the list ', () => {
+    expect(formatOffices(['bad'], list)).toEqual(['bad'])
   })
 })

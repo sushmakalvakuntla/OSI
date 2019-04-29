@@ -246,3 +246,23 @@ input[type='checkbox']:checked + span::before {
   background-image: none !important;
   background-repeat: no-repeat;
 }
+
+.result-card {
+  font-size: 12px;
+}
+
+.link {
+  font-size: 12px !important;
+  text-decoration: underline !important;
+  color: #2974a2 !important;
+  float: right;
+  margin-top: 7.5px;
+}
+
+.no-search-results-box {
+  margin-right: 15px;
+  margin-bottom: 10px;
+  border: 0.1rem solid #d4d4d4;
+  padding: 30px;
+  text-align: center;
+}

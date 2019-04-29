@@ -166,26 +166,6 @@ describe('reducer', () => {
     expect(state.query).toEqual(myQuery)
   })
 
-  it('handles page size updates', () => {
-    const state = reducer(
-      {},
-      {
-        type: actionTypes.USER_LIST_SET_PAGE_SIZE,
-        payload: 42,
-      }
-    )
-    expect(state.size).toEqual(42)
-  })
-
-  it('zeros the from param when pageSize changes', () => {
-    const before = { from: 100 }
-    const after = reducer(before, {
-      type: actionTypes.USER_LIST_SET_PAGE_SIZE,
-      payload: 42,
-    })
-    expect(after.from).toEqual(0)
-  })
-
   it('handles clear search', () => {
     const before = {
       inputData: {
@@ -208,29 +188,6 @@ describe('reducer', () => {
       officeNames: [],
     })
     expect(after.includeInactive).toEqual(true)
-  })
-
-  it('handles page updates', () => {
-    const state = reducer(
-      {},
-      {
-        type: actionTypes.USER_LIST_SET_PAGE,
-        payload: 42,
-      }
-    )
-    expect(state.from).toEqual(NaN)
-  })
-
-  it('handles sort updates', () => {
-    const mySort = [{ a: 1 }, { a: 1 }]
-    const state = reducer(
-      {},
-      {
-        type: actionTypes.USER_LIST_SET_SORT,
-        payload: mySort,
-      }
-    )
-    expect(state.sort).toEqual(mySort)
   })
 
   it('has an initial state', () => {
