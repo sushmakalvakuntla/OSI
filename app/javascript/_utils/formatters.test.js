@@ -242,12 +242,4 @@ describe('#formatOffices', () => {
   it('return original-id when it is not in the list ', () => {
     expect(formatOffices(['bad'], list)).toEqual(['bad'])
   })
-
-  it('return empty object when role is empty array', () => {
-    expect(formatOffices({}, list)).toEqual({})
-  })
-
-  it('return empty array when role is empty ', () => {
-    expect(formatOffices([], list)).toEqual([])
-  })
 })
