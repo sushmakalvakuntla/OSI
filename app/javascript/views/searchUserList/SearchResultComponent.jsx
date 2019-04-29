@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ShowField from '../../common/ShowField'
-import { Link as LinkRWD } from 'react-wood-duck'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
 
@@ -42,8 +41,10 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
               {value.email}
             </ShowField>
           </div>
-          <div className="col-md-2 link">
-            <LinkRWD text="View Profile" href={`user_details/${value.id}`} clickHandler={() => {}} />
+          <div className="col-md-2">
+            <a href={`user_details/${value.id}`} className="class1">
+              View Profile
+            </a>
           </div>
         </div>
       </div>
