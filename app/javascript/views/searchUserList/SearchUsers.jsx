@@ -34,6 +34,7 @@ const SearchUsers = ({
               value={firstName}
               onChange={event => handleInput('firstName', event.target.value)}
               autoComplete="off"
+              maxLength={20}
             />
           </div>
           <div className="col-md-3">
