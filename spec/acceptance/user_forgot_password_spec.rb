@@ -12,6 +12,7 @@ feature 'User Forgot Password Page' do
     click_forgot_password_link
     expect(page).to have_text('Password Reset')
     reset_password
+    pending 'password reset threshold eceeded' if page.has_text? 'Attempt limit exceeded'
     expect(page).to have_text('Please check your email.')
   end
 
@@ -26,6 +27,7 @@ feature 'User Forgot Password Page' do
     click_forgot_password_link
     expect(page).to have_text('Password Reset')
     reset_password
+    pending 'password reset threshold eceeded' if page.has_text? 'Attempt limit exceeded'
     expect(page).to have_text('Please check your email.')
     click_button 'Cancel - Return to Login'
     expect(page).to have_text 'Log In'
@@ -34,16 +36,18 @@ feature 'User Forgot Password Page' do
   scenario 'submit your email page has accessibility issues' do
     pending 'submit your email from forgot password has accessibility issues'
     click_forgot_password_link
+    ppending 'password reset threshold eceeded' if page.has_text? 'Attempt limit exceeded'
     expect(page).to have_text('Password Reset')
     check_accessibility
   end
 
   scenario 'reset your password page has accessibility issues' do
     click_forgot_password_link
+    pending 'password reset threshold eceeded' if page.has_text? 'Attempt limit exceeded'
     expect(page).to have_text('Password Reset')
     reset_password
 
-    'We seem to have exceeded our threshold for attempts' if page.has_text? 'Attempt limit exceeded'
+    pending 'password reset threshold eceeded' if page.has_text? 'Attempt limit exceeded'
     expect(page).to have_text('Please check your email.')
     check_accessibility
   end

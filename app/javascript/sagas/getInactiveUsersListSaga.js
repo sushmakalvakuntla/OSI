@@ -5,7 +5,7 @@ import UserService from '../_services/users'
 // worker saga: makes the api call when watcher saga sees the action
 export function* inactiveUsersList(action) {
   try {
-    const response = yield call(UserService.search, action.payload)
+    const response = yield call(UserService.searchForTiles, action.payload)
     // dispatch a success action to the store with the new users
     yield put({
       type: actionTypes.GET_INACTIVE_USERS_SUCCESS,
