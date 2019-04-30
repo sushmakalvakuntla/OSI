@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 class CommonTile extends Component {
   componentDidMount() {
-    this.props.setSearchForTiles(this.props.type, this.props.query)
+    this.props.setSearchForTiles(this.props.type, this.props.tilesQuery)
   }
 
   render() {
@@ -41,7 +41,7 @@ class CommonTile extends Component {
 CommonTile.propTypes = {
   setSearchForTiles: PropTypes.func,
   type: PropTypes.string,
-  query: PropTypes.array,
+  tilesQuery: PropTypes.array,
   title: PropTypes.string,
   count: PropTypes.number,
 }

@@ -9,6 +9,7 @@ import fetchRoles from './rolesReducers'
 import resendRegistrationEmail from './resendRegistrationEmailReducers'
 import fetchChangeLogDetails from './changeLogDetailsReducers'
 import fetchAuditEvents from './auditEventsReducers'
+import searchTilesReducer from './searchTilesReducer'
 const reducer = combineReducers({
   searchUserList,
   fetchDetails,
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   resendRegistrationEmail,
   fetchChangeLogDetails,
   fetchAuditEvents,
+  searchTilesReducer,
 })
 
 export default reducer

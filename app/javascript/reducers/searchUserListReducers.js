@@ -1,6 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
 import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
-import { getTilesInitialState, modifyTileData } from '../_utils/commonHelper'
 
 const initialValue = {
   sort: [
@@ -13,6 +12,10 @@ const initialValue = {
   size: 50,
   query: [
     {
+      field: 'first_name',
+      value: '',
+    },
+    {
       field: 'last_name',
       value: '',
     },
@@ -20,17 +23,26 @@ const initialValue = {
       field: 'office_ids',
       value: [],
     },
+    {
+      field: 'email',
+      value: '',
+    },
+    {
+      field: 'racfid',
+      value: '',
+    },
   ],
   users: [],
   fetching: false,
   error: null,
-  inputData: {},
+  inputData: {
+    lastName: '',
+    firstName: '',
+    CWSLogin: '',
+    email: '',
+    officeNames: [],
+  },
   adminAccountDetails: {},
-  searchPageTiles: [
-    getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
-    getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
-    getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
-  ],
   includeInactive: true,
 }
 
@@ -51,7 +63,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         total,
         fetching: false,
         error: null,
-        searchedForUsers: true,
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
@@ -60,77 +71,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         error,
         fetching: false,
         users: null,
-      }
-
-    case actionTypes.GET_ACTIVE_USERS_REQUEST:
-      return { ...state, fetching: true, error: null, query: payload.query }
-
-    case actionTypes.GET_ACTIVE_USERS_SUCCESS:
-      modifyTileData(state.searchPageTiles, 'Active Users', payload)
-      return {
-        ...state,
-        searchPageTiles: [...state.searchPageTiles],
-        fetching: false,
-        error: null,
-      }
-
-    case actionTypes.GET_ACTIVE_USERS_FAILURE:
-      return {
-        ...state,
-        error,
-        fetching: false,
-        users: null,
-      }
-
-    case actionTypes.GET_LOCKED_USERS_REQUEST:
-      return { ...state, fetching: true, error: null, query: payload.query }
-
-    case actionTypes.GET_LOCKED_USERS_SUCCESS:
-      modifyTileData(state.searchPageTiles, 'Locked Users', payload)
-      return {
-        ...state,
-        searchPageTiles: [...state.searchPageTiles],
-        fetching: false,
-        error: null,
-      }
-
-    case actionTypes.GET_LOCKED_USERS_FAILURE:
-      return {
-        ...state,
-        error,
-        fetching: false,
-        users: null,
-      }
-
-    case actionTypes.GET_INACTIVE_USERS_REQUEST:
-      return { ...state, fetching: true, error: null, query: payload.query }
-
-    case actionTypes.GET_INACTIVE_USERS_SUCCESS:
-      modifyTileData(state.searchPageTiles, 'Inactive Users', payload)
-      return {
-        ...state,
-        searchPageTiles: [...state.searchPageTiles],
-        fetching: false,
-        error: null,
-      }
-
-    case actionTypes.GET_INACTIVE_USERS_FAILURE:
-      return {
-        ...state,
-        error,
-        fetching: false,
-        users: null,
-      }
-
-    case actionTypes.USER_LIST_SET_PAGE:
-      return { ...state, from: payload * state.size }
-
-    // TODO: fix FSA
-    case actionTypes.USER_LIST_SET_SORT:
-      const sort = payload
-      return {
-        ...state,
-        sort,
       }
 
     case actionTypes.HANDLE_INPUT_CHANGE:
@@ -156,10 +96,13 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         query,
       }
 
-    // TODO: fix FSA
-    case actionTypes.USER_LIST_SET_PAGE_SIZE:
-      const size = payload
-      return { ...state, size, from: 0 }
+    case actionTypes.USER_LIST_CLEAR_SEARCH:
+      return {
+        ...state,
+        inputData: initialValue.inputData,
+        query: initialValue.query,
+        includeInactive: initialValue.includeInactive,
+      }
 
     case actionTypes.FETCH_ACCOUNT_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null }

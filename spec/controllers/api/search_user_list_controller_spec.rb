@@ -132,5 +132,88 @@ module Api
         end
       end
     end
+    describe '#user_count' do
+      let(:user_repository) { instance_double('User::UserRepository') }
+      let(:user) { Users::User.new(username: 'el') }
+      let(:partial_user_response) do
+        { meta: { total: 1 } }
+      end
+
+      let(:match_all_query) do
+        { query: { match_all: {} } }
+      end
+
+      it 'has a route' do
+        expect(get: 'api/users_list_count').to route_to(
+          controller: 'api/search_user_list',
+          action: 'users_list_count',
+          format: 'json'
+        )
+      end
+
+      describe 'when no params are passed' do
+        let(:match_search) do
+          { query: [] }
+        end
+        let(:api_response) do
+          { count: 1, _shards: { total: 1, successful: 1, skipped: 0, failed: 0 } }
+        end
+
+        it 'returns a user list count' do
+          allow(Users::UserRepository).to receive(:new)
+            .with(no_args).and_return(user_repository)
+
+          allow(Users::UserRepository).to receive(:count).with(match_all_query, 'token')
+                                                         .and_return(api_response)
+          request.session[:token] = 'token'
+
+          partial_user_response[:meta] = { total: 1 }
+          get :users_list_count, params: { q: match_search.to_json }
+          expect(JSON.parse(response.body, symbolize_names: true)).to eq partial_user_response
+        end
+      end
+
+      describe 'when search params are passed' do
+        let(:api_response) do
+          { count: 1, _shards: { total: 1, successful: 1, skipped: 0, failed: 0 } }
+        end
+        let(:match_last_name) do
+          { query: [{ field: 'last_name', value: 'Smith' }] }
+        end
+        let(:match_empty_last_name) do
+          { query: [{ field: 'last_name', value: '' }] }
+        end
+
+        before do
+          allow(Users::UserRepository).to receive(:new)
+            .with(no_args).and_return(user_repository)
+          request.session[:token] = 'token'
+        end
+
+        it 'returns a userlist / search limited by last_name' do
+          allow(Users::UserRepository).to receive(:count).with(
+            { query: {
+              bool: {
+                must: [
+                  {
+                    bool: {
+                      should: [
+                        { match_phrase_prefix: {
+                          last_name: { boost: 3.0, query: 'Smith' }
+                        } }
+                      ]
+                    }
+                  }
+                ]
+              }
+            } }, 'token'
+          ).and_return(api_response)
+
+          partial_user_response[:meta] = { total: 1 }
+          get :users_list_count, params: { q: match_last_name.to_json }
+          expect(JSON.parse(response.body, symbolize_names: true)).to eq partial_user_response
+        end
+      end
+    end
   end
 end

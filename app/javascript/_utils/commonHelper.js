@@ -1,7 +1,7 @@
 export const getTilesInitialState = (userType, action, fieldType1, value1, fieldType2, value2) => ({
   title: userType,
   type: action,
-  query: [
+  tilesQuery: [
     {
       field: fieldType1,
       value: value1,
@@ -12,14 +12,12 @@ export const getTilesInitialState = (userType, action, fieldType1, value1, field
     },
   ],
   count: 0,
-  users: [],
 })
 
 export const modifyTileData = (searchPageTiles, userType, payload) => {
   searchPageTiles.map(tile => {
     if (tile.title === userType) {
       tile.count = payload.meta.total
-      tile.users = payload.records
     }
   })
 }

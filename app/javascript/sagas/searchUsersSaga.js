@@ -15,13 +15,5 @@ export function* searchUserList(action) {
 }
 
 export function* watchUserSearchParamUpdates() {
-  yield takeLatest(
-    [
-      actionTypes.USER_LIST_SET_SEARCH,
-      actionTypes.USER_LIST_SET_SORT,
-      actionTypes.USER_LIST_SET_PAGE,
-      actionTypes.USER_LIST_SET_PAGE_SIZE,
-    ],
-    searchUserList
-  )
+  yield takeLatest([actionTypes.USER_LIST_SET_SEARCH], searchUserList)
 }

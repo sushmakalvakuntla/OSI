@@ -19,7 +19,7 @@ def releasePipeline(){
   try {
     deployWithSmoke('preint')
     deployWithSmoke('integration')
-    integrationAcceptenceTestChrome()
+    // integrationAcceptenceTestChrome()
   } catch(Exception exception) {
     currentBuild.result = "FAILURE"
     throw exception

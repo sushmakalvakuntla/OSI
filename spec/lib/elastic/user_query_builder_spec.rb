@@ -11,6 +11,29 @@ describe Elastic::UserQueryBuilder do
   end
 
   describe '.get_search' do
+    it 'processes enabled = false correctly' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { term: { 'enabled': 'false' } },
+              { bool: {
+                should: []
+              } }
+            ]
+          }
+        },
+        from: 0,
+        size: 10,
+        sort: sort_score_and_name
+      }
+      input_query = {
+        "query": [{ "field": 'enabled', "value": false }], "sort": [], "size": 10, "from": 0
+      }
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+
     it 'processes the combination of last name and office parameters' do
       expected_output = {
         query: {
@@ -31,6 +54,31 @@ describe Elastic::UserQueryBuilder do
       }
       input_query = { "query": [{ "field": 'last_name', "value": 'Smith' },
                                 { "field": 'office_ids', "value": %w[north south east west] }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+
+    it 'processes the combination case-insensitive racfid and case-insensitive email parameters' do
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { match: { 'racfid.keyword': 'RACFID' } },
+              { match: { 'email.keyword': 'example+john@example.com' } },
+              bool: {
+                should: []
+              }
+            ]
+          }
+        },
+        from: 0,
+        size: 50,
+        sort: sort_score_and_name
+      }
+      input_query = { "query": [{ "field": 'racfid', "value": 'RacfiD' },
+                                { "field": 'email', "value": 'eXample+JOHN@example.com' }],
                       "sort": [], "size": 50, "from": 0 }
 
       output = Elastic::UserQueryBuilder.get_search(input_query)
@@ -66,6 +114,24 @@ describe Elastic::UserQueryBuilder do
                                 { "field": 'office_ids', "value": %w[north south east west] },
                                 { "field": 'email', "value": 'example+john@example.com' },
                                 { "field": 'racfid', "value": 'RACFID' }],
+                      "sort": [], "size": 50, "from": 0 }
+
+      output = Elastic::UserQueryBuilder.get_search(input_query)
+      expect(output).to eq(expected_output)
+    end
+    it 'processes the missing value parameters safely' do
+      expected_output = {
+        query: { match_all: {} },
+        from: 0,
+        size: 50,
+        sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
+               { "first_name.for_sort": { order: 'asc' } }]
+      }
+      input_query = { "query": [{ "field": 'last_name' },
+                                { "field": 'first_name' },
+                                { "field": 'office_ids' },
+                                { "field": 'email' },
+                                { "field": 'racfid'  }],
                       "sort": [], "size": 50, "from": 0 }
 
       output = Elastic::UserQueryBuilder.get_search(input_query)
@@ -273,6 +339,34 @@ describe Elastic::UserQueryBuilder do
 
     output = Elastic::UserQueryBuilder.query(input_query[:query])
     expect(output).to eq(expected_output)
+  end
+
+  describe '.get_count' do
+    it 'process the query according to the input' do
+      input_query = { "query": [{ "field": 'last_name', "value": 'Smith' },
+                                { "field": 'office_ids', "value": %w[north south east west] }],
+                      "sort": [], "size": 50, "from": 0 }
+      expected_output = {
+        query: {
+          bool: {
+            must: [
+              { terms: { 'office_id.keyword': %w[north south east west] } },
+              bool: {
+                should: [
+                  {
+                    match_phrase_prefix: {
+                      last_name: { query: 'Smith', boost: 3.0 }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+      output = Elastic::UserQueryBuilder.get_count(input_query)
+      expect(output).to eq(expected_output)
+    end
   end
 
   describe '.paginate_query' do

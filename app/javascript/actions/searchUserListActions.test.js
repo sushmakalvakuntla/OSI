@@ -1,23 +1,19 @@
 import {
   searchUsers,
-  setPageSize,
-  setPage,
   setSearch,
   handleSearchChange,
-  setSort,
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
+  clearSearch,
 } from './searchUserListActions'
 import {
   FETCH_USERS_API_CALL_REQUEST,
-  USER_LIST_SET_PAGE_SIZE,
-  USER_LIST_SET_PAGE,
   USER_LIST_SET_SEARCH,
-  USER_LIST_SET_SORT,
   HANDLE_INPUT_CHANGE,
   FETCH_ACCOUNT_API_CALL_REQUEST,
   HANDLE_CHECKBOX_CHANGE,
+  USER_LIST_CLEAR_SEARCH,
 } from './actionTypes'
 
 describe('#fetchAccountActions', () => {
@@ -41,30 +37,20 @@ describe('SearchUserListActions Actions', () => {
     })
   })
 
-  describe('#setPageSize', () => {
-    it('returns type and payload', () => {
-      expect(setPageSize(20)).toEqual({
-        type: USER_LIST_SET_PAGE_SIZE,
-        payload: 20,
-      })
-    })
-  })
-
-  describe('#setPage', () => {
-    it('returns type and payload', () => {
-      expect(setPage(2)).toEqual({
-        type: USER_LIST_SET_PAGE,
-        payload: 2,
-      })
-    })
-  })
-
   describe('#setSearch', () => {
     it('returns type and payload', () => {
       const query = {}
       expect(setSearch(query)).toEqual({
         type: USER_LIST_SET_SEARCH,
         payload: query,
+      })
+    })
+  })
+
+  describe('#clearSearch', () => {
+    it('returns type', () => {
+      expect(clearSearch()).toEqual({
+        type: USER_LIST_CLEAR_SEARCH,
       })
     })
   })
@@ -87,16 +73,6 @@ describe('SearchUserListActions Actions', () => {
       expect(handleSearchChange(key, value)).toEqual({
         type: HANDLE_INPUT_CHANGE,
         payload: { key, value },
-      })
-    })
-  })
-
-  describe('#setSort', () => {
-    it('returns type and payload', () => {
-      const sort = []
-      expect(setSort(sort)).toEqual({
-        type: USER_LIST_SET_SORT,
-        payload: sort,
       })
     })
   })

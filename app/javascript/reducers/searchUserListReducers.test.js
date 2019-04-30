@@ -1,13 +1,7 @@
 import reducer from './searchUserListReducers'
 import * as actionTypes from '../actions/actionTypes'
-import { getTilesInitialState } from '../_utils/commonHelper'
 
 describe('reducer', () => {
-  const tilesInitialState = [
-    getTilesInitialState('Active Users', actionTypes.GET_ACTIVE_USERS_REQUEST, 'enabled', true, 'status', 'CONFIRMED'),
-    getTilesInitialState('Locked Users', actionTypes.GET_LOCKED_USERS_REQUEST, 'enabled', true, 'locked', true),
-    getTilesInitialState('Inactive Users', actionTypes.GET_INACTIVE_USERS_REQUEST, 'enabled', false, 'status', 'CONFIRMED'),
-  ]
   it('handles FETCH_ACCOUNT_API_CALL_REQUEST', () => {
     const before = {
       fetching: false,
@@ -101,7 +95,6 @@ describe('reducer', () => {
           },
         },
       },
-      searchedForUsers: true,
     }
     const before = {}
     let after
@@ -122,162 +115,6 @@ describe('reducer', () => {
     expect(after.fetching).toBe(false)
     expect(after.users).toBeFalsy()
     expect(after.error).toEqual('error happened')
-  })
-
-  it('handles GET_ACTIVE_USERS_REQUEST', () => {
-    const requestAction = {
-      type: actionTypes.GET_ACTIVE_USERS_REQUEST,
-      payload: {
-        query: [],
-      },
-    }
-    const state = { userList: null, fetching: false, searchPageTiles: tilesInitialState }
-    expect(reducer(state, requestAction)).toEqual({
-      fetching: true,
-      userList: null,
-      searchPageTiles: tilesInitialState,
-      error: null,
-      query: [],
-    })
-  })
-
-  it('handles GET_ACTIVE_USERS_FAILURE', () => {
-    const failureAction = {
-      type: actionTypes.GET_ACTIVE_USERS_FAILURE,
-      error: 'error happened',
-    }
-    const state = { users: null, fetching: false, searchPageTiles: tilesInitialState }
-    expect(reducer(state, failureAction)).toEqual({
-      fetching: false,
-      users: null,
-      searchPageTiles: tilesInitialState,
-      error: 'error happened',
-    })
-  })
-
-  it('handles GET_ACTIVE_USERS_SUCCESS', () => {
-    const action = {
-      type: actionTypes.GET_ACTIVE_USERS_SUCCESS,
-      payload: {
-        records: [{ id: 'key1', username: 'user1' }, { id: 'key2', username: 'user2' }],
-        meta: {
-          total: 42,
-          request: {
-            from: 0,
-            size: 10,
-            sort: [],
-          },
-        },
-      },
-    }
-    const state = { userList: null, fetching: false, searchPageTiles: tilesInitialState }
-    let after
-    expect(() => (after = reducer(state, action))).not.toThrow()
-    expect(after.searchPageTiles[0].count).toBe(42)
-  })
-
-  it('handles GET_LOCKED_USERS_REQUEST', () => {
-    const requestAction = {
-      type: actionTypes.GET_LOCKED_USERS_REQUEST,
-      payload: {
-        query: [],
-      },
-    }
-    const state = { userList: null, fetching: false, searchPageTiles: tilesInitialState }
-    expect(reducer(state, requestAction)).toEqual({
-      fetching: true,
-      userList: null,
-      searchPageTiles: tilesInitialState,
-      error: null,
-      query: [],
-    })
-  })
-
-  it('handles GET_LOCKED_USERS_FAILURE', () => {
-    const failureAction = {
-      type: actionTypes.GET_LOCKED_USERS_FAILURE,
-      error: 'error happened',
-    }
-    const state = { users: null, fetching: false, searchPageTiles: tilesInitialState }
-    expect(reducer(state, failureAction)).toEqual({
-      fetching: false,
-      users: null,
-      searchPageTiles: tilesInitialState,
-      error: 'error happened',
-    })
-  })
-
-  it('handles GET_LOCKED_USERS_SUCCESS', () => {
-    const action = {
-      type: actionTypes.GET_LOCKED_USERS_SUCCESS,
-      payload: {
-        records: [{ id: 'key1', username: 'user1' }, { id: 'key2', username: 'user2' }],
-        meta: {
-          total: 42,
-          request: {
-            from: 0,
-            size: 10,
-            sort: [],
-          },
-        },
-      },
-    }
-    const state = { userList: null, fetching: false, searchPageTiles: tilesInitialState }
-    let after
-    expect(() => (after = reducer(state, action))).not.toThrow()
-    expect(after.searchPageTiles[1].count).toBe(42)
-  })
-
-  it('handles GET_INACTIVE_USERS_REQUEST', () => {
-    const requestAction = {
-      type: actionTypes.GET_INACTIVE_USERS_REQUEST,
-      payload: {
-        query: [],
-      },
-    }
-    const state = { userList: null, fetching: false, searchPageTiles: tilesInitialState }
-    expect(reducer(state, requestAction)).toEqual({
-      fetching: true,
-      userList: null,
-      searchPageTiles: tilesInitialState,
-      error: null,
-      query: [],
-    })
-  })
-
-  it('handles GET_INACTIVE_USERS_FAILURE', () => {
-    const failureAction = {
-      type: actionTypes.GET_INACTIVE_USERS_FAILURE,
-      error: 'error happened',
-    }
-    const state = { users: null, fetching: false, searchPageTiles: tilesInitialState }
-    expect(reducer(state, failureAction)).toEqual({
-      fetching: false,
-      users: null,
-      searchPageTiles: tilesInitialState,
-      error: 'error happened',
-    })
-  })
-
-  it('handles GET_INACTIVE_USERS_SUCCESS', () => {
-    const action = {
-      type: actionTypes.GET_INACTIVE_USERS_SUCCESS,
-      payload: {
-        records: [{ id: 'key1', username: 'user1' }, { id: 'key2', username: 'user2' }],
-        meta: {
-          total: 42,
-          request: {
-            from: 0,
-            size: 10,
-            sort: [],
-          },
-        },
-      },
-    }
-    const state = { userList: null, fetching: false, searchPageTiles: tilesInitialState }
-    let after
-    expect(() => (after = reducer(state, action))).not.toThrow()
-    expect(after.searchPageTiles[2].count).toBe(42)
   })
 
   it('handles unexpected actiontypes gracefully', () => {
@@ -329,47 +166,28 @@ describe('reducer', () => {
     expect(state.query).toEqual(myQuery)
   })
 
-  it('handles page size updates', () => {
-    const state = reducer(
-      {},
-      {
-        type: actionTypes.USER_LIST_SET_PAGE_SIZE,
-        payload: 42,
-      }
-    )
-    expect(state.size).toEqual(42)
-  })
-
-  it('zeros the from param when pageSize changes', () => {
-    const before = { from: 100 }
-    const after = reducer(before, {
-      type: actionTypes.USER_LIST_SET_PAGE_SIZE,
-      payload: 42,
+  it('handles clear search', () => {
+    const before = {
+      inputData: {
+        lastName: 'someLastName',
+        firstName: 'someFirstName',
+        CWSLogin: 'someCWDSLogin',
+        email: 'some@email.com',
+      },
+      includeInactive: false,
+    }
+    const action = {
+      type: actionTypes.USER_LIST_CLEAR_SEARCH,
+    }
+    const after = reducer(before, action)
+    expect(after.inputData).toEqual({
+      lastName: '',
+      firstName: '',
+      CWSLogin: '',
+      email: '',
+      officeNames: [],
     })
-    expect(after.from).toEqual(0)
-  })
-
-  it('handles page updates', () => {
-    const state = reducer(
-      {},
-      {
-        type: actionTypes.USER_LIST_SET_PAGE,
-        payload: 42,
-      }
-    )
-    expect(state.from).toEqual(NaN)
-  })
-
-  it('handles sort updates', () => {
-    const mySort = [{ a: 1 }, { a: 1 }]
-    const state = reducer(
-      {},
-      {
-        type: actionTypes.USER_LIST_SET_SORT,
-        payload: mySort,
-      }
-    )
-    expect(state.sort).toEqual(mySort)
+    expect(after.includeInactive).toEqual(true)
   })
 
   it('has an initial state', () => {

@@ -3,19 +3,27 @@ import { bindActionCreators } from 'redux'
 import SearchUserList from '../views/searchUserList/SearchUserList'
 import {
   searchUsers,
-  setPage,
-  setPageSize,
-  setSort,
   setSearch,
   handleSearchChange,
   fetchAccountActions,
   handleCheckBoxChangeActions,
   setSearchForTiles,
+  clearSearch,
 } from '../actions/searchUserListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
 import { fetchRolesActions } from '../actions/rolesActions'
-import { checkOfficeNames, cardHeaderText, displayChangeLog } from '../selectors/searchUserListSelector'
+import {
+  checkOfficeNames,
+  cardHeaderText,
+  displayChangeLog,
+  email,
+  CWSLogin,
+  firstName,
+  lastName,
+  selectSearchResultList,
+  exactMatchResultText,
+} from '../selectors/searchUserListSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { officesList } from '../selectors/officeListSelector'
 import { rolesList } from '../selectors/rolesListSelector'
@@ -24,7 +32,7 @@ import { fetchChangeLogAdminDetailsActions, fetchDetailsActions } from '../actio
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
 import { selectDetailRecords, officeName } from '../selectors/detailSelector'
 function mapStateToProps(state) {
-  const { searchUserList } = state
+  const { searchUserList, searchTilesReducer } = state
   return {
     userList: searchUserList.users || [],
     cardHeaderValue: cardHeaderText(state),
@@ -32,7 +40,6 @@ function mapStateToProps(state) {
     userListUrl: '/#',
     dashboardUrl: '/',
     size: searchUserList.size,
-    searchedForUsers: searchUserList.searchedForUsers,
     from: searchUserList.from,
     sort: searchUserList.sort,
     query: searchUserList.query,
@@ -41,7 +48,10 @@ function mapStateToProps(state) {
     error: searchUserList.error,
     officesList: officesList(state),
     inputData: searchUserList.inputData,
-    lastName: searchUserList.inputData.lastName,
+    firstName: firstName(state),
+    email: email(state),
+    CWSLogin: CWSLogin(state),
+    lastName: lastName(state),
     officeNames: checkOfficeNames(searchUserList.inputData.officeNames),
     rolesList: rolesList(state),
     includeInactive: searchUserList.includeInactive,
@@ -51,7 +61,10 @@ function mapStateToProps(state) {
     userOfficeName: officeName(state),
     userDetails: selectDetailRecords(state),
     displayChangeLog: displayChangeLog(state),
-    searchPageTiles: searchUserList.searchPageTiles,
+    searchPageTiles: searchTilesReducer.searchPageTiles,
+    exactMatches: selectSearchResultList(state).exactMatches,
+    fuzzyMatches: selectSearchResultList(state).fuzzyMatches,
+    exactMatchResultText: exactMatchResultText(state),
   }
 }
 
@@ -61,9 +74,6 @@ function mapDispatchToProps(dispatch) {
       {
         searchUsers,
         fetchAccountActions,
-        setPage,
-        setPageSize,
-        setSort,
         setSearch,
         fetchOfficesActions,
         handleSearchChange,
@@ -75,6 +85,7 @@ function mapDispatchToProps(dispatch) {
         fetchAuditEventsActions,
         fetchDetailsActions,
         setSearchForTiles,
+        clearSearch,
       },
       dispatch
     ),

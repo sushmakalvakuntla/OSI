@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   selectUserRecords,
   isLoading,
@@ -6,6 +7,12 @@ import {
   checkOfficeNames,
   cardHeaderText,
   displayChangeLog,
+  email,
+  firstName,
+  lastName,
+  CWSLogin,
+  exactMatchResultText,
+  selectSearchResultList,
 } from './searchUserListSelector'
 
 describe('selectors', () => {
@@ -82,6 +89,86 @@ describe('selectors', () => {
     })
   })
 
+  describe('#email', () => {
+    it('returns email', () => {
+      const state = {
+        searchUserList: {
+          inputData: { email: 'email@email.com' },
+        },
+      }
+      expect(email(state)).toEqual('email@email.com')
+    })
+
+    it('returns empty when email not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(email(state)).toEqual('')
+    })
+  })
+
+  describe('#lastName', () => {
+    it('returns lastName', () => {
+      const state = {
+        searchUserList: {
+          inputData: { lastName: 'lastName' },
+        },
+      }
+      expect(lastName(state)).toEqual('lastName')
+    })
+
+    it('returns empty when lastName not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(lastName(state)).toEqual('')
+    })
+  })
+
+  describe('#firstName', () => {
+    it('returns firstName', () => {
+      const state = {
+        searchUserList: {
+          inputData: { firstName: 'firstName' },
+        },
+      }
+      expect(firstName(state)).toEqual('firstName')
+    })
+
+    it('returns empty when firstName not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(firstName(state)).toEqual('')
+    })
+  })
+
+  describe('#CWSLogin', () => {
+    it('returns CWSLogin', () => {
+      const state = {
+        searchUserList: {
+          inputData: { CWSLogin: 'CWSLogin' },
+        },
+      }
+      expect(CWSLogin(state)).toEqual('CWSLogin')
+    })
+
+    it('returns empty when CWSLogin not found', () => {
+      const state = {
+        searchUserList: {
+          inputData: {},
+        },
+      }
+      expect(CWSLogin(state)).toEqual('')
+    })
+  })
+
   describe('#checkOfficeNames', () => {
     it('filters out empty string from the offices array ', () => {
       const expectedValue = ['someValue']
@@ -99,6 +186,105 @@ describe('selectors', () => {
   it('returns empty array when office is undefined', () => {
     const expectedValue = []
     expect(checkOfficeNames(undefined)).toEqual(expectedValue)
+  })
+
+  describe('#selectSearchResultList', () => {
+    it('returns exact matches and fuzzy matches', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: '' },
+            { field: 'last_name', value: 'Raval' },
+            { field: 'email', value: '' },
+            { field: 'racfid', value: '' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [{ first_name: 'firstName', last_name: 'Raval' }, { first_name: 'firstName', last_name: 'Ratnesh' }],
+        },
+      }
+      expect(selectSearchResultList(state)).toEqual({
+        exactMatches: [{ first_name: 'firstName', last_name: 'Raval' }],
+        fuzzyMatches: [{ first_name: 'firstName', last_name: 'Ratnesh' }],
+      })
+    })
+
+    it('returns empty array when no users', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: '' },
+            { field: 'last_name', value: '' },
+            { field: 'email', value: '' },
+            { field: 'racfid', value: '' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [],
+        },
+      }
+      expect(selectSearchResultList(state)).toEqual({ exactMatches: [], fuzzyMatches: [] })
+    })
+
+    it('returns fuzzy matches when thers is no exact matches found', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: '' },
+            { field: 'last_name', value: 'Raval' },
+            { field: 'email', value: '' },
+            { field: 'racfid', value: '' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [{ first_name: 'firstName', last_name: 'lastName' }],
+        },
+      }
+      expect(selectSearchResultList(state)).toEqual({
+        exactMatches: [],
+        fuzzyMatches: [{ first_name: 'firstName', last_name: 'lastName' }],
+      })
+    })
+  })
+
+  describe('#exactMatchResultText', () => {
+    it('returns html element when last name in query and last name in users matches', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: '' },
+            { field: 'last_name', value: 'Raval' },
+            { field: 'email', value: '' },
+            { field: 'racfid', value: '' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [{ first_name: 'firstName', last_name: 'Raval' }],
+        },
+      }
+      expect(exactMatchResultText(state)).toEqual(
+        <span>
+          <b>Exact</b> matches found based on search criteria
+        </span>
+      )
+    })
+
+    it('returns empty string when no exact matches', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: '' },
+            { field: 'last_name', value: 'Raval' },
+            { field: 'email', value: '' },
+            { field: 'racfid', value: '' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [{ first_name: 'firstName', last_name: 'lastName' }],
+        },
+      }
+      expect(exactMatchResultText(state)).toEqual('')
+    })
   })
 
   describe('#cardHeaderText', () => {
