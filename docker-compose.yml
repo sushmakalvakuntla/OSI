@@ -1,11 +1,11 @@
 version: '3.2'
 services:
   perry:
-    image: cwds/perry:4.1.0_1183-RC
+    image: cwds/perry:6.6.5
 
     hostname: perry
     depends_on:
-      - cals_db2_data
+      - db2data
       - postgresql_data
     restart: on-failure
     ports:
@@ -36,18 +36,18 @@ services:
       - IDP_MAPPING_SCRIPT
     # logging:
     #   driver: none
-  cals_db2_data:
-    image: cwds/db2data:0.5.6-SNAPSHOT
-    hostname: cals_db2_data
+  db2data:
+    image: cwds/db2data:0.10.33
+    hostname: db2data
     ports:
     - ${DB_CMS_DB2_PORT}:50000
   postgresql_data:
-    image: cwds/postgresql_data:0.8.1_636-RC
+    image: cwds/postgresql_data:3.7.4
     hostname: postgresql_data
     ports:
       - ${DB_POSTGRES_PORT}:${DB_POSTGRES_PORT}
   dora:
-    image: cwds/dora:1.7.9
+    image: cwds/dora:1.16.0
     command: bash -c "./entrypoint.sh 2>&1 | tee 'log.file'"
     depends_on:
       - perry
@@ -63,7 +63,7 @@ services:
       SHOW_SWAGGER: ${SHOW_SWAGGER}
       PERRY_VALIDATION_URL: ${PERRY_VALIDATION_URL}
       LOGIN_URL: ${LOGIN_URL}
-      LOGIN_URL: ${LOGOUT_URL}
+      LOGOUT_URL: ${LOGOUT_URL}
       SWAGGER_TOKEN_URL: ${SWAGGER_TOKEN_URL}
       SWAGGER_JSON_URL: ${SWAGGER_CALLBACK_URL}
     restart: on-failure
@@ -73,7 +73,7 @@ services:
       timeout: 10s
       retries: 80
   elasticsearch:
-    image: cwds/elasticsearch_xpack_data:1.6.5-SNAPSHOT
+    image: cwds/elasticsearch_xpack_data:1.7.13-SNAPSHOT
     depends_on:
       - perry
     ports:
