@@ -1,6 +1,7 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import SearchUserList from './SearchUserList.jsx'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 describe('SearchUserList', () => {
   let wrapper
@@ -778,37 +779,39 @@ describe('SearchUserList', () => {
       mockSetSearchForTiles = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
       wrapper = mount(
-        <SearchUserList
-          dashboardUrl={'dburl'}
-          actions={{
-            fetchAccountActions: mockFetchAccountActions,
-            fetchOfficesActions: mockFetchOfficeListActions,
-            fetchRolesActions: mockFetchRolesActions,
-            setSearch: mockSetSearch,
-            setSearchForTiles: mockSetSearchForTiles,
-            clearAddedUserDetailActions: mockClearAddedUserDetailActions,
-            fetchAuditEventsActions: mockFetchAuditEventsActions,
-          }}
-          from={0}
-          sort={[]}
-          size={50}
-          total={25}
-          query={query}
-          firstName="some_firstname_value"
-          lastName="some_value"
-          racfid="RACFID"
-          email="email@example.com"
-          officeNames={['north']}
-          inputData={{ officeNames: ['north'] }}
-          selectedOfficesList={['somevalue']}
-          includeInactive={false}
-          auditEvents={auditEvents}
-          userDetails={details}
-          changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
-          changeLogAdminOfficeName={'Admin Office'}
-          searchPageTiles={searchPageTiles}
-          exactMatches={exactMatches}
-        />
+        <Router>
+          <SearchUserList
+            dashboardUrl={'dburl'}
+            actions={{
+              fetchAccountActions: mockFetchAccountActions,
+              fetchOfficesActions: mockFetchOfficeListActions,
+              fetchRolesActions: mockFetchRolesActions,
+              setSearch: mockSetSearch,
+              setSearchForTiles: mockSetSearchForTiles,
+              clearAddedUserDetailActions: mockClearAddedUserDetailActions,
+              fetchAuditEventsActions: mockFetchAuditEventsActions,
+            }}
+            from={0}
+            sort={[]}
+            size={50}
+            total={25}
+            query={query}
+            firstName="some_firstname_value"
+            lastName="some_value"
+            racfid="RACFID"
+            email="email@example.com"
+            officeNames={['north']}
+            inputData={{ officeNames: ['north'] }}
+            selectedOfficesList={['somevalue']}
+            includeInactive={false}
+            auditEvents={auditEvents}
+            userDetails={details}
+            changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
+            changeLogAdminOfficeName={'Admin Office'}
+            searchPageTiles={searchPageTiles}
+            exactMatches={exactMatches}
+          />
+        </Router>
       )
     })
 

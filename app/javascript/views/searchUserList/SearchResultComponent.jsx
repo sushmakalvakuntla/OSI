@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ShowField from '../../common/ShowField'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Link } from 'react-router-dom'
 
 const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
   <div>
