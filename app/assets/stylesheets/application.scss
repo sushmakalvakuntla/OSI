@@ -251,12 +251,20 @@ input[type='checkbox']:checked + span::before {
   font-size: 12px;
 }
 
-.link {
+a.class1 {
   font-size: 12px !important;
   text-decoration: underline !important;
   color: #2974a2 !important;
   float: right;
-  margin-top: 7.5px;
+  margin-top: 12px;
+}
+
+a.class1:focus,
+a.class1:hover,
+a.class1.active {
+  color: #2974a2;
+  background-color: transparent;
+  font-weight: bold;
 }
 
 .no-search-results-box {
