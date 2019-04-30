@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ShowField from '../../common/ShowField'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
+import { Link } from 'react-router-dom'
 
 const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
   <div>
@@ -42,9 +43,9 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
             </ShowField>
           </div>
           <div className="col-md-2">
-            <a href={`/user_details/${value.id}`} className="class1">
+            <Link to={`/user_details/${value.id}`} className="class1">
               View Profile
-            </a>
+            </Link>
           </div>
         </div>
       </div>
