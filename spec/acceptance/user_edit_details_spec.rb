@@ -40,7 +40,8 @@ feature 'User Edit' do
     page_has_user_list_headers
     show_inactive_users
     sleep 2
-    user_name = first_user_link.text
+
+    user_name = get_first_user_name
     first_user_link.click
     # need to sleep here to wait for page to load.  If we don't we might see the old record.
     sleep 1
@@ -157,9 +158,8 @@ feature 'User Edit' do
     search_users(last_name: 'Auto')
     show_inactive_users
     sleep 2
-    first_user_name = get_user_link(0).text
-
-    get_user_link(0).click
+    first_user_name = get_first_user_name
+    first_user_link.click
 
     sleep 5
     expect(detail_page_value('Full Name')).to eq(first_user_name)

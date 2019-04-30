@@ -75,7 +75,7 @@ module UserListPageHelper
 
   def first_user_link
     # first cell contains the link
-    first_user.first.find('a')
+    first_user.find('a')
   end
 
   def table_cells
@@ -83,11 +83,11 @@ module UserListPageHelper
   end
 
   def first_user
-    page.find('.card-body .rt-table').first('.rt-tr-group').all('.rt-td')
+    page_exact_match_users[0]
   end
 
   def second_user
-    page.find('.card-body .rt-table').all('.rt-tr-group')[1].all('.rt-td')
+    page_exact_match_users[0]
   end
 
   def second_user_link
@@ -100,8 +100,10 @@ module UserListPageHelper
     user_hash
   end
 
-  def get_user_link(row_number)
-    page.find('.card-body .rt-table').all('.rt-tr-group')[row_number].first('.rt-td > a')
+  def get_first_user_name
+    first_name = first_user.find(:label, 'First Name').sibling('span').text
+    last_name = first_user.find(:label, 'Last Name').sibling('span').text
+    user_name = "#{last_name}, #{first_name}"
   end
 
   def safe_fill_in_last_name(last_name)

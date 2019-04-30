@@ -29,7 +29,7 @@ module UserDetailPageHelper
 
   def add_permission(permission)
     # open the drop-down
-    permissions_select
+    permissions_select.click
     sleep 1
 
     find(:xpath,
@@ -113,7 +113,7 @@ module UserDetailPageHelper
     # click off the componenet first.  Should collapse the select if it was expended.
 
     find('label', text: 'Assigned Permissions').click
-    permissions_click
+    # permissions_click
     first(
       :xpath,
       "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div"
