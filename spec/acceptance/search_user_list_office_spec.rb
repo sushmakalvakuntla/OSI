@@ -12,12 +12,13 @@ feature 'user list filters by office' do
     wait_for_load_complete
     expand_changelog_component
     all_count_changelog = count_changelog_events
-    all_users_count = total_count_users
+
+    all_users_count = page_exact_match_users.count
     office_name = 'CWDS CARES IM Lake Testing Office BinthuK2' # pick_single_office_name
 
     select_office_by_name(office_name)
 
-    filtered_users_count = total_count_users
+    filtered_users_count = page_exact_match_users.count
     expand_changelog_component
     filtered_changelog_count = count_changelog_events
     puts "user counts: #{filtered_users_count} ?< #{all_users_count}"
