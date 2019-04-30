@@ -50,7 +50,7 @@ describe('SearchResultComponent', () => {
       ).toBe('Email')
 
       expect(wrapper.find('a').props().children).toBe('View Profile')
-      expect(wrapper.find('a').props().href).toBe('user_details/12345ABCD')
+      expect(wrapper.find('a').props().href).toBe('/user_details/12345ABCD')
 
       expect(
         wrapper

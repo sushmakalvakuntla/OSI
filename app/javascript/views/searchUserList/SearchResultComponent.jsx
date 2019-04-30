@@ -42,7 +42,7 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
             </ShowField>
           </div>
           <div className="col-md-2">
-            <a href={`user_details/${value.id}`} className="class1">
+            <a href={`/user_details/${value.id}`} className="class1">
               View Profile
             </a>
           </div>
