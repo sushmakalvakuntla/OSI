@@ -18,8 +18,12 @@ module UserListPageHelper
     expect(page).to have_no_selector(:xpath, load_msg) if page.all(:xpath, load_msg).count > 0
   end
 
-  def page_count_users
-    page.first('.card-body').all('.rt-tr-group a').count
+  def page_exact_match_users
+    page.all('.exact-matches div.result-card')
+  end
+
+  def page_inexact_match_users
+    page.all('.inexact-matches div.result-card')
   end
 
   def current_page_number
@@ -190,22 +194,23 @@ module UserListPageHelper
     # 'include inactive' checkbox.
     page.check('Include Inactive', allow_label_click: true)
     page.uncheck('Include Inactive', allow_label_click: true)
+    sleep 1
+    # maybe look for the loading icon to have gone away.  'svg[data-icon="circle-notch"]'
   end
 
   def deactivate_any_active_added_user
     search_for_active_only_by_last_name 'Auto1Lake'
     # wait for initial results
-    page.find('.card-body .rt-table').first('.rt-tr-group')
+    sleep 1
 
     loop do
-      active_row = first_active_user_on_page
+      active_row = page_exact_match_users[0]
 
       puts "returned from search for first #{active_row}  <<"
 
       deactivate_user active_row
-      if active_row.nil?
-        break unless click_next
-      end
+      break if active_row.nil?
+
       search_for_active_only_by_last_name 'Auto1Lake'
       sleep 2
     end
@@ -213,11 +218,6 @@ module UserListPageHelper
   end
 
   def first_active_user_on_page
-    find(:xpath, "//div[@class='pagination-top']")
-
-    sleep 1
-    puts "Scrolling page #{current_page_number} of #{total_pages}"
-
     active_count = page.all(:xpath,
                             "//div[@class='rt-tr-group']//div[contains(text(), 'Active')]/..").count
 
@@ -234,7 +234,7 @@ module UserListPageHelper
 
     puts "Deactivating user #{current_url}"
     change_status 'Inactive'
-
+    sleep 2
     save_and_confirm
     click_on 'User List'
   end

@@ -227,7 +227,7 @@ class SearchUserList extends PureComponent {
                     />
                   </div>
                 </div>
-                <div className="col-md-12"> {this.renderExactMatches()}</div>
+                <div className="col-md-12 exact-matches"> {this.renderExactMatches()}</div>
               </div>
             ) : (
               ''
