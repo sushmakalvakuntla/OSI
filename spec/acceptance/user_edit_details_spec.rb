@@ -41,7 +41,7 @@ feature 'User Edit' do
     show_inactive_users
     sleep 2
 
-    user_name = get_first_user_name
+    user_name = first_user_full_name
     first_user_link.click
     # need to sleep here to wait for page to load.  If we don't we might see the old record.
     sleep 1
@@ -158,7 +158,7 @@ feature 'User Edit' do
     search_users(last_name: 'Auto')
     show_inactive_users
     sleep 2
-    first_user_name = get_first_user_name
+    first_user_name = first_user_full_name
     first_user_link.click
 
     sleep 5

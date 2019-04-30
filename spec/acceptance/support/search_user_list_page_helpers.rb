@@ -100,10 +100,10 @@ module UserListPageHelper
     user_hash
   end
 
-  def get_first_user_name
+  def first_user_full_name
     first_name = first_user.find(:label, 'First Name').sibling('span').text
     last_name = first_user.find(:label, 'Last Name').sibling('span').text
-    user_name = "#{last_name}, #{first_name}"
+    "#{last_name}, #{first_name}"
   end
 
   def safe_fill_in_last_name(last_name)
