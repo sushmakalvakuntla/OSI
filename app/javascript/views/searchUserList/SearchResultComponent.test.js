@@ -4,7 +4,8 @@ import SearchResultComponent from './SearchResultComponent'
 
 describe('SearchResultComponent', () => {
   let wrapper
-  const resultList = [{ first_name: 'firstName', last_name: 'lastName' }, { first_name: 'firstName1', last_name: 'lastName1' }]
+  const resultList = { id: '12345ABCD', first_name: 'firstName', last_name: 'lastName' }
+
   const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
   const rolesList = [{ label: ' ROLE ONE', value: 'role1' }, { label: 'ROLE TWO', value: 'role2' }]
   beforeEach(() => {
@@ -47,6 +48,37 @@ describe('SearchResultComponent', () => {
           .at(4)
           .props().label
       ).toBe('Email')
+
+      expect(wrapper.find('a').props().children).toBe('View Profile')
+      expect(wrapper.find('a').props().href).toBe('/user_details/12345ABCD')
+
+      expect(
+        wrapper
+          .find('ShowField')
+          .at(5)
+          .props().label
+      ).toBe('Last Log in')
+
+      expect(
+        wrapper
+          .find('ShowField')
+          .at(6)
+          .props().label
+      ).toBe('Status')
+
+      expect(
+        wrapper
+          .find('ShowField')
+          .at(7)
+          .props().label
+      ).toBe('Office Name')
+
+      expect(
+        wrapper
+          .find('ShowField')
+          .at(8)
+          .props().label
+      ).toBe('Role')
     })
   })
 })
