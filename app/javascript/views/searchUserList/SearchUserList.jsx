@@ -99,26 +99,56 @@ class SearchUserList extends PureComponent {
     return lastName === '' && firstName === '' && email === '' && CWSLogin === '' && officeNames.length === 0
   }
 
-  renderExactMatches = () => {
-    const { exactMatches, officesList, rolesList, fetching } = this.props
+  renderSearchResults = () => {
+    const { exactMatches, officesList, rolesList, fuzzyMatches, fetching } = this.props
+    const exactMatchResults =
+      exactMatches.length > 0 ? (
+        exactMatches.map((value, key) => (
+          <SearchResultComponent
+            value={value}
+            key={key}
+            officeList={officesList}
+            rolesList={rolesList}
+            fetching={this.props.fetching}
+          />
+        ))
+      ) : (
+        <div className="no-search-results-box">
+          We didn&apos;t find any <b>exact</b> matches based on search criteria.
+        </div>
+      )
+
+    const fuzzyMatchResults =
+      fuzzyMatches.length > 0 ? (
+        <div>
+          <div style={{ paddingLeft: '0px', fontSize: '14px', marginBottom: '10px' }}>
+            <b>Similar</b> results we found based on search criteria
+          </div>
+          {fuzzyMatches.map((value, key) => (
+            <SearchResultComponent
+              value={value}
+              key={key}
+              officeList={officesList}
+              rolesList={rolesList}
+              fetching={this.props.fetching}
+            />
+          ))}
+        </div>
+      ) : (
+        ''
+      )
     return fetching ? (
       <div style={{ textAlign: 'center', marginTop: '10%' }}>
         <Icon name="circle-notch" size="2x" spin />
       </div>
-    ) : exactMatches.length < 1 ? (
-      <div className="no-search-results-box">
-        We didn&apos;t find any <b>exact</b> matches based on search criteria.
+    ) : exactMatches.length > 0 || fuzzyMatches.length > 0 ? (
+      <div>
+        {exactMatchResults} {fuzzyMatchResults}
       </div>
     ) : (
-      exactMatches.map((value, key) => (
-        <SearchResultComponent
-          value={value}
-          key={key}
-          officeList={officesList}
-          rolesList={rolesList}
-          fetching={this.props.fetching}
-        />
-      ))
+      <p>
+        Based on search criteria, <b>no search results have been found</b>
+      </p>
     )
   }
 
@@ -227,7 +257,7 @@ class SearchUserList extends PureComponent {
                     />
                   </div>
                 </div>
-                <div className="col-md-12"> {this.renderExactMatches()}</div>
+                <div className="col-md-12">{this.renderSearchResults()}</div>
               </div>
             ) : (
               ''
@@ -287,9 +317,7 @@ class SearchUserList extends PureComponent {
 
 SearchUserList.propTypes = {
   fetching: PropTypes.bool,
-  userList: PropTypes.array,
   dashboardUrl: PropTypes.string,
-  cardHeaderValue: PropTypes.string,
   dashboardClickHandler: PropTypes.func,
   actions: PropTypes.object.isRequired,
   query: PropTypes.arrayOf(
@@ -317,6 +345,7 @@ SearchUserList.propTypes = {
   displayChangeLog: PropTypes.bool,
   searchPageTiles: PropTypes.array,
   exactMatches: PropTypes.array,
+  fuzzyMatches: PropTypes.array,
   exactMatchResultText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
 
