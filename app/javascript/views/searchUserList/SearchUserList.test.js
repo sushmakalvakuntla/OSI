@@ -1,6 +1,7 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import SearchUserList from './SearchUserList.jsx'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 describe('SearchUserList', () => {
   let wrapper
@@ -66,6 +67,15 @@ describe('SearchUserList', () => {
     },
   ]
 
+  const fuzzyMatches = [
+    {
+      first_name: 'first name value',
+      last_name: 'last name value',
+      county_name: 'county value',
+      email: 'email@email.com value',
+    },
+  ]
+
   const searchPageTiles = [
     {
       title: 'user Type',
@@ -125,6 +135,8 @@ describe('SearchUserList', () => {
         email=""
         CWSLogin=""
         exactMatches={exactMatches}
+        fuzzyMatches={fuzzyMatches}
+        fetching={true}
       />,
       {
         disableLifecycleMethods: true,
@@ -183,6 +195,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(wrapperLocal.find('Cards').props().cardHeaderText).toBe('Search Existing User Accounts')
@@ -218,6 +231,46 @@ describe('SearchUserList', () => {
     it('sets state based on the user action', () => {
       wrapper.setProps({ error: 'IfSomeErrorShowsUp' })
       expect(wrapper.find('Alert').length).toEqual(1)
+    })
+  })
+
+  describe('renderSearchResults', () => {
+    it('renders circle-notch icon when loading', () => {
+      wrapper.setProps({ fetching: true })
+      expect(wrapper.find('Icon').length).toEqual(1)
+    })
+
+    it('renders searchResultComponents with exactMatch and fuzzyMatch', () => {
+      wrapper.setProps({ fetching: false })
+      expect(
+        wrapper
+          .find('div')
+          .at(13)
+          .text()
+      ).toEqual('Similar results we found based on search criteria')
+      expect(wrapper.find('SearchResultComponent').length).toEqual(2)
+    })
+
+    it('renders searchResultComponents with exactMatch when fuzzyMatch is empty', () => {
+      wrapper.setProps({ fetching: false, fuzzyMatches: [] })
+      expect(wrapper.find('SearchResultComponent').length).toEqual(1)
+      expect(
+        wrapper
+          .find('div')
+          .at(13)
+          .text()
+      ).toEqual('')
+    })
+
+    it('renders searchResultComponents with fuzzyMatch when exactMatch is empty', () => {
+      wrapper.setProps({ fetching: false, exactMatches: [] })
+      expect(wrapper.find('SearchResultComponent').length).toEqual(1)
+      expect(
+        wrapper
+          .find('div')
+          .at(12)
+          .text()
+      ).toEqual(`We didn't find any exact matches based on search criteria.`)
     })
   })
 
@@ -311,6 +364,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       const newQuery = [
@@ -365,6 +419,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       const newQuery = [
@@ -488,6 +543,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(true)
@@ -505,6 +561,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledSearchBtn()).toEqual(false)
@@ -523,6 +580,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(true)
@@ -539,6 +597,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -555,6 +614,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -571,6 +631,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -587,6 +648,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -609,6 +671,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
@@ -626,6 +689,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(true)
@@ -671,6 +735,7 @@ describe('SearchUserList', () => {
           userDetails={details}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(true)
@@ -688,6 +753,7 @@ describe('SearchUserList', () => {
           searchPageTiles={searchPageTiles}
           query={query}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -705,6 +771,7 @@ describe('SearchUserList', () => {
           query={query}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -722,6 +789,7 @@ describe('SearchUserList', () => {
           query={query}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -739,6 +807,7 @@ describe('SearchUserList', () => {
           query={query}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -756,6 +825,7 @@ describe('SearchUserList', () => {
           query={query}
           searchPageTiles={searchPageTiles}
           exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
         />
       )
       expect(component.instance().isDisabledClearBtn()).toEqual(false)
@@ -778,37 +848,40 @@ describe('SearchUserList', () => {
       mockSetSearchForTiles = jest.fn()
       mockClearAddedUserDetailActions = jest.fn()
       wrapper = mount(
-        <SearchUserList
-          dashboardUrl={'dburl'}
-          actions={{
-            fetchAccountActions: mockFetchAccountActions,
-            fetchOfficesActions: mockFetchOfficeListActions,
-            fetchRolesActions: mockFetchRolesActions,
-            setSearch: mockSetSearch,
-            setSearchForTiles: mockSetSearchForTiles,
-            clearAddedUserDetailActions: mockClearAddedUserDetailActions,
-            fetchAuditEventsActions: mockFetchAuditEventsActions,
-          }}
-          from={0}
-          sort={[]}
-          size={50}
-          total={25}
-          query={query}
-          firstName="some_firstname_value"
-          lastName="some_value"
-          racfid="RACFID"
-          email="email@example.com"
-          officeNames={['north']}
-          inputData={{ officeNames: ['north'] }}
-          selectedOfficesList={['somevalue']}
-          includeInactive={false}
-          auditEvents={auditEvents}
-          userDetails={details}
-          changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
-          changeLogAdminOfficeName={'Admin Office'}
-          searchPageTiles={searchPageTiles}
-          exactMatches={exactMatches}
-        />
+        <Router>
+          <SearchUserList
+            dashboardUrl={'dburl'}
+            actions={{
+              fetchAccountActions: mockFetchAccountActions,
+              fetchOfficesActions: mockFetchOfficeListActions,
+              fetchRolesActions: mockFetchRolesActions,
+              setSearch: mockSetSearch,
+              setSearchForTiles: mockSetSearchForTiles,
+              clearAddedUserDetailActions: mockClearAddedUserDetailActions,
+              fetchAuditEventsActions: mockFetchAuditEventsActions,
+            }}
+            from={0}
+            sort={[]}
+            size={50}
+            total={25}
+            query={query}
+            firstName="some_firstname_value"
+            lastName="some_value"
+            racfid="RACFID"
+            email="email@example.com"
+            officeNames={['north']}
+            inputData={{ officeNames: ['north'] }}
+            selectedOfficesList={['somevalue']}
+            includeInactive={false}
+            auditEvents={auditEvents}
+            userDetails={details}
+            changeLogAdminDetails={{ county_name: 'Admin County', email: 'some@email.com' }}
+            changeLogAdminOfficeName={'Admin Office'}
+            searchPageTiles={searchPageTiles}
+            exactMatches={exactMatches}
+            fuzzyMatches={fuzzyMatches}
+          />
+        </Router>
       )
     })
 

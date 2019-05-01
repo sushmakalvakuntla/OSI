@@ -194,17 +194,16 @@ describe('selectors', () => {
         searchUserList: {
           query: [
             { field: 'first_name', value: '' },
-            { field: 'last_name', value: 'Raval' },
+            { field: 'last_name', value: 'CASE insensitive' },
             { field: 'email', value: '' },
-            { field: 'racfid', value: '' },
             { field: 'office_ids', value: [] },
             { field: 'enabled', value: '' },
           ],
-          users: [{ first_name: 'firstName', last_name: 'Raval' }, { first_name: 'firstName', last_name: 'Ratnesh' }],
+          users: [{ first_name: 'firstName', last_name: 'case INSENSITIVE' }, { first_name: 'firstName', last_name: 'Ratnesh' }],
         },
       }
       expect(selectSearchResultList(state)).toEqual({
-        exactMatches: [{ first_name: 'firstName', last_name: 'Raval' }],
+        exactMatches: [{ first_name: 'firstName', last_name: 'case INSENSITIVE' }],
         fuzzyMatches: [{ first_name: 'firstName', last_name: 'Ratnesh' }],
       })
     })
@@ -243,6 +242,32 @@ describe('selectors', () => {
       expect(selectSearchResultList(state)).toEqual({
         exactMatches: [],
         fuzzyMatches: [{ first_name: 'firstName', last_name: 'lastName' }],
+      })
+    })
+
+    it('returns fuzzy matches when there is a single match but not the combination', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: 'other FirstName' },
+            { field: 'last_name', value: 'lastName' },
+            { field: 'email', value: '' },
+            { field: 'racfid', value: '' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [
+            { first_name: 'firstName', last_name: 'lastName' },
+            { first_name: 'other FirstName', last_name: 'other LastName' },
+          ],
+        },
+      }
+      expect(selectSearchResultList(state)).toEqual({
+        exactMatches: [],
+        fuzzyMatches: [
+          { first_name: 'firstName', last_name: 'lastName' },
+          { first_name: 'other FirstName', last_name: 'other LastName' },
+        ],
       })
     })
   })

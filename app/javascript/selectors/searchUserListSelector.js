@@ -44,18 +44,35 @@ export const checkOfficeNames = offices => {
 export const selectSearchResultList = state => {
   const users = selectUserRecords(state)
   const query = safeGet(state, 'searchUserList.query')
-  const CWSLogin = query.find(({ field }) => field === 'racfid')
-  const email = query.find(({ field }) => field === 'email')
-  const lastName = query.find(({ field }) => field === 'last_name')
-  const firstName = query.find(({ field }) => field === 'first_name')
+
+  const CWSLogin = query.find(({ field, value }) => {
+    return field === 'racfid' && typeof value === 'string' && value !== ''
+  })
+  const email = query.find(({ field, value }) => {
+    return field === 'email' && typeof value === 'string' && value !== ''
+  })
+
+  const lastName = query.find(({ field, value }) => {
+    return field === 'last_name' && typeof value === 'string' && value !== ''
+  })
+
+  const firstName = query.find(({ field, value }) => {
+    return field === 'first_name' && typeof value === 'string' && value !== ''
+  })
+
+  const matchSubquery = (queryParam, userValue) => {
+    if (queryParam && queryParam.value && queryParam.value.length > 0) {
+      return queryParam.value.toLowerCase() === userValue.toLowerCase()
+    } else return true
+  }
   const exactMatches = []
   const fuzzyMatches = []
   users.forEach(user => {
     const isMatched =
-      CWSLogin.value === user.racfid ||
-      firstName.value === user.first_name ||
-      lastName.value === user.last_name ||
-      email.value === user.email
+      matchSubquery(CWSLogin, user.racfid) &&
+      matchSubquery(lastName, user.last_name) &&
+      matchSubquery(firstName, user.first_name) &&
+      matchSubquery(email, user.email)
     return isMatched ? exactMatches.push(user) : fuzzyMatches.push(user)
   })
   return { exactMatches, fuzzyMatches }
