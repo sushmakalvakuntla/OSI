@@ -225,6 +225,32 @@ describe('selectors', () => {
       expect(selectSearchResultList(state)).toEqual({ exactMatches: [], fuzzyMatches: [] })
     })
 
+    it('recovers when user record values are undefined', () => {
+      const state = {
+        searchUserList: {
+          query: [
+            { field: 'first_name', value: 'X' },
+            { field: 'last_name', value: 'X' },
+            { field: 'email', value: 'X' },
+            { field: 'racfid', value: 'X' },
+            { field: 'office_ids', value: [] },
+            { field: 'enabled', value: '' },
+          ],
+          users: [
+            { first_name: undefined, last_name: undefined, racfid: undefined, email: undefined },
+            { first_name: null, last_name: null, racfid: null, email: null },
+          ],
+        },
+      }
+      expect(selectSearchResultList(state)).toEqual({
+        exactMatches: [],
+        fuzzyMatches: [
+          { first_name: undefined, last_name: undefined, racfid: undefined, email: undefined },
+          { first_name: null, last_name: null, racfid: null, email: null },
+        ],
+      })
+    })
+
     it('returns fuzzy matches when thers is no exact matches found', () => {
       const state = {
         searchUserList: {
