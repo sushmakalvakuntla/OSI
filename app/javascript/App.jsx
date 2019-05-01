@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import GlobalHeader from './containers/globalHeaderContainer'
 import { store } from './store/configureStore'
 import SearchUserList from './containers/searchUserListContainer'
+import GroupUsersList from './containers/groupUsersListContainer'
 import DetailsPage from './containers/detailsContainer'
 import AddUser from './containers/addUserContainer'
 import { makeLogoutUrl } from './_utils/makeLogoutUrl'
@@ -17,6 +18,7 @@ const App = () => (
           <Route path="/" exact component={SearchUserList} />
           <Route path="/verify" component={AddUser} />
           <Route path="/user_details/:id" component={DetailsPage} />
+          <Route path="/user_group_search" component={GroupUsersList} />
           <Route render={() => <h3>404</h3>} />
         </Switch>
       </Router>
