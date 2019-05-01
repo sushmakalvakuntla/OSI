@@ -61,8 +61,9 @@ export const selectSearchResultList = state => {
   })
 
   const matchSubquery = (queryParam, userValue) => {
+    const testValue = userValue || ''
     if (queryParam && queryParam.value && queryParam.value.length > 0) {
-      return queryParam.value.toLowerCase() === userValue.toLowerCase()
+      return queryParam.value.toLowerCase() === testValue.toLowerCase()
     } else return true
   }
   const exactMatches = []
