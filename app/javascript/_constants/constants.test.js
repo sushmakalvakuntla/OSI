@@ -1,4 +1,4 @@
-import { toFullName, accountStatusFormat, lastLoginDate } from './constants'
+import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from './constants'
 
 describe('helpers', () => {
   describe('toFullName', () => {
@@ -24,6 +24,23 @@ describe('helpers', () => {
 
     it('renders empty when date does not exists', () => {
       expect(lastLoginDate({ last_login_date_time: undefined })).toEqual('')
+    })
+  })
+
+  describe('#getOfficeTranslator', () => {
+    const translate = getOfficeTranslator([{ value: 'north', label: 'North Office' }, { value: 'south', label: 'South Office' }])
+
+    it('returns a translator function which can translate office_ids', () => {
+      expect(translate({ office_id: 'north' })).toEqual('North Office')
+      expect(translate({ office_id: 'south' })).toEqual('South Office')
+    })
+
+    it('returns a translator which returns the office_id itself when not found', () => {
+      expect(translate({ office_id: 'west' })).toEqual('west')
+    })
+
+    it('returns a translator which returns empty-string when no office id is supplied', () => {
+      expect(translate({})).toEqual('')
     })
   })
 })

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Tile } from '@cwds/components'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 class CommonTile extends Component {
@@ -12,8 +12,28 @@ class CommonTile extends Component {
     return (
       <Tile title={this.props.title}>
         <div className="tilesContent">{this.props.count}</div>
-        <div className="text-right">{/* <Link to="/">View</Link> */}</div>
+        {this.renderViewLink()}
       </Tile>
+    )
+  }
+
+  renderViewLink() {
+    if (this.props.count === 0) {
+      return <div />
+    }
+    return (
+      <div className="text-right">
+        {
+          <Link
+            to={{
+              pathname: '/user_group_search',
+              filter: { type: this.props.type, query: this.props.tilesQuery, size: this.props.count },
+            }}
+          >
+            View
+          </Link>
+        }
+      </div>
     )
   }
 }
