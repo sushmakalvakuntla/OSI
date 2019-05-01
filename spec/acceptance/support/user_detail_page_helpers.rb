@@ -29,7 +29,7 @@ module UserDetailPageHelper
 
   def add_permission(permission)
     # open the drop-down
-    permissions_select
+    permissions_select.click
     sleep 1
 
     find(:xpath,
@@ -50,8 +50,11 @@ module UserDetailPageHelper
   end
 
   def change_status(new_status)
-    # return if there's nothing to do.
-    return false if find_by_id('StatusDropDown').text == new_status
+    old_status = new_status == 'Active' ? 'Inactive' : 'Active'
+    if find_by_id('StatusDropDown').text == new_status
+      puts "The status is already #{new_status}.  Maybe we're still loading."
+      find_by_id('StatusDropDown', text: old_status)
+    end
 
     # find the status selectbox and drop it down
 
@@ -94,6 +97,7 @@ module UserDetailPageHelper
 
   def save_and_confirm
     click_button 'SAVE'
+    sleep 2
     click_button 'Confirm' if has_button? 'Confirm'
     expect_success
     sleep 3
@@ -109,7 +113,7 @@ module UserDetailPageHelper
     # click off the componenet first.  Should collapse the select if it was expended.
 
     find('label', text: 'Assigned Permissions').click
-    permissions_click
+    # permissions_click
     first(
       :xpath,
       "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div"

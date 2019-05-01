@@ -25,35 +25,40 @@ feature 'User List Page' do
     check_accessibility
   end
 
-  # scenario 'validate user list page' do
-  #   login
-  #   sleep 2
-  #   page_has_basic_text
-  #   # page_has_user_list_headers
-  #   search_users(last_name: 'Man')
-  #   sleep 2
-  #   first_count = page_count_users
-  #   expect(first_count).to be > 0
-  #   puts "count users #{first_count}"
-  #   search_inactive_users
+  scenario 'validate user list page' do
+    login
+    sleep 2
+    page_has_basic_text
+    # page_has_user_list_headers
+    search_users(last_name: 'Manzano')
+    sleep 2
+    first_count = page_exact_match_users.count
+    expect(first_count).to be > 0
+    puts "count users #{first_count}"
+    #  THIS IS GIVING DRIVER ERRORS FOR WRONG OBJECT WOULD BE CLICKED.  hide_inactive_users
+    #     WORKAROUND BY SIMPLY CLICKING THE LABEL.
+    #     THIS MIGHT WORK AROUND IT: find('label', text: 'Include Inactive').click
 
-  #   user1_link = first_user_link
-  #   # user2_link = second_user_link
+    #     FOR NOW THE REST OF THE TEST IS DISABLED UNTIL WE CAN SORT OUT HOW TO FIND MULTIPLE USERS
 
-  #   puts "We have two links:  #{user1_link.text} "
+    # sleep 2 # wait for any redraw after search messaging is displayed
+    # sleep 2
+    # user1_link = page_exact_match_users[0].find('a')[:href]
+    # user2_link = page_exact_match_users[1].find('a')[:href]
+    # puts "We have two links:  #{user1_link} "
+    # require 'pry'; binding.pry
+    #   # last_name = user2_link.text.match(/([^,]*),/)[1]
+    #   # search_users(last_name: last_name)
+    #   # FUTURE  we have no visible indicator that the search finished.
+    #   # If we don't wait the list of users on the page may fail because
+    #   # it is still changing users
+    #   sleep 2
+    #   expect_sorted_list(users_on_page)
+    #   second_count = page_count_users
 
-  #   # last_name = user2_link.text.match(/([^,]*),/)[1]
-  #   # search_users(last_name: last_name)
-  #   # FUTURE  we have no visible indicator that the search finished.
-  #   # If we don't wait the list of users on the page may fail because
-  #   # it is still changing users
-  #   sleep 2
-  #   expect_sorted_list(users_on_page)
-  #   second_count = page_count_users
-
-  #   expect(second_count).to be <= first_count
-  #   puts "count users #{second_count}"
-  # end
+    #   expect(second_count).to be <= first_count
+    #   puts "count users #{second_count}"
+  end
 
   scenario 'create user button is disabled before search and enabled after' do
     login
