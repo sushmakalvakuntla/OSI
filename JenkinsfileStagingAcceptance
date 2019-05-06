@@ -13,14 +13,14 @@ def notify(String status) {
         message: summary
         )
 }
-node('int') {
+node('staging') {
   def app
     try {
       deleteDir()
         stage('Checkout') {
           checkout scm
         }
-      stage('Integration Acceptance Test') {
+      stage('Staging Acceptance Test') {
         def firefox='false'
         def testContainer='county-admin-test'
 
@@ -30,7 +30,7 @@ node('int') {
         }
         sh "docker-compose up -d --build ${testContainer}"
         sleep 60
-        sh "docker-compose exec -T --env TZ=${TZ} --env ADD_RACFID=${ADD_RACFID} --env FIREFOX=${firefox} --env WRONG_SECURITY_RACFID=${WRONG_SECURITY_RACFID} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap ${testContainer} bundle exec rspec spec/acceptance --format documentation"
+        sh "docker-compose exec -T --env TZ=${TZ} --env ADD_RACFID=${ADD_RACFID} --env FIREFOX=${firefox} --env WRONG_SECURITY_RACFID=${WRONG_SECURITY_RACFID} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=http://staging.cwds.ca.gov/cap ${testContainer} bundle exec rspec spec/acceptance --format documentation"
       }
     } catch(Exception e) {
       currentBuild.result = "FAILURE"
