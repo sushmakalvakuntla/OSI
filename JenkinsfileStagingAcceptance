@@ -1,0 +1,44 @@
+DOCKER_GROUP = 'cwds'
+DOCKER_IMAGE = 'cap'
+SLACK_CHANNEL = '#tech-cap-updates'
+
+def notify(String status) {
+  status = status ?: 'SUCCESS'
+    def colorCode = status == 'SUCCESS' ? '#00FF00' : '#FF0000'
+    def summary = """*${status}*: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':\nMore detail in console output at <${env.BUILD_URL}|${env.BUILD_URL}>"""
+
+    slackSend(
+        channel: SLACK_CHANNEL,
+        color: colorCode,
+        message: summary
+        )
+}
+node('staging') {
+  def app
+    try {
+      deleteDir()
+        stage('Checkout') {
+          checkout scm
+        }
+      stage('Staging Acceptance Test') {
+        def firefox='false'
+        def testContainer='county-admin-test'
+
+        if(BROWSER == 'FIREFOX') {
+          firefox='true'
+          testContainer = 'county-admin-test-firefox'
+        }
+        sh "docker-compose up -d --build ${testContainer}"
+        sleep 60
+        sh "docker-compose exec -T --env TZ=${TZ} --env ADD_RACFID=${ADD_RACFID} --env FIREFOX=${firefox} --env WRONG_SECURITY_RACFID=${WRONG_SECURITY_RACFID} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=http://staging.cwds.ca.gov/cap ${testContainer} bundle exec rspec spec/acceptance --format documentation"
+      }
+    } catch(Exception e) {
+      currentBuild.result = "FAILURE"
+      notify(currentBuild.result)
+      throw e
+    } finally {
+      archiveArtifacts artifacts: 'tmp/*', excludes: '*/.keep', allowEmptyArchive: true
+      sh "docker-compose down"
+      cleanWs()
+    }
+}
