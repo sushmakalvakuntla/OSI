@@ -34,11 +34,11 @@ node('int') {
       }
     } catch(Exception e) {
       currentBuild.result = "FAILURE"
-        throw e
+      notify(currentBuild.result)
+      throw e
     } finally {
       archiveArtifacts artifacts: 'tmp/*', excludes: '*/.keep', allowEmptyArchive: true
       sh "docker-compose down"
       cleanWs()
-      notify(currentBuild.result)
     }
 }
