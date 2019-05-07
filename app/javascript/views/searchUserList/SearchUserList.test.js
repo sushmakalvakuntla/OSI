@@ -168,6 +168,14 @@ describe('SearchUserList', () => {
       expect(wrapper.find('ChangeLog').length).toBe(1)
     })
 
+    it('checks disabled prop for checkbox and office dropdown ', () => {
+      expect(wrapper.find('DropDown').props().disabled).toEqual(false)
+      expect(wrapper.find('CheckBoxRadio').props().disabled).toEqual(false)
+      wrapper.setState({ disableSearchByOptions: true })
+      expect(wrapper.find('DropDown').props().disabled).toEqual(true)
+      expect(wrapper.find('CheckBoxRadio').props().disabled).toEqual(true)
+    })
+
     it('cardHeaderText is passed to Card props as value', () => {
       const wrapperLocal = shallow(
         <SearchUserList
