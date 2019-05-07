@@ -217,6 +217,7 @@ describe('SearchUserList', () => {
     it('sets state based on the user action', () => {
       const myFunction = wrapper.instance().handleOnInput
       expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      expect(wrapper.instance().state.disableSearchByOptions).toEqual(true)
     })
   })
 
@@ -224,6 +225,7 @@ describe('SearchUserList', () => {
     it('sets state based on the user action', () => {
       const myFunction = wrapper.instance().handleEmailSearch
       expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      expect(wrapper.instance().state.disableSearchByOptions).toEqual(true)
     })
   })
 
