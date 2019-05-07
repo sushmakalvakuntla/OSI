@@ -168,6 +168,14 @@ describe('SearchUserList', () => {
       expect(wrapper.find('ChangeLog').length).toBe(1)
     })
 
+    it('checks disabled prop for checkbox and office dropdown ', () => {
+      expect(wrapper.find('DropDown').props().disabled).toEqual(false)
+      expect(wrapper.find('CheckBoxRadio').props().disabled).toEqual(false)
+      wrapper.setState({ disableSearchByOptions: true })
+      expect(wrapper.find('DropDown').props().disabled).toEqual(true)
+      expect(wrapper.find('CheckBoxRadio').props().disabled).toEqual(true)
+    })
+
     it('cardHeaderText is passed to Card props as value', () => {
       const wrapperLocal = shallow(
         <SearchUserList
@@ -217,6 +225,7 @@ describe('SearchUserList', () => {
     it('sets state based on the user action', () => {
       const myFunction = wrapper.instance().handleOnInput
       expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      expect(wrapper.instance().state.disableSearchByOptions).toEqual(true)
     })
   })
 
@@ -224,6 +233,7 @@ describe('SearchUserList', () => {
     it('sets state based on the user action', () => {
       const myFunction = wrapper.instance().handleEmailSearch
       expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      expect(wrapper.instance().state.disableSearchByOptions).toEqual(true)
     })
   })
 

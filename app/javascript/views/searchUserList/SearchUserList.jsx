@@ -20,6 +20,7 @@ class SearchUserList extends PureComponent {
       disableSearch: true,
       valid: true,
       errorMessage: '',
+      disableSearchByOptions: false,
     }
   }
 
@@ -68,6 +69,7 @@ class SearchUserList extends PureComponent {
       { field: 'enabled', value: this.props.includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
+    this.setState({ disableSearchByOptions: false })
   }
 
   submitClear = () => {
@@ -174,11 +176,15 @@ class SearchUserList extends PureComponent {
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
 
-  handleOnInput = (name, value) => this.props.actions.handleSearchChange(name, value)
+  handleOnInput = (name, value) => {
+    this.props.actions.handleSearchChange(name, value)
+    this.setState({ disableSearchByOptions: true })
+  }
 
   handleEmailSearch = (name, value) => {
     this.props.actions.handleSearchChange(name, value)
     this.validateEmailField(value)
+    this.setState({ disableSearchByOptions: true })
   }
 
   validateEmailField = value => {
@@ -244,6 +250,7 @@ class SearchUserList extends PureComponent {
                       type="checkbox"
                       onChange={this.handleCheckBoxChange}
                       checked={this.props.includeInactive}
+                      disabled={this.state.disableSearchByOptions}
                     />
                   </div>
                   <div className="col-md-4" style={{ marginBottom: '10px' }}>
@@ -254,6 +261,7 @@ class SearchUserList extends PureComponent {
                       placeholder={`Filter by Office Name (${officesList.length})`}
                       onChange={officesList => this.handleOfficeChange(officesList)}
                       multiSelect={true}
+                      disabled={this.state.disableSearchByOptions}
                     />
                   </div>
                 </div>
