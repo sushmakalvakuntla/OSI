@@ -25,17 +25,18 @@ class SearchUserList extends PureComponent {
   }
 
   componentDidMount() {
+    const { lastName, firstName, email, CWSLogin, officeNames, includeInactive } = this.props
     this.props.actions.fetchAccountActions()
     this.props.actions.fetchOfficesActions()
     this.props.actions.fetchRolesActions()
     this.props.actions.clearAddedUserDetailActions()
     this.props.actions.setSearch([
-      { field: 'first_name', value: this.props.firstName },
-      { field: 'last_name', value: this.props.lastName },
-      { field: 'email', value: this.props.email },
-      { field: 'racfid', value: this.props.CWSLogin },
-      { field: 'office_ids', value: this.props.officeNames },
-      { field: 'enabled', value: this.props.includeInactive ? '' : true },
+      { field: 'first_name', value: firstName ? firstName.trim() : '' },
+      { field: 'last_name', value: lastName ? lastName.trim() : '' },
+      { field: 'email', value: email },
+      { field: 'racfid', value: CWSLogin ? CWSLogin.trim() : '' },
+      { field: 'office_ids', value: officeNames },
+      { field: 'enabled', value: includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
   }
@@ -47,26 +48,28 @@ class SearchUserList extends PureComponent {
   handleOnAdd = () => this.setState({ addUser: true })
 
   handleCheckBoxChange = () => {
+    const { lastName, firstName, email, CWSLogin, officeNames, includeInactive } = this.props
     this.props.actions.handleCheckBoxChangeActions()
     this.props.actions.setSearch([
-      { field: 'first_name', value: this.props.firstName },
-      { field: 'last_name', value: this.props.lastName },
-      { field: 'email', value: this.props.email },
-      { field: 'racfid', value: this.props.CWSLogin },
-      { field: 'office_ids', value: this.props.officeNames },
-      { field: 'enabled', value: !this.props.includeInactive ? '' : true },
+      { field: 'first_name', value: firstName ? firstName.trim() : '' },
+      { field: 'last_name', value: lastName ? lastName.trim() : '' },
+      { field: 'email', value: email },
+      { field: 'racfid', value: CWSLogin ? CWSLogin.trim() : '' },
+      { field: 'office_ids', value: officeNames },
+      { field: 'enabled', value: !includeInactive ? '' : true },
     ])
   }
 
   submitSearch = e => {
+    const { lastName, firstName, email, CWSLogin, includeInactive, officeNames } = this.props
     e.preventDefault()
     this.props.actions.setSearch([
-      { field: 'first_name', value: this.props.firstName },
-      { field: 'last_name', value: this.props.lastName },
-      { field: 'office_ids', value: this.props.officeNames },
-      { field: 'email', value: this.props.email },
-      { field: 'racfid', value: this.props.CWSLogin },
-      { field: 'enabled', value: this.props.includeInactive ? '' : true },
+      { field: 'first_name', value: firstName ? firstName.trim() : '' },
+      { field: 'last_name', value: lastName ? lastName.trim() : '' },
+      { field: 'office_ids', value: officeNames },
+      { field: 'email', value: email },
+      { field: 'racfid', value: CWSLogin ? CWSLogin.trim() : '' },
+      { field: 'enabled', value: includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
     this.setState({ disableSearchByOptions: false })
@@ -163,32 +166,35 @@ class SearchUserList extends PureComponent {
   }
 
   handleOfficeChange = officesList => {
+    const { lastName, firstName, email, CWSLogin, includeInactive } = this.props
     this.props.actions.handleSearchChange('officeNames', officesList.map(selectedOptions => selectedOptions.value))
     const selectedOffices = officesList.map(selectedOptions => selectedOptions.value)
     this.props.actions.setSearch([
       { field: 'office_ids', value: selectedOffices },
-      { field: 'last_name', value: this.props.lastName },
-      { field: 'first_name', value: this.props.firstName },
-      { field: 'email', value: this.props.email },
-      { field: 'racfid', value: this.props.CWSLogin },
-      { field: 'enabled', value: this.props.includeInactive ? '' : true },
+      { field: 'last_name', value: lastName ? lastName.trim() : '' },
+      { field: 'first_name', value: firstName ? firstName.trim() : '' },
+      { field: 'email', value: email },
+      { field: 'racfid', value: CWSLogin ? CWSLogin.trim() : '' },
+      { field: 'enabled', value: includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: selectedOffices }] })
   }
 
   handleOnInput = (name, value) => {
-    this.props.actions.handleSearchChange(name, value)
+    const val = value ? value.replace(/^\s*/, '') : ''
+    this.props.actions.handleSearchChange(name, val)
     this.setState({ disableSearchByOptions: true })
   }
 
   handleEmailSearch = (name, value) => {
-    this.props.actions.handleSearchChange(name, value)
-    this.validateEmailField(value)
+    const val = value ? value.replace(/^\s*/, '') : ''
+    this.props.actions.handleSearchChange(name, val)
+    this.validateEmailField(val)
     this.setState({ disableSearchByOptions: true })
   }
 
   validateEmailField = value => {
-    const emailValueValid = /^(?:[a-zA-Z0-9_!#$%&’*+/=?`'{^.-]*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6})?$/i.test(value)
+    const emailValueValid = /^\s*(?:[a-zA-Z0-9_!#$%&’*+/=?`'{^.-]*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6})?$/i.test(value)
     emailValueValid ? this.setState({ errorMessage: '' }) : this.setState({ errorMessage: 'Please enter a valid email.' })
   }
 

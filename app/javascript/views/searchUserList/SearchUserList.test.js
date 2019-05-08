@@ -223,17 +223,25 @@ describe('SearchUserList', () => {
 
   describe('#handleOnInput', () => {
     it('sets state based on the user action', () => {
-      const myFunction = wrapper.instance().handleOnInput
-      expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      wrapper.instance().handleOnInput()
       expect(wrapper.instance().state.disableSearchByOptions).toEqual(true)
+    })
+
+    it('should replace leadingSpace with nothing', () => {
+      wrapper.instance().handleOnInput('first_name', '  Hello')
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('first_name', 'Hello')
     })
   })
 
   describe('#handleEmailSearch', () => {
     it('sets state based on the user action', () => {
-      const myFunction = wrapper.instance().handleEmailSearch
-      expect(() => myFunction('Hello@gmail.com')).not.toThrow()
+      wrapper.instance().handleEmailSearch()
       expect(wrapper.instance().state.disableSearchByOptions).toEqual(true)
+    })
+
+    it('should replace leadingSpace with nothing', () => {
+      wrapper.instance().handleEmailSearch('email', '  Hello@gmail.com')
+      expect(mockHandleSearchChange).toHaveBeenCalledWith('email', 'Hello@gmail.com')
     })
   })
 
@@ -423,6 +431,61 @@ describe('SearchUserList', () => {
           lastName="last_name_value"
           officeNames={['north', 'south', 'east', 'west']}
           CWSLogin="racfid"
+          email="email+address@example.com"
+          includeInactive={true}
+          auditEvents={auditEvents}
+          userDetails={details}
+          searchPageTiles={searchPageTiles}
+          exactMatches={exactMatches}
+          fuzzyMatches={fuzzyMatches}
+        />
+      )
+      const newQuery = [
+        {
+          field: 'first_name',
+          value: 'first_name_value',
+        },
+        {
+          field: 'last_name',
+          value: 'last_name_value',
+        },
+        {
+          field: 'office_ids',
+          value: ['north', 'south', 'east', 'west'],
+        },
+        {
+          field: 'email',
+          value: 'email+address@example.com',
+        },
+        {
+          field: 'racfid',
+          value: 'racfid',
+        },
+        { field: 'enabled', value: '' },
+      ]
+      const event = { preventDefault: () => {} }
+      wrapperLocal.instance().submitSearch(event)
+      expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
+    })
+
+    it('should trim the leadingSpace and trailingSpace of the search fields value', () => {
+      const wrapperLocal = shallow(
+        <SearchUserList
+          dashboardUrl={'dburl'}
+          actions={{
+            searchUsers: () => {},
+            fetchAccountActions: () => {},
+            fetchOfficesActions: () => {},
+            fetchRolesActions: () => {},
+            clearAddedUserDetailActions: () => {},
+            fetchAuditEventsActions: () => {},
+            setSearch: mockSetSearchActions,
+          }}
+          query={query}
+          firstName="   first_name_value    "
+          lastName="    last_name_value    "
+          officeNames={['north', 'south', 'east', 'west']}
+          CWSLogin="   racfid"
           email="email+address@example.com"
           includeInactive={true}
           auditEvents={auditEvents}
@@ -912,7 +975,7 @@ describe('SearchUserList', () => {
         { field: 'first_name', value: 'some_firstname_value' },
         { field: 'last_name', value: 'some_value' },
         { field: 'email', value: 'email@example.com' },
-        { field: 'racfid', value: undefined },
+        { field: 'racfid', value: '' },
         { field: 'office_ids', value: ['north'] },
         { field: 'enabled', value: true },
       ]
