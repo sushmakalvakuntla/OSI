@@ -10,6 +10,34 @@ describe Elastic::UserQueryBuilder do
      { "first_name.for_sort": { "order": 'asc' } }]
   end
 
+  let(:fuzzy_last_name_smith) do
+    { should:
+      [
+        { match_phrase_prefix: { last_name: 'Smith' } },
+        { match:
+          { last_name:
+            { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
+        { match: { "last_name.phonetic": 'Smith' } }
+      ] }
+  end
+
+  let(:fuzzy_last_name_smith_firstname_john) do
+    { should:
+      [
+        { match_phrase_prefix: { last_name: 'Smith' } },
+        { match:
+          { last_name:
+            { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
+        { match: { "last_name.phonetic": 'Smith' } },
+        { match_phrase_prefix: { first_name: 'John' } },
+        { match:
+          { first_name:
+            { boost: 3.0, fuzziness: 'AUTO', query: 'John' } } },
+        { match: { "first_name.phonetic": 'John' } },
+        { match: { 'email.keyword': { boost: 50.0, query: 'example+john@example.com' } } }
+      ] }
+  end
+
   describe '.get_search' do
     it 'processes enabled = false correctly' do
       expected_output = {
@@ -40,11 +68,7 @@ describe Elastic::UserQueryBuilder do
           bool: {
             must: [
               { terms: { 'office_id.keyword': %w[north south east west] } },
-              bool: {
-                should: [
-                  { match_phrase_prefix: { 'last_name': { "query": 'Smith', "boost": 3.0 } } }
-                ]
-              }
+              bool: fuzzy_last_name_smith
             ]
           }
         },
@@ -65,10 +89,11 @@ describe Elastic::UserQueryBuilder do
         query: {
           bool: {
             must: [
-              { match: { 'racfid.keyword': 'RACFID' } },
-              { match: { 'email.keyword': 'example+john@example.com' } },
               bool: {
-                should: []
+                should: [
+                  { match: { "racfid.keyword": { boost: 50.0, query: 'RACFID' } } },
+                  { match: { 'email.keyword': { boost: 50.0, query: 'example+john@example.com' } } }
+                ]
               }
             ]
           }
@@ -91,15 +116,20 @@ describe Elastic::UserQueryBuilder do
           bool: {
             must: [
               { terms: { 'office_id.keyword': %w[north south east west] } },
-              { match: { 'email.keyword': 'example+john@example.com' } },
-              { match: { 'racfid.keyword': 'RACFID' } },
               {
-                bool: {
-                  should: [
-                    { match_phrase_prefix: { 'last_name': { "query": 'Smith', "boost": 3.0 } } },
-                    { match_phrase_prefix: { 'first_name': 'John' } }
-                  ]
-                }
+                bool: { should: [
+                  { match_phrase_prefix: { last_name: 'Smith' } },
+                  { match:
+                    { last_name:
+                      { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
+                  { match: { "last_name.phonetic": 'Smith' } },
+                  { match_phrase_prefix: { first_name: 'John' } },
+                  { match: { first_name: { boost: 3.0, fuzziness: 'AUTO', query: 'John' } } },
+                  { match: { "first_name.phonetic": 'John' } },
+                  { match:
+                    { 'email.keyword': { boost: 50.0, query: 'example+john@example.com' } } },
+                  { match: { "racfid.keyword": { boost: 50.0, query: 'RACFID' } } }
+                ] }
               }
             ]
           }
@@ -226,11 +256,7 @@ describe Elastic::UserQueryBuilder do
         query: {
           bool: {
             must: [
-              bool: {
-                should: [
-                  { match_phrase_prefix: { 'last_name': { "query": 'Smith', "boost": 3.0 } } }
-                ]
-              }
+              bool: fuzzy_last_name_smith
             ]
           }
         },
@@ -256,11 +282,7 @@ describe Elastic::UserQueryBuilder do
             must: [
               { terms: { 'office_id.keyword': %w[north south east west] } },
               {
-                bool: {
-                  should: [
-                    { match_phrase_prefix: { 'last_name': { "query": 'Smith', "boost": 3.0 } } }
-                  ]
-                }
+                bool: fuzzy_last_name_smith
               }
             ]
           }
@@ -283,15 +305,7 @@ describe Elastic::UserQueryBuilder do
             must: [
               { terms: { 'office_id.keyword': %w[north south east west] } },
               { term: { 'enabled': 'true' } },
-              bool: {
-                should: [
-                  {
-                    match_phrase_prefix: {
-                      last_name: { query: 'Smith', boost: 3.0 }
-                    }
-                  }
-                ]
-              }
+              bool: fuzzy_last_name_smith
             ]
           }
         }
@@ -351,15 +365,7 @@ describe Elastic::UserQueryBuilder do
           bool: {
             must: [
               { terms: { 'office_id.keyword': %w[north south east west] } },
-              bool: {
-                should: [
-                  {
-                    match_phrase_prefix: {
-                      last_name: { query: 'Smith', boost: 3.0 }
-                    }
-                  }
-                ]
-              }
+              bool: fuzzy_last_name_smith
             ]
           }
         }

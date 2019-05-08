@@ -4,6 +4,18 @@ require 'rails_helper'
 
 module Api
   describe SearchUserListController do
+    let(:fuzzy_last_name_smith) do
+      { should:
+
+              [
+                { match_phrase_prefix: { last_name: 'Smith' } },
+                { match:
+                  { last_name:
+                    { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
+                { match: { "last_name.phonetic": 'Smith' } }
+              ] }
+    end
+
     describe '#index' do
       let(:user_repository) { instance_double('User::UserRepository') }
       let(:user) { Users::User.new(username: 'el') }
@@ -76,13 +88,7 @@ module Api
               bool: {
                 must: [
                   {
-                    bool: {
-                      should: [
-                        { match_phrase_prefix: {
-                          last_name: { boost: 3.0, query: 'Smith' }
-                        } }
-                      ]
-                    }
+                    bool: fuzzy_last_name_smith
                   }
                 ]
               }
@@ -118,9 +124,7 @@ module Api
                          { "must": [
                            { terms: { "office_id.keyword": [1, 2, 3] } },
                            { bool:
-                                { should:
-                                  [{ match_phrase_prefix:
-                                     { last_name: { boost: 3.0, query: 'Smith' } } }] } }
+                             fuzzy_last_name_smith }
                          ] } },
                 from: 51, size: 25, sort: sort_score_and_name }, 'token'
             ).and_return(api_response)
@@ -196,13 +200,7 @@ module Api
               bool: {
                 must: [
                   {
-                    bool: {
-                      should: [
-                        { match_phrase_prefix: {
-                          last_name: { boost: 3.0, query: 'Smith' }
-                        } }
-                      ]
-                    }
+                    bool: fuzzy_last_name_smith
                   }
                 ]
               }

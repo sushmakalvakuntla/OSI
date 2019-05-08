@@ -39,32 +39,30 @@ module Elastic
     def self.query_leaves(query)
       query.map do |subquery|
         Elastic::QueryBuilder.subquery_as_es(subquery, SUBQUERIES) unless missing(subquery[:value])
-      end.compact
+      end.compact.flatten
     end
 
     SUBQUERIES = {
       last_name: lambda do |value|
-        unless value.empty?
-          { conjunction: 'OR', query: {
-            match_phrase_prefix: { last_name: { query: value, boost: 3.0 } }
-          } }
-        end
+        name_match('last_name', value) unless value.empty?
       end,
       first_name: lambda do |value|
-        unless value.empty?
-          { conjunction: 'OR', query: { match_phrase_prefix: { first_name: value } } }
-        end
+        name_match('first_name', value) unless value.empty?
       end,
       office_ids: lambda do |value|
         { conjunction: 'AND', query: { terms: { 'office_id.keyword': value } } } unless value.empty?
       end,
       email: lambda do |value|
-        { conjunction: 'AND', query: { match: { 'email.keyword': value.downcase } } } unless value
-                                                                                             .empty?
+        unless value.empty?
+          { conjunction: 'OR',
+            query: { match: { 'email.keyword': { query: value.downcase, boost: 50.0 } } } }
+        end
       end,
       racfid: lambda do |value|
-        { conjunction: 'AND', query: { match: { 'racfid.keyword': value.upcase } } } unless value
-                                                                                            .empty?
+        unless value.empty?
+          { conjunction: 'OR',
+            query: { match: { 'racfid.keyword': { query: value.upcase, boost: 50.0 } } } }
+        end
       end,
       enabled: lambda do |value|
         { conjunction: 'AND', query: { term: { enabled: value.to_s } } } unless value.to_s.empty?
@@ -79,6 +77,16 @@ module Elastic
       end
     }.freeze
 
+    def self.name_match(field_name, value)
+      [
+        { conjunction: 'OR', query: { match_phrase_prefix: { "#{field_name}": value } } },
+        { conjunction: 'OR', query: {
+          match: { "#{field_name}": { query: value, boost: 3.0, fuzziness: 'AUTO' } }
+        } },
+        { conjunction: 'OR', query: { match: { "#{field_name}.phonetic": value } } }
+      ]
+    end
+
     def self.sort_query
       { sort: [{ "_score": 'desc' }, { "last_name.for_sort": { order: 'asc' } },
                { "first_name.for_sort": { order: 'asc' } }] }
@@ -91,8 +99,8 @@ module Elastic
     end
 
     def self.bool_or_query(leaves)
-      or_leaves = leaves.select { |s| s[:conjunction] == 'OR' }
-      query_leaves = or_leaves.map { |s| s[:query] }
+      or_leaves = leaves.select { |leaf| leaf[:conjunction] == 'OR' }
+      query_leaves = or_leaves.map { |leaf| leaf[:query] }
       { bool: { should: query_leaves } }
     end
 

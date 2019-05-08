@@ -4,12 +4,6 @@ require 'json'
 
 module Api
   class SearchUserListController < ActionController::API
-    def index_legacy
-      params = Users::UserDetails.new(allowed_params_to_search).to_h.compact
-      users = Users::UserRepository.new.get_users(params, session[:token])
-      render json: users
-    end
-
     def index
       query = parse_query
       es_query_json = Elastic::UserQueryBuilder.get_search(query)

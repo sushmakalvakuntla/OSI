@@ -112,6 +112,7 @@ module UserListPageHelper
   end
 
   def search_users(last_name: '')
+    click_button 'CLEAR' if has_button? 'CLEAR'
     return if find_field('Last Name').value == last_name
 
     puts "search for '#{last_name}'"
