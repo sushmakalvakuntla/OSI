@@ -72,10 +72,10 @@ export const checkStatus = state => {
   return isUserEditable(state)
     ? {
         headerButtonLabel: 'Unlock User',
-        systemStatus: `User Account is Locked for 'Failed Logins'`,
+        systemStatus: `This user has been locked for too many login attempts:`,
         className: 'lockedStatus',
         isDisabled: false,
-        buttonType: 'danger',
+        buttonType: 'primary',
       }
     : {
         systemStatus: `User Account is Locked for 'Failed Logins`,

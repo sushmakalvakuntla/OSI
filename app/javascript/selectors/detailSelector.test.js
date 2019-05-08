@@ -391,10 +391,10 @@ describe('selectors', () => {
   describe('#checkStatus', () => {
     const editableProperties = {
       headerButtonLabel: 'Unlock User',
-      systemStatus: `User Account is Locked for 'Failed Logins'`,
+      systemStatus: `This user has been locked for too many login attempts:`,
       className: 'lockedStatus',
       isDisabled: false,
-      buttonType: 'danger',
+      buttonType: 'primary',
     }
     const nonEditableProperties = {
       systemStatus: `User Account is Locked for 'Failed Logins`,
