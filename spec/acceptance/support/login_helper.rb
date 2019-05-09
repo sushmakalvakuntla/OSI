@@ -8,6 +8,7 @@ module LoginHelper
       json_login
     else
       cognito_login
+      verify_account
     end
 
     go_manage_users if page.has_content?('Services & Resources')
@@ -33,7 +34,6 @@ module LoginHelper
     fill_in 'Email', with: ENV.fetch('COGNITO_USERNAME', 'no-reply@osi.ca.gov')
     fill_in 'Password', with: ENV.fetch('COGNITO_PASSWORD', 'password')
     click_on 'Sign In'
-    verify_account
   end
 
   def cognito_invalid_login
@@ -46,13 +46,17 @@ module LoginHelper
   end
 
   def cognito_login_with_invalid_mfa
+    login_to_enter_mfa_page
+    invalid_mfa
+  end
+
+  def login_to_enter_mfa_page
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
     return unless login_page?
 
     fill_in 'Email', with: ENV.fetch('INVALID_MFA_USER', 'y_test111+role2@outlook.com')
     fill_in 'Password', with: ENV.fetch('INVALID_MFA_PASSWORD', 'Password123*')
     click_on 'Sign In'
-    invalid_mfa
   end
 
   def click_forgot_password_link
