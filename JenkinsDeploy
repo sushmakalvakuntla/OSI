@@ -64,7 +64,7 @@ def smokeTest(environment, version){
   stage('Smoke test in Integration'){
     try {
       sh "docker-compose up -d county-admin-test"
-      sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.${environment}.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance/search_user_list_page_spec.rb --format documentation"
+      sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.${environment}.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance/county/search_user_list_page_spec.rb --format documentation"
     } catch(Exception e) {
         throw e
     } finally {
