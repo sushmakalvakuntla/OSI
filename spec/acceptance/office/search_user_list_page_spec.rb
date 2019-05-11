@@ -14,11 +14,11 @@ feature 'User List Page' do
   scenario 'page is accessible' do
     pending 'page has accessibility issues'
     login
-    page_has_basic_text
+    page_is_search
     search_users(last_name: 'Nobody')
     click_add_user
     click_link 'User List'
-    page_has_basic_text
+    page_is_search
     puts current_url
     sleep 5
 
@@ -26,14 +26,19 @@ feature 'User List Page' do
   end
 
   scenario 'validate user list page' do
+    logout_link # logout to get a fresh page for this test
     login
     sleep 2
-    page_has_basic_text
+    page_is_search
     # page_has_user_list_headers
     search_users(last_name: 'Manzano')
+    my_account = logged_in_account
+
+    expect(selected_offices[0]).to eq office_name_map[my_account[:admin_office_ids][0]]
+
     sleep 2
     first_count = page_exact_match_users.count
-    require 'pry'; binding.pry
+
     expect(first_count).to be > 0
     puts "count users #{first_count}"
     #  THIS IS GIVING DRIVER ERRORS FOR WRONG OBJECT WOULD BE CLICKED.  hide_inactive_users

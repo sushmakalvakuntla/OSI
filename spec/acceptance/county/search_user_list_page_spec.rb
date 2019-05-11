@@ -14,11 +14,11 @@ feature 'User List Page' do
   scenario 'page is accessible' do
     pending 'page has accessibility issues'
     login
-    page_has_basic_text
+    page_is_search
     search_users(last_name: 'Nobody')
     click_add_user
     click_link 'User List'
-    page_has_basic_text
+    page_is_search
     puts current_url
     sleep 5
 
@@ -28,7 +28,7 @@ feature 'User List Page' do
   scenario 'validate user list page' do
     login
     sleep 2
-    page_has_basic_text
+    page_is_search
     # page_has_user_list_headers
     search_users(last_name: 'Manzano')
     sleep 2

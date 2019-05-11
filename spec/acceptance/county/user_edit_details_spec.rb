@@ -155,7 +155,7 @@ feature 'User Edit' do
     search_users(last_name: 'A')
     page_has_user_list_headers
 
-    search_users(last_name: 'Auto')
+    search_users(last_name: 'Auto1')
     show_inactive_users
     sleep 2
     first_user_name = first_user_full_name

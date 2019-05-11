@@ -5,7 +5,7 @@ module UserListPageHelper
     click_button 'CREATE A NEW USER'
   end
 
-  def page_has_basic_text
+  def page_is_search
     expect(page).to have_content('Search Existing User Accounts')
   end
 
@@ -130,14 +130,8 @@ module UserListPageHelper
   end
 
   def selected_offices
-    offices = []
-    all(:xpath,
-        "//label[contains(text(),'Filter by Office Name')]/following-sibling::div/div/div/div")
-      .to_a.each do |p|
-      # don't return a value like "(13)" which means we've not picked yet
-      offices << p.text unless p.text == '' || p.text == 'Select...' || p.text.match(/\([0-9]*\)/)
-    end
-    offices
+    all(:xpath, '//*[@id="searchOfficeName"]/div/div')
+      .map { |e| e.text unless e.text.match(/Filter by Office Name/) || e.text == '' }.compact!
   end
 
   def pick_single_office_name

@@ -92,7 +92,7 @@ feature 'User Sign in' do
     expect(page)
       .to have_text('Error. Incorrect code. You have 2 attempts remaining.')
     verify_account
-    page_has_basic_text
+    page_is_search
   end
 
   scenario 'Verify that MFA code does not expire after second attempt and user should be able to
@@ -105,6 +105,6 @@ feature 'User Sign in' do
     expect(page)
       .to have_text('Error. Incorrect code. You have 1 attempt remaining.')
     verify_account
-    page_has_basic_text
+    page_is_search
   end
 end
