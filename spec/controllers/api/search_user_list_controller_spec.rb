@@ -13,7 +13,8 @@ module Api
                   { last_name:
                     { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
                 { match: { "last_name.phonetic": {
-                  query: 'Smith', boost: 3.0 } } }
+                  query: 'Smith', boost: 3.0
+                } } }
               ] }
     end
 

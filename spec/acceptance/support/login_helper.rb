@@ -2,20 +2,13 @@
 
 module LoginHelper
   def login
-    puts 'Login method called'
     visit_home
     if page.has_content?('Authorization JSON')
       json_login
     else
       cognito_login
       sleep 2
-      # our test environments can get stuck on a rate limit issue.
-      #
-      while page.text.match(/CreateAuthChallenge/) do
-        puts "SLEEPING 10 seconds to get past 'CreateAuthChallenge' environment issue"
-        sleep 10
-        cognito_login
-      end
+      cognito_login_with_retry
       verify_account
 
       load_account_info
@@ -38,6 +31,16 @@ module LoginHelper
 
   def visit_home
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
+  end
+
+  def cognito_login_with_retry
+    # our test environments can get stuck on a rate limit issue.
+    #
+    while page.text =~ /CreateAuthChallenge/
+      puts "SLEEPING 10 seconds to get past 'CreateAuthChallenge' environment issue"
+      sleep 10
+      cognito_login
+    end
   end
 
   def cognito_login
