@@ -8,6 +8,14 @@ module LoginHelper
       json_login
     else
       cognito_login
+      sleep 2
+      # our test environments can get stuck on a rate limit issue.
+      #
+      while page.text.match(/CreateAuthChallenge/) do
+        puts "SLEEPING 10 seconds to get past 'CreateAuthChallenge' environment issue"
+        sleep 10
+        cognito_login
+      end
       verify_account
 
       load_account_info
