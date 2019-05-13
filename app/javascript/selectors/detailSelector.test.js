@@ -361,11 +361,11 @@ describe('selectors', () => {
 
   describe('#statusButtonProperties', () => {
     const buttonProperties = {
-      buttonType: 'danger',
+      buttonType: 'primary',
       className: 'lockedStatus',
-      headerButtonLabel: 'Locked',
+      headerButtonLabel: 'LOCKED',
       isDisabled: true,
-      systemStatus: "User Account is Locked for 'Failed Logins",
+      systemStatus: 'This user has been locked for too many login attempts:',
     }
     it('returns buttonProperties when locked is true', () => {
       const state = getState({ isUserLocked: true })
@@ -390,18 +390,18 @@ describe('selectors', () => {
 
   describe('#checkStatus', () => {
     const editableProperties = {
-      headerButtonLabel: 'Unlock User',
+      headerButtonLabel: 'UNLOCK USER',
       systemStatus: `This user has been locked for too many login attempts:`,
       className: 'lockedStatus',
       isDisabled: false,
       buttonType: 'primary',
     }
     const nonEditableProperties = {
-      systemStatus: `User Account is Locked for 'Failed Logins`,
-      headerButtonLabel: 'Locked',
+      systemStatus: `This user has been locked for too many login attempts:`,
+      headerButtonLabel: 'LOCKED',
       isDisabled: true,
       className: 'lockedStatus',
-      buttonType: 'danger',
+      buttonType: 'primary',
     }
     it('returns editable properties when editable is true', () => {
       const state = getState({ isDetailsEditable: true })
