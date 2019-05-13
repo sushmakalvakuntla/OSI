@@ -13,11 +13,11 @@ describe Elastic::UserQueryBuilder do
   let(:fuzzy_last_name_smith) do
     { should:
       [
-        { match_phrase_prefix: { last_name: 'Smith' } },
+        { match_phrase_prefix: { last_name: { query: 'Smith', boost: 3.0 } } },
         { match:
           { last_name:
             { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
-        { match: { "last_name.phonetic": 'Smith' } }
+        { match: { "last_name.phonetic": { query: 'Smith', boost: 3.0 } } }
       ] }
   end
 
@@ -118,14 +118,14 @@ describe Elastic::UserQueryBuilder do
               { terms: { 'office_id.keyword': %w[north south east west] } },
               {
                 bool: { should: [
-                  { match_phrase_prefix: { last_name: 'Smith' } },
+                  { match_phrase_prefix: { last_name: { query: 'Smith', boost: 3.0 } } },
                   { match:
                     { last_name:
                       { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
-                  { match: { "last_name.phonetic": 'Smith' } },
-                  { match_phrase_prefix: { first_name: 'John' } },
+                  { match: { "last_name.phonetic": { query: 'Smith', boost: 3.0 } } },
+                  { match_phrase_prefix: { first_name: { query: 'John', boost: 3.0 } } },
                   { match: { first_name: { boost: 3.0, fuzziness: 'AUTO', query: 'John' } } },
-                  { match: { "first_name.phonetic": 'John' } },
+                  { match: { "first_name.phonetic": { query: 'John', boost: 3.0 } } },
                   { match:
                     { 'email.keyword': { boost: 50.0, query: 'example+john@example.com' } } },
                   { match: { "racfid.keyword": { boost: 50.0, query: 'RACFID' } } }

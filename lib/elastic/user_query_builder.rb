@@ -44,10 +44,10 @@ module Elastic
 
     SUBQUERIES = {
       last_name: lambda do |value|
-        name_match('last_name', value) unless value.empty?
+        name_match('last_name', value, 5.0) unless value.empty?
       end,
       first_name: lambda do |value|
-        name_match('first_name', value) unless value.empty?
+        name_match('first_name', value, 3.0) unless value.empty?
       end,
       office_ids: lambda do |value|
         { conjunction: 'AND', query: { terms: { 'office_id.keyword': value } } } unless value.empty?
@@ -77,13 +77,17 @@ module Elastic
       end
     }.freeze
 
-    def self.name_match(field_name, value)
+    def self.name_match(field_name, value, boost)
       [
-        { conjunction: 'OR', query: { match_phrase_prefix: { "#{field_name}": value } } },
+        { conjunction: 'OR', query: {
+          match_phrase_prefix: { "#{field_name}": { query: value, boost: 3.0 } }
+        } },
         { conjunction: 'OR', query: {
           match: { "#{field_name}": { query: value, boost: 3.0, fuzziness: 'AUTO' } }
         } },
-        { conjunction: 'OR', query: { match: { "#{field_name}.phonetic": value } } }
+        { conjunction: 'OR', query: {
+          match: { "#{field_name}.phonetic": { query:  value, boost: 3.0 } }
+        } }
       ]
     end
 
