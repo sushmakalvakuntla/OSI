@@ -92,6 +92,7 @@ feature 'User Sign in' do
     expect(page)
       .to have_text('Error. Incorrect code. You have 2 attempts remaining.')
     verify_account
+    go_manage_users
     page_has_basic_text
   end
 
@@ -105,6 +106,7 @@ feature 'User Sign in' do
     expect(page)
       .to have_text('Error. Incorrect code. You have 1 attempt remaining.')
     verify_account
+    go_manage_users
     page_has_basic_text
   end
 end
