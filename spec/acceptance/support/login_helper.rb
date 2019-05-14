@@ -12,6 +12,7 @@ module LoginHelper
       verify_account
 
       load_account_info
+      load_office_info
       visit_home
     end
 
@@ -114,6 +115,9 @@ module LoginHelper
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/api/account'
     sleep 2
     @account = JSON.parse(page.text, symbolize_names: true)
+  end
+
+  def load_office_info
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/api/offices_list'
     sleep 2
     office_list = JSON.parse(page.text, symbolize_names: true)
