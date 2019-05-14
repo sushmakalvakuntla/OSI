@@ -14,6 +14,24 @@ feature 'User Sign in' do
     expect(page).to have_text('User does not exist.')
   end
 
+  scenario 'Verify Login page UI' do
+    visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
+    return unless login_page?
+
+    expect(page)
+      .to have_css("img[src*='/CWS-CARES-tempLogo.png']")
+    expect(page).to have_text('Email')
+    expect(page).to have_text('Password')
+    expect(page).to have_field('Email', placeholder: 'Email')
+    expect(page).to have_field('Password', placeholder: 'Password')
+    expect(page).to have_link('Forgot your password?')
+    expect(page).to have_button('Sign In', disabled: true)
+    expect(page).to have_text(notice)
+    fill_in 'Email', with: 'something@example.com'
+    fill_in 'Password', with: 'Password'
+    expect(page).to have_button('Sign In', disabled: false)
+  end
+
   scenario 'Verify MFA page UI' do
     login_to_enter_mfa_page
     expect(page)
