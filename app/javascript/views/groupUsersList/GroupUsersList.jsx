@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
 import { Link } from 'react-router-dom'
 import Cards from '../../common/Card'
-import ReactTable from 'react-table'
+import { DataGrid, CardBody } from '@cwds/components'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { formatRoles } from '../../_utils/formatters'
-
 class GroupUsersList extends PureComponent {
   componentDidMount() {
     if (this.props.location.filter && this.props.location.filter.query && this.props.location.filter.size) {
@@ -18,8 +17,8 @@ class GroupUsersList extends PureComponent {
     const translateOffice = getOfficeTranslator(officesList)
     const translateRoles = data => formatRoles(data.roles, rolesList)
     return (
-      <div className="col-md-12" style={{ marginTop: '30px' }}>
-        <ReactTable
+      <CardBody className="pt-0">
+        <DataGrid
           data={data}
           columns={[
             { Header: 'Full Name', id: 'last_name', accessor: toFullName, minWidth: 200 },
@@ -29,12 +28,8 @@ class GroupUsersList extends PureComponent {
             { Header: 'Office Name', id: 'office_name', accessor: translateOffice },
             { Header: 'Role', id: 'user_role', accessor: translateRoles },
           ]}
-          manual
-          showPagination={false}
-          sortable={false}
-          className="-striped -highlight"
         />
-      </div>
+      </CardBody>
     )
   }
 
@@ -53,7 +48,7 @@ class GroupUsersList extends PureComponent {
     const { officesList, rolesList } = this.props
     return (
       <Fragment>
-        <Cards cardHeaderText={'Filter User List'} columnMediumWidth={9} columnLargeWidth={9} columnXsmallWidth={9}>
+        <Cards cardHeaderText={'Filter User List'} columnMediumWidth={12} columnLargeWidth={12} columnXsmallWidth={12}>
           {this.props.error && (
             <Alert alertClassName="error" faIcon="fa-exclamation-triangle" alertCross={false}>
               <strong>Oh no!</strong> An unexpected error occurred!

@@ -49,7 +49,7 @@ node(node_to_run_on()) {
       }
 
       stage('Increment Tag') {
-        newTag = newSemVer(env.APP_VERSION)
+        newTag = newSemVer(env.INCREMENT_VERSION)
       }
 
       stage('Build Docker Test Image') {

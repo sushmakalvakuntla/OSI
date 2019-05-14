@@ -8,6 +8,7 @@ import GroupUsersList from './containers/groupUsersListContainer'
 import DetailsPage from './containers/detailsContainer'
 import AddUser from './containers/addUserContainer'
 import { makeLogoutUrl } from './_utils/makeLogoutUrl'
+import '@cwds/components/scss/global.scss'
 
 const App = () => (
   <Provider store={store}>
