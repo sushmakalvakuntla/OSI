@@ -80,14 +80,61 @@ describe('GroupUserList', () => {
   describe('#GroupUserList output', () => {
     it('contains Table and headers', () => {
       wrapper.setProps({ groupUsers: [] })
-      expect(wrapper.find('ReactTable').length).toBe(1)
-      expect(wrapper.find('ReactTable').prop('columns').length).toBe(6)
-      expect(wrapper.find('ReactTable').prop('columns')[0].id).toBe('last_name')
-      expect(wrapper.find('ReactTable').prop('columns')[1].id).toBe('enabled')
-      expect(wrapper.find('ReactTable').prop('columns')[2].id).toBe('last_login_date_time')
-      expect(wrapper.find('ReactTable').prop('columns')[3].accessor).toBe('racfid')
-      expect(wrapper.find('ReactTable').prop('columns')[4].id).toBe('office_name')
-      expect(wrapper.find('ReactTable').prop('columns')[5].id).toBe('user_role')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable').length
+      ).toBe(1)
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns').length
+      ).toBe(6)
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[0].id
+      ).toBe('last_name')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[1].id
+      ).toBe('enabled')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[2].id
+      ).toBe('last_login_date_time')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[3].accessor
+      ).toBe('racfid')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[4].id
+      ).toBe('office_name')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[5].id
+      ).toBe('user_role')
     })
   })
 })

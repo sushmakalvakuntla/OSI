@@ -22,13 +22,13 @@ body {
   background-color: #e8e8e8;
   color: #050505;
   font-family: ‘Source Sans Pro’, ‘Helvetica Neue’, ‘Helvetica’, ‘Roboto’, ‘Arial’, sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.5rem !important;
   line-height: 1.428571429;
 }
 
 label {
-  display: block;
-  margin-bottom: 0.5rem;
+  display: block !important;
+  margin-bottom: 0.5rem !important;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -273,4 +273,9 @@ a.class1.active {
   border: 0.1rem solid #d4d4d4;
   padding: 30px;
   text-align: center;
+}
+
+#datagrid_pagination_1_pageJump {
+  font-size: 1.5rem;
+  height: calc(3.25rem + 2px);
 }
