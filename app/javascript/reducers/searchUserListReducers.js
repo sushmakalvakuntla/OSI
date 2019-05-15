@@ -120,10 +120,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         fetching: false,
         inputData: {
           ...state.inputData,
-          officeNames:
-            state.inputData.officeNames === undefined || state.inputData.officeNames.length === 0
-              ? getAdminOfficeIDs(payload)
-              : state.inputData.officeNames,
+          officeNames: state.inputData.officeNames === undefined ? getAdminOfficeIDs(payload) : state.inputData.officeNames,
         },
         adminAccountDetails: payload,
         error: null,
