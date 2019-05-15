@@ -13,11 +13,11 @@ describe Elastic::UserQueryBuilder do
   let(:fuzzy_last_name_smith) do
     { should:
       [
-        { match_phrase_prefix: { last_name: 'Smith' } },
+        { match_phrase_prefix: { last_name: { query: 'Smith', boost: 5.0 } } },
         { match:
           { last_name:
-            { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
-        { match: { "last_name.phonetic": 'Smith' } }
+            { boost: 5.0, fuzziness: 'AUTO', query: 'Smith' } } },
+        { match: { "last_name.phonetic": { query: 'Smith', boost: 5.0 } } }
       ] }
   end
 
@@ -27,12 +27,12 @@ describe Elastic::UserQueryBuilder do
         { match_phrase_prefix: { last_name: 'Smith' } },
         { match:
           { last_name:
-            { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
+            { boost: 5.0, fuzziness: 'AUTO', query: 'Smith' } } },
         { match: { "last_name.phonetic": 'Smith' } },
         { match_phrase_prefix: { first_name: 'John' } },
         { match:
           { first_name:
-            { boost: 3.0, fuzziness: 'AUTO', query: 'John' } } },
+            { boost: 5.0, fuzziness: 'AUTO', query: 'John' } } },
         { match: { "first_name.phonetic": 'John' } },
         { match: { 'email.keyword': { boost: 50.0, query: 'example+john@example.com' } } }
       ] }
@@ -118,14 +118,14 @@ describe Elastic::UserQueryBuilder do
               { terms: { 'office_id.keyword': %w[north south east west] } },
               {
                 bool: { should: [
-                  { match_phrase_prefix: { last_name: 'Smith' } },
+                  { match_phrase_prefix: { last_name: { query: 'Smith', boost: 5.0 } } },
                   { match:
                     { last_name:
-                      { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
-                  { match: { "last_name.phonetic": 'Smith' } },
-                  { match_phrase_prefix: { first_name: 'John' } },
+                      { boost: 5.0, fuzziness: 'AUTO', query: 'Smith' } } },
+                  { match: { "last_name.phonetic": { query: 'Smith', boost: 5.0 } } },
+                  { match_phrase_prefix: { first_name: { query: 'John', boost: 3.0 } } },
                   { match: { first_name: { boost: 3.0, fuzziness: 'AUTO', query: 'John' } } },
-                  { match: { "first_name.phonetic": 'John' } },
+                  { match: { "first_name.phonetic": { query: 'John', boost: 3.0 } } },
                   { match:
                     { 'email.keyword': { boost: 50.0, query: 'example+john@example.com' } } },
                   { match: { "racfid.keyword": { boost: 50.0, query: 'RACFID' } } }
@@ -383,6 +383,16 @@ describe Elastic::UserQueryBuilder do
       expected_output = { from: 0, size: 50 }
       output = Elastic::UserQueryBuilder.paginate_query(input_query)
       expect(output).to eq(expected_output)
+    end
+  end
+
+  describe '.prefix_name_match' do
+    it 'returns an ES phrase for prefix name matching' do
+      expect(
+        Elastic::UserQueryBuilder.prefix_name_match('a-field', 'match-value', 42)
+      ).to eq(conjunction: 'OR', query: {
+                match_phrase_prefix: { "a-field": { query: 'match-value', boost: 42 } }
+              })
     end
   end
 
