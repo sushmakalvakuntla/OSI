@@ -99,14 +99,6 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
     case actionTypes.USER_LIST_CLEAR_SEARCH:
       return {
         ...state,
-        // inputData: {
-        //   ...state.inputData,
-        //   officeNames: getAdminOfficeIDs(state.adminAccountDetails),
-        //   lastName: '',
-        //   firstName: '',
-        //   CWSLogin: '',
-        //   email: '',
-        // },
         inputData: initialValue.inputData,
         query: initialValue.query,
         includeInactive: initialValue.includeInactive,
