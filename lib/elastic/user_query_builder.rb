@@ -77,18 +77,22 @@ module Elastic
       end
     }.freeze
 
-    def self.name_match(field_name, value, boost)
+    def self.name_match(field, value, boost)
       [
+        prefix_name_match(field, value, boost),
         { conjunction: 'OR', query: {
-          match_phrase_prefix: { "#{field_name}": { query: value, boost: 3.0 } }
+          match: { "#{field}": { query: value, boost: boost, fuzziness: 'AUTO' } }
         } },
         { conjunction: 'OR', query: {
-          match: { "#{field_name}": { query: value, boost: 3.0, fuzziness: 'AUTO' } }
-        } },
-        { conjunction: 'OR', query: {
-          match: { "#{field_name}.phonetic": { query:  value, boost: 3.0 } }
+          match: { "#{field}.phonetic": { query: value, boost: boost } }
         } }
       ]
+    end
+
+    def self.prefix_name_match(field, value, boost)
+      { conjunction: 'OR', query: {
+        match_phrase_prefix: { "#{field}": { query: value, boost: boost } }
+      } }
     end
 
     def self.sort_query

@@ -8,12 +8,13 @@ module Api
       { should:
 
               [
-                { match_phrase_prefix: { last_name: { query: 'Smith', boost: 3.0 } } },
+                { match_phrase_prefix: { last_name: { query: 'Smith', boost: 5.0 } } },
                 { match:
                   { last_name:
-                    { boost: 3.0, fuzziness: 'AUTO', query: 'Smith' } } },
+                    { boost: 5.0, fuzziness: 'AUTO', query: 'Smith' } } },
                 { match: { "last_name.phonetic": {
-                  query: 'Smith', boost: 3.0 } } }
+                  query: 'Smith', boost: 5.0
+                } } }
               ] }
     end
 
