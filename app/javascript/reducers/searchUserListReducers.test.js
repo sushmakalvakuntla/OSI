@@ -200,7 +200,7 @@ describe('reducer', () => {
       firstName: '',
       CWSLogin: '',
       email: '',
-      officeNames: [],
+      officeNames: undefined,
     })
     expect(after.includeInactive).toEqual(true)
   })

@@ -40,7 +40,7 @@ const initialValue = {
     firstName: '',
     CWSLogin: '',
     email: '',
-    officeNames: [],
+    officeNames: undefined,
   },
   adminAccountDetails: {},
   includeInactive: true,
@@ -99,14 +99,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
     case actionTypes.USER_LIST_CLEAR_SEARCH:
       return {
         ...state,
-        inputData: {
-          ...state.inputData,
-          officeNames: getAdminOfficeIDs(state.adminAccountDetails),
-          lastName: '',
-          firstName: '',
-          CWSLogin: '',
-          email: '',
-        },
+        inputData: initialValue.inputData,
         query: initialValue.query,
         includeInactive: initialValue.includeInactive,
       }
@@ -120,10 +113,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         fetching: false,
         inputData: {
           ...state.inputData,
-          officeNames:
-            state.inputData.officeNames === undefined || state.inputData.officeNames.length === 0
-              ? getAdminOfficeIDs(payload)
-              : state.inputData.officeNames,
+          officeNames: state.inputData.officeNames === undefined ? getAdminOfficeIDs(payload) : state.inputData.officeNames,
         },
         adminAccountDetails: payload,
         error: null,
