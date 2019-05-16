@@ -28,6 +28,12 @@ class GroupUsersList extends PureComponent {
             { Header: 'Office Name', id: 'office_name', accessor: translateOffice },
             { Header: 'Role', id: 'user_role', accessor: translateRoles },
           ]}
+          defaultSorted={[
+            {
+              id: 'last_name',
+              desc: false,
+            },
+          ]}
         />
       </CardBody>
     )
