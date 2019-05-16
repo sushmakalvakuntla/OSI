@@ -2,16 +2,31 @@
 
 module LoginHelper
   def login
-    puts 'Login method called'
-    visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
+    visit_home
     if page.has_content?('Authorization JSON')
       json_login
     else
-      cognito_login
+      cognito_login_with_retry
       verify_account
+
+      load_account_info
+      load_offices_info
+      visit_home
     end
 
     go_manage_users if page.has_content?('Services & Resources')
+  end
+
+  def cognito_login_with_retry
+    # our test environments can get stuck on a rate limit issue.
+    #
+    cognito_login
+    sleep 2
+    while page.text =~ /CreateAuthChallenge/
+      puts "SLEEPING 10 seconds to get past 'CreateAuthChallenge' environment issue"
+      sleep 10
+      cognito_login
+    end
   end
 
   def json_login(login_config = default_json)
@@ -25,19 +40,24 @@ module LoginHelper
     submit_json_form(login_json) if page.has_content?('Authorization JSON')
   end
 
-  def cognito_login
+  def visit_home
+    puts "visiting home at #{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}"
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
+  end
+
+  def cognito_login
+    visit_home
     return unless login_page?
 
-    puts "Fill in user name with #{ENV.fetch('COGNITO_USERNAME', 'no-reply@osi.ca.gov')}"
-    puts "Fill in pass with #{ENV.fetch('COGNITO_PASSWORD', 'password')}"
+    puts "Fill in user/pass with #{ENV.fetch('COGNITO_USERNAME', 'no-reply@osi.ca.gov')}, "\
+         "#{ENV.fetch('COGNITO_PASSWORD', 'password')}"
     fill_in 'Email', with: ENV.fetch('COGNITO_USERNAME', 'no-reply@osi.ca.gov')
     fill_in 'Password', with: ENV.fetch('COGNITO_PASSWORD', 'password')
     click_on 'Sign In'
   end
 
   def cognito_invalid_login
-    visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
+    visit_home
     return unless login_page?
 
     fill_in 'Email', with: 'no-reply@osi.ca.gov'
@@ -46,12 +66,12 @@ module LoginHelper
   end
 
   def cognito_login_with_invalid_mfa
-    login_to_enter_mfa_page
+    login_to_enter_mfa_page_with_retry
     invalid_mfa
   end
 
   def login_to_enter_mfa_page
-    visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
+    visit_home
     return unless login_page?
 
     fill_in 'Email', with: ENV.fetch('INVALID_MFA_USER', 'y_test111+role2@outlook.com')
@@ -59,8 +79,22 @@ module LoginHelper
     click_on 'Sign In'
   end
 
+  def login_to_enter_mfa_page_with_retry
+    # our test environments can get stuck on a rate limit issue.
+    #
+    login_to_enter_mfa_page
+    sleep 2
+    while page.text =~ /CreateAuthChallenge/
+      puts "SLEEPING 10 seconds to get past 'CreateAuthChallenge' environment issue"
+      sleep 10
+
+      login_to_enter_mfa_page
+      sleep 3
+    end
+  end
+
   def click_forgot_password_link
-    visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
+    visit_home
     return unless login_page?
 
     click_link 'Forgot your password?'
@@ -77,11 +111,34 @@ module LoginHelper
 
   def logout_link
     # ensure we're on an app page and not the login page, which the logout page won't work from
-    visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
-    visit "#{ENV.fetch('COUNTY_ADMIN_WEB_BASE_URL', '/')}/logout"
+    visit_home
+    visit "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}/logout"
+    @account = nil
+  end
+
+  def office_name_map
+    @office_names
+  end
+
+  def logged_in_account
+    @account
   end
 
   private
+
+  def load_account_info
+    visit "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}/api/account"
+    sleep 2
+    @account = JSON.parse(page.text, symbolize_names: true)
+  end
+
+  def load_offices_info
+    visit "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}/api/offices_list"
+    sleep 2
+    office_list = JSON.parse(page.text, symbolize_names: true)
+    @office_names = {}
+    office_list.each { |o| @office_names[o[:office_id]] = o[:office_name] }
+  end
 
   def verify_account
     # verify via MFA using static value assigned to this user.
@@ -90,6 +147,7 @@ module LoginHelper
     fill_in 'code', with: 'LETMEIN'
     puts 'Successfully entered code'
     click_on 'Verify'
+    expect(page).to have_content('Manage Users')
   end
 
   def invalid_mfa
@@ -101,7 +159,7 @@ module LoginHelper
   end
 
   def go_manage_users
-    find(:xpath, "//a[contains(@href, '/cap')]").click
+    first(:xpath, "//a[contains(@href, '/cap')]").click
     # reload the page.  Seems to overcome a problem with occasional container startup
     # not loading records at first.  To be explored.
     page.evaluate_script 'window.location.reload()'
