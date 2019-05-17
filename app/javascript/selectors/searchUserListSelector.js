@@ -1,6 +1,5 @@
 import safeGet from 'lodash.get'
 import React from 'react'
-import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
 
 export const selectUserRecords = state => {
   if (!state.searchUserList) return []
