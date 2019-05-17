@@ -1,5 +1,6 @@
 import safeGet from 'lodash.get'
 import React from 'react'
+import { getAdminOfficeIDs } from '../_utils/checkAdminRoles'
 
 export const selectUserRecords = state => {
   if (!state.searchUserList) return []
@@ -37,7 +38,7 @@ export const checkOfficeNames = offices => {
   if (offices && offices.length !== 0) {
     return offices.filter(value => value.trim() !== '')
   } else {
-    return []
+    return undefined
   }
 }
 
@@ -111,4 +112,11 @@ export const displayChangeLog = state => {
     return false
   }
   return true
+}
+
+export const isOfficeAdmin = state => {
+  const adminAccount = safeGet(state, 'searchUserList.adminAccountDetails', [])
+  const officeID = getAdminOfficeIDs(adminAccount)
+  const isOfficeAdmin = officeID.length !== 0
+  return isOfficeAdmin
 }

@@ -727,29 +727,6 @@ describe('SearchUserList', () => {
       expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
     })
 
-    it('returns false when search query contains non-empty office-ids field', () => {
-      const query = [
-        {
-          field: 'office_ids',
-          value: ['some_value1', 'some_value2'],
-        },
-      ]
-      const component = shallow(
-        <SearchUserList
-          dashboardUrl={'dburl'}
-          actions={defaultEmptyActions}
-          query={query}
-          includeInactive={false}
-          auditEvents={auditEvents}
-          userDetails={details}
-          searchPageTiles={searchPageTiles}
-          exactMatches={exactMatches}
-          fuzzyMatches={fuzzyMatches}
-        />
-      )
-      expect(component.instance().isDisabledAddUsrBtn()).toEqual(false)
-    })
-
     it('returns true when search query is empty', () => {
       const query = []
       const component = shallow(
@@ -874,24 +851,6 @@ describe('SearchUserList', () => {
           dashboardUrl={'dburl'}
           actions={defaultEmptyActions}
           CWSLogin="new_CWSLogin"
-          includeInactive={false}
-          auditEvents={auditEvents}
-          userDetails={details}
-          query={query}
-          searchPageTiles={searchPageTiles}
-          exactMatches={exactMatches}
-          fuzzyMatches={fuzzyMatches}
-        />
-      )
-      expect(component.instance().isDisabledClearBtn()).toEqual(false)
-    })
-
-    it('returns false when officeNames list is non-empty', () => {
-      const component = shallow(
-        <SearchUserList
-          dashboardUrl={'dburl'}
-          actions={defaultEmptyActions}
-          officeNames={['new_CWSLogin']}
           includeInactive={false}
           auditEvents={auditEvents}
           userDetails={details}

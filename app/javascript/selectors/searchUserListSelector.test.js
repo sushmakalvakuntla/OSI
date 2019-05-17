@@ -178,14 +178,9 @@ describe('selectors', () => {
   })
 
   it('returns empty array when offices are not available', () => {
-    const offices = []
-    const expectedValue = []
+    const offices = undefined
+    const expectedValue = undefined
     expect(checkOfficeNames(offices)).toEqual(expectedValue)
-  })
-
-  it('returns empty array when office is undefined', () => {
-    const expectedValue = []
-    expect(checkOfficeNames(undefined)).toEqual(expectedValue)
   })
 
   describe('#selectSearchResultList', () => {
