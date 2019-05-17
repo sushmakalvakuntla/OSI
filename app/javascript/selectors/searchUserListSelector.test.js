@@ -178,7 +178,7 @@ describe('selectors', () => {
   })
 
   it('returns empty array when offices are not available', () => {
-    const offices = undefined
+    const offices = []
     const expectedValue = undefined
     expect(checkOfficeNames(offices)).toEqual(expectedValue)
   })

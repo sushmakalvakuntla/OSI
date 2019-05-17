@@ -113,10 +113,3 @@ export const displayChangeLog = state => {
   }
   return true
 }
-
-export const isOfficeAdmin = state => {
-  const adminAccount = safeGet(state, 'searchUserList.adminAccountDetails', [])
-  const officeID = getAdminOfficeIDs(adminAccount)
-  const isOfficeAdmin = officeID.length !== 0
-  return isOfficeAdmin
-}
