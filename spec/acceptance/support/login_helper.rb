@@ -8,9 +8,6 @@ module LoginHelper
     else
       cognito_login_with_retry
       verify_account
-
-      load_account_info
-      load_offices_info
       visit_home
     end
 
@@ -113,32 +110,9 @@ module LoginHelper
     # ensure we're on an app page and not the login page, which the logout page won't work from
     visit_home
     visit "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}/logout"
-    @account = nil
-  end
-
-  def office_name_map
-    @office_names
-  end
-
-  def logged_in_account
-    @account
   end
 
   private
-
-  def load_account_info
-    visit "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}/api/account"
-    sleep 2
-    @account = JSON.parse(page.text, symbolize_names: true)
-  end
-
-  def load_offices_info
-    visit "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}/api/offices_list"
-    sleep 2
-    office_list = JSON.parse(page.text, symbolize_names: true)
-    @office_names = {}
-    office_list.each { |o| @office_names[o[:office_id]] = o[:office_name] }
-  end
 
   def verify_account
     # verify via MFA using static value assigned to this user.

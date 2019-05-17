@@ -111,6 +111,20 @@ module UserListPageHelper
     last_name == '' ? force_change_script('#searchWithLastName', 'Search user list') : ''
   end
 
+  def logged_in_user_info
+    visit_home
+    click_button 'CLEAR'
+    email = ENV.fetch('COGNITO_USERNAME')
+    fill_in 'searchWithEmail', with: email
+    click_button 'SEARCH'
+    sleep 1
+    page_exact_match_users[0].find('a').click
+    account = { office_name: detail_page_value('Office Name') }
+    visit_home
+    click_button 'CLEAR'
+    account
+  end
+
   def search_users(last_name: '')
     click_button 'CLEAR' if has_button? 'CLEAR'
     return if find_field('Last Name').value == last_name

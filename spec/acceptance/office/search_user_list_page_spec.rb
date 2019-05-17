@@ -5,7 +5,7 @@ require 'feature'
 require 'axe/rspec'
 require 'faraday'
 
-feature 'User List Page' do
+feature 'Search User List Page' do
   scenario 'Can log in' do
     visit ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
     login
@@ -30,11 +30,11 @@ feature 'User List Page' do
     login
     sleep 2
     page_is_search
-    # page_has_user_list_headers
-    search_users(last_name: 'Manzano')
-    my_account = logged_in_account
+    current_account = logged_in_user_info
 
-    expect(selected_offices[0]).to eq office_name_map[my_account[:admin_office_ids][0]]
+    search_users(last_name: 'M')
+
+    expect(selected_offices[0]).to eq current_account[:office_name]
 
     sleep 2
     first_count = page_exact_match_users.count
