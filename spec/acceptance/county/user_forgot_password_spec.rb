@@ -54,20 +54,20 @@ feature 'User Forgot Password Page' do
 
   scenario 'Verify that MFA code does not expire after second attempt and user should be able to
   login successfully when providing valid value in second attempt' do
-    # this test is flakey because it only succees when the user has not
-    # previously entered an MFA code in this QA run.  Need to find out how
-    # to force a new MFA code to be required.
-
-    cognito_login
-    invalid_mfa
-    expect(page)
-      .to have_text('Error. Incorrect code. You have 2 attempts remaining.')
-    invalid_mfa
-    expect(page)
-      .to have_text('Error. Incorrect code. You have 1 attempt remaining.')
-    verify_account
-    # click on the link if we're on the dashboard
-    go_manage_users if page.has_content?('Services & Resources')
-    page_is_search
+    session = Capybara::Session.new(:selenium)
+    Capybara.using_session(session) do
+      cognito_login
+      invalid_mfa
+      expect(page)
+        .to have_text('Error. Incorrect code. You have 2 attempts remaining.')
+      invalid_mfa
+      expect(page)
+        .to have_text('Error. Incorrect code. You have 1 attempt remaining.')
+      verify_account
+      # click on the link if we're on the dashboard
+      go_manage_users if page.has_content?('Services & Resources')
+      page_is_search
+    end
+    session.driver.browser.quit
   end
 end
