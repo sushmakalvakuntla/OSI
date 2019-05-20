@@ -37,7 +37,7 @@ export const checkOfficeNames = offices => {
   if (offices && offices.length !== 0) {
     return offices.filter(value => value.trim() !== '')
   } else {
-    return []
+    return undefined
   }
 }
 

@@ -93,15 +93,14 @@ class SearchUserList extends PureComponent {
     const { query } = this.props
     const lastName = query.find(({ field }) => field === 'last_name')
     const firstName = query.find(({ field }) => field === 'first_name')
-    const officeSearch = query.find(({ field }) => field === 'office_ids')
     const racfid = query.find(({ field }) => field === 'racfid')
     const email = query.find(({ field }) => field === 'email')
-    return [lastName, firstName, officeSearch, racfid, email].every(this.isSearchValueAbsent)
+    return [lastName, firstName, racfid, email].every(this.isSearchValueAbsent)
   }
 
   isDisabledClearBtn = () => {
-    const { lastName = '', firstName = '', email = '', CWSLogin = '', officeNames = [] } = this.props
-    return lastName === '' && firstName === '' && email === '' && CWSLogin === '' && officeNames.length === 0
+    const { lastName = '', firstName = '', email = '', CWSLogin = '' } = this.props
+    return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
   }
 
   renderSearchResults = () => {

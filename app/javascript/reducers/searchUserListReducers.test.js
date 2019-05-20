@@ -37,7 +37,7 @@ describe('reducer', () => {
     expect(after.inputData.officeNames).toEqual(['1234509876'])
   })
 
-  it('handles FETCH_ACCOUNT_API_CALL_SUCCESS when officeNames is undefined and role is not office-admin', () => {
+  it('handles FETCH_ACCOUNT_API_CALL_SUCCESS when officeNames is undefined and role is office-admin', () => {
     const before = {
       inputData: {
         officeNames: undefined,
@@ -46,25 +46,40 @@ describe('reducer', () => {
     }
     const action = {
       type: actionTypes.FETCH_ACCOUNT_API_CALL_SUCCESS,
-      payload: { admin_office_ids: ['1234509876'], county_name: 'Madera', roles: ['Admin3', 'Admin2'] },
+      payload: { admin_office_ids: ['1234509876'], county_name: 'Madera', roles: ['Office-admin', 'Admin2'] },
     }
     const after = reducer(before, action)
-    expect(after.inputData.officeNames).toEqual([])
+    expect(after.inputData.officeNames).toEqual(['1234509876'])
   })
 
-  it('handles FETCH_ACCOUNT_API_CALL_SUCCESS when officeNames is not undefined & has a role office-admin', () => {
+  it('handles FETCH_ACCOUNT_API_CALL_SUCCESS when officeNames is undefined & not a office-admin', () => {
     const before = {
       inputData: {
-        officeNames: ['someOffice'],
+        officeNames: undefined,
       },
       adminAccountDetails: {},
     }
     const action = {
       type: actionTypes.FETCH_ACCOUNT_API_CALL_SUCCESS,
-      payload: { admin_office_ids: ['1234509876'], county_name: 'Madera', roles: ['Office-admin', 'Admin2'] },
+      payload: { admin_office_ids: ['1234509876'], county_name: 'Madera', roles: ['Admin1', 'Admin2'] },
     }
     const after = reducer(before, action)
-    expect(after.inputData.officeNames).toEqual(['someOffice'])
+    expect(after.inputData.officeNames).toEqual([])
+  })
+
+  it('handles FETCH_ACCOUNT_API_CALL_SUCCESS when officeNames has value & not a office-admin', () => {
+    const before = {
+      inputData: {
+        officeNames: ['123QWERTY'],
+      },
+      adminAccountDetails: {},
+    }
+    const action = {
+      type: actionTypes.FETCH_ACCOUNT_API_CALL_SUCCESS,
+      payload: { admin_office_ids: ['1234509876'], county_name: 'Madera', roles: ['Admin1', 'Admin2'] },
+    }
+    const after = reducer(before, action)
+    expect(after.inputData.officeNames).toEqual(['123QWERTY'])
   })
 
   it('handles FETCH_ACCOUNT_API_CALL_FAILURE', () => {
@@ -200,7 +215,7 @@ describe('reducer', () => {
       firstName: '',
       CWSLogin: '',
       email: '',
-      officeNames: undefined,
+      officeNames: [],
     })
     expect(after.includeInactive).toEqual(true)
   })
