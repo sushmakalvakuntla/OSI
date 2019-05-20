@@ -114,9 +114,9 @@ module UserDetailPageHelper
 
     find('label', text: 'Assigned Permissions').click
     # permissions_click
-    first(
+    all(
       :xpath,
       "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div"
-    )
+    ).last
   end
 end
