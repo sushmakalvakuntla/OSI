@@ -6,6 +6,8 @@ import Cards from '../../common/Card'
 import { DataGrid, CardBody } from '@cwds/components'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { formatRoles } from '../../_utils/formatters'
+import { dateTimeComparator } from '../../_utils/comparators'
+
 class GroupUsersList extends PureComponent {
   componentDidMount() {
     if (this.props.location.filter && this.props.location.filter.query && this.props.location.filter.size) {
@@ -23,7 +25,13 @@ class GroupUsersList extends PureComponent {
           columns={[
             { Header: 'Full Name', id: 'last_name', accessor: toFullName, minWidth: 200 },
             { Header: 'Status', id: 'enabled', accessor: accountStatusFormat, minWidth: 60 },
-            { Header: 'Last Login', id: 'last_login_date_time', minWidth: 150, accessor: lastLoginDate },
+            {
+              Header: 'Last Login',
+              id: 'last_login_date_time',
+              minWidth: 150,
+              accessor: lastLoginDate,
+              sortMethod: dateTimeComparator,
+            },
             { Header: 'CWS Login', minWidth: 80, accessor: 'racfid' },
             { Header: 'Office Name', id: 'office_name', accessor: translateOffice },
             { Header: 'Role', id: 'user_role', accessor: translateRoles },
