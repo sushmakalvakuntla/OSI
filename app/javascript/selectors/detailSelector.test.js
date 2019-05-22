@@ -13,7 +13,7 @@ import {
   selectCWSPrivileges,
   officeName,
   selectPossiblePermissionsList,
-  disableActionButton,
+  disableSaveButton,
   isEmailValid,
   selectModifiedDetails,
   formattedDateTime,
@@ -531,40 +531,34 @@ describe('selectors', () => {
     })
   })
 
-  describe('#disableActionButton', () => {
+  describe('#disableSaveButton', () => {
     it('return true when email is valid', () => {
-      const state = getState({
-        email: 'Hello@gmail.com',
-        disableActionBtn: true,
-      })
-      expect(disableActionButton(state)).toEqual(true)
+      const state = getState({ email: 'Hello@gmail.com' })
+      expect(disableSaveButton(state)).toEqual(true)
     })
 
     it('return true when phone number is valid', () => {
-      const state = getState({
-        phoneNumber: '4445558888',
-        disableActionBtn: true,
-      })
-      expect(disableActionButton(state)).toEqual(true)
+      const state = getState({ phoneNumber: '4445558888' })
+      expect(disableSaveButton(state)).toEqual(true)
     })
 
     it('return true when email is not valid', () => {
-      const state = getState({ email: 'hello@', disableActionBtn: false })
-      expect(disableActionButton(state)).toEqual(true)
+      const state = getState({ email: 'hello@' })
+      expect(disableSaveButton(state)).toEqual(true)
     })
 
     it('return true when phone number is not valid', () => {
-      const state = getState({ phoneNumber: '333-444', disableActionBtn: false })
-      expect(disableActionButton(state)).toEqual(true)
+      const state = getState({ phoneNumber: '333-444' })
+      expect(disableSaveButton(state)).toEqual(true)
     })
 
     it('return false when email & phone number is valid', () => {
       const state = getState({
         phoneNumber: '1234567891',
-        email: 'hello@gmail.com',
+        email: 'hel@gmail.com',
         disableActionBtn: false,
       })
-      expect(disableActionButton(state)).toEqual(false)
+      expect(disableSaveButton(state)).toEqual(false)
     })
   })
 

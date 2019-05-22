@@ -157,13 +157,14 @@ describe('UserDetail', () => {
     it('renders the buttons ', () => {
       const onReset = wrapper.instance().onReset
       const onSaveDetails = wrapper.instance().onSaveDetails
-      wrapper.setProps({ isUserEditable: true, disableActionBtn: true, isPermissionsEmpty: true })
+      wrapper.setProps({ isUserEditable: true, disableSaveButton: true, disableResetButton: false, isPermissionsEmpty: true })
       expect(wrapper.instance().pageButton()).toEqual(
         <PageHeaderButtons
           onReset={onReset}
           onSaveDetails={onSaveDetails}
           isUserEditable={true}
-          disableButtons={true}
+          disableSaveButton={true}
+          disableResetButton={false}
           isPermissionsEmpty={true}
         />
       )
