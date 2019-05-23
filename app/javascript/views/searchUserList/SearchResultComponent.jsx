@@ -46,9 +46,7 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
             <Link
               to={{
                 pathname: `/user_details/${value.id}`,
-                state: {
-                  fromGroupUserList: false,
-                },
+                fromGroupUserList: false,
               }}
               className="class1"
             >
