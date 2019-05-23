@@ -50,8 +50,10 @@ describe('SearchResultComponent', () => {
       ).toBe('Email')
 
       expect(wrapper.find('Link').props().children).toBe('View Profile')
-      expect(wrapper.find('Link').props().to).toBe('/user_details/12345ABCD')
-
+      expect(wrapper.find('Link').props().to).toEqual({
+        pathname: '/user_details/12345ABCD',
+        state: { fromGroupUserList: false },
+      })
       expect(
         wrapper
           .find('ShowField')

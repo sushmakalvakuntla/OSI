@@ -23,7 +23,24 @@ class GroupUsersList extends PureComponent {
         <DataGrid
           data={data}
           columns={[
-            { Header: 'Full Name', id: 'last_name', accessor: toFullName, minWidth: 200 },
+            {
+              Header: 'Full Name',
+              id: 'last_name',
+              accessor: toFullName,
+              minWidth: 200,
+              Cell: ({ value, original }) => (
+                <Link
+                  to={{
+                    pathname: `/user_details/${original.id}`,
+                    state: {
+                      fromGroupUserList: true,
+                    },
+                  }}
+                >
+                  {value}
+                </Link>
+              ),
+            },
             { Header: 'Status', id: 'enabled', accessor: accountStatusFormat, minWidth: 60 },
             {
               Header: 'Last Login',
@@ -53,7 +70,7 @@ class GroupUsersList extends PureComponent {
       <div>
         Back to: <LinkRWD text="Dashboard" href={dashboardUrl} clickHandler={dashboardClickHandler} />
         &nbsp;&gt;&nbsp;
-        <Link to="/">Manage Users</Link>
+        <Link to="/">User List</Link>
       </div>
     )
   }

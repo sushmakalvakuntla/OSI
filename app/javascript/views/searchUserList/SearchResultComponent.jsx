@@ -43,7 +43,15 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
             </ShowField>
           </div>
           <div className="col-md-2">
-            <Link to={`/user_details/${value.id}`} className="class1">
+            <Link
+              to={{
+                pathname: `/user_details/${value.id}`,
+                state: {
+                  fromGroupUserList: false,
+                },
+              }}
+              className="class1"
+            >
               View Profile
             </Link>
           </div>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Link as LinkRWD, PageHeader } from 'react-wood-duck'
@@ -184,15 +184,31 @@ export default class UserDetail extends Component {
     )
   }
 
+  renderBreadCrumb = () => {
+    return (
+      <Fragment>
+        Back to: <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
+        &nbsp;&gt;&nbsp;
+        {this.props.location.state.fromGroupUserList ? (
+          <Fragment>
+            <Link to="/">User List</Link>
+            &nbsp;&gt;&nbsp;
+            <Link to="/user_group_search">Group User List</Link>
+          </Fragment>
+        ) : (
+          <Link to="/">User List</Link>
+        )}
+      </Fragment>
+    )
+  }
+
   render() {
     return (
       <div>
         <PageHeader pageTitle="User Profile" button={this.pageButton()} />
         <div className="container">
           <div className="col-md-12">
-            Back to: <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
-            &nbsp;&gt;&nbsp;
-            <Link to="/">User List</Link>
+            {this.renderBreadCrumb()}
             {this.showAlert(this.props.displayAlert, this.props.userDetailError, this.props.saveSuccessMsg)}
             {this.emailSent()}
             {this.showAddAlert()}
@@ -255,6 +271,7 @@ UserDetail.propTypes = {
   isPermissionsEmpty: PropTypes.bool,
   privilegesFromCWS: PropTypes.array,
   statusButtonProperties: PropTypes.object,
+  location: PropTypes.object,
 }
 
 UserDetail.defaultProps = {

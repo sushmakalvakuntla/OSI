@@ -67,13 +67,13 @@ describe('GroupUserList', () => {
       ).toContain('Dashboard')
     })
 
-    it('renders navigation link to Manage Users', () => {
+    it('renders navigation link to User List', () => {
       expect(
         wrapper
           .find('Link')
           .at(1)
           .props().children
-      ).toContain('Manage Users')
+      ).toContain('User List')
     })
   })
 

@@ -47,6 +47,7 @@ describe('UserDetail', () => {
     const initialDetails = { id: '12345' }
     const match = { params: { id: '12345' } }
     const details = { id: '12345', email: '' }
+    const location = { state: { fromGroupUserList: false } }
     const XHRStatus = 'ready'
     container = shallow(
       <MemoryRouter>
@@ -58,6 +59,7 @@ describe('UserDetail', () => {
           dashboardUrl="dburl"
           userListUrl="myUserList"
           isRolesDisabled={true}
+          location={location}
           actions={{
             fetchDetailsActions: mockFetchDetailsActions,
             fetchPermissionsActions: mockFetchPermissionsActions,
@@ -277,6 +279,23 @@ describe('UserDetail', () => {
       it('has a link to the CARES dashboard', () => {
         const link = wrapper.find(LinkRWD).at(0)
         expect(link.prop('href')).toEqual('dburl')
+      })
+
+      it('has a links to "User List" and "Group User List", when visiting from Group User List', () => {
+        wrapper.setProps({
+          location: {
+            state: {
+              fromGroupUserList: true,
+            },
+          },
+        })
+        const linkOne = wrapper.find(Link).at(0)
+        expect(linkOne.children().text()).toContain('User List')
+        expect(linkOne.prop('to')).toEqual('/')
+
+        const linkTwo = wrapper.find(Link).at(1)
+        expect(linkTwo.children().text()).toContain('Group User List')
+        expect(linkTwo.prop('to')).toEqual('/user_group_search')
       })
     })
   })
