@@ -32,9 +32,7 @@ class GroupUsersList extends PureComponent {
                 <Link
                   to={{
                     pathname: `/user_details/${original.id}`,
-                    state: {
-                      fromGroupUserList: true,
-                    },
+                    fromGroupUserList: true,
                   }}
                 >
                   {value}

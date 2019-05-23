@@ -189,11 +189,11 @@ export default class UserDetail extends Component {
       <Fragment>
         Back to: <LinkRWD text="Dashboard" href={this.props.dashboardUrl} clickHandler={this.props.dashboardClickHandler} />
         &nbsp;&gt;&nbsp;
-        {this.props.location.state.fromGroupUserList ? (
+        {this.props.location.fromGroupUserList ? (
           <Fragment>
             <Link to="/">User List</Link>
             &nbsp;&gt;&nbsp;
-            <Link to="/user_group_search">Group User List</Link>
+            <Link to="/user_group_search">Filter User List</Link>
           </Fragment>
         ) : (
           <Link to="/">User List</Link>
@@ -283,5 +283,8 @@ UserDetail.defaultProps = {
     isDisabled: true,
     className: 'unlockedStatus',
     buttonType: 'secondary',
+  },
+  location: {
+    fromGroupUserList: false,
   },
 }
