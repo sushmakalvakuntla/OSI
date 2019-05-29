@@ -1,3 +1,9 @@
 export const dateTimeComparator = (a, b) => {
-  return new Date(a) > new Date(b) ? 1 : -1
+  if (!a) {
+    return -1
+  } else if (!b) {
+    return 1
+  } else {
+    return new Date(a) > new Date(b) ? 1 : -1
+  }
 }
