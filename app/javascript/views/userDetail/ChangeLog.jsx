@@ -84,7 +84,9 @@ const columnConfig = (
     accessor: d => d,
     minWidth: 70,
     Cell: row => {
-      return `${formatAdminWithRole(row.original.event.admin_name, row.original.event.admin_role)}`
+      return `${
+        row.original.event.admin_name ? formatAdminWithRole(row.original.event.admin_name, row.original.event.admin_role) : ''
+      }`
     },
     sortMethod: sortByName,
   },
