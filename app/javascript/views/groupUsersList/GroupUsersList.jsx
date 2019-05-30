@@ -1,18 +1,43 @@
 import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Link as LinkRWD, PageHeader, Alert } from 'react-wood-duck'
+import { Link as LinkRWD, PageHeader } from 'react-wood-duck'
 import { Link } from 'react-router-dom'
 import Cards from '../../common/Card'
-import { DataGrid, CardBody } from '@cwds/components'
+import { DataGrid, CardBody, MenuItem, UncontrolledMenu as Menu, Alert } from '@cwds/components'
 import { toFullName, accountStatusFormat, lastLoginDate, getOfficeTranslator } from '../../_constants/constants'
 import { formatRoles } from '../../_utils/formatters'
 import { dateTimeComparator } from '../../_utils/comparators'
 
 class GroupUsersList extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      alert: false,
+    }
+  }
   componentDidMount() {
     if (this.props.location.filter && this.props.location.filter.query && this.props.location.filter.size) {
       this.props.actions.fetchGroupUsersList(this.props.location.filter.query, this.props.location.filter.size)
     }
+  }
+
+  onUserStatusChange(userId) {
+    this.props.actions.handleStatusChangeAction(userId)
+    this.setState({ alert: true })
+  }
+
+  showAlert = (displayAlert, error) => {
+    if (displayAlert)
+      return error ? (
+        <Alert className="errorMessage-customizable" color="danger">
+          {error.user_message}
+        </Alert>
+      ) : (
+        <Alert className="successMessage-customizable" color="success">
+          Success! You have successfully unlocked this user.
+        </Alert>
+      )
+    return null
   }
 
   renderUsersTable = ({ data = [], officesList, rolesList }) => {
@@ -48,8 +73,23 @@ class GroupUsersList extends PureComponent {
               sortMethod: dateTimeComparator,
             },
             { Header: 'CWS Login', minWidth: 80, accessor: 'racfid' },
-            { Header: 'Office Name', id: 'office_name', accessor: translateOffice },
-            { Header: 'Role', id: 'user_role', accessor: translateRoles },
+            { Header: 'Office Name', minWidth: 150, id: 'office_name', accessor: translateOffice },
+            { Header: 'Role', minWidth: 150, id: 'user_role', accessor: translateRoles },
+            {
+              Header: '',
+              id: 'ellipsis',
+              Cell: row => {
+                const { locked } = row.original
+                return locked ? (
+                  <Menu>
+                    <MenuItem className={'group-list-action'} onClick={() => this.onUserStatusChange(row.original.id)}>
+                      Unlock User
+                    </MenuItem>
+                  </Menu>
+                ) : null
+              },
+              sortable: false,
+            },
           ]}
           defaultSorted={[
             {
@@ -74,7 +114,7 @@ class GroupUsersList extends PureComponent {
   }
 
   renderComponents = () => {
-    const { officesList, rolesList } = this.props
+    const { officesList, rolesList, userUnlockError } = this.props
     return (
       <Fragment>
         <Cards cardHeaderText={'Filter User List'} columnMediumWidth={12} columnLargeWidth={12} columnXsmallWidth={12}>
@@ -83,6 +123,7 @@ class GroupUsersList extends PureComponent {
               <strong>Oh no!</strong> An unexpected error occurred!
             </Alert>
           )}
+          {this.showAlert(this.state.alert, userUnlockError)}
           <div>
             <div className="row">
               <div>
@@ -124,6 +165,8 @@ GroupUsersList.propTypes = {
   groupUsers: PropTypes.array,
   dashboardUrl: PropTypes.string,
   dashboardClickHandler: PropTypes.func,
+  userUnlockError: PropTypes.object,
+  size: PropTypes.number,
   sort: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string.isRequired,
@@ -146,6 +189,9 @@ GroupUsersList.defaultProps = {
   officesList: [],
   lastName: '',
   officeNames: [],
+  userUnlockError: {
+    user_message: '',
+  },
 }
 
 export default GroupUsersList

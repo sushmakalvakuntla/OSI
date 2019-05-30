@@ -31,6 +31,21 @@ export function groupUsersListReducer(state = groupUsersInitialValue, { type, pa
         error,
         groupUsers: [],
       }
+    case actionTypes.USER_STATUS_CHANGE_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+        fetchDetailsError: null,
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_SUCCESS:
+      return {
+        ...state,
+        groupUsers: state.groupUsers ? state.groupUsers.filter(groupUser => groupUser.id !== payload.id) : null,
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_FAILURE:
+      return state
 
     default:
       return state

@@ -13,6 +13,7 @@ export function* userStatusChange(action) {
     yield put({
       type: actionTypes.USER_STATUS_CHANGE_SUCCESS,
       successAlert,
+      payload: { id: userID },
     })
   } catch (error) {
     // dispatch a failure action to the store with the error

@@ -77,6 +77,25 @@ describe('GroupUserList', () => {
     })
   })
 
+  describe('#showAlert()', () => {
+    it('displays error <Alert/>', () => {
+      const props = { user_message: 'Cognito user validation is failed' }
+      wrapper.setProps({ userUnlockError: props })
+      wrapper.setState({ alert: true })
+      const alertBox = wrapper.find('Alert')
+      expect(alertBox.length).toBe(1)
+      expect(alertBox.props().children).toEqual('Cognito user validation is failed')
+    })
+
+    it('displays success <UserMessage/>', () => {
+      wrapper.setState({ alert: true })
+      wrapper.setProps({ userUnlockError: null })
+      const alertBox = wrapper.find('Alert')
+      expect(alertBox.length).toBe(1)
+      expect(alertBox.props().children).toEqual('Success! You have successfully unlocked this user.')
+    })
+  })
+
   describe('#GroupUserList output', () => {
     it('contains Table and headers', () => {
       wrapper.setProps({ groupUsers: [] })
@@ -92,7 +111,7 @@ describe('GroupUserList', () => {
           .dive()
           .find('ReactTable')
           .prop('columns').length
-      ).toBe(6)
+      ).toBe(7)
       expect(
         wrapper
           .find('DataGrid')
@@ -135,6 +154,13 @@ describe('GroupUserList', () => {
           .find('ReactTable')
           .prop('columns')[5].id
       ).toBe('user_role')
+      expect(
+        wrapper
+          .find('DataGrid')
+          .dive()
+          .find('ReactTable')
+          .prop('columns')[6].id
+      ).toBe('ellipsis')
     })
   })
 })

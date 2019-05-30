@@ -10,6 +10,8 @@ describe('reducer', () => {
       details: null,
       initialDetails: null,
       fetchDetailsError: null,
+      saveDetailsError: null,
+      saveSuccessAlert: null,
     })
   })
 
@@ -232,6 +234,7 @@ describe('reducer', () => {
       displayAlert: false,
       saveSuccessAlert: null,
       disableActionBtn: true,
+      saveDetailsError: null,
       details: { id: 'key1', username: 'user1', records: { user: { locked: true } } },
     }
     expect(fetchDetails(state, responseAction)).toEqual({
@@ -240,6 +243,7 @@ describe('reducer', () => {
       saveSuccessAlert: 'Success message! User has been unlocked successfully',
       details: { id: 'key1', username: 'user1', records: { user: { locked: false } } },
       disableActionBtn: false,
+      saveDetailsError: null,
     })
   })
 
@@ -260,6 +264,7 @@ describe('reducer', () => {
       details: { id: 'key1', username: 'user1', records: { user: { locked: true } } },
       saveDetailsError: { user_message: 'Error Message! User cannot be unlocked right now' },
       error: null,
+      saveSuccessAlert: null,
       displayAlert: true,
     })
   })

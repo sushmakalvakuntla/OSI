@@ -15,7 +15,13 @@ function fetchDetails(
 ) {
   switch (action.type) {
     case actionTypes.FETCH_DETAILS_API_CALL_REQUEST:
-      return { ...state, fetching: true, fetchDetailsError: null }
+      return {
+        ...state,
+        fetching: true,
+        fetchDetailsError: null,
+        saveSuccessAlert: null,
+        saveDetailsError: null,
+      }
 
     case actionTypes.FETCH_DETAILS_API_CALL_SUCCESS:
       const userRecords = {
@@ -124,16 +130,19 @@ function fetchDetails(
         displayAlert: true,
         saveSuccessAlert: action.successAlert,
         disableActionBtn: false,
-        details: {
-          ...state.details,
-          records: {
-            ...state.details.records,
-            user: {
-              ...state.details.records.user,
-              locked: false,
-            },
-          },
-        },
+        details: state.details
+          ? {
+              ...state.details,
+              records: {
+                ...state.details.records,
+                user: {
+                  ...state.details.records.user,
+                  locked: false,
+                },
+              },
+            }
+          : null,
+        saveDetailsError: null,
       }
 
     case actionTypes.USER_STATUS_CHANGE_FAILURE:
@@ -142,6 +151,7 @@ function fetchDetails(
         fetching: false,
         saveDetailsError: action.error,
         displayAlert: true,
+        saveSuccessAlert: null,
       }
 
     default:

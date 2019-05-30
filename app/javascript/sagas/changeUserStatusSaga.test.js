@@ -24,6 +24,7 @@ describe('sagas', () => {
           put({
             type: actionTypes.USER_STATUS_CHANGE_SUCCESS,
             successAlert,
+            payload: { id: action.payload.id },
           })
         )
         expect(gen.next().done).toBe(true)
@@ -55,6 +56,7 @@ describe('sagas', () => {
           put({
             type: actionTypes.USER_STATUS_CHANGE_SUCCESS,
             successAlert,
+            payload: action.payload,
           })
         )
         expect(gen.next().done).toBe(true)
