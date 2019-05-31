@@ -36,6 +36,15 @@ feature 'User Sign in' do
     expect(page).to have_button('Sign In', disabled: false)
   end
 
+  scenario 'Login, Logout and Login again using same MFA' do
+    login
+    logout_link
+    expect(page).to have_text('Email')
+    cognito_login_with_retry
+    expect(page).not_to have_text('Account Verification Required')
+    logout_link
+  end
+
   scenario 'Verify MFA page UI' do
     Capybara.using_session(@session) do
       login_to_enter_mfa_page_with_retry
