@@ -21,6 +21,7 @@ class SearchUserList extends PureComponent {
       valid: true,
       errorMessage: '',
       disableSearchByOptions: false,
+      unlockedUsers: props.unlockedUsers,
     }
   }
 
@@ -72,12 +73,16 @@ class SearchUserList extends PureComponent {
       { field: 'enabled', value: includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
-    this.setState({ disableSearchByOptions: false })
+    this.setState({ disableSearchByOptions: false, unlockedUsers: {} })
   }
 
   submitClear = () => {
     this.props.actions.clearSearch()
     this.setState({ errorMessage: '' })
+  }
+
+  unlockUser = userId => {
+    this.props.actions.unlockUser(userId)
   }
 
   isDisabledSearchBtn = () => {
@@ -114,6 +119,14 @@ class SearchUserList extends PureComponent {
             officeList={officesList}
             rolesList={rolesList}
             fetching={this.props.fetching}
+            unlockHandler={this.unlockUser}
+            lockMessage={
+              this.state.unlockedUsers[value.id]
+                ? { unlocked: false, message: this.state.unlockedUsers[value.id] }
+                : value.locked
+                  ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
+                  : {}
+            }
           />
         ))
       ) : (
@@ -135,6 +148,8 @@ class SearchUserList extends PureComponent {
               officeList={officesList}
               rolesList={rolesList}
               fetching={this.props.fetching}
+              unlockHandler={this.unlockUser}
+              lockMessage={this.state.unlockedUsers[value.id]}
             />
           ))}
         </div>
@@ -359,6 +374,7 @@ SearchUserList.propTypes = {
   searchPageTiles: PropTypes.array,
   exactMatches: PropTypes.array,
   fuzzyMatches: PropTypes.array,
+  unlockedUsers: PropTypes.object,
   exactMatchResultText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
 
@@ -368,5 +384,6 @@ SearchUserList.defaultProps = {
   officesList: [],
   officeNames: [],
   searchPageTiles: [],
+  unlockedUsers: {},
 }
 export default SearchUserList

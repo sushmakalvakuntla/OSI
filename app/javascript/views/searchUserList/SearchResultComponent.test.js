@@ -4,12 +4,19 @@ import SearchResultComponent from './SearchResultComponent'
 
 describe('SearchResultComponent', () => {
   let wrapper
-  const resultList = { id: '12345ABCD', first_name: 'firstName', last_name: 'lastName' }
+  const resultList = { id: '12345ABCD', first_name: 'firstName', last_name: 'lastName', locked: true }
 
   const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
   const rolesList = [{ label: ' ROLE ONE', value: 'role1' }, { label: 'ROLE TWO', value: 'role2' }]
   beforeEach(() => {
-    wrapper = shallow(<SearchResultComponent value={resultList} officeList={officesList} rolesList={rolesList} />)
+    wrapper = shallow(
+      <SearchResultComponent
+        value={resultList}
+        officeList={officesList}
+        rolesList={rolesList}
+        lockMessage={{ message: 'some message' }}
+      />
+    )
   })
 
   describe('renders the components', () => {
@@ -78,6 +85,13 @@ describe('SearchResultComponent', () => {
           .at(8)
           .props().label
       ).toBe('Role')
+      expect(wrapper.find('Card').length).toBe(1)
+      expect(
+        wrapper
+          .find('Card')
+          .dive()
+          .text()
+      ).toMatch('some message')
     })
   })
 })

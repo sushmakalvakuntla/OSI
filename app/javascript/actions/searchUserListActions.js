@@ -53,3 +53,8 @@ export const handleSearchChange = (key, value) => ({
 export const handleCheckBoxChangeActions = () => ({
   type: actionTypes.HANDLE_CHECKBOX_CHANGE,
 })
+
+export const unlockUser = userId => ({
+  type: actionTypes.USER_STATUS_CHANGE_REQUEST,
+  payload: { id: userId },
+})

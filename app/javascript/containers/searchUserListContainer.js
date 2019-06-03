@@ -9,6 +9,7 @@ import {
   handleCheckBoxChangeActions,
   setSearchForTiles,
   clearSearch,
+  unlockUser,
 } from '../actions/searchUserListActions'
 import { fetchOfficesActions } from '../actions/officesActions'
 import { fetchAuditEventsActions, clearAuditEvents } from '../actions/auditEventActions'
@@ -65,6 +66,7 @@ function mapStateToProps(state) {
     exactMatches: selectSearchResultList(state).exactMatches,
     fuzzyMatches: selectSearchResultList(state).fuzzyMatches,
     exactMatchResultText: exactMatchResultText(state),
+    unlockedUsers: searchUserList.unlockedUsers || {},
   }
 }
 
@@ -86,6 +88,7 @@ function mapDispatchToProps(dispatch) {
         fetchDetailsActions,
         setSearchForTiles,
         clearSearch,
+        unlockUser,
       },
       dispatch
     ),

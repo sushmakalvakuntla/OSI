@@ -17,7 +17,7 @@ describe('SearchUserList', () => {
   let mockFetchDetailsActions
   let mockClearAuditEvents
   let mockFetchAuditEventsActions
-
+  let mockUnlockUserAction
   const query = [
     {
       field: 'first_name',
@@ -107,6 +107,7 @@ describe('SearchUserList', () => {
     mockFetchAuditEventsActions = jest.fn().mockReturnValue(Promise.resolve([]))
     mockClearAuditEvents = jest.fn()
     mockClearSearchActions = jest.fn()
+    mockUnlockUserAction = jest.fn()
 
     wrapper = shallow(
       <SearchUserList
@@ -124,6 +125,7 @@ describe('SearchUserList', () => {
           fetchAuditEventsActions: mockFetchAuditEventsActions,
           clearAuditEvents: mockClearAuditEvents,
           clearSearch: mockClearSearchActions,
+          unlockUser: mockUnlockUserAction,
         }}
         cardHeaderValue="County: CountyName"
         query={query}
@@ -358,6 +360,30 @@ describe('SearchUserList', () => {
   })
 
   describe('#submitSearch', () => {
+    const newQuery = [
+      {
+        field: 'first_name',
+        value: 'first_name_value',
+      },
+      {
+        field: 'last_name',
+        value: 'last_name_value',
+      },
+      {
+        field: 'office_ids',
+        value: ['north', 'south', 'east', 'west'],
+      },
+      {
+        field: 'email',
+        value: 'email+address@example.com',
+      },
+      {
+        field: 'racfid',
+        value: 'racfid',
+      },
+      { field: 'enabled', value: true },
+    ]
+
     it('calls the setSearch Actions', () => {
       const wrapperLocal = shallow(
         <SearchUserList
@@ -385,29 +411,7 @@ describe('SearchUserList', () => {
           fuzzyMatches={fuzzyMatches}
         />
       )
-      const newQuery = [
-        {
-          field: 'first_name',
-          value: 'first_name_value',
-        },
-        {
-          field: 'last_name',
-          value: 'last_name_value',
-        },
-        {
-          field: 'office_ids',
-          value: ['north', 'south', 'east', 'west'],
-        },
-        {
-          field: 'email',
-          value: 'email+address@example.com',
-        },
-        {
-          field: 'racfid',
-          value: 'racfid',
-        },
-        { field: 'enabled', value: true },
-      ]
+
       const event = { preventDefault: () => {} }
       wrapperLocal.instance().submitSearch(event)
       expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
@@ -429,9 +433,9 @@ describe('SearchUserList', () => {
           query={query}
           firstName="first_name_value"
           lastName="last_name_value"
-          officeNames={['north', 'south', 'east', 'west']}
-          CWSLogin="racfid"
           email="email+address@example.com"
+          CWSLogin="racfid"
+          officeNames={['north', 'south', 'east', 'west']}
           includeInactive={true}
           auditEvents={auditEvents}
           userDetails={details}
@@ -440,32 +444,14 @@ describe('SearchUserList', () => {
           fuzzyMatches={fuzzyMatches}
         />
       )
-      const newQuery = [
-        {
-          field: 'first_name',
-          value: 'first_name_value',
-        },
-        {
-          field: 'last_name',
-          value: 'last_name_value',
-        },
-        {
-          field: 'office_ids',
-          value: ['north', 'south', 'east', 'west'],
-        },
-        {
-          field: 'email',
-          value: 'email+address@example.com',
-        },
-        {
-          field: 'racfid',
-          value: 'racfid',
-        },
-        { field: 'enabled', value: '' },
-      ]
+
       const event = { preventDefault: () => {} }
       wrapperLocal.instance().submitSearch(event)
-      expect(mockSetSearchActions).toHaveBeenCalledWith(newQuery)
+
+      const newQueryEnabledEmpty = newQuery.map(q => (q.field === 'enabled' ? { field: 'enabled', value: '' } : q))
+      expect(mockSetSearchActions).toHaveBeenCalledWith(newQueryEnabledEmpty)
+      expect(wrapperLocal.instance().state.disableSearchByOptions).toBe(false)
+      expect(wrapperLocal.instance().state.unlockedUsers).toEqual({})
     })
 
     it('should trim the leadingSpace and trailingSpace of the search fields value', () => {
@@ -596,6 +582,14 @@ describe('SearchUserList', () => {
       wrapper.instance().setState({ errorMessage: 'some_error_message' })
       wrapper.instance().submitClear()
       expect(wrapper.instance().state.errorMessage).toEqual('')
+    })
+  })
+
+  describe('#unlockUser', () => {
+    it('calls the unlockUser action', () => {
+      wrapper.instance().setState({ errorMessage: 'some_error_message' })
+      wrapper.instance().unlockUser('my_user_id')
+      expect(mockUnlockUserAction).toHaveBeenCalledWith('my_user_id')
     })
   })
 

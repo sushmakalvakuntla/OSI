@@ -4,8 +4,9 @@ import ShowField from '../../common/ShowField'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
 import { Link } from 'react-router-dom'
+import { Card, IconButton } from '@cwds/components'
 
-const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
+const SearchResultComponent = ({ value, officeList, rolesList, unlockHandler, lockMessage }) => (
   <div>
     <div
       className="result-card"
@@ -80,6 +81,29 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
           <br />
         </div>
       </div>
+      {value.locked ? (
+        <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
+          <Card>
+            <div className="col-md-12 inlineAlertBox">
+              <div className="col-md-11" style={{ paddingTop: '3px' }}>
+                {lockMessage.message}
+              </div>
+              <div className="col-md-1">
+                <IconButton
+                  name="user"
+                  onClick={() => {
+                    unlockHandler(value.id)
+                  }}
+                >
+                  Unlock
+                </IconButton>
+              </div>
+            </div>
+          </Card>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   </div>
 )
@@ -89,6 +113,12 @@ SearchResultComponent.propTypes = {
   keys: PropTypes.number,
   officeList: PropTypes.array,
   rolesList: PropTypes.array,
+  unlockHandler: PropTypes.func.isRequired,
+  lockMessage: PropTypes.object,
+}
+
+SearchResultComponent.defaultProps = {
+  lockMessage: { message: '' },
 }
 
 export default SearchResultComponent

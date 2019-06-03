@@ -44,9 +44,10 @@ const initialValue = {
   },
   adminAccountDetails: {},
   includeInactive: true,
+  unlockedUsers: {},
 }
 
-function searchUserListReducer(state = initialValue, { type, payload, error, meta }) {
+function searchUserListReducer(state = initialValue, { type, payload, error, meta, successAlert, userId }) {
   switch (type) {
     case actionTypes.FETCH_USERS_API_CALL_REQUEST:
       return { ...state, fetching: true, error: null, query: payload.query }
@@ -94,6 +95,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         ...state,
         from: 0,
         query,
+        unlockedUsers: {},
       }
 
     case actionTypes.USER_LIST_CLEAR_SEARCH:
@@ -131,6 +133,24 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         fetching: false,
         inputData: {},
         error: payload.error,
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_SUCCESS:
+      return {
+        ...state,
+        unlockedUsers: {
+          ...state.unlockedUsers,
+          [userId]: { unlocked: true, message: successAlert },
+        },
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_FAILURE:
+      return {
+        ...state,
+        unlockedUsers: {
+          ...state.unlockedUsers,
+          [userId]: { unlocked: false, message: error },
+        },
       }
 
     default:
