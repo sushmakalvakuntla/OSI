@@ -19,7 +19,6 @@ function fetchDetails(
         ...state,
         fetching: true,
         fetchDetailsError: null,
-        saveSuccessAlert: null,
         saveDetailsError: null,
       }
 
