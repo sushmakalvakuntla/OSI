@@ -29,11 +29,13 @@ def releasePipeline(){
 def deployWithSmoke(environment){
   node(environment){
     checkoutStage()
-    deployToStage(environment, env.version)
-    updateManifestStage(environment, env.version)
-    if (environment == 'integration')  {
-        smokeTest(environment, env.version)
-        integrationAcceptenceTest(environment, env.version)
+    rollbackDeployOnFailure('cap', environment, githubCredentialsId, ansibleCommand(environment, env.version)) {
+      deployToStage(environment, env.version)
+      updateManifestStage(environment, env.version)
+      if (environment == 'integration')  {
+          smokeTest(environment, env.version)
+          integrationAcceptenceTest(environment, env.version)
+      }
     }
   }
 }
@@ -49,9 +51,13 @@ def deployToStage(environment, version) {
   stage("Deploy to $environment") {
     ws {
       git branch: "master", credentialsId: githubCredentialsId, url: deAnsibleGithubUrl
-      sh "ansible-playbook -e NEW_RELIC_AGENT=true -e APP_VERSION=$version -i inventories/$environment/hosts.yml deploy-cap.yml --vault-password-file ~/.ssh/vault.txt "
+      sh ansibleCommand(environment, version)
     }
   }
+}
+
+def ansibleCommand(environment, version) {
+  "ansible-playbook -e NEW_RELIC_AGENT=true -e APP_VERSION=$version -i inventories/$environment/hosts.yml deploy-cap.yml --vault-password-file ~/.ssh/vault.txt "
 }
 
 def updateManifestStage(environment, version) {
