@@ -110,25 +110,31 @@ class SearchUserList extends PureComponent {
 
   renderSearchResults = () => {
     const { exactMatches, officesList, rolesList, fuzzyMatches, fetching } = this.props
+
     const exactMatchResults =
       exactMatches.length > 0 ? (
-        exactMatches.map((value, key) => (
-          <SearchResultComponent
-            value={value}
-            key={key}
-            officeList={officesList}
-            rolesList={rolesList}
-            fetching={this.props.fetching}
-            unlockHandler={this.unlockUser}
-            lockMessage={
-              this.state.unlockedUsers[value.id]
-                ? { unlocked: false, message: this.state.unlockedUsers[value.id] }
-                : value.locked
-                  ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
-                  : {}
-            }
-          />
-        ))
+        exactMatches.map((value, key) => {
+          if (this.state.unlockedUsers[value.id]) {
+            console.log('unlocked in my state!!', key, value.id, this.state.unlockedUsers[value.id])
+          }
+          return (
+            <SearchResultComponent
+              value={value}
+              key={key}
+              officeList={officesList}
+              rolesList={rolesList}
+              fetching={this.props.fetching}
+              unlockHandler={this.unlockUser}
+              lockMessage={
+                this.state.unlockedUsers[value.id]
+                  ? this.state.unlockedUsers[value.id]
+                  : value.locked
+                    ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
+                    : { unlocked: false, message: 'this is fine and should be blank' }
+              }
+            />
+          )
+        })
       ) : (
         <div className="no-search-results-box">
           We didn&apos;t find any <b>exact</b> matches based on search criteria.

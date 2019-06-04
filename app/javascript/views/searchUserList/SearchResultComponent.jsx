@@ -118,7 +118,7 @@ SearchResultComponent.propTypes = {
 }
 
 SearchResultComponent.defaultProps = {
-  lockMessage: { message: '' },
+  lockMessage: { unlocked: false, message: '' },
 }
 
 export default SearchResultComponent

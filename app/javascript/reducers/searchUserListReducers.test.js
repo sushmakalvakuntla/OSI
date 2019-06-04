@@ -106,6 +106,7 @@ describe('reducer', () => {
       fetching: true,
       userList: null,
       error: null,
+      unlockedUsers: {},
       query: [],
     })
   })
