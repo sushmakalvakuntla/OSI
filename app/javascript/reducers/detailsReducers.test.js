@@ -11,7 +11,6 @@ describe('reducer', () => {
       initialDetails: null,
       fetchDetailsError: null,
       saveDetailsError: null,
-      saveSuccessAlert: null,
     })
   })
 

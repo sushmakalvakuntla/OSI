@@ -152,6 +152,7 @@ describe('UserDetail', () => {
       expect(mockFetchDetailsActions).toHaveBeenCalledWith('12345')
       expect(wrapper.instance().state.resendEmailAlert).toEqual(true)
       expect(mockClearSaveAlertAction).toHaveBeenCalledWith()
+      expect(mockClearAddedUserDetailActions).toHaveBeenCalledWith()
     })
   })
 
