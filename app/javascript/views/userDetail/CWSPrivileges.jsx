@@ -39,6 +39,7 @@ const CWSPrivileges = ({ CWSPrivileges }) => (
           defaultPageSize={100}
           style={{
             maxHeight: '500px',
+            overflowY: 'scroll',
           }}
           columns={CWSPrivileges.length === 0 ? [{}] : cwsPrivilegesColumnConfig()}
           sortable={true}

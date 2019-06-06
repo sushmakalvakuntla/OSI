@@ -143,6 +143,7 @@ const ChangeLog = ({
           defaultPageSize={100}
           style={{
             maxHeight: viewHeightSize(isListView),
+            overflowY: 'scroll',
           }}
           columns={
             auditEvents.length === 0
