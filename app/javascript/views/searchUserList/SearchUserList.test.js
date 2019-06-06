@@ -451,7 +451,7 @@ describe('SearchUserList', () => {
       const newQueryEnabledEmpty = newQuery.map(q => (q.field === 'enabled' ? { field: 'enabled', value: '' } : q))
       expect(mockSetSearchActions).toHaveBeenCalledWith(newQueryEnabledEmpty)
       expect(wrapperLocal.instance().state.disableSearchByOptions).toBe(false)
-      expect(wrapperLocal.instance().state.unlockedUsers).toEqual({})
+      expect(wrapperLocal.instance().state.unlockedUsers).toEqual(undefined)
     })
 
     it('should trim the leadingSpace and trailingSpace of the search fields value', () => {

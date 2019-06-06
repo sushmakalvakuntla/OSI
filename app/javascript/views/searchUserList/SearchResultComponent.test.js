@@ -92,6 +92,17 @@ describe('SearchResultComponent', () => {
           .dive()
           .text()
       ).toMatch('some message')
+      expect(
+        wrapper
+          .find('IconButton')
+          .dive()
+          .dive()
+          .text()
+      ).toMatch('Unlock')
+    })
+
+    it('handles unlocking', () => {
+      //
     })
   })
 })

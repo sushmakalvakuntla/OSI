@@ -78,6 +78,13 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0;
 }
 
+.inlineSuccessBox {
+  color: #22ad13;
+  border: 0.1rem solid #22ad13;
+  font-weight: bold;
+  padding: 0;
+}
+
 .modal-buttons {
   width: 14rem;
   text-transform: uppercase;

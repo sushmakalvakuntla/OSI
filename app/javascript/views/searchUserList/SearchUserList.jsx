@@ -21,7 +21,7 @@ class SearchUserList extends PureComponent {
       valid: true,
       errorMessage: '',
       disableSearchByOptions: false,
-      unlockedUsers: props.unlockedUsers,
+      unlockAcknowledgements: [],
     }
   }
 
@@ -73,7 +73,7 @@ class SearchUserList extends PureComponent {
       { field: 'enabled', value: includeInactive ? '' : true },
     ])
     this.props.actions.fetchAuditEventsActions({ query: [{ field: 'office_ids', value: this.props.officeNames }] })
-    this.setState({ disableSearchByOptions: false, unlockedUsers: {} })
+    this.setState({ disableSearchByOptions: false })
   }
 
   submitClear = () => {
@@ -83,6 +83,12 @@ class SearchUserList extends PureComponent {
 
   unlockUser = userId => {
     this.props.actions.unlockUser(userId)
+  }
+
+  unlockAlertAcknowledgement = userId => {
+    this.setState({
+      unlockAcknowledgements: [...this.state.unlockAcknowledgements, userId],
+    })
   }
 
   isDisabledSearchBtn = () => {
@@ -114,9 +120,6 @@ class SearchUserList extends PureComponent {
     const exactMatchResults =
       exactMatches.length > 0 ? (
         exactMatches.map((value, key) => {
-          if (this.state.unlockedUsers[value.id]) {
-            console.log('unlocked in my state!!', key, value.id, this.state.unlockedUsers[value.id])
-          }
           return (
             <SearchResultComponent
               value={value}
@@ -125,12 +128,14 @@ class SearchUserList extends PureComponent {
               rolesList={rolesList}
               fetching={this.props.fetching}
               unlockHandler={this.unlockUser}
+              alertHandler={this.unlockAlertAcknowledgement}
+              unlockAcknowledged={this.state.unlockAcknowledgements.includes(value.id)}
               lockMessage={
-                this.state.unlockedUsers[value.id]
-                  ? this.state.unlockedUsers[value.id]
+                this.props.unlockedUsers[value.id]
+                  ? this.props.unlockedUsers[value.id]
                   : value.locked
                     ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
-                    : { unlocked: false, message: 'this is fine and should be blank' }
+                    : { unlocked: true, message: '' }
               }
             />
           )
@@ -155,7 +160,15 @@ class SearchUserList extends PureComponent {
               rolesList={rolesList}
               fetching={this.props.fetching}
               unlockHandler={this.unlockUser}
-              lockMessage={this.state.unlockedUsers[value.id]}
+              alertHandler={this.unlockAlertAcknowledgement}
+              unlockAcknowledged={this.state.unlockAcknowledgements.includes(value.id)}
+              lockMessage={
+                this.props.unlockedUsers[value.id]
+                  ? this.props.unlockedUsers[value.id]
+                  : value.locked
+                    ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
+                    : { unlocked: true, message: '' }
+              }
             />
           ))}
         </div>

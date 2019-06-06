@@ -4,9 +4,17 @@ import ShowField from '../../common/ShowField'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
 import { Link } from 'react-router-dom'
-import { Card, IconButton } from '@cwds/components'
+import { Card, Icon, IconButton } from '@cwds/components'
 
-const SearchResultComponent = ({ value, officeList, rolesList, unlockHandler, lockMessage }) => (
+const SearchResultComponent = ({
+  value,
+  officeList,
+  rolesList,
+  unlockHandler,
+  lockMessage,
+  alertHandler,
+  unlockAcknowledged,
+}) => (
   <div>
     <div
       className="result-card"
@@ -81,26 +89,51 @@ const SearchResultComponent = ({ value, officeList, rolesList, unlockHandler, lo
           <br />
         </div>
       </div>
-      {value.locked ? (
-        <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
-          <Card>
-            <div className="col-md-12 inlineAlertBox">
-              <div className="col-md-11" style={{ paddingTop: '3px' }}>
-                {lockMessage.message}
+      {value.locked && !unlockAcknowledged ? (
+        !lockMessage.unlocked ? (
+          <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
+            <Card>
+              <div className="col-md-12 inlineAlertBox">
+                <div className="col-md-11" style={{ paddingTop: '3px' }}>
+                  {lockMessage.message}
+                </div>
+                <div className="col-md-1">
+                  <IconButton
+                    name="user"
+                    onClick={() => {
+                      unlockHandler(value.id)
+                    }}
+                  >
+                    Unlock
+                  </IconButton>
+                </div>
               </div>
-              <div className="col-md-1">
-                <IconButton
-                  name="user"
-                  onClick={() => {
-                    unlockHandler(value.id)
-                  }}
-                >
-                  Unlock
-                </IconButton>
+            </Card>
+          </div>
+        ) : (
+          <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
+            <Card>
+              <div className="col-md-12 ">
+                <div className="col-md-1">
+                  <Icon className="text-primary" name="check-circle" />
+                </div>
+                <div className="col-md-10" style={{ paddingTop: '3px' }}>
+                  {lockMessage.message}
+                </div>
+                <div className="col-md-1">
+                  <IconButton
+                    name="times"
+                    onClick={() => {
+                      alertHandler(value.id)
+                    }}
+                  >
+                    Unlocked
+                  </IconButton>
+                </div>
               </div>
-            </div>
-          </Card>
-        </div>
+            </Card>
+          </div>
+        )
       ) : (
         ''
       )}
@@ -114,7 +147,9 @@ SearchResultComponent.propTypes = {
   officeList: PropTypes.array,
   rolesList: PropTypes.array,
   unlockHandler: PropTypes.func.isRequired,
+  alertHandler: PropTypes.func.isRequired,
   lockMessage: PropTypes.object,
+  unlockAcknowledged: PropTypes.bool,
 }
 
 SearchResultComponent.defaultProps = {
