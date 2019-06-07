@@ -593,6 +593,15 @@ describe('SearchUserList', () => {
     })
   })
 
+  describe('#unlockAlertAcknowledgement', () => {
+    it('resets errorMessage to empty string', () => {
+      wrapper.instance().setState({ unlockAcknowledgements: [] })
+      wrapper.instance().unlockAlertAcknowledgement('user1')
+      wrapper.instance().unlockAlertAcknowledgement('user2')
+      expect(wrapper.instance().state.unlockAcknowledgements).toEqual(['user1', 'user2'])
+    })
+  })
+
   describe('#isDisabledSearchBtn', () => {
     it('returns true when all search fields are empty ', () => {
       const component = shallow(

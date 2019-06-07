@@ -8,12 +8,16 @@ describe('SearchResultComponent', () => {
 
   const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
   const rolesList = [{ label: ' ROLE ONE', value: 'role1' }, { label: 'ROLE TWO', value: 'role2' }]
+  const mockHandleUnlockClick = jest.fn()
+  const mockHandleAlert = jest.fn()
   beforeEach(() => {
     wrapper = shallow(
       <SearchResultComponent
         value={resultList}
         officeList={officesList}
         rolesList={rolesList}
+        unlockHandler={mockHandleUnlockClick}
+        alertHandler={mockHandleAlert}
         lockMessage={{ message: 'some message' }}
       />
     )
@@ -102,7 +106,23 @@ describe('SearchResultComponent', () => {
     })
 
     it('handles unlocking', () => {
-      //
+      wrapper.find('IconButton').simulate('click')
+      expect(mockHandleUnlockClick).toHaveBeenCalledWith('12345ABCD')
+    })
+
+    it('handles alerts', () => {
+      const localWrapper = shallow(
+        <SearchResultComponent
+          value={resultList}
+          officeList={officesList}
+          rolesList={rolesList}
+          unlockHandler={mockHandleUnlockClick}
+          alertHandler={mockHandleAlert}
+          lockMessage={{ unlocked: true, message: 'some message' }}
+        />
+      )
+      localWrapper.find('IconButton').simulate('click')
+      expect(mockHandleAlert).toHaveBeenCalledWith('12345ABCD')
     })
   })
 })

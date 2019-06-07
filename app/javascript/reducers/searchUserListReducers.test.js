@@ -113,7 +113,8 @@ describe('reducer', () => {
     }
     const action = {
       type: actionTypes.USER_STATUS_CHANGE_FAILURE,
-      payload: { userId: 'user_id', error: 'some_error' },
+      payload: { id: 'user_id' },
+      error: { user_message: 'some_error' },
     }
     const after = reducer(before, action)
     expect(after.unlockedUsers).toEqual({ user_id: { message: 'some_error', unlocked: false } })

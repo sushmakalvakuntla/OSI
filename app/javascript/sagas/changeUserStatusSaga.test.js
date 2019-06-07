@@ -40,7 +40,9 @@ describe('sagas', () => {
           put({
             type: actionTypes.USER_STATUS_CHANGE_FAILURE,
             error: 'User status cannot be changed right now',
-            userId: 'userID345',
+            payload: {
+              id: 'userID345',
+            },
           })
         )
         expect(gen.next().done).toBe(true)

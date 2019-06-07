@@ -150,7 +150,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         ...state,
         unlockedUsers: {
           ...state.unlockedUsers,
-          [payload.userId]: { unlocked: false, message: payload.error },
+          [payload.id]: { unlocked: false, message: error.user_message },
         },
       }
 

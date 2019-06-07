@@ -20,7 +20,7 @@ export function* userStatusChange(action) {
     yield put({
       type: actionTypes.USER_STATUS_CHANGE_FAILURE,
       error,
-      userId: action.payload.id,
+      payload: { id: action.payload.id },
     })
   }
 }
