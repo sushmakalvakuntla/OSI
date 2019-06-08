@@ -34,10 +34,10 @@ def deployWithSmoke(environment){
       updateManifestStage(environment, env.version)
       if (environment == 'integration')  {
           smokeTest(environment, env.version)
-          integrationAcceptenceTest(environment, env.version)
       }
     }
   }
+  integrationAcceptenceTest(environment, env.version)
 }
 
 def checkoutStage() {
