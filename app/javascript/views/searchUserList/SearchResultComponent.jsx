@@ -5,7 +5,7 @@ import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
 import { Link } from 'react-router-dom'
 import { Card, Icon, IconButton } from '@cwds/components'
-
+import UserMessage from '../../common/UserMessage'
 const SearchResultComponent = ({
   value,
   officeList,
@@ -90,11 +90,15 @@ const SearchResultComponent = ({
         </div>
       </div>
       {value.locked && !unlockAcknowledged ? (
-        !lockMessage.unlocked ? (
+        lockMessage.unlocked ? (
+          <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '0px' }}>
+            <UserMessage successMsg={lockMessage.message} />
+          </div>
+        ) : (
           <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
             <Card>
               <div className="col-md-12 inlineAlertBox">
-                <div className="col-md-11" style={{ paddingTop: '3px' }}>
+                <div className="col-md-11" style={{ marginRight: '-10px', paddingTop: '3px' }}>
                   {lockMessage.message}
                 </div>
                 <div className="col-md-1">
@@ -105,29 +109,6 @@ const SearchResultComponent = ({
                     }}
                   >
                     Unlock
-                  </IconButton>
-                </div>
-              </div>
-            </Card>
-          </div>
-        ) : (
-          <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
-            <Card>
-              <div className="col-md-12 ">
-                <div className="col-md-1">
-                  <Icon className="text-primary" name="check-circle" />
-                </div>
-                <div className="col-md-10" style={{ paddingTop: '3px' }}>
-                  {lockMessage.message}
-                </div>
-                <div className="col-md-1">
-                  <IconButton
-                    name="times"
-                    onClick={() => {
-                      alertHandler(value.id)
-                    }}
-                  >
-                    Unlocked
                   </IconButton>
                 </div>
               </div>
