@@ -41,6 +41,7 @@ def deployWithSmoke(environment){
     }
 
   }
+  integrationAcceptenceTest(environment, env.version)
 }
 
 def checkoutStage() {
