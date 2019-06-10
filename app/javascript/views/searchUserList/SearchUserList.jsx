@@ -109,7 +109,6 @@ class SearchUserList extends PureComponent {
 
   renderSearchResults = () => {
     const { exactMatches, officesList, rolesList, fuzzyMatches, fetching } = this.props
-
     const exactMatchResults =
       exactMatches.length > 0 ? (
         <SearchResults
