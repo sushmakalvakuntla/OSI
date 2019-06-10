@@ -268,12 +268,12 @@ describe('SearchUserList', () => {
           .at(13)
           .text()
       ).toEqual('Similar results we found based on search criteria')
-      expect(wrapper.find('SearchResultComponent').length).toEqual(2)
+      expect(wrapper.find('SearchResults').length).toEqual(2)
     })
 
     it('renders searchResultComponents with exactMatch when fuzzyMatch is empty', () => {
       wrapper.setProps({ fetching: false, fuzzyMatches: [] })
-      expect(wrapper.find('SearchResultComponent').length).toEqual(1)
+      expect(wrapper.find('SearchResults').length).toEqual(1)
       expect(
         wrapper
           .find('div')
@@ -284,7 +284,7 @@ describe('SearchUserList', () => {
 
     it('renders searchResultComponents with fuzzyMatch when exactMatch is empty', () => {
       wrapper.setProps({ fetching: false, exactMatches: [] })
-      expect(wrapper.find('SearchResultComponent').length).toEqual(1)
+      expect(wrapper.find('SearchResults').length).toEqual(1)
       expect(
         wrapper
           .find('div')
@@ -590,15 +590,6 @@ describe('SearchUserList', () => {
       wrapper.instance().setState({ errorMessage: 'some_error_message' })
       wrapper.instance().unlockUser('my_user_id')
       expect(mockUnlockUserAction).toHaveBeenCalledWith('my_user_id')
-    })
-  })
-
-  describe('#unlockAlertAcknowledgement', () => {
-    it('resets errorMessage to empty string', () => {
-      wrapper.instance().setState({ unlockAcknowledgements: [] })
-      wrapper.instance().unlockAlertAcknowledgement('user1')
-      wrapper.instance().unlockAlertAcknowledgement('user2')
-      expect(wrapper.instance().state.unlockAcknowledgements).toEqual(['user1', 'user2'])
     })
   })
 

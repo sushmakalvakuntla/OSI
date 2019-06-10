@@ -9,7 +9,7 @@ import './SearchUserList.scss'
 import ChangeLog from '../userDetail/ChangeLog'
 import CommonTile from './CommonTile'
 import SearchUsers from './SearchUsers'
-import SearchResultComponent from './SearchResultComponent'
+import SearchResults from './SearchResults'
 import { Icon } from '@cwds/components'
 
 class SearchUserList extends PureComponent {
@@ -21,7 +21,6 @@ class SearchUserList extends PureComponent {
       valid: true,
       errorMessage: '',
       disableSearchByOptions: false,
-      unlockAcknowledgements: [],
     }
   }
 
@@ -85,12 +84,6 @@ class SearchUserList extends PureComponent {
     this.props.actions.unlockUser(userId)
   }
 
-  unlockAlertAcknowledgement = userId => {
-    this.setState({
-      unlockAcknowledgements: [...this.state.unlockAcknowledgements, userId],
-    })
-  }
-
   isDisabledSearchBtn = () => {
     const { lastName, firstName, email, CWSLogin } = this.props
     return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
@@ -119,27 +112,14 @@ class SearchUserList extends PureComponent {
 
     const exactMatchResults =
       exactMatches.length > 0 ? (
-        exactMatches.map((value, key) => {
-          return (
-            <SearchResultComponent
-              value={value}
-              key={key}
-              officeList={officesList}
-              rolesList={rolesList}
-              fetching={this.props.fetching}
-              unlockHandler={this.unlockUser}
-              alertHandler={this.unlockAlertAcknowledgement}
-              unlockAcknowledged={this.state.unlockAcknowledgements.includes(value.id)}
-              lockMessage={
-                this.props.unlockedUsers[value.id]
-                  ? this.props.unlockedUsers[value.id]
-                  : value.locked
-                    ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
-                    : { unlocked: true, message: '' }
-              }
-            />
-          )
-        })
+        <SearchResults
+          fetching={fetching}
+          matchedUsers={exactMatches}
+          officesList={officesList}
+          rolesList={rolesList}
+          unlockedUsers={this.props.unlockedUsers}
+          actions={this.props.actions}
+        />
       ) : (
         <div className="no-search-results-box">
           We didn&apos;t find any <b>exact</b> matches based on search criteria.
@@ -152,25 +132,14 @@ class SearchUserList extends PureComponent {
           <div style={{ paddingLeft: '0px', fontSize: '14px', marginBottom: '10px' }}>
             <b>Similar</b> results we found based on search criteria
           </div>
-          {fuzzyMatches.map((value, key) => (
-            <SearchResultComponent
-              value={value}
-              key={key}
-              officeList={officesList}
-              rolesList={rolesList}
-              fetching={this.props.fetching}
-              unlockHandler={this.unlockUser}
-              alertHandler={this.unlockAlertAcknowledgement}
-              unlockAcknowledged={this.state.unlockAcknowledgements.includes(value.id)}
-              lockMessage={
-                this.props.unlockedUsers[value.id]
-                  ? this.props.unlockedUsers[value.id]
-                  : value.locked
-                    ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
-                    : { unlocked: true, message: '' }
-              }
-            />
-          ))}
+          <SearchResults
+            fetching={fetching}
+            matchedUsers={fuzzyMatches}
+            officesList={officesList}
+            rolesList={rolesList}
+            unlockedUsers={this.props.unlockedUsers}
+            actions={this.props.actions}
+          />
         </div>
       ) : (
         ''

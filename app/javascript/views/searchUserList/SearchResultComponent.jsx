@@ -4,7 +4,7 @@ import ShowField from '../../common/ShowField'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
 import { Link } from 'react-router-dom'
-import { Card, Icon, IconButton } from '@cwds/components'
+import { Card, IconButton } from '@cwds/components'
 import UserMessage from '../../common/UserMessage'
 const SearchResultComponent = ({
   value,
