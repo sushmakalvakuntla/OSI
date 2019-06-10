@@ -238,15 +238,7 @@ class SearchUserList extends PureComponent {
             {!this.isDisabledAddUsrBtn() ? (
               <div className="row">
                 <div className="col-md-12">
-                  <hr
-                    style={{
-                      width: '107.9%',
-                      height: '1px',
-                      border: 'none',
-                      color: '#333',
-                      backgroundColor: '#333',
-                      marginLeft: '-30px',
-                    }}
+                  <hr className="hr-style" />
                   />
                   <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px', fontSize: '14px' }}>
                     {this.props.exactMatchResultText}
