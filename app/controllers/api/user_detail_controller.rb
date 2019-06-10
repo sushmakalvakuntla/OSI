@@ -33,6 +33,7 @@ module Api
                     :enabled,
                     :email,
                     :notes,
+                    :cell_phone_number,
                     permissions: [],
                     roles: []).to_h
     end

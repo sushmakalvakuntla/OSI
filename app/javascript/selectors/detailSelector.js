@@ -165,6 +165,7 @@ export const selectModifiedDetails = state => {
       modifiedDetails.phone_extension_number
     ),
     roles: disableRolesDropDown(state) ? undefined : checkForModifiedDetails(initialDetails.roles, modifiedDetails.roles),
+    cell_phone_number: checkForModifiedDetails(initialDetails.cell_phone_number, modifiedDetails.cell_phone_number),
   }
   return userData
 }
@@ -209,6 +210,10 @@ export const formattedPhoneNumber = state => {
 
 export const phoneExtension = state => {
   return safeGet(state, 'fetchDetails.details.records.user.phone_extension_number') || ''
+}
+
+export const cellPhoneNumber = state => {
+  return safeGet(state, 'fetchDetails.details.records.user.cell_phone_number') || ''
 }
 
 export const userNotes = state => {

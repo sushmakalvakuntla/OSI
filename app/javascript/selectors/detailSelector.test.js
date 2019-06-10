@@ -28,6 +28,7 @@ import {
   isUserLocked,
   checkStatus,
   statusButtonProperties,
+  cellPhoneNumber,
 } from './detailSelector'
 
 describe('selectors', () => {
@@ -73,6 +74,7 @@ describe('selectors', () => {
     notes,
     CWSPrivileges,
     isUserLocked,
+    cellPhoneNumber,
   }) => {
     return {
       fetchDetails: {
@@ -87,6 +89,7 @@ describe('selectors', () => {
             phone_number: '3334445555',
             phone_extension_number: '222',
             notes: 'This is the content of my notes',
+            cell_phone_number: '2000000000',
           },
         },
         details: {
@@ -119,6 +122,7 @@ describe('selectors', () => {
               notes: notes,
               cws_privileges: CWSPrivileges,
               locked: isUserLocked,
+              cell_phone_number: cellPhoneNumber,
             },
             auditevents: auditEvents,
           },
@@ -579,6 +583,7 @@ describe('selectors', () => {
           phoneNumber: '3334445555',
           phoneExtensionNumber: '222',
           notes: 'This is the content of my notes',
+          cellPhoneNumber: '2000000000',
         })
         const expectedValue = {
           email: undefined,
@@ -704,6 +709,28 @@ describe('selectors', () => {
           phone_number: '3334445656',
           phone_extension_number: '889',
           notes: undefined,
+        }
+        expect(selectModifiedDetails(state)).toEqual(expectedValue)
+      })
+
+      it('returns updated cell phone number', () => {
+        const state = getState({
+          assignedPermissions: 'permissionOne, permissionTwo',
+          isEnabled: true,
+          phoneNumber: '3334445555',
+          phoneExtensionNumber: '222',
+          notes: 'This is the content of my notes',
+          cellPhoneNumber: '1000000000',
+        })
+        const expectedValue = {
+          email: undefined,
+          enabled: undefined,
+          permissions: undefined,
+          roles: undefined,
+          phone_number: undefined,
+          phone_extension_number: undefined,
+          notes: undefined,
+          cell_phone_number: '1000000000',
         }
         expect(selectModifiedDetails(state)).toEqual(expectedValue)
       })
@@ -1000,6 +1027,23 @@ describe('selectors', () => {
     it('returns empty string when extension is undefined ', () => {
       const state = getState({ phoneExtensionNumber: undefined })
       expect(phoneExtension(state)).toEqual('')
+    })
+  })
+
+  describe('#CellPhoneNumber', () => {
+    it('returns cell phone number', () => {
+      const state = getState({ cellPhoneNumber: '2001003000' })
+      expect(cellPhoneNumber(state)).toEqual('2001003000')
+    })
+
+    it('returns empty string when cell phone number is null ', () => {
+      const state = getState({ cellPhoneNumber: null })
+      expect(cellPhoneNumber(state)).toEqual('')
+    })
+
+    it('returns empty string when extension is undefined ', () => {
+      const state = getState({ cellPhoneNumber: undefined })
+      expect(cellPhoneNumber(state)).toEqual('')
     })
   })
 

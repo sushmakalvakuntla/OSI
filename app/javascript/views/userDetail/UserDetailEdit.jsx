@@ -33,6 +33,7 @@ const UserDetailEdit = ({
   isLockButtonDisabled,
   statusClassName,
   headerButtonType,
+  cellPhoneNumber,
 }) => (
   <div className="row">
     <div className="col-md-12">
@@ -115,7 +116,7 @@ const UserDetailEdit = ({
                 maxLength={10}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 col-md-offset-2">
               <InputComponent
                 id="InputPhoneNumberExtension"
                 label="Ext"
@@ -125,6 +126,18 @@ const UserDetailEdit = ({
                 maxLength={7}
                 allowCharacters={/^[0-9]*$/i}
                 onChange={event => onInputChange('phone_extension_number', event.target.value)}
+              />
+            </div>
+            <div className="col-md-3">
+              <InputComponent
+                id="InputCellPhone"
+                label="Cell Phone Number"
+                fieldClassName="form-group"
+                type="tel"
+                value={cellPhoneNumber}
+                maxLength={10}
+                allowCharacters={/^[0-9]*$/i}
+                onChange={event => onInputChange('cell_phone_number', event.target.value)}
               />
             </div>
           </div>
@@ -208,6 +221,7 @@ UserDetailEdit.propTypes = {
   isLockButtonDisabled: PropTypes.bool,
   statusClassName: PropTypes.string,
   headerButtonType: PropTypes.string,
+  cellPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 UserDetailEdit.defaultProps = {

@@ -33,6 +33,7 @@ module Users
       it { is_expected.to have_attribute(:notes, Types::String.optional) }
       it { is_expected.to have_attribute(:cws_privileges, Types::Array.optional) }
       it { is_expected.to have_attribute(:locked, Types::Bool.optional) }
+      it { is_expected.to have_attribute(:cell_phone_number, Types::Bool.optional) }
     end
   end
 end
