@@ -238,7 +238,6 @@ class SearchUserList extends PureComponent {
               <div className="row">
                 <div className="col-md-12">
                   <hr className="hr-style" />
-                  />
                   <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px', fontSize: '14px' }}>
                     {this.props.exactMatchResultText}
                   </div>
