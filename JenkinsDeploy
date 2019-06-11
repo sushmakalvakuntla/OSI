@@ -33,11 +33,13 @@ def deployWithSmoke(environment){
       deployToStage(environment, env.version)
       updateManifestStage(environment, env.version)
       if (environment == 'integration')  {
-          smokeTest(environment, env.version)
+        smokeTest(environment, env.version)
       }
     }
+    if (environment == 'integration')  {
+      integrationAcceptenceTest(environment, env.version)
+    }
   }
-  integrationAcceptenceTest(environment, env.version)
 }
 
 def checkoutStage() {
