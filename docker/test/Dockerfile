@@ -10,8 +10,12 @@ WORKDIR app
 ADD Gemfile Gemfile.lock /app/
 RUN gem update --system
 RUN RAILS_ENV=production gem install bundler && bundle install
-ADD . /app
 
+RUN CHROME_VERSION=$(google-chrome --version | sed -r 's/[^0-9]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/g') && \
+    CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) && \
+    bundle exec chromedriver-update $CHROMEDRIVER_VERSION
+
+ADD . /app
 
 ADD docker/test/run.sh /run.sh
 RUN chmod a+x /run.sh
