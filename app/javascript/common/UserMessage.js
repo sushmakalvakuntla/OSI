@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Alert } from '@cwds/components'
+import { AlertUncontrolled } from '@cwds/components'
 
 const UserMessage = ({ errorMsg, successMsg }) => {
   const successWithEmailChange = Array.isArray(successMsg) ? successMsg[1] : ''
@@ -8,15 +8,15 @@ const UserMessage = ({ errorMsg, successMsg }) => {
   return (
     <React.Fragment>
       {successAlertMessage && (
-        <Alert className="successMessage-customizable" color="success">
+        <AlertUncontrolled className="successMessage-customizable" color="success" style={{ marginBottom: '0px' }}>
           {successAlertMessage}
           <b>{successWithEmailChange}</b>
-        </Alert>
+        </AlertUncontrolled>
       )}
       {errorMsg && (
-        <Alert className="errorMessage-customizable" color="danger">
+        <AlertUncontrolled className="errorMessage-customizable" color="danger">
           {errorMsg.user_message ? errorMsg.user_message : errorMsg}
-        </Alert>
+        </AlertUncontrolled>
       )}
     </React.Fragment>
   )

@@ -95,10 +95,10 @@ const SearchResultComponent = ({
             <UserMessage successMsg={lockMessage.message} />
           </div>
         ) : (
-          <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '10px' }}>
-            <Card>
+          <div className="row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+            <Card style={{ border: '0px', marginBottom: '0px' }}>
               <div className="col-md-12 inlineAlertBox">
-                <div className="col-md-11" style={{ marginRight: '-10px', paddingTop: '3px' }}>
+                <div className="col-md-11" style={{ paddingTop: '3px' }}>
                   {lockMessage.message}
                 </div>
                 <div className="col-md-1">
