@@ -26,6 +26,7 @@ import {
   isPermissionsEmpty,
   selectCWSPrivileges,
   statusButtonProperties,
+  cellPhoneNumber,
 } from '../selectors/detailSelector'
 import { selectAuditEvents } from '../selectors/auditEventsSelector'
 import { selectChangeLogAdminDetails, selectChangeLogAdminOfficeName } from '../selectors/changeLogDetailsSelector'
@@ -93,6 +94,7 @@ function mapStateToProps(state) {
     isPermissionsEmpty: isPermissionsEmpty(state),
     privilegesFromCWS: selectCWSPrivileges(state),
     statusButtonProperties: statusButtonProperties(state),
+    cellPhoneNumber: cellPhoneNumber(state),
   }
 }
 

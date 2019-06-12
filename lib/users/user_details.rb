@@ -34,5 +34,6 @@ module Users
     attribute :notes, Types::String.optional
     attribute :cws_privileges, Types::Array.optional
     attribute :locked, Types::Bool.optional
+    attribute :cell_phone_number, Types::Bool.optional
   end
 end

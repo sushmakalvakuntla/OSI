@@ -114,6 +114,7 @@ export default class UserDetail extends Component {
             isLockButtonDisabled={this.props.statusButtonProperties.isDisabled}
             statusClassName={this.props.statusButtonProperties.className}
             headerButtonType={this.props.statusButtonProperties.buttonType}
+            cellPhoneNumber={this.props.cellPhoneNumber}
           />
         ) : (
           <UserDetailShow
@@ -134,6 +135,7 @@ export default class UserDetail extends Component {
             isLockButtonDisabled={this.props.statusButtonProperties.isDisabled}
             statusClassName={this.props.statusButtonProperties.className}
             headerButtonType={this.props.statusButtonProperties.buttonType}
+            cellPhoneNumber={this.props.cellPhoneNumber}
           />
         )}
         <br />
@@ -273,6 +275,7 @@ UserDetail.propTypes = {
   privilegesFromCWS: PropTypes.array,
   statusButtonProperties: PropTypes.object,
   location: PropTypes.object,
+  cellPhoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 UserDetail.defaultProps = {

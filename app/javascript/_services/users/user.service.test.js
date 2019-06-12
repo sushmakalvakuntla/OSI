@@ -131,6 +131,7 @@ describe('UserService', () => {
           permissions: 'drivethebus, getapuppy',
           roles: 'RoleOneTwo',
           email: 'abcdefg@gmail.com',
+          cell_phone_number: '1000000000',
         }
         UserService.saveUserDetails(id, updatedDetails)
         expect(patchSpy).toHaveBeenCalledWith('/user_detail/someid/save_user', {
@@ -138,6 +139,7 @@ describe('UserService', () => {
           permissions: 'drivethebus, getapuppy',
           roles: 'RoleOneTwo',
           email: 'abcdefg@gmail.com',
+          cell_phone_number: '1000000000',
         })
       })
 
