@@ -190,6 +190,7 @@ describe('SearchUserList', () => {
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
+            unlockUser: mockUnlockUserAction,
           }}
           adminAccountDetails={{ roles: ['State-admin'] }}
           query={query}
@@ -396,6 +397,7 @@ describe('SearchUserList', () => {
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
+            unlockUser: mockUnlockUserAction,
           }}
           query={query}
           firstName="first_name_value"
@@ -429,6 +431,7 @@ describe('SearchUserList', () => {
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
+            unlockUser: mockUnlockUserAction,
           }}
           query={query}
           firstName="first_name_value"
@@ -466,6 +469,7 @@ describe('SearchUserList', () => {
             clearAddedUserDetailActions: () => {},
             fetchAuditEventsActions: () => {},
             setSearch: mockSetSearchActions,
+            unlockUser: mockUnlockUserAction,
           }}
           query={query}
           firstName="   first_name_value    "

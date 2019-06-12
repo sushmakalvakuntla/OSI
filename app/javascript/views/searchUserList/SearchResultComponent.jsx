@@ -6,15 +6,7 @@ import { formatRoles, formatOffices } from '../../_utils/formatters'
 import { Link } from 'react-router-dom'
 import { Card, IconButton } from '@cwds/components'
 import UserMessage from '../../common/UserMessage'
-const SearchResultComponent = ({
-  value,
-  officeList,
-  rolesList,
-  unlockHandler,
-  lockMessage,
-  alertHandler,
-  unlockAcknowledged,
-}) => (
+const SearchResultComponent = ({ value, officeList, rolesList, unlockHandler, lockMessage }) => (
   <div>
     <div
       className="result-card"
@@ -89,7 +81,7 @@ const SearchResultComponent = ({
           <br />
         </div>
       </div>
-      {value.locked && !unlockAcknowledged ? (
+      {value.locked ? (
         lockMessage.unlocked ? (
           <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '0px' }}>
             <UserMessage successMsg={lockMessage.message} />
@@ -128,9 +120,7 @@ SearchResultComponent.propTypes = {
   officeList: PropTypes.array,
   rolesList: PropTypes.array,
   unlockHandler: PropTypes.func.isRequired,
-  alertHandler: PropTypes.func.isRequired,
   lockMessage: PropTypes.object,
-  unlockAcknowledged: PropTypes.bool,
 }
 
 SearchResultComponent.defaultProps = {

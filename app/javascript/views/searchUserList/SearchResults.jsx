@@ -3,17 +3,6 @@ import PropTypes from 'prop-types'
 import SearchResultComponent from './SearchResultComponent'
 
 class SearchResults extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      unlockAcknowledgements: [],
-    }
-  }
-
-  unlockAlertAcknowledgement = userId => {
-    this.setState({ unlockAcknowledgements: [...this.state.unlockAcknowledgements, userId] })
-  }
-
   render() {
     const { matchedUsers, officesList, rolesList, fetching } = this.props
 
@@ -26,8 +15,6 @@ class SearchResults extends PureComponent {
           rolesList={rolesList}
           fetching={fetching}
           unlockHandler={this.props.actions.unlockUser}
-          alertHandler={this.unlockAlertAcknowledgement}
-          unlockAcknowledged={this.state.unlockAcknowledgements.includes(value.id)}
           lockMessage={
             this.props.unlockedUsers[value.id]
               ? this.props.unlockedUsers[value.id]
