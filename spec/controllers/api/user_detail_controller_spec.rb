@@ -51,6 +51,7 @@ module Api
         allow(Users::UserRepository).to receive(:new).and_return(user_repository)
         allow(user_repository).to receive(:update_user)
           .with('55', { enabled: 'false',
+                        cell_phone_number: '1000000000',
                         phone_number: '4445558888',
                         phone_extension_number: '11',
                         permissions: %w[snapshot hotline],
@@ -62,6 +63,7 @@ module Api
         patch :save_user, body: { enabled: 'false' },
                           params: { id: 55,
                                     enabled: 'false',
+                                    cell_phone_number: '1000000000',
                                     phone_number: '4445558888',
                                     phone_extension_number: '11',
                                     permissions: %w[snapshot hotline],

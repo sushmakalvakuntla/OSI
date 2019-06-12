@@ -105,6 +105,13 @@ describe('UserDetailEdit', () => {
           .at(2)
           .props().label
       ).toEqual('Ext')
+
+      expect(
+        wrapper
+          .find('InputComponent')
+          .at(3)
+          .props().label
+      ).toEqual('Cell Phone Number')
       expect(wrapper.find('[label="Account Status"]').exists()).toBe(true)
       expect(wrapper.find('[label="Assigned Permissions"]').exists()).toBe(true)
       expect(wrapper.find('[label="Email"]').exists()).toBe(true)
@@ -253,6 +260,26 @@ describe('UserDetailEdit', () => {
           target: { value: '300' },
         })
       expect(onInputChangeSpy).toHaveBeenCalledWith('phone_extension_number', '300')
+    })
+
+    it('#CellPhoneNumber, handleInputChange function is called when onChange event triggered', () => {
+      wrapper
+        .find('InputComponent')
+        .at(3)
+        .simulate('change', {
+          target: { value: '1234567891' },
+        })
+      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', '1234567891')
+    })
+
+    it('#CellPhoneNumber, handleInputChange function is called & returns ext with zeros', () => {
+      wrapper
+        .find('InputComponent')
+        .at(3)
+        .simulate('change', {
+          target: { value: '1000000000' },
+        })
+      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', '1000000000')
     })
   })
 })
