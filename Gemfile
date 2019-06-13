@@ -23,7 +23,7 @@ gem 'newrelic_rpm', '~> 5.4', '>= 5.4.0.347'
 gem 'rack', '>= 2.0.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1', '= 5.1.6'
+gem 'rails', '~> 5.1', '= 5.1.7'
 
 gem 'cwds_store', github: 'ca-cwds/cwds_store'
 
