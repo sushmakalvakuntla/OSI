@@ -19,8 +19,7 @@ feature 'User Sign in' do
   end
 
   scenario 'Verify Login page UI' do
-    visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
-    return unless login_page?
+    visit_home
 
     expect(page)
       .to have_css("img[src*='/CWS-CARES-tempLogo.png']")
