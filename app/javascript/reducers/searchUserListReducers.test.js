@@ -94,6 +94,32 @@ describe('reducer', () => {
     expect(after.error).toEqual('someError')
   })
 
+  it('handles USER_STATUS_CHANGE_SUCCESS', () => {
+    const before = {
+      unlockedUsers: {},
+    }
+    const action = {
+      type: actionTypes.USER_STATUS_CHANGE_SUCCESS,
+      payload: { id: 'user_id' },
+      successAlert: 'hooray',
+    }
+    const after = reducer(before, action)
+    expect(after.unlockedUsers).toEqual({ user_id: { message: 'hooray', unlocked: true } })
+  })
+
+  it('handles USER_STATUS_CHANGE_FAIL', () => {
+    const before = {
+      unlockedUsers: {},
+    }
+    const action = {
+      type: actionTypes.USER_STATUS_CHANGE_FAILURE,
+      payload: { id: 'user_id' },
+      error: { user_message: 'some_error' },
+    }
+    const after = reducer(before, action)
+    expect(after.unlockedUsers).toEqual({ user_id: { message: 'some_error', unlocked: false } })
+  })
+
   it('handles FETCH_USERS_API_CALL_REQUEST', () => {
     const requestAction = {
       type: actionTypes.FETCH_USERS_API_CALL_REQUEST,
@@ -106,6 +132,7 @@ describe('reducer', () => {
       fetching: true,
       userList: null,
       error: null,
+      unlockedUsers: {},
       query: [],
     })
   })

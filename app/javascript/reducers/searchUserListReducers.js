@@ -44,12 +44,13 @@ const initialValue = {
   },
   adminAccountDetails: {},
   includeInactive: true,
+  unlockedUsers: {},
 }
 
-function searchUserListReducer(state = initialValue, { type, payload, error, meta }) {
+function searchUserListReducer(state = initialValue, { type, payload, error, meta, successAlert }) {
   switch (type) {
     case actionTypes.FETCH_USERS_API_CALL_REQUEST:
-      return { ...state, fetching: true, error: null, query: payload.query }
+      return { ...state, fetching: true, error: null, query: payload.query, unlockedUsers: {} }
 
     case actionTypes.FETCH_USERS_API_CALL_SUCCESS:
       const {
@@ -63,6 +64,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         total,
         fetching: false,
         error: null,
+        unlockedUsers: {},
       }
 
     case actionTypes.FETCH_USERS_API_CALL_FAILURE:
@@ -108,6 +110,7 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         },
         query: initialValue.query,
         includeInactive: initialValue.includeInactive,
+        unlockedUsers: {},
       }
 
     case actionTypes.FETCH_ACCOUNT_API_CALL_REQUEST:
@@ -131,6 +134,24 @@ function searchUserListReducer(state = initialValue, { type, payload, error, met
         fetching: false,
         inputData: {},
         error: payload.error,
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_SUCCESS:
+      return {
+        ...state,
+        unlockedUsers: {
+          ...state.unlockedUsers,
+          [payload.id]: { unlocked: true, message: successAlert },
+        },
+      }
+
+    case actionTypes.USER_STATUS_CHANGE_FAILURE:
+      return {
+        ...state,
+        unlockedUsers: {
+          ...state.unlockedUsers,
+          [payload.id]: { unlocked: false, message: error.user_message },
+        },
       }
 
     default:

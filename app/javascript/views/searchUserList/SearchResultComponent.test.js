@@ -4,12 +4,23 @@ import SearchResultComponent from './SearchResultComponent'
 
 describe('SearchResultComponent', () => {
   let wrapper
-  const resultList = { id: '12345ABCD', first_name: 'firstName', last_name: 'lastName' }
+  const resultList = { id: '12345ABCD', first_name: 'firstName', last_name: 'lastName', locked: true }
 
   const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
   const rolesList = [{ label: ' ROLE ONE', value: 'role1' }, { label: 'ROLE TWO', value: 'role2' }]
+  const mockHandleUnlockClick = jest.fn()
+  const mockHandleAlert = jest.fn()
   beforeEach(() => {
-    wrapper = shallow(<SearchResultComponent value={resultList} officeList={officesList} rolesList={rolesList} />)
+    wrapper = shallow(
+      <SearchResultComponent
+        value={resultList}
+        officeList={officesList}
+        rolesList={rolesList}
+        unlockHandler={mockHandleUnlockClick}
+        alertHandler={mockHandleAlert}
+        lockMessage={{ message: 'some message' }}
+      />
+    )
   })
 
   describe('renders the components', () => {
@@ -78,6 +89,25 @@ describe('SearchResultComponent', () => {
           .at(8)
           .props().label
       ).toBe('Role')
+      expect(wrapper.find('Card').length).toBe(1)
+      expect(
+        wrapper
+          .find('Card')
+          .dive()
+          .text()
+      ).toMatch('some message')
+      expect(
+        wrapper
+          .find('IconButton')
+          .dive()
+          .dive()
+          .text()
+      ).toMatch('Unlock')
+    })
+
+    it('handles unlocking', () => {
+      wrapper.find('IconButton').simulate('click')
+      expect(mockHandleUnlockClick).toHaveBeenCalledWith('12345ABCD')
     })
   })
 })

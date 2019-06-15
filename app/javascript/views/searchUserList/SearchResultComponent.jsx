@@ -4,8 +4,9 @@ import ShowField from '../../common/ShowField'
 import { accountStatusFormat, lastLoginDate } from '../../_constants/constants'
 import { formatRoles, formatOffices } from '../../_utils/formatters'
 import { Link } from 'react-router-dom'
-
-const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
+import { Card, IconButton } from '@cwds/components'
+import UserMessage from '../../common/UserMessage'
+const SearchResultComponent = ({ value, officeList, rolesList, unlockHandler, lockMessage }) => (
   <div>
     <div
       className="result-card"
@@ -80,6 +81,35 @@ const SearchResultComponent = ({ value, keys, officeList, rolesList }) => (
           <br />
         </div>
       </div>
+      {value.locked ? (
+        lockMessage.unlocked ? (
+          <div className="row" style={{ marginLeft: '0px', marginRight: '0px', marginBottom: '0px' }}>
+            <UserMessage successMsg={lockMessage.message} />
+          </div>
+        ) : (
+          <div className="row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+            <Card style={{ border: '0px', marginBottom: '0px' }}>
+              <div className="col-md-12 inlineAlertBox">
+                <div className="col-md-11" style={{ paddingTop: '3px' }}>
+                  {lockMessage.message}
+                </div>
+                <div className="col-md-1">
+                  <IconButton
+                    name="user"
+                    onClick={() => {
+                      unlockHandler(value.id)
+                    }}
+                  >
+                    Unlock
+                  </IconButton>
+                </div>
+              </div>
+            </Card>
+          </div>
+        )
+      ) : (
+        ''
+      )}
     </div>
   </div>
 )
@@ -89,6 +119,12 @@ SearchResultComponent.propTypes = {
   keys: PropTypes.number,
   officeList: PropTypes.array,
   rolesList: PropTypes.array,
+  unlockHandler: PropTypes.func.isRequired,
+  lockMessage: PropTypes.object,
+}
+
+SearchResultComponent.defaultProps = {
+  lockMessage: { unlocked: false, message: '' },
 }
 
 export default SearchResultComponent

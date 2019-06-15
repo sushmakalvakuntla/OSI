@@ -71,6 +71,20 @@ input[type="number"]::-webkit-outer-spin-button {
   color: #ad2213;
 }
 
+.inlineAlertBox {
+  color: #ad2213;
+  border: 0.1rem solid #ad2213;
+  font-weight: bold;
+  padding: 0;
+}
+
+.inlineSuccessBox {
+  color: #22ad13;
+  border: 0.1rem solid #22ad13;
+  font-weight: bold;
+  padding: 0;
+}
+
 .modal-buttons {
   width: 14rem;
   text-transform: uppercase;
@@ -220,7 +234,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 15px;
   font-family: initial;
   font-weight: normal;
-  display: 'flex';
+  display: "flex";
 }
 
 .change-details {
@@ -245,8 +259,8 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 0;
 }
 
-input[type='checkbox']:checked + label::before,
-input[type='checkbox']:checked + span::before {
+input[type="checkbox"]:checked + label::before,
+input[type="checkbox"]:checked + span::before {
   background-position: 50%;
   background-image: none !important;
   background-repeat: no-repeat;

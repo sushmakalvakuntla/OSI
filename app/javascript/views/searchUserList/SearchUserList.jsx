@@ -9,7 +9,7 @@ import './SearchUserList.scss'
 import ChangeLog from '../userDetail/ChangeLog'
 import CommonTile from './CommonTile'
 import SearchUsers from './SearchUsers'
-import SearchResultComponent from './SearchResultComponent'
+import SearchResults from './SearchResults'
 import { Icon } from '@cwds/components'
 
 class SearchUserList extends PureComponent {
@@ -80,6 +80,10 @@ class SearchUserList extends PureComponent {
     this.setState({ errorMessage: '' })
   }
 
+  unlockUser = userId => {
+    this.props.actions.unlockUser(userId)
+  }
+
   isDisabledSearchBtn = () => {
     const { lastName, firstName, email, CWSLogin } = this.props
     return lastName === '' && firstName === '' && email === '' && CWSLogin === ''
@@ -107,15 +111,14 @@ class SearchUserList extends PureComponent {
     const { exactMatches, officesList, rolesList, fuzzyMatches, fetching } = this.props
     const exactMatchResults =
       exactMatches.length > 0 ? (
-        exactMatches.map((value, key) => (
-          <SearchResultComponent
-            value={value}
-            key={key}
-            officeList={officesList}
-            rolesList={rolesList}
-            fetching={this.props.fetching}
-          />
-        ))
+        <SearchResults
+          fetching={fetching}
+          matchedUsers={exactMatches}
+          officesList={officesList}
+          rolesList={rolesList}
+          unlockedUsers={this.props.unlockedUsers}
+          actions={this.props.actions}
+        />
       ) : (
         <div className="no-search-results-box">
           We didn&apos;t find any <b>exact</b> matches based on search criteria.
@@ -128,15 +131,14 @@ class SearchUserList extends PureComponent {
           <div style={{ paddingLeft: '0px', fontSize: '14px', marginBottom: '10px' }}>
             <b>Similar</b> results we found based on search criteria
           </div>
-          {fuzzyMatches.map((value, key) => (
-            <SearchResultComponent
-              value={value}
-              key={key}
-              officeList={officesList}
-              rolesList={rolesList}
-              fetching={this.props.fetching}
-            />
-          ))}
+          <SearchResults
+            fetching={fetching}
+            matchedUsers={fuzzyMatches}
+            officesList={officesList}
+            rolesList={rolesList}
+            unlockedUsers={this.props.unlockedUsers}
+            actions={this.props.actions}
+          />
         </div>
       ) : (
         ''
@@ -235,16 +237,7 @@ class SearchUserList extends PureComponent {
             {!this.isDisabledAddUsrBtn() ? (
               <div className="row">
                 <div className="col-md-12">
-                  <hr
-                    style={{
-                      width: '107.9%',
-                      height: '1px',
-                      border: 'none',
-                      color: '#333',
-                      backgroundColor: '#333',
-                      marginLeft: '-30px',
-                    }}
-                  />
+                  <hr className="hr-style" />
                   <div className="col-md-5" style={{ marginTop: '27px', paddingLeft: '0px', fontSize: '14px' }}>
                     {this.props.exactMatchResultText}
                   </div>
@@ -359,6 +352,7 @@ SearchUserList.propTypes = {
   searchPageTiles: PropTypes.array,
   exactMatches: PropTypes.array,
   fuzzyMatches: PropTypes.array,
+  unlockedUsers: PropTypes.object,
   exactMatchResultText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
 
@@ -368,5 +362,6 @@ SearchUserList.defaultProps = {
   officesList: [],
   officeNames: [],
   searchPageTiles: [],
+  unlockedUsers: {},
 }
 export default SearchUserList

@@ -6,6 +6,7 @@ import {
   handleCheckBoxChangeActions,
   setSearchForTiles,
   clearSearch,
+  unlockUser,
 } from './searchUserListActions'
 import {
   FETCH_USERS_API_CALL_REQUEST,
@@ -14,6 +15,7 @@ import {
   FETCH_ACCOUNT_API_CALL_REQUEST,
   HANDLE_CHECKBOX_CHANGE,
   USER_LIST_CLEAR_SEARCH,
+  USER_STATUS_CHANGE_REQUEST,
 } from './actionTypes'
 
 describe('#fetchAccountActions', () => {
@@ -81,6 +83,15 @@ describe('SearchUserListActions Actions', () => {
     it('returns type', () => {
       expect(handleCheckBoxChangeActions()).toEqual({
         type: HANDLE_CHECKBOX_CHANGE,
+      })
+    })
+  })
+
+  describe('#unlockUser', () => {
+    it('returns type', () => {
+      expect(unlockUser('some_userid')).toEqual({
+        type: USER_STATUS_CHANGE_REQUEST,
+        payload: { id: 'some_userid' },
       })
     })
   })

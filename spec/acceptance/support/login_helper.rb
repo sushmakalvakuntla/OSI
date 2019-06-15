@@ -38,7 +38,6 @@ module LoginHelper
   end
 
   def visit_home
-    puts "visiting home at #{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')}"
     visit ENV.fetch('RAILS_RELATIVE_URL_ROOT', '/')
   end
 
@@ -109,11 +108,7 @@ module LoginHelper
   def logout_link
     # ensure we're on an app page and not the login page, which the logout page won't work from
     visit_home
-    if ENV.fetch('COUNTY_ADMIN_WEB_BASE_URL', '/').include?('integration')
-      visit "#{ENV.fetch('COUNTY_ADMIN_WEB_BASE_URL', '/')}/cap/logout"
-    else
-      visit "#{ENV.fetch('COUNTY_ADMIN_WEB_BASE_URL', '/')}/logout"
-    end
+    visit "#{ENV.fetch('COUNTY_ADMIN_WEB_BASE_URL', '/')}/logout"
   end
 
   private
