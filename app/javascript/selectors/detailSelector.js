@@ -62,7 +62,7 @@ export const isEmailValid = state => {
 }
 
 export const disableSaveButton = state => {
-  if (!isEmailValid(state) || !isPhoneNumberValid(state)) {
+  if (!isEmailValid(state)) {
     return true
   }
   return safeGet(state, 'fetchDetails.disableActionBtn')
@@ -190,11 +190,6 @@ export const unformattedPhoneNumber = state => {
     return phone
   }
   return workerPhone
-}
-
-export const isPhoneNumberValid = state => {
-  const phoneNumber = unformattedPhoneNumber(state)
-  return /^[1-9]\d{9}$/i.test(phoneNumber)
 }
 
 export const formattedPhoneNumber = state => {

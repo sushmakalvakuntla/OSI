@@ -111,8 +111,6 @@ const UserDetailEdit = ({
                 value={unformattedPhoneNumber}
                 allowCharacters={/^[0-9]*$/i}
                 onChange={event => onInputChange('phone_number', parseInt(event.target.value))}
-                validationError={!isPhoneNumberValid}
-                validationErrorMessage={'Please enter valid phone number'}
                 maxLength={10}
               />
             </div>
@@ -137,7 +135,7 @@ const UserDetailEdit = ({
                 value={cellPhoneNumber}
                 maxLength={10}
                 allowCharacters={/^[0-9]*$/i}
-                onChange={event => onInputChange('cell_phone_number', event.target.value)}
+                onChange={event => onInputChange('cell_phone_number', parseInt(event.target.value))}
               />
             </div>
           </div>

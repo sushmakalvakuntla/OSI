@@ -21,7 +21,6 @@ import {
   lastLogin,
   formattedPhoneNumber,
   unformattedPhoneNumber,
-  isPhoneNumberValid,
   phoneExtension,
   userNotes,
   isPermissionsEmpty,
@@ -536,27 +535,12 @@ describe('selectors', () => {
   })
 
   describe('#disableSaveButton', () => {
-    it('return true when email is valid', () => {
-      const state = getState({ email: 'Hello@gmail.com' })
-      expect(disableSaveButton(state)).toEqual(true)
-    })
-
-    it('return true when phone number is valid', () => {
-      const state = getState({ phoneNumber: '4445558888' })
-      expect(disableSaveButton(state)).toEqual(true)
-    })
-
     it('return true when email is not valid', () => {
       const state = getState({ email: 'hello@' })
       expect(disableSaveButton(state)).toEqual(true)
     })
 
-    it('return true when phone number is not valid', () => {
-      const state = getState({ phoneNumber: '333-444' })
-      expect(disableSaveButton(state)).toEqual(true)
-    })
-
-    it('return false when email & phone number is valid', () => {
+    it('return false when email is valid', () => {
       const state = getState({
         phoneNumber: '1234567891',
         email: 'hel@gmail.com',
@@ -973,43 +957,6 @@ describe('selectors', () => {
     it('returns just empty ', () => {
       const state = { fetchDetails: undefined }
       expect(unformattedPhoneNumber(state)).toEqual('')
-    })
-  })
-
-  describe('#isPhoneNumberValid', () => {
-    it('return true when phone number is valid', () => {
-      const state = getState({ phoneNumber: '9163334444' })
-      expect(isPhoneNumberValid(state)).toEqual(true)
-    })
-
-    it('return false when phone number has space inbetween', () => {
-      const state = getState({ phoneNumber: '916333 4444' })
-      expect(isPhoneNumberValid(state)).toEqual(false)
-    })
-
-    it('return false by considering invalid if phone number starts from 0', () => {
-      const state = getState({ phoneNumber: '0163334444' })
-      expect(isPhoneNumberValid(state)).toEqual(false)
-    })
-
-    it('return false if phone number is not valid', () => {
-      const state = getState({ phoneNumber: 'hello' })
-      expect(isPhoneNumberValid(state)).toEqual(false)
-    })
-
-    it('return false if phone number is empty', () => {
-      const state = getState({ phoneNumber: '' })
-      expect(isPhoneNumberValid(state)).toEqual(false)
-    })
-
-    it('return false if phone number is null', () => {
-      const state = getState({ phoneNumber: null })
-      expect(isPhoneNumberValid(state)).toEqual(false)
-    })
-
-    it('return false if phone number is undefined', () => {
-      const state = getState({ phoneNumber: undefined })
-      expect(isPhoneNumberValid(state)).toEqual(false)
     })
   })
 
