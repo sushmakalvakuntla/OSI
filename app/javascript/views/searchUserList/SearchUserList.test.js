@@ -266,7 +266,7 @@ describe('SearchUserList', () => {
       expect(
         wrapper
           .find('div')
-          .at(13)
+          .at(15)
           .text()
       ).toEqual('Similar results we found based on search criteria')
       expect(wrapper.find('SearchResults').length).toEqual(2)
