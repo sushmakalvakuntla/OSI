@@ -113,7 +113,7 @@ node(node_to_run_on()) {
       }
       stage('TriggerReleasePipeline'){
            withCredentials([usernameColonPassword(credentialsId: 'fa186416-faac-44c0-a2fa-089aed50ca17', variable: 'jenkinsauth')]) {
-          sh "curl -v -u $jenkinsauth 'http://jenkins.mgmt.cwds.io:8080/job/PreInt-Integration/job/deploy-cap/buildWithParameters?token=trigger-cap-deploy&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
+          sh "curl -v -u $jenkinsauth 'https://jenkins.mgmt.cwds.io/job/PreInt-Integration/job/deploy-cap/buildWithParameters?token=trigger-cap-deploy&cause=Caused%20by%20Build%20${newTag}&version=${newTag}'"
         }
       }
       stage('Clean Up') {
