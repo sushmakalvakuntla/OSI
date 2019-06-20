@@ -149,7 +149,8 @@ class SearchUserList extends PureComponent {
       </div>
     ) : exactMatches.length > 0 || fuzzyMatches.length > 0 ? (
       <div>
-        {exactMatchResults} {fuzzyMatchResults}
+        <div className="exact-matches">{exactMatchResults}</div>
+        <div className="fuzzy-matches">{fuzzyMatchResults}</div>
       </div>
     ) : (
       <p>
@@ -263,7 +264,7 @@ class SearchUserList extends PureComponent {
                     />
                   </div>
                 </div>
-                <div className="col-md-12 exact-matches">{this.renderSearchResults()}</div>
+                <div className="col-md-12">{this.renderSearchResults()}</div>
               </div>
             ) : (
               ''
