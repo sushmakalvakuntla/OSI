@@ -269,7 +269,7 @@ describe('UserDetailEdit', () => {
         .simulate('change', {
           target: { value: '1234567891' },
         })
-      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', '1234567891')
+      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', 1234567891)
     })
 
     it('#CellPhoneNumber, handleInputChange function is called & returns ext with zeros', () => {
@@ -279,7 +279,7 @@ describe('UserDetailEdit', () => {
         .simulate('change', {
           target: { value: '1000000000' },
         })
-      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', '1000000000')
+      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', 1000000000)
     })
   })
 })

@@ -103,7 +103,6 @@ export default class UserDetail extends Component {
             isEmailValid={this.props.isEmailValid}
             lastLoginDateTime={this.props.lastLoginDateTime}
             officePhoneNumber={this.props.officePhoneNumber}
-            isPhoneNumberValid={this.props.isPhoneNumberValid}
             unformattedPhoneNumber={this.props.unformattedPhoneNumber}
             phoneExtensionNumber={this.props.phoneExtensionNumber}
             onResendInvite={this.onResendInvite}
