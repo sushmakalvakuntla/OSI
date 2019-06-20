@@ -242,6 +242,16 @@ describe('UserDetailEdit', () => {
       expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', 3094405055)
     })
 
+    it('#PhoneNumber, handleInputChange function is called & returns phone number with empty string if letters are typed', () => {
+      wrapper
+        .find('InputComponent')
+        .at(1)
+        .simulate('change', {
+          target: { value: 'asdf' },
+        })
+      expect(onInputChangeSpy).toHaveBeenCalledWith('phone_number', '')
+    })
+
     it('#PhoneExtensionNumber, handleInputChange function is called when onChange event triggered', () => {
       wrapper
         .find('InputComponent')
@@ -272,7 +282,7 @@ describe('UserDetailEdit', () => {
       expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', 1234567891)
     })
 
-    it('#CellPhoneNumber, handleInputChange function is called & returns ext with zeros', () => {
+    it('#CellPhoneNumber, handleInputChange function is called ', () => {
       wrapper
         .find('InputComponent')
         .at(3)
@@ -280,6 +290,16 @@ describe('UserDetailEdit', () => {
           target: { value: '1000000000' },
         })
       expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', 1000000000)
+    })
+
+    it('#CellPhoneNumber, handleInputChange function is called & returns empty string', () => {
+      wrapper
+        .find('InputComponent')
+        .at(3)
+        .simulate('change', {
+          target: { value: '' },
+        })
+      expect(onInputChangeSpy).toHaveBeenCalledWith('cell_phone_number', '')
     })
   })
 })
