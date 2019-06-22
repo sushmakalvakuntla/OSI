@@ -124,9 +124,15 @@ export default class ChangeLogDetails extends Component {
     )
     return (
       <div>
-        <Button id="modal-view-btn" color="link" className="modal-buttons" onClick={this.toggle}>
-          view
-        </Button>
+        {this.props.isListView ? (
+          <Button onClick={this.toggle} className="change-log-menu">
+            View Change Details
+          </Button>
+        ) : (
+          <Button id="modal-view-btn" color="link" className="modal-buttons" onClick={this.toggle}>
+            view
+          </Button>
+        )}
         <Modal className="warning-modal modal-lg" isOpen={this.state.ModalOpen} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle} close={closeBtn}>
             <div className="header">{'Change Log Details'}</div>

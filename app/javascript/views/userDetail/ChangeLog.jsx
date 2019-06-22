@@ -1,9 +1,11 @@
+/* eslint-disable react/display-name */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid } from '@cwds/components'
+import { Rolodex, Card, CardBody, CardHeader, CardTitle, DataGrid, MenuItem, UncontrolledMenu as Menu } from '@cwds/components'
 import ChangeLogDetails from './ChangeLogDetailsView'
 import { checkDate, formatAdminWithRole } from '../../_utils/formatters'
 import safeGet from 'lodash.get'
+import { Link } from 'react-router-dom'
 
 const NoChangeLogComp = () => {
   return (
@@ -117,6 +119,37 @@ const columnConfig = (
     ),
     sortable: false,
     minWidth: 50,
+    show: !isListView,
+  },
+  {
+    Header: '',
+    id: 'menu',
+    accessor: d => d,
+    minWidth: 35,
+    Cell: row => {
+      return (
+        <Menu>
+          <ChangeLogDetails
+            changeLogData={row.original}
+            userDetails={userDetails}
+            getAdminDetails={getAdminDetails}
+            adminDetails={adminDetails}
+            userOfficeName={userOfficeName}
+            adminOfficeName={adminOfficeName}
+            getUserDetails={getUserDetails}
+            isListView={isListView}
+          />
+
+          <MenuItem style={{ background: 'none' }}>
+            <Link style={{ color: 'black', textDecoration: 'none' }} to={`/user_details/${row.original.event.user_id}`}>
+              View User Profile
+            </Link>
+          </MenuItem>
+        </Menu>
+      )
+    },
+    sortMethod: sortByType,
+    show: Boolean(isListView),
   },
 ]
 

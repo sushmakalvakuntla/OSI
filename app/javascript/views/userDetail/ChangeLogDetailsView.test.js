@@ -39,11 +39,24 @@ describe('ChangeLogDetails', () => {
     wrapper = shallow(<ChangeLogDetails {...props} getAdminDetails={mockGetAdminDetails} getUserDetails={mockGetUserDetails} />)
   })
 
-  it('renders the Components ', () => {
-    expect(wrapper.find('Button').exists()).toBe(true)
-    expect(wrapper.find('Modal').exists()).toBe(true)
-    expect(wrapper.find('ModalHeader').exists()).toBe(true)
-    expect(wrapper.find('ModalBody').exists()).toBe(true)
+  describe('renders the Components ', () => {
+    it('renders Modal components', () => {
+      expect(wrapper.find('Modal').exists()).toBe(true)
+      expect(wrapper.find('ModalHeader').exists()).toBe(true)
+      expect(wrapper.find('ModalBody').exists()).toBe(true)
+    })
+
+    it('render View Change Details Button on ListView', () => {
+      wrapper.setProps({ isListView: true })
+      expect(wrapper.find('Button').exists()).toBe(true)
+      expect(wrapper.find('Button').props().children).toBe('View Change Details')
+    })
+
+    it('render view Button when no ListView', () => {
+      wrapper.setProps({ isListView: false })
+      expect(wrapper.find('Button').exists()).toBe(true)
+      expect(wrapper.find('Button').props().children).toBe('view')
+    })
   })
 
   it('toggles the ModelOpen', () => {

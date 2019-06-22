@@ -1,6 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import ChangeLog, { sortByName, sortByType, sortByMadeTo, viewHeightSize } from './ChangeLog'
+import { BrowserRouter } from 'react-router-dom'
 
 describe('ChangeLog', () => {
   let wrapper
@@ -82,7 +83,16 @@ describe('ChangeLog', () => {
 
   it('renders the admin name field with formatted display of admin role', () => {
     const mounted = mount(
-      <ChangeLog auditEvents={events} userDetails={{}} adminDetails={{}} userOfficeName="" adminOfficeName="" isListView={true} />
+      <BrowserRouter>
+        <ChangeLog
+          auditEvents={events}
+          userDetails={{}}
+          adminDetails={{}}
+          userOfficeName=""
+          adminOfficeName=""
+          isListView={true}
+        />
+      </BrowserRouter>
     )
     const trs = mounted.find('TrComponent')
     const madeToHeader = trs
@@ -97,21 +107,26 @@ describe('ChangeLog', () => {
       .childAt(2)
     expect(madeByHeader.text()).toEqual('Made By')
 
-    expect(trs.at(0).text()).toEqual(['Date/Time', 'Made To', 'Made By', 'Type', 'Details'].join(''))
+    expect(trs.at(0).text()).toEqual(['Date/Time', 'Made To', 'Made By', 'Type'].join(''))
+
+    const Menu = trs
+      .at(2)
+      .find('Menu')
+      .text()
 
     expect(trs.at(1).text()).toEqual(
-      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', Menu].join('')
     )
     expect(trs.at(2).text()).toEqual(
-      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', Menu].join('')
     )
     expect(trs.at(3).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', Menu].join('')
     )
     expect(trs.at(4).text()).toEqual(
-      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', Menu].join('')
     )
-    expect(trs.at(5).text()).toEqual(['January 2, 2019 01:23 PM', 'User Name (USER-ROLE)', '', 'A', 'view'].join(''))
+    expect(trs.at(5).text()).toEqual(['January 2, 2019 01:23 PM', 'User Name (USER-ROLE)', '', 'A', Menu].join(''))
     expect(
       trs
         .at(1)
@@ -179,33 +194,33 @@ describe('ChangeLog', () => {
 
     madeByHeader.simulate('click') // sort by Made By
 
-    expect(trs.at(1).text()).toEqual(['January 2, 2019 01:23 PM', 'User Name (USER-ROLE)', '', 'A', 'view'].join(''))
+    expect(trs.at(1).text()).toEqual(['January 2, 2019 01:23 PM', 'User Name (USER-ROLE)', '', 'A', Menu].join(''))
     expect(trs.at(2).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', Menu].join('')
     )
     expect(trs.at(3).text()).toEqual(
-      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', Menu].join('')
     )
     expect(trs.at(4).text()).toEqual(
-      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', Menu].join('')
     )
     expect(trs.at(5).text()).toEqual(
-      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', Menu].join('')
     )
 
     madeToHeader.simulate('click') // descending
     expect(trs.at(1).text()).toEqual(
-      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', 'view'].join('')
+      ['January 2, 2019 02:22 PM', 'User Name (USER-ROLE)', 'Walsh, Jack (County Admin)', 'A', Menu].join('')
     )
-    expect(trs.at(2).text()).toEqual(['January 2, 2019 01:23 PM', 'User Name (USER-ROLE)', '', 'A', 'view'].join(''))
+    expect(trs.at(2).text()).toEqual(['January 2, 2019 01:23 PM', 'User Name (USER-ROLE)', '', 'A', Menu].join(''))
     expect(trs.at(3).text()).toEqual(
-      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:21 PM', 'User Name2 (USER-ROLE2)', 'Mosely, Alonso (State Admin)', 'C', Menu].join('')
     )
     expect(trs.at(4).text()).toEqual(
-      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', 'view'].join('')
+      ['January 4, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Mosely, Alonso (State Admin)', 'C', Menu].join('')
     )
     expect(trs.at(5).text()).toEqual(
-      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', 'view'].join('')
+      ['January 3, 2019 02:22 PM', 'User Name3 (USER-ROLE3)', 'Dorfler, Marvin (Office Admin)', 'B', Menu].join('')
     )
   })
 
