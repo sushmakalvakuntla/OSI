@@ -22,8 +22,8 @@ module UserListPageHelper
     page.all('.exact-matches div.result-card')
   end
 
-  def page_inexact_match_users
-    page.all('.inexact-matches div.result-card')
+  def page_fuzzy_match_users
+    page.all('.fuzzy-matches div.result-card')
   end
 
   def current_page_number
@@ -64,6 +64,12 @@ module UserListPageHelper
     all('div', text: 'Change Log').last.click
   end
 
+  def clear_search
+    visit_home
+    page_is_search
+    click_button 'CLEAR' if has_button? 'CLEAR'
+  end
+
   def expect_sorted_list(list)
     expect(list).to eq(list)
   end
@@ -83,7 +89,11 @@ module UserListPageHelper
   end
 
   def first_user
-    page_exact_match_users[0]
+    if !page_exact_match_users.empty?
+      page_exact_match_users[0]
+    else
+      page_fuzzy_match_users[0]
+    end
   end
 
   def second_user
@@ -108,31 +118,78 @@ module UserListPageHelper
 
   def safe_fill_in_last_name(last_name)
     fill_in 'searchWithLastName', with: last_name
-    last_name == '' ? force_change_script('#searchWithLastName', 'Search user list') : ''
+    last_name == '' ? force_change_script('#searchWithLastName') : ''
+  end
+
+  def safe_fill_in_cws_login(cws_login)
+    fill_in 'searchWithCWSLogin', with: cws_login
+    cws_login == '' ? force_change_script('#searchWithCWSLogin') : ''
+  end
+
+  def safe_fill_in_email_address(email_address)
+    fill_in 'searchWithEmail', with: email_address
+    email_address == '' ? force_change_script('#searchWithEmail') : ''
+  end
+
+  def finished_loading
+    sleep 1 # make sure the loading process has time to start
+    expect(page).to have_no_css('.fa-circle-notch')
   end
 
   def logged_in_user_info
-    visit_home
-    click_button 'CLEAR'
-    email = ENV.fetch('COGNITO_USERNAME')
-    fill_in 'searchWithEmail', with: email
-    click_button 'SEARCH'
-    sleep 1
-    page_exact_match_users[0].find('a').click
-    account = { office_name: detail_page_value('Office Name') }
-    visit_home
-    click_button 'CLEAR'
-    account
+    new_window = window_opened_by { open_new_window }
+
+    within_window new_window do
+      clear_search
+      fill_in 'searchWithEmail', with: ENV.fetch('COGNITO_USERNAME')
+      click_button 'SEARCH'
+      finished_loading
+      page_exact_match_users[0].find('a').click
+      account = account_from_details
+      clear_search
+      account
+    end
+  end
+
+  def account_from_details
+    {
+      office_name: detail_page_value('Office Name'),
+      cws_login: detail_page_value('CWS Login'),
+      role: detail_page_value('Role')
+    }
   end
 
   def search_users(last_name: '')
-    click_button 'CLEAR' if has_button? 'CLEAR'
+    clear_search
     return if find_field('Last Name').value == last_name
 
     puts "search for '#{last_name}'"
     safe_fill_in_last_name(last_name)
     body_element = page.find('#searchWithLastName')
     body_element.native.send_keys(:enter)
+    finished_loading
+  end
+
+  def search_users_by_cws_login(cws_login: '')
+    clear_search
+    return if find_field('CWS Login').value == cws_login
+
+    puts "search for RACFID '#{cws_login}'"
+    safe_fill_in_cws_login(cws_login)
+    body_element = page.find('#searchWithCWSLogin')
+    body_element.native.send_keys(:enter)
+    finished_loading
+  end
+
+  def search_users_by_email_address(email_address: '')
+    clear_search
+    return if find_field('Email').value == email_address
+
+    puts "search for email '#{email_address}'"
+    safe_fill_in_email_address(email_address)
+    body_element = page.find('#searchWithEmail')
+    body_element.native.send_keys(:enter)
+    finished_loading
   end
 
   def show_inactive_users
@@ -151,9 +208,10 @@ module UserListPageHelper
   def pick_single_office_name
     office_selectbox.click
     # choose the first office in the list.
-    office_name = office_selectbox.find_by_id('react-select-2-option-0').text
-    office_selectbox.find_by_id('react-select-2-option-0').click
-    office_selectbox.click
+    first_office = office_selectbox.first(:xpath, ".//div[@role='option']")
+
+    office_name = first_office.text
+    first_office.click
     office_name
   end
 
@@ -184,7 +242,7 @@ module UserListPageHelper
     click_on 'CLEAR' if has_button? 'CLEAR'
   end
 
-  def force_change_script(node_id, _node_label)
+  def force_change_script(node_id)
     puts 'force change script to execute via keyboard send'
     find(node_id).send_keys('a')
     find(node_id).send_keys(:backspace)

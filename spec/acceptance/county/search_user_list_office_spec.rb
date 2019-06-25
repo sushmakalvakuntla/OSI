@@ -8,17 +8,18 @@ feature 'user list filters by office' do
   scenario 'Filter by office user list page' do
     login
     sleep 2
-    search_users(last_name: 'A')
+    search_users(last_name: 'B')
     wait_for_load_complete
     expand_changelog_component
     all_count_changelog = count_changelog_events
 
-    all_users_count = page_exact_match_users.count
-    office_name = 'CWDS CARES IM Lake Testing Office BinthuK2' # pick_single_office_name
+    all_users_count = page_fuzzy_match_users.count
 
-    select_office_by_name(office_name)
+    picked_name = pick_single_office_name
+    puts "Picked office name '#{picked_name}''"
 
-    filtered_users_count = page_exact_match_users.count
+    filtered_users_count = page_fuzzy_match_users.count
+
     expand_changelog_component
     filtered_changelog_count = count_changelog_events
     puts "user counts: #{filtered_users_count} ?< #{all_users_count}"

@@ -27,6 +27,14 @@ module UserDetailPageHelper
                       .click
   end
 
+  def select_role(role)
+    role_select.find(:xpath, ".//div[contains(text(),'#{role}')]").click
+  end
+
+  def selectable_roles
+    role_select.all(:xpath, './/div').collect(&:text)
+  end
+
   def add_permission(permission)
     # open the drop-down
     permissions_select.click
@@ -47,6 +55,10 @@ module UserDetailPageHelper
 
   def status_from_dropdown
     find_by_id('StatusDropDown').text
+  end
+
+  def role_from_dropdown
+    find_by_id('RolesDropDown').text
   end
 
   def change_status(new_status)
@@ -117,6 +129,20 @@ module UserDetailPageHelper
     all(
       :xpath,
       "//label[contains(text(),'Assigned Permissions')]/following-sibling::div/div/div"
+    ).last
+  end
+
+  def roles_click
+    find(:xpath, '//*[@id="RolesDropDown"]').click
+  end
+
+  def role_select
+    # click off the componenet first.  Should collapse the select if it was expended.
+
+    find('label', text: 'Role').click
+    roles_click.all(
+      :xpath,
+      "//label[contains(text(),'Role')]/following-sibling::div/div/div"
     ).last
   end
 end
