@@ -56,17 +56,6 @@ export const selectPossibleRolesList = state => {
   return options
 }
 
-export const isEmailValid = state => {
-  return safeGet(state, 'fetchDetails.details.records.user.email')
-}
-
-export const disableSaveButton = state => {
-  if (!isEmailValid) {
-    return true
-  }
-  return safeGet(state, 'fetchDetails.disableActionBtn')
-}
-
 export const checkStatus = state => {
   return isUserEditable(state)
     ? {

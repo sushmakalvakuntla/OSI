@@ -205,8 +205,7 @@ export default class UserDetail extends Component {
         isUserEditable={this.props.isUserEditable}
         onSaveDetails={this.onSaveDetails}
         onReset={this.onReset}
-        disableSaveButton={this.props.disableSaveButton}
-        disableResetButton={this.props.disableResetButton}
+        disableActionBtn={this.props.disableActionBtn}
         isPermissionsEmpty={this.props.isPermissionsEmpty}
       />
     )
@@ -280,8 +279,7 @@ UserDetail.propTypes = {
   isRolesDisabled: PropTypes.bool,
   assignedRole: PropTypes.string,
   displayAlert: PropTypes.bool,
-  disableSaveButton: PropTypes.bool,
-  disableResetButton: PropTypes.bool,
+  disableActionBtn: PropTypes.bool,
   match: PropTypes.object,
   isEmailValid: PropTypes.bool,
   officePhoneNumber: PropTypes.string,

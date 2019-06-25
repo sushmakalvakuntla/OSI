@@ -13,8 +13,6 @@ import {
   selectCWSPrivileges,
   officeName,
   selectPossiblePermissionsList,
-  disableSaveButton,
-  userEmail,
   selectModifiedDetails,
   formattedDateTime,
   assignedRoles,
@@ -519,34 +517,6 @@ describe('selectors', () => {
     it('return true if editable is undefined ', () => {
       const state = getState({ isRolesEditable: undefined })
       expect(disableRolesDropDown(state)).toEqual(true)
-    })
-  })
-
-  describe('#userEmail', () => {
-    it('return true when email is valid', () => {
-      const state = getState({ email: 'Hello@gmail.com' })
-      expect(userEmail(state)).toEqual('Hello@gmail.com')
-    })
-
-    it('return false if email is not valid', () => {
-      const state = getState({ email: null })
-      expect(userEmail(state)).toEqual(null)
-    })
-  })
-
-  describe('#disableSaveButton', () => {
-    it('return true when email is not valid', () => {
-      const state = getState({ email: 'hello@' })
-      expect(disableSaveButton(state)).toEqual(true)
-    })
-
-    it('return false when email is valid', () => {
-      const state = getState({
-        phoneNumber: '1234567891',
-        email: 'hel@gmail.com',
-        disableActionBtn: false,
-      })
-      expect(disableSaveButton(state)).toEqual(false)
     })
   })
 

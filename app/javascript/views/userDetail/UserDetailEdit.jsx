@@ -19,10 +19,8 @@ const UserDetailEdit = ({
   userStatusDescription,
   officeName,
   onInputChange,
-  isEmailValid,
   lastLoginDateTime,
   officePhoneNumber,
-  isPhoneNumberValid,
   unformattedPhoneNumber,
   phoneExtensionNumber,
   onResendInvite,
@@ -84,8 +82,6 @@ const UserDetailEdit = ({
                 placeholder="Add Email Address"
                 value={details.email}
                 onChange={event => onInputChange('email', event.target.value)}
-                validationError={!isEmailValid}
-                validationErrorMessage={'Please enter a valid email'}
               />
             </div>
             <div className="col-md-3">

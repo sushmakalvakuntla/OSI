@@ -7,8 +7,7 @@ describe('PageHeaderButtons Component', () => {
   beforeEach(() => {
     const props = {
       isUserEditable: true,
-      disableSaveButton: false,
-      disableResetButton: false,
+      disableActionBtn: false,
       isPermissionsEmpty: true,
       onSaveDetails: () => {},
       onReset: () => {},
