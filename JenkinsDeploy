@@ -101,12 +101,14 @@ def integrationAcceptenceTest(environment, version){
       sleep 60
       sh "docker-compose exec -T --env TZ=${TZ} --env FIREFOX=true --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env ADD_RACFID=${env.ADD_RACFID} --env WRONG_COUNTY_RACFID=${env.WRONG_COUNTY_RACFID} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test-firefox bundle exec rspec spec/acceptance/county --format documentation"
       sh "docker-compose exec -T --env TZ=${TZ} --env FIREFOX=true --env COGNITO_USERNAME=${COG_OFFICE_USER} --env COGNITO_PASSWORD=${COG_OFFICE_PASS} --env ADD_RACFID=${env.ADD_RACFID} --env WRONG_COUNTY_RACFID=${env.WRONG_COUNTY_RACFID} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test-firefox bundle exec rspec spec/acceptance/office --format documentation"
+      sh "docker-compose exec -T --env TZ=${TZ} --env FIREFOX=true --env COGNITO_USERNAME=${COG_STATE_USER} --env COGNITO_PASSWORD=${COG_STATE_PASS} --env ADD_RACFID=${env.ADD_RACFID} --env WRONG_COUNTY_RACFID=${env.WRONG_COUNTY_RACFID} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test-firefox bundle exec rspec spec/acceptance/state --format documentation"
     }
     stage('Integration Acceptance Test Chrome') {
       sh "docker-compose up -d --build county-admin-test"
       sleep 60
       sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_USER} --env COGNITO_PASSWORD=${COG_PASS} --env ADD_RACFID=${env.ADD_RACFID}  --env WRONG_COUNTY_RACFID=${env.WRONG_COUNTY_RACFID} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance/county --format documentation"
       sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_OFFICE_USER} --env COGNITO_PASSWORD=${COG_OFFICE_PASS} --env ADD_RACFID=${env.ADD_RACFID}  --env WRONG_COUNTY_RACFID=${env.WRONG_COUNTY_RACFID} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance/office --format documentation"
+      sh "docker-compose exec -T --env TZ=${TZ} --env COGNITO_USERNAME=${COG_STATE_USER} --env COGNITO_PASSWORD=${COG_STATE_PASS} --env ADD_RACFID=${env.ADD_RACFID}  --env WRONG_COUNTY_RACFID=${env.WRONG_COUNTY_RACFID} --env COUNTY_AUTHORIZATION_ENABLED=true --env COUNTY_ADMIN_WEB_BASE_URL=https://web.integration.cwds.io/cap county-admin-test bundle exec rspec spec/acceptance/state --format documentation"
     }
   } catch(Exception e) {
     currentBuild.result = "FAILURE"

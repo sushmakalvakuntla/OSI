@@ -49,7 +49,7 @@ feature 'Add User Page' do
     # also the phone number is reformatted to remove non-digits
     find_field('Phone Number', with: '9165551111')
     resend_registration_email_success
-    expect(page.should(have_no_content(message)))
+    expect(page).not_to have_content(message)
     expect(detail_page_value('User Status'))
       .to have_text('Registration Incomplete User has never logged in.')
 

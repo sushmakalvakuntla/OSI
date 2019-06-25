@@ -14,7 +14,7 @@ feature 'User Edit' do
     page_has_user_list_headers
     search_users(last_name: 'A')
     show_inactive_users
-    sleep 2
+    finished_loading
     first_user_url = first_user_link[:href]
     visit "#{first_user_url}BAD_EXTRA_CHARS"
     page_is_user_details
@@ -58,7 +58,6 @@ feature 'User Edit' do
 
     if selected_permissions.empty?
       add_permission 'RFA'
-      add_permission 'Snapshot'
       add_permission 'Hotline'
       add_permission 'Facility Search & Profile'
       save_and_confirm
