@@ -14,7 +14,7 @@ import PageHeaderButtons from './DetailsPageHeaderButtons'
 export default class UserDetail extends Component {
   constructor(props) {
     super(props)
-    this.state = { resendEmailAlert: false }
+    this.state = { resendEmailAlert: false, missingFields: false }
   }
 
   componentDidMount() {
@@ -32,15 +32,20 @@ export default class UserDetail extends Component {
   }
 
   onSaveDetails = () => {
-    const { updatedDetails, match, actions } = this.props
-    actions.saveUserDetailsActions(match.params.id, updatedDetails)
-    this.setState({ resendEmailAlert: false })
-    actions.clearAddedUserDetailActions()
+    const { updatedDetails, match, actions, details } = this.props
+    if (details.phone_number && details.email) {
+      actions.saveUserDetailsActions(match.params.id, updatedDetails)
+      this.setState({ resendEmailAlert: false })
+      actions.clearAddedUserDetailActions()
+    } else {
+      this.setState({ missingFields: true })
+    }
+    return null
   }
 
   onResendInvite = () => {
     this.props.actions.resendRegistrationEmailActions(this.props.details.id)
-    this.setState({ resendEmailAlert: true })
+    this.setState({ resendEmailAlert: true, missingFields: false })
     this.props.actions.clearAddedUserDetailActions()
     this.props.actions.clearSaveAlert()
   }
@@ -48,12 +53,18 @@ export default class UserDetail extends Component {
   onReset = () => {
     this.props.actions.fetchDetailsActions(this.props.match.params.id)
     this.props.actions.clearAddedUserDetailActions()
-    this.setState({ resendEmailAlert: false })
+    this.setState({ resendEmailAlert: false, missingFields: false })
   }
 
-  handleDropDownChange = (name, value) => this.props.actions.handleDropdownChangeAction(name, value)
+  handleDropDownChange = (name, value) => {
+    this.setState({ missingFields: false })
+    this.props.actions.handleDropdownChangeAction(name, value)
+  }
 
-  handleInputChange = (name, value) => this.props.actions.handleInputChangeAction(name, value)
+  handleInputChange = (name, value) => {
+    this.setState({ missingFields: false })
+    this.props.actions.handleInputChangeAction(name, value)
+  }
 
   showAlert = (displayAlert, userDetailError, saveSuccessMsg) => {
     if (displayAlert)
@@ -82,7 +93,22 @@ export default class UserDetail extends Component {
   }
 
   onUserStatusChange = () => {
+    this.setState({ missingFields: false })
     this.props.actions.handleStatusChangeAction(this.props.match.params.id)
+  }
+
+  displayMissingFieldAlert = () => {
+    return this.state.missingFields ? (
+      !this.props.details.email ? (
+        <UserMessage errorMsg={'Email value is missing! Please enter valid email.'} />
+      ) : !this.props.details.phone_number ? (
+        <UserMessage errorMsg={'Phone Number value is missing! Please enter valid phone number.'} />
+      ) : (
+        ''
+      )
+    ) : (
+      ''
+    )
   }
 
   renderCards = () => {
@@ -214,6 +240,7 @@ export default class UserDetail extends Component {
             {this.showAlert(this.props.displayAlert, this.props.userDetailError, this.props.saveSuccessMsg)}
             {this.emailSent()}
             {this.showAddAlert()}
+            {this.displayMissingFieldAlert()}
           </div>
           {this.props.fetchDetailsError ? (
             <UserMessage errorMsg={this.props.fetchDetailsError} />

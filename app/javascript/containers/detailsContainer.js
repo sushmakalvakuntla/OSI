@@ -76,7 +76,7 @@ function mapStateToProps(state) {
     userListUrl: process.env.RAILS_RELATIVE_URL_ROOT ? process.env.RAILS_RELATIVE_URL_ROOT : '/',
     disableResendEmailButton: disableResendEmailButton(state),
     isRolesDisabled: disableRolesDropDown(state),
-    disableSaveButton: disableSaveButton(state),
+    disableSaveButton: state.fetchDetails.disableActionBtn,
     disableResetButton: state.fetchDetails.disableActionBtn,
     startDate: selectStartDate(state),
     assignedPermissions: selectAssignedPermissions(state),

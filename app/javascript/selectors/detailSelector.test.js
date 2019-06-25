@@ -14,7 +14,7 @@ import {
   officeName,
   selectPossiblePermissionsList,
   disableSaveButton,
-  isEmailValid,
+  userEmail,
   selectModifiedDetails,
   formattedDateTime,
   assignedRoles,
@@ -522,15 +522,15 @@ describe('selectors', () => {
     })
   })
 
-  describe('#isEmailValid', () => {
+  describe('#userEmail', () => {
     it('return true when email is valid', () => {
       const state = getState({ email: 'Hello@gmail.com' })
-      expect(isEmailValid(state)).toEqual(true)
+      expect(userEmail(state)).toEqual('Hello@gmail.com')
     })
 
     it('return false if email is not valid', () => {
-      const state = getState({ email: 'hello@' })
-      expect(isEmailValid(state)).toEqual(false)
+      const state = getState({ email: null })
+      expect(userEmail(state)).toEqual(null)
     })
   })
 
