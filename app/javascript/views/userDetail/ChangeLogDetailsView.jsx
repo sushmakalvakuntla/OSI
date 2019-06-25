@@ -125,7 +125,7 @@ export default class ChangeLogDetails extends Component {
     return (
       <div>
         {this.props.isListView ? (
-          <Button onClick={this.toggle} className="change-log-menu">
+          <Button onClick={this.toggle} className="change-log-menu" style={{ fontSize: '15px' }}>
             View Change Details
           </Button>
         ) : (

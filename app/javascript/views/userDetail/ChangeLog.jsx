@@ -125,27 +125,36 @@ const columnConfig = (
     Header: '',
     id: 'menu',
     accessor: d => d,
-    minWidth: 35,
+    minWidth: 50,
     Cell: row => {
       return (
-        <Menu>
-          <ChangeLogDetails
-            changeLogData={row.original}
-            userDetails={userDetails}
-            getAdminDetails={getAdminDetails}
-            adminDetails={adminDetails}
-            userOfficeName={userOfficeName}
-            adminOfficeName={adminOfficeName}
-            getUserDetails={getUserDetails}
-            isListView={isListView}
-          />
-
-          <MenuItem style={{ background: 'none' }}>
-            <Link style={{ color: 'black', textDecoration: 'none' }} to={`/user_details/${row.original.event.user_id}`}>
-              View User Profile
-            </Link>
-          </MenuItem>
-        </Menu>
+        <div
+          className="Menu"
+          style={{
+            position: 'absolute',
+          }}
+        >
+          <Menu>
+            <ChangeLogDetails
+              changeLogData={row.original}
+              userDetails={userDetails}
+              getAdminDetails={getAdminDetails}
+              adminDetails={adminDetails}
+              userOfficeName={userOfficeName}
+              adminOfficeName={adminOfficeName}
+              getUserDetails={getUserDetails}
+              isListView={isListView}
+            />
+            <MenuItem style={{ background: 'none' }}>
+              <Link
+                style={{ color: 'black', textDecoration: 'none', fontSize: '15px' }}
+                to={`/user_details/${row.original.event.user_id}`}
+              >
+                View User Profile
+              </Link>
+            </MenuItem>
+          </Menu>
+        </div>
       )
     },
     sortMethod: sortByType,
