@@ -37,7 +37,7 @@ feature 'Search User List Page' do
     expect(selected_offices[0]).to eq current_account[:office_name]
 
     sleep 2
-    first_count = page_exact_match_users.count
+    first_count = page_exact_match_users.count + page_fuzzy_match_users.count
 
     expect(first_count).to be > 0
     puts "count users #{first_count}"
