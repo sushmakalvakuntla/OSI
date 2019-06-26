@@ -19,7 +19,7 @@ export function* saveDetails(action) {
       saveUserDetailsActions.initialDetails,
       saveUserDetailsActions.isRolesDisabled
     )
-    // dispatch a success action to the store with the new account detailss
+    // dispatch a success action to the store with the new account details
     yield put({
       type: actionTypes.SAVE_USER_DETAILS_API_CALL_SUCCESS,
       saveUserDetails,
