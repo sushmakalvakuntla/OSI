@@ -66,7 +66,13 @@ feature 'User Edit' do
     puts "original selected permissions #{original_selected_permissions}"
     one_permission = original_selected_permissions.last
     one_permission = '' if one_permission == 'Select...'
-
+    if one_permission == 'Snapshot'
+      # Do not remove Snapshot, since it is obsolete and can't be added back.
+      one_permission = original_selected_permissions.first
+      # Do not remove the deprecated permission 'Snapshot'
+      one_permission = '' if one_permission == 'Snapshot'
+      end
+    end
     # Edit both modifiable fields
     change_status new_status
     remove_permission(one_permission)
@@ -82,9 +88,6 @@ feature 'User Edit' do
     expect(status_from_dropdown)
       .to eq(new_status)
     # permissions has changed to new permissions
-
-    # xpath fails to find the span following the label if it's empty.
-    # Find the parent div instead and parse...
 
     string_permissions = selected_permissions.join(', ')
 
@@ -102,6 +105,7 @@ feature 'User Edit' do
       one_permission = 'Hotline'
       original_selected_permissions = ['Hotline']
     end
+
     add_permission(one_permission)
 
     save_and_confirm
