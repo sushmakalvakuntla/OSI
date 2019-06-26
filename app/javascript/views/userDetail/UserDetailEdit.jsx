@@ -21,7 +21,6 @@ const UserDetailEdit = ({
   onInputChange,
   lastLoginDateTime,
   officePhoneNumber,
-  isPhoneNumberValid,
   unformattedPhoneNumber,
   phoneExtensionNumber,
   onResendInvite,
@@ -107,7 +106,7 @@ const UserDetailEdit = ({
                 placeholder="Enter numbers only"
                 value={unformattedPhoneNumber}
                 allowCharacters={/^[0-9]*$/i}
-                onChange={event => onInputChange('phone_number', parseInt(event.target.value))}
+                onChange={event => onInputChange('phone_number', parseInt(event.target.value) || '')}
                 maxLength={10}
               />
             </div>
@@ -132,7 +131,7 @@ const UserDetailEdit = ({
                 value={cellPhoneNumber}
                 maxLength={10}
                 allowCharacters={/^[0-9]*$/i}
-                onChange={event => onInputChange('cell_phone_number', parseInt(event.target.value))}
+                onChange={event => onInputChange('cell_phone_number', parseInt(event.target.value) || '')}
               />
             </div>
           </div>

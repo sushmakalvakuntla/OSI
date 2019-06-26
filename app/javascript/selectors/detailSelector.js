@@ -56,11 +56,6 @@ export const selectPossibleRolesList = state => {
   return options
 }
 
-export const isEmailValid = state => {
-  const email = safeGet(state, 'fetchDetails.details.records.user.email')
-  return /^[a-zA-Z0-9_!#$%&’*+/=?`'{^.-]*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}$/i.test(email)
-}
-
 export const checkStatus = state => {
   return isUserEditable(state)
     ? {

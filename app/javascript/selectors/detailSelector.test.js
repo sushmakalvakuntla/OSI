@@ -13,7 +13,6 @@ import {
   selectCWSPrivileges,
   officeName,
   selectPossiblePermissionsList,
-  isEmailValid,
   selectModifiedDetails,
   formattedDateTime,
   assignedRoles,
@@ -518,18 +517,6 @@ describe('selectors', () => {
     it('return true if editable is undefined ', () => {
       const state = getState({ isRolesEditable: undefined })
       expect(disableRolesDropDown(state)).toEqual(true)
-    })
-  })
-
-  describe('#isEmailValid', () => {
-    it('return true when email is valid', () => {
-      const state = getState({ email: 'Hello@gmail.com' })
-      expect(isEmailValid(state)).toEqual(true)
-    })
-
-    it('return false if email is not valid', () => {
-      const state = getState({ email: 'hello@' })
-      expect(isEmailValid(state)).toEqual(false)
     })
   })
 

@@ -203,11 +203,32 @@ describe('UserDetail', () => {
   })
 
   describe('#onSaveDetails', () => {
-    it('calls the service to patch the user record', () => {
-      wrapper.setProps({ updatedDetails: { email: 'test@gmail.com' } })
+    it('calls the service to patch the user record when email & phone is not emoty', () => {
+      wrapper.setProps({ updatedDetails: { email: 'test12@gmail.com' } })
+      wrapper.setProps({ details: { email: 'test@gmail.com', phone_number: '9090909090' } })
       instance.onSaveDetails()
-      expect(mockSaveUserDetailsActions).toHaveBeenCalledWith('12345', { email: 'test@gmail.com' })
+      expect(mockSaveUserDetailsActions).toHaveBeenCalledWith('12345', { email: 'test12@gmail.com' })
       expect(mockClearAddedUserDetailActions).toHaveBeenCalledWith()
+      wrapper.setProps({ details: { email: '', phone_number: '' } })
+      instance.onSaveDetails()
+      expect(instance.state.missingFields).toEqual(true)
+    })
+  })
+
+  describe('#displayMissingFieldAlert', () => {
+    it('renders alert component if  phone number is missing', () => {
+      wrapper.setProps({ details: { email: 'test@gmail.com' } })
+      wrapper.setState({ missingFields: true })
+      const alertBox = wrapper.find('UserMessage')
+      expect(alertBox.props().errorMsg).toEqual(
+        'Phone Number is required in order to save. Please enter a valid phone number and try again.'
+      )
+    })
+
+    it('renders empty string when email and phone number has values', () => {
+      wrapper.setState({ missingFields: true })
+      wrapper.setProps({ details: { email: 'test@gmail.com', phone_number: '9090909090' } })
+      expect(instance.displayMissingFieldAlert()).toEqual('')
     })
   })
 
