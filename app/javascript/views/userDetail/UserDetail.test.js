@@ -220,14 +220,9 @@ describe('UserDetail', () => {
       wrapper.setProps({ details: { email: 'test@gmail.com' } })
       wrapper.setState({ missingFields: true })
       const alertBox = wrapper.find('UserMessage')
-      expect(alertBox.props().errorMsg).toEqual('Phone Number value is missing! Please enter valid phone number.')
-    })
-
-    it('renders alert component if email is missing', () => {
-      wrapper.setProps({ details: { phone_number: '9090909090' } })
-      wrapper.setState({ missingFields: true })
-      const alertBox = wrapper.find('UserMessage')
-      expect(alertBox.props().errorMsg).toEqual('Email value is missing! Please enter valid email.')
+      expect(alertBox.props().errorMsg).toEqual(
+        'Phone Number is required in order to save. Please enter a valid phone number and try again.'
+      )
     })
 
     it('renders empty string when email and phone number has values', () => {

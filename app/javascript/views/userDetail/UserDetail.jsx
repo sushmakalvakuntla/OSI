@@ -33,7 +33,7 @@ export default class UserDetail extends Component {
 
   onSaveDetails = () => {
     const { updatedDetails, match, actions, details } = this.props
-    if (details.phone_number && details.email) {
+    if (details.phone_number) {
       actions.saveUserDetailsActions(match.params.id, updatedDetails)
       this.setState({ resendEmailAlert: false })
       actions.clearAddedUserDetailActions()
@@ -99,10 +99,8 @@ export default class UserDetail extends Component {
 
   displayMissingFieldAlert = () => {
     return this.state.missingFields ? (
-      !this.props.details.email ? (
-        <UserMessage errorMsg={'Email value is missing! Please enter valid email.'} />
-      ) : !this.props.details.phone_number ? (
-        <UserMessage errorMsg={'Phone Number value is missing! Please enter valid phone number.'} />
+      !this.props.details.phone_number ? (
+        <UserMessage errorMsg={'Phone Number is required in order to save. Please enter a valid phone number and try again.'} />
       ) : (
         ''
       )
@@ -126,7 +124,6 @@ export default class UserDetail extends Component {
             userStatusDescription={this.props.userStatusDescription}
             officeName={this.props.officeName}
             onInputChange={this.handleInputChange}
-            isEmailValid={this.props.isEmailValid}
             lastLoginDateTime={this.props.lastLoginDateTime}
             officePhoneNumber={this.props.officePhoneNumber}
             unformattedPhoneNumber={this.props.unformattedPhoneNumber}
