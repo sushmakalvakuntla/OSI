@@ -35,8 +35,9 @@ There are two primary ways of running the CAP app:
 ## Running with Preint environment
 
 In order to run against Preint environment:
+https://github.com/ca-cwds/env-store/blob/master/envs/county-admin/.env.development.local
 
-1.  Create a `.env` file and copy its body from the [CWDS env-store repo's cap.dev.local-with-int.env](https://github.com/ca-cwds/env-store/blob/master/envs/cans/cap.dev.local-with-int.env) (the repo is private, for CWDS developers usage only).
+1.  Create a `.env` file and copy its body from the [CWDS env-store repo's county-admin/cap.dev.local-with-int.env](https://github.com/ca-cwds/env-store/blob/master/envs/county-admin/.env.development.local) (the repo is private, for CWDS developers usage only).
 2.  Run local instance of Redis (`docker-compose up redis` or `redis-server` if you have it installed)
 3.  Run CAP application:
     1.  Run Rails (`rails s`), and the webpack dev server (`yarn start` or `./bin/webpack-dev-server`).
@@ -45,7 +46,9 @@ In order to run against Preint environment:
 ## Running everything locally with Docker Compose
 
 You will need a full **.env** file for this.
-Copy it from the [CWDS env-store repo's cap.dev.local.env](https://github.com/ca-cwds/env-store/blob/master/envs/cap/cap.dev.local.env) (the repo is private, for CWDS developers usage only).
+Copy it from the [CWDS env-store repo's cap.dev.local.env](https://github.com/ca-cwds/env-store/blob/master/envs/county-admin/.env) (the repo is private, for CWDS developers usage only).
+
+In the .env file, update your DEV_IP value to represent your network IP address, for Perry redirection.
 
 Once you have your **.env** file next to the **docker-compose.yml** file, start up your dependency applications by running:
 
