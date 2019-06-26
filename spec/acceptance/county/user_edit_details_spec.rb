@@ -71,7 +71,6 @@ feature 'User Edit' do
       one_permission = original_selected_permissions.first
       # Do not remove the deprecated permission 'Snapshot'
       one_permission = '' if one_permission == 'Snapshot'
-      end
     end
     # Edit both modifiable fields
     change_status new_status
