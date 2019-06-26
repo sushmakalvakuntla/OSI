@@ -61,13 +61,6 @@ export const isEmailValid = state => {
   return /^[a-zA-Z0-9_!#$%&’*+/=?`'{^.-]*@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}$/i.test(email)
 }
 
-export const disableSaveButton = state => {
-  if (!isEmailValid(state)) {
-    return true
-  }
-  return safeGet(state, 'fetchDetails.disableActionBtn')
-}
-
 export const checkStatus = state => {
   return isUserEditable(state)
     ? {

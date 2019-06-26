@@ -13,7 +13,6 @@ import {
   selectCWSPrivileges,
   officeName,
   selectPossiblePermissionsList,
-  disableSaveButton,
   isEmailValid,
   selectModifiedDetails,
   formattedDateTime,
@@ -531,22 +530,6 @@ describe('selectors', () => {
     it('return false if email is not valid', () => {
       const state = getState({ email: 'hello@' })
       expect(isEmailValid(state)).toEqual(false)
-    })
-  })
-
-  describe('#disableSaveButton', () => {
-    it('return true when email is not valid', () => {
-      const state = getState({ email: 'hello@' })
-      expect(disableSaveButton(state)).toEqual(true)
-    })
-
-    it('return false when email is valid', () => {
-      const state = getState({
-        phoneNumber: '1234567891',
-        email: 'hel@gmail.com',
-        disableActionBtn: false,
-      })
-      expect(disableSaveButton(state)).toEqual(false)
     })
   })
 

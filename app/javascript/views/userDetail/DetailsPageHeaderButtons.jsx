@@ -3,14 +3,7 @@ import PropTypes from 'prop-types'
 import { PrimitiveButton as Button } from '@cwds/components'
 import NoPermissionsWarning from './NoPermissionsWarning'
 
-const PageHeaderButtons = ({
-  isUserEditable,
-  onSaveDetails,
-  onReset,
-  disableSaveButton,
-  disableResetButton,
-  isPermissionsEmpty,
-}) => (
+const PageHeaderButtons = ({ isUserEditable, onSaveDetails, onReset, disableActionBtn, isPermissionsEmpty }) => (
   <div>
     {isUserEditable ? (
       <div className="pull-right">
@@ -21,12 +14,12 @@ const PageHeaderButtons = ({
           id="resetButton"
           className="page-buttons btn btn-default"
           onClick={onReset}
-          disabled={disableResetButton}
+          disabled={disableActionBtn}
         >
           RESET
         </Button>
-        {!disableSaveButton && isPermissionsEmpty ? (
-          <NoPermissionsWarning onSaveDetails={onSaveDetails} disabled={disableSaveButton} />
+        {!disableActionBtn && isPermissionsEmpty ? (
+          <NoPermissionsWarning onSaveDetails={onSaveDetails} disabled={disableActionBtn} />
         ) : (
           <Button
             color="default"
@@ -35,7 +28,7 @@ const PageHeaderButtons = ({
             id="saveButton"
             className="page-buttons btn btn-default"
             onClick={onSaveDetails}
-            disabled={disableSaveButton}
+            disabled={disableActionBtn}
           >
             SAVE
           </Button>
@@ -61,8 +54,7 @@ const PageHeaderButtons = ({
 
 PageHeaderButtons.propTypes = {
   isUserEditable: PropTypes.bool,
-  disableSaveButton: PropTypes.bool,
-  disableResetButton: PropTypes.bool,
+  disableActionBtn: PropTypes.bool,
   onSaveDetails: PropTypes.func,
   onReset: PropTypes.func,
   isPermissionsEmpty: PropTypes.bool,
