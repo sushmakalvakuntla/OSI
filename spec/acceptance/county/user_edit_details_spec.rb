@@ -134,9 +134,14 @@ feature 'User Edit' do
     expect(page).to have_button('SAVE', disabled: true)
 
     fill_in('Email', with: 'cwds3raval', match: :prefer_exact)
-    # bad email address won't let us proceed
-    expect(page).to have_button('SAVE', disabled: true)
-    expect(page).to have_content('Please enter a valid email')
+    # bad email address no longer validates, so we let the save button s stay enabled.
+    expect(page).to have_button('SAVE', disabled: false)
+
+    click_button 'SAVE'
+    sleep 2
+    click_button 'Confirm' if has_button? 'Confirm'
+
+    expect(page).to have_content('The email address you entered is in an invalid format')
 
     # correct the email to a proper address
     email_address = new_email_address
