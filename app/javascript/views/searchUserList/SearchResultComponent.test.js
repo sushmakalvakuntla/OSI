@@ -4,6 +4,7 @@ import SearchResultComponent from './SearchResultComponent'
 
 describe('SearchResultComponent', () => {
   let wrapper
+  let wrapperUnlocked
   const resultList = { id: '12345ABCD', first_name: 'firstName', last_name: 'lastName', locked: true }
 
   const officesList = [{ label: 'OFFICE ONE', value: 'office1' }, { label: 'OFFICE TWO', value: 'office2' }]
@@ -18,7 +19,17 @@ describe('SearchResultComponent', () => {
         rolesList={rolesList}
         unlockHandler={mockHandleUnlockClick}
         alertHandler={mockHandleAlert}
-        lockMessage={{ message: 'some message' }}
+        lockMessage={{ message: 'some message', unlocked: false }}
+      />
+    )
+    wrapperUnlocked = shallow(
+      <SearchResultComponent
+        value={resultList}
+        officeList={officesList}
+        rolesList={rolesList}
+        unlockHandler={mockHandleUnlockClick}
+        alertHandler={mockHandleAlert}
+        lockMessage={{ message: 'some message', unlocked: true }}
       />
     )
   })
@@ -103,6 +114,7 @@ describe('SearchResultComponent', () => {
           .dive()
           .text()
       ).toMatch('Unlock')
+      expect(wrapperUnlocked.find('IconButton').length).toEqual(0)
     })
 
     it('handles unlocking', () => {

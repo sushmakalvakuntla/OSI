@@ -7,18 +7,19 @@ class SearchResults extends PureComponent {
     const { matchedUsers, officesList, rolesList, fetching } = this.props
 
     return matchedUsers.map((value, key) => {
+      const valueHideLockStatus = { ...value, locked: false }
       return (
         <SearchResultComponent
-          value={value}
+          value={valueHideLockStatus}
           key={key}
           officeList={officesList}
           rolesList={rolesList}
           fetching={fetching}
           unlockHandler={this.props.actions.unlockUser}
           lockMessage={
-            this.props.unlockedUsers[value.id]
-              ? this.props.unlockedUsers[value.id]
-              : value.locked
+            this.props.unlockedUsers[valueHideLockStatus.id]
+              ? this.props.unlockedUsers[valueHideLockStatus.id]
+              : valueHideLockStatus.locked
                 ? { unlocked: false, message: 'This user has been locked for too many failed attempts' }
                 : { unlocked: true, message: '' }
           }

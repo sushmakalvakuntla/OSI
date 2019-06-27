@@ -64,15 +64,13 @@ describe('SearchResults', () => {
       ).toEqual(0)
     })
 
-    it('shows the locked user message', () => {
+    it('does not show the locked user message for now', () => {
       expect(
         componentSet
           .at(1)
           .dive()
-          .find('UserMessage')
-          .render()
-          .text()
-      ).toEqual('NOT-ALLOWED')
+          .find('UserMessage').length
+      ).toEqual(0)
     })
   })
 })
