@@ -81,6 +81,35 @@ describe('ChangeLog', () => {
     ).toEqual('January 4, 2019 02:22 PM')
   })
 
+  describe('for admin role', () => {
+    it('renders a menu for with change log details and a link to user details', () => {
+      const mounted = mount(
+        <BrowserRouter>
+          <ChangeLog
+            auditEvents={events}
+            userDetails={{}}
+            adminDetails={{}}
+            userOfficeName=""
+            adminOfficeName=""
+            isListView={true}
+          />
+        </BrowserRouter>
+      )
+      expect(
+        mounted
+          .find('TrComponent')
+          .at(1)
+          .text()
+      ).toContain('View Change Details')
+      expect(
+        mounted
+          .find('TrComponent')
+          .at(1)
+          .text()
+      ).toContain('View User Profile')
+    })
+  })
+
   it('renders the admin name field with formatted display of admin role', () => {
     const mounted = mount(
       <BrowserRouter>

@@ -145,13 +145,12 @@ const columnConfig = (
               getUserDetails={getUserDetails}
               isListView={isListView}
             />
-            <MenuItem style={{ background: 'none' }}>
-              <Link
-                style={{ color: 'black', textDecoration: 'none', fontSize: '15px' }}
-                to={`/user_details/${row.original.event.user_id}`}
-              >
-                View User Profile
-              </Link>
+            <MenuItem
+              style={{ background: 'none', color: 'black', textDecoration: 'none', fontSize: '15px' }}
+              tag={Link}
+              to={`/user_details/${row.original.event.user_id}`}
+            >
+              View User Profile
             </MenuItem>
           </Menu>
         </div>
