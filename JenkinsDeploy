@@ -17,7 +17,6 @@ def releasePipeline(){
   ])
 
   try {
-    deployWithSmoke('preint')
     deployWithSmoke('integration')
     // integrationAcceptenceTestChrome()
   } catch(Exception exception) {
